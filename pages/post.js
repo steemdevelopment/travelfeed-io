@@ -26,7 +26,7 @@ Post.getInitialProps = async function (context) {
     const date_object = new Date(JSON.parse(json_date, dateFromJsonString).date);
     const created = date_object.toDateString();
     const json = JSON.parse(post.json_metadata);
-    const image = json.image[0] ? 'https://steemitimages.com/1200x400/' + json.image[0] : 'https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png';
+    const image = (typeof json.image != "undefined" && json.image.length > 0 && json.image[0] !== '') ? 'https://steemitimages.com/1200x400/' + json.image[0] : 'https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png' //todo: try fetching first image from post if no image is defined in json_metadata
     const tags = json.tags
     const body = marked(post.body)
 

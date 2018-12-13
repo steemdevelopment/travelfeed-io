@@ -4,7 +4,6 @@ import Layout from "../components/Layout.js";
 import { Client } from "dsteem";
 import Link from "next/link";
 import removeMd from "remove-markdown";
-import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -15,6 +14,8 @@ import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 const client = new Client("https://api.steemit.com");
 
 const styles = {
@@ -22,7 +23,7 @@ const styles = {
     maxWidth: 345
   },
   media: {
-    height: 140
+    height: 180
   }
 };
 
@@ -31,20 +32,32 @@ class Blog extends Component {
     error: false,
     hasMore: true,
     isLoading: false,
+    snackbar: true,
     lastauthor: "",
     lastpermlink: "",
     loadposts: []
   };
   streamBlog = async () => {
+    this.setState({
+      isLoading: true
+    });
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
     if (lastpermlink === "") {
       const tagargs = { tag: "travelfeed", limit: 51 };
       const tagstream = await client.database.getDiscussions("blog", tagargs);
-      lastpermlink =
-        tagstream.length > 0 ? tagstream[tagstream.length - 1].permlink : "";
-      lastauthor =
-        tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
+      try {
+        lastpermlink =
+          tagstream.length > 0 ? tagstream[tagstream.length - 1].permlink : "";
+        lastauthor =
+          tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
+      } catch (err) {
+        this.setState({
+          error: err.message,
+          snackbar: true,
+          isLoading: false
+        });
+      }
     }
     const args = {
       tag: "travelfeed",
@@ -54,13 +67,28 @@ class Blog extends Component {
     };
     const stream = await client.database.getDiscussions("blog", args);
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
-    lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
-    const loadposts = this.state.loadposts.concat(stream);
-    this.setState({
-      lastpermlink: lastpermlink,
-      lastauthor: lastauthor,
-      loadposts: loadposts
-    });
+    try {
+      if (stream.length == 0) {
+        this.setState({
+          hasMore: false,
+          isLoading: false
+        });
+      }
+      lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
+      const loadposts = this.state.loadposts.concat(stream);
+      this.setState({
+        lastpermlink: lastpermlink,
+        lastauthor: lastauthor,
+        loadposts: loadposts,
+        isLoading: false,
+        hasMore: true
+      });
+    } catch (err) {
+      this.setState({
+        error: err.message,
+        isLoading: false
+      });
+    }
   };
   componentDidMount() {
     window.onscroll = () => {
@@ -89,8 +117,10 @@ class Blog extends Component {
     let processed = [];
     return (
       <Layout>
-        <h1>TravelFeed Blog</h1>
-        <Grid container spacing={16}>
+        <Typography variant="display1" align="center" gutterBottom={true}>
+          TravelFeed Blog
+        </Typography>
+        <Grid container spacing={16} alignItems="center" justify="center">
           {stream.map(post => {
             const json = JSON.parse(post.json_metadata);
             // Filter out:
@@ -107,7 +137,11 @@ class Blog extends Component {
                 excerpt = excerpt.split("<br>");
                 excerpt = excerpt.length > 0 ? excerpt[1] : excerpt[0];
               }
-              excerpt = removeMd(excerpt).substring(0, 350);
+              excerpt = removeMd(excerpt).substring(0, 250);
+              const posttag =
+                typeof json.tags != "undefined" && json.tags.length > 3
+                  ? json.tags[4]
+                  : "";
               const image =
                 typeof json.image != "undefined" &&
                 json.image.length > 0 &&
@@ -119,9 +153,16 @@ class Blog extends Component {
               processed.push(post.permlink);
               return (
                 <Grid item lg={3} md={4} sm={6} xs={12}>
-                  <Card key={post.permlink}>
+                  <Card key={post.permlink + count} style={styles.card}>
                     <CardActionArea>
-                      <CardMedia image={image} title="Contemplative Reptile" />
+                      <CardMedia style={styles.media} image={image}>
+                        <Link
+                          as={`/created/${posttag}`}
+                          href={`/tag?sortby=created&&tag=${posttag}`}
+                        >
+                          {posttag}
+                        </Link>
+                      </CardMedia>
                       <Link
                         as={`/@${post.author}/${post.permlink}`}
                         href={`/post?author=${post.author}&permlink=${
@@ -132,7 +173,7 @@ class Blog extends Component {
                           <Typography gutterBottom variant="h5" component="h2">
                             {post.title}
                           </Typography>
-                          <Typography component="p">{excerpt}[...]</Typography>
+                          <Typography component="p">{excerpt} [...]</Typography>
                         </CardContent>
                       </Link>
                     </CardActionArea>
@@ -147,13 +188,13 @@ class Blog extends Component {
               );
             }
           })}
-          {error && <Card>{error}</Card>}
+          {!error && <Typography>{error}</Typography>}
           {isLoading && (
-            <Card>
-              <CardContent>Loading...</CardContent>
-            </Card>
+            <Grid item xs={1}>
+              <CircularProgress />
+            </Grid>
           )}
-          {!hasMore && <Card>That is all!</Card>}
+          {!hasMore && <Typography>That is all :)</Typography>}
         </Grid>
       </Layout>
     );
@@ -164,4 +205,4 @@ Blog.propTypes = {
   stream: PropTypes.array
 };
 
-export default withStyles(styles)(Blog);
+export default Blog;

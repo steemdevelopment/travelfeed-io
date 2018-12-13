@@ -21,7 +21,7 @@ const Layout = props => (
       />
     </Head>
     <Header />
-    {props.children}
+    <div style={{ padding: "20px" }}>{props.children}</div>
   </Fragment>
 );
 

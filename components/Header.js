@@ -9,7 +9,7 @@ const Header = () => (
   <Fragment>
     <AppBar position="static" color="default">
       <Toolbar>
-        <Typography variant="h6" color="inherit" noWrap>
+        <Typography variant="title" color="inherit" noWrap>
           TravelFeed
         </Typography>
         <Link href="/">

@@ -55,7 +55,7 @@ Post.getInitialProps = async function(context) {
 };
 
 Post.propTypes = {
-  blog: PropTypes.string
+  blog: PropTypes.object
 };
 
 export default Post;

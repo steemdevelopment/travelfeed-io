@@ -6,8 +6,8 @@ import Link from 'next/link'
 const client = new Client('https://api.steemit.com')
 
 class Index extends React.Component {
-    static async getInitialProps({ req }) {
-        const args = { tag: 'travelfeed', limit: 10 }
+    static async getInitialProps() {
+        const args = { tag: 'travelfeed', limit: 50 }
         const stream = await client.database.getDiscussions('blog', args)
         return { stream }
     }
@@ -17,13 +17,17 @@ class Index extends React.Component {
                 <h1>Home</h1>
                 <h2>TravelFeed Blog</h2>
                 <ul>
-                    {this.props.stream.map(post => (
-                        <li key={post.author + '/' + post.permlink}>
-                            <Link as={`/@${post.author}/${post.permlink}`} href={`/post?author=${post.author}&permlink=${post.permlink}`}>
-                                <a>{post.title}</a>
-                            </Link>
-                        </li>
-                    ))}
+                    {this.props.stream.map(post => {
+                        if (post.author == 'travelfeed') {
+                            return (
+                                <li key={post.author + '/' + post.permlink}>
+                                    <Link as={`/@${post.author}/${post.permlink}`} href={`/post?author=${post.author}&permlink=${post.permlink}`}>
+                                        <a>{post.title}</a>
+                                    </Link>
+                                </li>
+                            )
+                        }
+                    })}
                 </ul>
             </Layout>
         )

@@ -1,4 +1,4 @@
-import Layout from '../components/MyLayout.js'
+import Layout from '../components/Layout.js'
 import Button from '@material-ui/core/Button';
 
 export default () => (

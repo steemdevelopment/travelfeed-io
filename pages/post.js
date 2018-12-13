@@ -1,5 +1,5 @@
 import '@babel/polyfill'
-import Layout from '../components/MyLayout.js'
+import Layout from '../components/Layout.js'
 const { Client } = require('dsteem')
 import dateFromJsonString from '../helpers/dateFromJsonString'
 import marked from 'marked'

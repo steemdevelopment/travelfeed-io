@@ -1,21 +1,32 @@
-import Link from 'next/link'
-
-const linkStyle = {
-  marginRight: 15
-}
+import React, { Fragment } from "react";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Link from "next/link";
 
 const Header = () => (
-  <div>
-    <Link href="/">
-      <a style={linkStyle}>Home</a>
-    </Link>
-    <Link href="/blog">
-      <a style={linkStyle}>Blog</a>
-    </Link>
-    <Link href="/about">
-      <a style={linkStyle}>About</a>
-    </Link>
-  </div>
-)
+  <Fragment>
+    <AppBar position="static" color="default">
+      <Toolbar>
+        <Typography variant="h6" color="inherit" noWrap>
+          TravelFeed
+        </Typography>
+        <Link href="/">
+          <Button>Home</Button>
+        </Link>
+        <Link href="/blog">
+          <Button>Blog</Button>
+        </Link>
+        <Link href="/about">
+          <Button>About</Button>
+        </Link>
+        <Button color="primary" variant="outlined">
+          Login
+        </Button>
+      </Toolbar>
+    </AppBar>
+  </Fragment>
+);
 
-export default Header
+export default Header;

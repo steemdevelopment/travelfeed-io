@@ -12,11 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^3.6.2",
+    "@material-ui/icons": "^3.0.1",
     "dsteem": "^0.11.2",
     "express": "^4.16.4",
+    "marked": "^0.5.2",
     "next": "^7.0.2",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.6.3",
+    "remove-markdown": "^0.3.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.0.0",

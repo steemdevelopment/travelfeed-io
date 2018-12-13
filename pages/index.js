@@ -1,8 +1,10 @@
 import Layout from '../components/MyLayout.js'
+import BlogStream from '../components/BlogStream.js'
 import Link from 'next/link'
 
 const Index = (props) => (
     <Layout>
+        <BlogStream />
         <h1>Example Posts</h1>
         <ul>
             {props.posts.map(({ post }) => (

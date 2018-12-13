@@ -5,6 +5,7 @@ import Layout from "../components/Layout.js";
 import { Client } from "dsteem";
 import Link from "next/link";
 import removeMd from "remove-markdown";
+import dateFromJsonString from "../helpers/dateFromJsonString";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -17,9 +18,14 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import Grid from "@material-ui/core/Grid";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
+import Avatar from "@material-ui/core/Avatar";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import CardHeader from "@material-ui/core/CardHeader";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import red from "@material-ui/core/colors/red";
+import Router from "next/router";
 
 const client = new Client("https://api.steemit.com");
 
@@ -43,9 +49,7 @@ const styles = {
     background:
       "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
   },
-  card: {
-    maxWidth: 345
-  },
+  card: {},
   media: {
     height: 140
   }
@@ -142,9 +146,6 @@ class Index extends Component {
     return (
       <Fragment>
         <Layout>
-          <Typography variant="display1" align="center" gutterBottom={true}>
-            Home
-          </Typography>
           <div style={styles.root}>
             <GridList style={styles.gridList} cols={2.5}>
               {this.props.stream.map(post => {
@@ -159,19 +160,32 @@ class Index extends Component {
                       : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png";
                   return (
                     <GridListTile key={post.permlink}>
-                      <img src={image} />
-                      <GridListTileBar
-                        title={post.title}
-                        styles={{
-                          root: styles.titleBar,
-                          title: styles.title
-                        }}
-                        actionIcon={
-                          <IconButton>
-                            <StarBorderIcon style={styles.title} />
-                          </IconButton>
+                      <img
+                        src={image}
+                        onClick={() =>
+                          Router.push(`/@${post.author}/${post.permlink}`)
                         }
+                        style={{ cursor: "pointer" }}
                       />
+                      <Link
+                        as={`/@${post.author}/${post.permlink}`}
+                        href={`/post?author=${post.author}&permlink=${
+                          post.permlink
+                        }`}
+                      >
+                        <GridListTileBar
+                          title={post.title}
+                          styles={{
+                            root: styles.titleBar,
+                            title: styles.title
+                          }}
+                          actionIcon={
+                            <IconButton>
+                              <StarBorderIcon style={styles.title} />
+                            </IconButton>
+                          }
+                        />
+                      </Link>
                     </GridListTile>
                   );
                 }
@@ -195,11 +209,29 @@ class Index extends Component {
                 post.author !== "travelfeed"
               ) {
                 let excerpt = post.body;
-                excerpt = removeMd(excerpt).substring(0, 250);
+                excerpt = removeMd(excerpt, { useImgAltText: false });
+                excerpt = excerpt.replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
+                excerpt = excerpt.replace(
+                  /[^\sa-zA-Z0-9(?)(')(`)(’)(#)(!)(´)(-)(()())(\])([)]+/g,
+                  ""
+                );
+                excerpt = excerpt.substring(0, 250);
+                let title = post.title.replace(
+                  /[^\sa-zA-Z0-9(?)(')(`)(’)(-)(#)(!)(´)(()())(\])([)]+/g,
+                  ""
+                );
+                title =
+                  title.length > 85 ? title.substring(0, 81) + "[...]" : title;
+
                 const posttag =
                   typeof json.tags != "undefined" && json.tags.length > 0
                     ? json.tags[1]
                     : "";
+                const json_date = '{ "date": "' + post.created + 'Z" }';
+                const date_object = new Date(
+                  JSON.parse(json_date, dateFromJsonString).date
+                );
+                const created = date_object.toDateString();
                 const image =
                   typeof json.image != "undefined" &&
                   json.image.length > 0 &&
@@ -212,6 +244,22 @@ class Index extends Component {
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>
                     <Card key={post.permlink + count} style={styles.card}>
+                      <CardHeader
+                        avatar={
+                          <Avatar
+                            src={`https://steemitimages.com/u/${
+                              post.author
+                            }/avatar/small`}
+                          />
+                        }
+                        action={
+                          <IconButton>
+                            <MoreVertIcon />
+                          </IconButton>
+                        }
+                        title={post.author}
+                        subheader={created}
+                      />
                       <CardActionArea>
                         <CardMedia style={styles.media} image={image}>
                           <Link
@@ -233,7 +281,7 @@ class Index extends Component {
                               variant="h5"
                               component="h2"
                             >
-                              {post.title}
+                              {title}
                             </Typography>
                             <Typography component="p">
                               {excerpt} [...]

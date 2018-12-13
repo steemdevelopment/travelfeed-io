@@ -137,7 +137,11 @@ class Blog extends Component {
                 excerpt = excerpt.split("<br>");
                 excerpt = excerpt.length > 0 ? excerpt[1] : excerpt[0];
               }
-              excerpt = removeMd(excerpt).substring(0, 250);
+              excerpt = removeMd(excerpt, { useImgAltText: false }).substring(
+                0,
+                250
+              );
+              excerpt = excerpt.replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
               const posttag =
                 typeof json.tags != "undefined" && json.tags.length > 3
                   ? json.tags[4]

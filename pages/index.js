@@ -12,13 +12,16 @@ class Index extends React.Component {
         return { stream }
     }
     render() {
+        let count = 0
         return (
             <Layout>
                 <h1>Home</h1>
                 <h2>TravelFeed Blog</h2>
                 <ul>
                     {this.props.stream.map(post => {
-                        if (post.author == 'travelfeed') {
+                        const json = JSON.parse(post.json_metadata);
+                        if (count < 7 && post.author === 'travelfeed' && (json.tags.indexOf('travelfeeddaily') > -1) === true) {
+                            count += 1
                             return (
                                 <li key={post.author + '/' + post.permlink}>
                                     <Link as={`/@${post.author}/${post.permlink}`} href={`/post?author=${post.author}&permlink=${post.permlink}`}>

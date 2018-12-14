@@ -10,11 +10,21 @@ app
   .then(() => {
     const server = express();
 
+    server.use(express.static("public"));
+
     server.get("/@:author/:permlink", (req, res) => {
       const actualPage = "/post";
       const queryParams = {
         author: req.params.author,
         permlink: req.params.permlink
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/@:author", (req, res) => {
+      const actualPage = "/blog";
+      const queryParams = {
+        author: req.params.author
       };
       app.render(req, res, actualPage, queryParams);
     });

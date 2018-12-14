@@ -1,0 +1,6 @@
+.postcontent img {
+  width: calc(100% + 130px) !important;
+  padding: 20px 0;
+  margin-left: -65px;
+  margin-right: -65px;
+}

@@ -19,6 +19,8 @@ const Layout = props => (
         rel="stylesheet"
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
       />
+
+      <link rel="stylesheet" href="/style.css" />
     </Head>
     <Header />
     <div style={{ padding: "20px" }}>{props.children}</div>

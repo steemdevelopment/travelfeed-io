@@ -72,7 +72,7 @@ class Index extends Component {
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
     if (lastpermlink === "") {
-      const tagargs = { tag: "travelfeed", limit: 51 };
+      const tagargs = { tag: "travelfeed", limit: 1 };
       const tagstream = await client.database.getDiscussions("blog", tagargs);
       try {
         lastpermlink =
@@ -89,7 +89,7 @@ class Index extends Component {
     }
     const args = {
       tag: "travelfeed",
-      limit: 50,
+      limit: 20,
       start_author: lastauthor,
       start_permlink: lastpermlink
     };
@@ -134,7 +134,7 @@ class Index extends Component {
     };
   }
   static async getInitialProps() {
-    const args = { tag: "travelfeed", limit: 55 };
+    const args = { tag: "travelfeed", limit: 30 };
     const stream = await client.database.getDiscussions("blog", args);
     return { stream };
   }
@@ -205,7 +205,7 @@ class Index extends Component {
               if (
                 ((processed.indexOf(post.permlink) > -1 === false &&
                   count < 8) ||
-                  restream.length > 50) &&
+                  restream.length > 30) &&
                 post.author !== "travelfeed"
               ) {
                 let excerpt = post.body;
@@ -246,25 +246,38 @@ class Index extends Component {
                     <Card key={post.permlink + count} style={styles.card}>
                       <CardHeader
                         avatar={
-                          <Avatar
-                            src={`https://steemitimages.com/u/${
-                              post.author
-                            }/avatar/small`}
-                          />
+                          <Link
+                            as={`/@${post.author}`}
+                            href={`/blog?author=${post.author}`}
+                          >
+                            <Avatar
+                              style={{ cursor: "pointer" }}
+                              src={`https://steemitimages.com/u/${
+                                post.author
+                              }/avatar/small`}
+                            />
+                          </Link>
                         }
                         action={
                           <IconButton>
                             <MoreVertIcon />
                           </IconButton>
                         }
-                        title={post.author}
+                        title={
+                          <Link
+                            as={`/@${post.author}`}
+                            href={`/blog?author=${post.author}`}
+                          >
+                            {post.author}
+                          </Link>
+                        }
                         subheader={created}
                       />
                       <CardActionArea>
                         <CardMedia style={styles.media} image={image}>
                           <Link
                             as={`/created/${posttag}`}
-                            href={`/tag?sortby=created&&tag=${posttag}`}
+                            href={`/tag?sortby=created&tag=${posttag}`}
                           >
                             {posttag}
                           </Link>

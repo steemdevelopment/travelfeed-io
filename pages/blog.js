@@ -20,7 +20,7 @@ const client = new Client("https://api.steemit.com");
 
 const styles = {
   card: {
-    maxWidth: 345
+    maxWidth: 445
   },
   media: {
     height: 180
@@ -35,7 +35,8 @@ class Blog extends Component {
     snackbar: true,
     lastauthor: "",
     lastpermlink: "",
-    loadposts: []
+    loadposts: [],
+    author: "travelfeed"
   };
   streamBlog = async () => {
     this.setState({
@@ -44,7 +45,7 @@ class Blog extends Component {
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
     if (lastpermlink === "") {
-      const tagargs = { tag: "travelfeed", limit: 51 };
+      const tagargs = { tag: this.state.author, limit: 51 };
       const tagstream = await client.database.getDiscussions("blog", tagargs);
       try {
         lastpermlink =
@@ -60,7 +61,7 @@ class Blog extends Component {
       }
     }
     const args = {
-      tag: "travelfeed",
+      tag: this.state.author,
       limit: 50,
       start_author: lastauthor,
       start_permlink: lastpermlink
@@ -91,6 +92,13 @@ class Blog extends Component {
     }
   };
   componentDidMount() {
+    let author = this.props.author; //TODO: how to fetch props
+    if (typeof author === "undefined") {
+      author = "travelfeed";
+    }
+    this.setState({
+      author: author
+    });
     window.onscroll = () => {
       const {
         streamBlog,
@@ -105,8 +113,12 @@ class Blog extends Component {
       }
     };
   }
-  static async getInitialProps() {
-    const args = { tag: "travelfeed", limit: 50 };
+  static async getInitialProps(props) {
+    let { author } = props.query;
+    if (typeof author === "undefined") {
+      author = "travelfeed";
+    }
+    const args = { tag: author, limit: 50 };
     const stream = await client.database.getDiscussions("blog", args);
     return { stream };
   }
@@ -118,7 +130,7 @@ class Blog extends Component {
     return (
       <Layout>
         <Typography variant="display1" align="center" gutterBottom={true}>
-          TravelFeed Blog
+          {this.state.author} Blog
         </Typography>
         <Grid container spacing={16} alignItems="center" justify="center">
           {stream.map(post => {
@@ -130,7 +142,7 @@ class Blog extends Component {
             if (
               ((processed.indexOf(post.permlink) > -1 === false && count < 8) ||
                 stream.length > 50) &&
-              post.author === "travelfeed"
+              post.author === this.state.author
             ) {
               let excerpt = post.body;
               if (json.tags.indexOf("travelfeeddaily") > -1 === true) {

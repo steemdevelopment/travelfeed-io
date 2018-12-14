@@ -12,7 +12,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -207,6 +207,13 @@ class Blog extends Component {
                     ? "https://steemitimages.com/600x400/" + json.image[0]
                     : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png";
                 //todo: try fetching first image from post if no image is defined in json_metadata
+                let totalmiles = 0;
+                //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.
+                for (let vote = 0; vote < post.active_votes.length; vote++) {
+                  totalmiles += Math.round(
+                    post.active_votes[vote].percent / 1000
+                  );
+                }
                 ++count;
                 processed.push(post.permlink);
                 return (
@@ -243,11 +250,9 @@ class Blog extends Component {
                       </CardActionArea>
                       <CardActions>
                         <IconButton aria-label="Upvote">
-                          <FavoriteIcon />
+                          <FlightIcon />
                         </IconButton>
-                        <Typography noWrap>
-                          {post.active_votes.length}
-                        </Typography>
+                        <Typography noWrap>{totalmiles}</Typography>
                       </CardActions>
                     </Card>
                   </Grid>

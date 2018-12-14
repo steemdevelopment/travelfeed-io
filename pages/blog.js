@@ -1,6 +1,7 @@
 import "@babel/polyfill";
 import React, { Component } from "react";
 import Layout from "../components/Layout.js";
+import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import sanitize from "sanitize-html";
 import { getHtml } from "../components/busy/Body";
@@ -194,18 +195,17 @@ class Blog extends Component {
                   excerpt = esplit.length > 0 ? esplit[1] : excerpt;
                 }
                 excerpt = getHtml(excerpt, {}, "text");
+                const image = getImage(
+                  post.json_metadata,
+                  post.body,
+                  "600x400"
+                );
                 excerpt = sanitize(excerpt, { allowedTags: [] });
                 excerpt = excerpt.substring(0, 250);
                 const posttag =
                   typeof json.tags != "undefined" && json.tags.length > 3
                     ? json.tags[4]
                     : "";
-                const image =
-                  typeof json.image != "undefined" &&
-                  json.image.length > 0 &&
-                  json.image[0] !== ""
-                    ? "https://steemitimages.com/600x400/" + json.image[0]
-                    : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png";
                 //todo: try fetching first image from post if no image is defined in json_metadata
                 let totalmiles = 0;
                 //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.

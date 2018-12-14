@@ -2,6 +2,7 @@ import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import Layout from "../components/Layout.js";
 import { Helmet } from "react-helmet";
+import getImage from "../helpers/getImage";
 import removeMd from "remove-markdown";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
@@ -46,8 +47,9 @@ class Post extends Component {
       author,
       permlink
     ]);
+    const json = JSON.parse(post.json_metadata);
+    const tags = json.tags == "undefined" ? json.tags : [""];
     if (
-      typeof JSON.parse(post.json_metadata).tags == "undefined" ||
       post.id === 0 ||
       JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 === false
     ) {
@@ -58,22 +60,20 @@ class Post extends Component {
       };
       return { blog };
     }
-    const json = JSON.parse(post.json_metadata);
-    const tags = json.tags;
     const json_date = '{ "date": "' + post.created + 'Z" }';
     const date_object = new Date(
       JSON.parse(json_date, dateFromJsonString).date
     );
     const created = date_object.toDateString();
-    const image =
-      typeof json.image != "undefined" &&
-      json.image.length > 0 &&
-      json.image[0] !== ""
-        ? "https://steemitimages.com/1200x400/" + json.image[0]
-        : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png"; //todo: try fetching first image from post if no image is defined in json_metadata
     let htmlBody = getHtml(post.body, {}, "text");
     htmlBody = htmlBody
-      .replace(/src="/g, 'src="https://steemitimages.com/1000x0/')
+      .replace(
+        /(?:[^"])((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:[^"])/,
+        '<img src="$1"><'.replace(
+          /((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?="))/g,
+          "https://steemitimages.com/1000x0/$1"
+        )
+      )
       .replace(/<a/g, '<a rel="nofollow')
       .replace(/https:\/\/steemit.com/g, "");
     const bodyText = { __html: htmlBody };
@@ -83,6 +83,7 @@ class Post extends Component {
       post.title.length > 100
         ? post.title.substring(0, 96) + "[...]"
         : post.title;
+    const image = getImage(post.json_metadata, post.body, "1000x0");
     // todo: Implement canonical URL from condenser
     let canonicalUrl =
       "https://steemit.com/@" + post.author + "/" + post.permlink;

@@ -5,6 +5,7 @@ import Layout from "../components/Layout.js";
 import sanitize from "sanitize-html";
 import { getHtml } from "../components/busy/Body";
 import { Client } from "dsteem";
+import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
 import removeMd from "remove-markdown";
@@ -157,10 +158,11 @@ class Index extends Component {
                   post.author === "travelfeed" &&
                   json.tags.indexOf("travelfeeddaily") > -1 === true
                 ) {
-                  const image =
-                    json.image[0] !== ""
-                      ? "https://steemitimages.com/600x400/" + json.image[0]
-                      : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png";
+                  const image = getImage(
+                    post.json_metadata,
+                    post.body,
+                    "600x400"
+                  );
                   return (
                     <GridListTile key={post.permlink}>
                       <img

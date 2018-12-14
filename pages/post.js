@@ -71,22 +71,18 @@ class Post extends Component {
         ? "https://steemitimages.com/1200x400/" + json.image[0]
         : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png"; //todo: try fetching first image from post if no image is defined in json_metadata
     let htmlBody = getHtml(post.body, {}, "text");
-    // Todo: Render like condenser https://github.com/steemit/condenser/blob/master/src/app/components/cards/MarkdownViewer.jsx
     htmlBody = htmlBody
       .replace(/src="/g, 'src="https://steemitimages.com/1000x0/')
       .replace(/<a/g, '<a rel="nofollow')
-      .replace(/https:\/\/steemit.com/g, "https://travelfeed.io");
+      .replace(/https:\/\/steemit.com/g, "");
     const bodyText = { __html: htmlBody };
     let excerpt = removeMd(htmlBody, { useImgAltText: false });
-    excerpt = excerpt.replace(
-      /[^\sa-zA-Z0-9(?)(')(`)(’)(#)(!)(´)(-)(()())(\])([)]+/g,
-      ""
-    );
     excerpt = excerpt.substring(0, 143) + ` by ${post.author}`;
-    let excerpt_title = post.title.replace(
-      /[^\sa-zA-Z0-9(?)(')(`)(’)(-)(#)(!)(´)(()())(\])([)]+/g,
-      ""
-    );
+    let excerpt_title =
+      post.title.length > 100
+        ? post.title.substring(0, 96) + "[...]"
+        : post.title;
+    // todo: Implement canonical URL from condenser
     let canonicalUrl =
       "https://steemit.com/@" + post.author + "/" + post.permlink;
     const blog = {

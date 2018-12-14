@@ -21,6 +21,12 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
+    server.get("/:tag/@:author/:permlink", (req, res) => {
+      const author = req.params.author;
+      const permlink = req.params.permlink;
+      res.redirect(`/@${author}/${permlink}`);
+    });
+
     server.get("/@:author", (req, res) => {
       const actualPage = "/blog";
       const queryParams = {

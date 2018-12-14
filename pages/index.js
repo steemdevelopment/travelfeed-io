@@ -3,6 +3,7 @@ import "@babel/polyfill";
 import PropTypes from "prop-types";
 import Layout from "../components/Layout.js";
 import { Client } from "dsteem";
+import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
 import removeMd from "remove-markdown";
 import dateFromJsonString from "../helpers/dateFromJsonString";
@@ -206,7 +207,8 @@ class Index extends Component {
                 ((processed.indexOf(post.permlink) > -1 === false &&
                   count < 8) ||
                   restream.length > 30) &&
-                post.author !== "travelfeed"
+                post.author !== "travelfeed" &&
+                isBlacklisted(post.author, post.permlink) === false
               ) {
                 let excerpt = post.body;
                 excerpt = removeMd(excerpt, { useImgAltText: false });

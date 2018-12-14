@@ -47,6 +47,7 @@ class Post extends Component {
       permlink
     ]);
     if (
+      typeof JSON.parse(post.json_metadata).tags == "undefined" ||
       post.id === 0 ||
       JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 === false
     ) {

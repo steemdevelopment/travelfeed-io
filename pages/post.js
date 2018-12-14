@@ -1,10 +1,12 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import Layout from "../components/Layout.js";
+import { Helmet } from "react-helmet";
+import removeMd from "remove-markdown";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
 import dateFromJsonString from "../helpers/dateFromJsonString";
-import marked from "marked";
+import { getHtml } from "../components/busy/Body";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
 import Card from "@material-ui/core/Card";
@@ -68,19 +70,35 @@ class Post extends Component {
       json.image[0] !== ""
         ? "https://steemitimages.com/1200x400/" + json.image[0]
         : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png"; //todo: try fetching first image from post if no image is defined in json_metadata
-    const bodymd = marked(post.body, { sanitize: true });
+    let htmlBody = getHtml(post.body, {}, "text");
     // Todo: Render like condenser https://github.com/steemit/condenser/blob/master/src/app/components/cards/MarkdownViewer.jsx
-    const bodyreg = bodymd
+    htmlBody = htmlBody
       .replace(/src="/g, 'src="https://steemitimages.com/1000x0/')
-      .replace(/<a/g, '<a rel="nofollow');
-    let body = { __html: bodyreg };
+      .replace(/<a/g, '<a rel="nofollow')
+      .replace(/https:\/\/steemit.com/g, "https://travelfeed.io");
+    const bodyText = { __html: htmlBody };
+    let excerpt = removeMd(htmlBody, { useImgAltText: false });
+    excerpt = excerpt.replace(
+      /[^\sa-zA-Z0-9(?)(')(`)(’)(#)(!)(´)(-)(()())(\])([)]+/g,
+      ""
+    );
+    excerpt = excerpt.substring(0, 143) + ` by ${post.author}`;
+    let excerpt_title = post.title.replace(
+      /[^\sa-zA-Z0-9(?)(')(`)(’)(-)(#)(!)(´)(()())(\])([)]+/g,
+      ""
+    );
+    let canonicalUrl =
+      "https://steemit.com/@" + post.author + "/" + post.permlink;
     const blog = {
       post: {
         title: post.title,
         tags: tags,
         created: created,
         image: image,
-        body: body
+        bodyText: bodyText,
+        excerpt: excerpt,
+        excerpt_title: excerpt_title,
+        canonicalUrl: canonicalUrl
       }
     };
     return { blog };
@@ -126,6 +144,58 @@ class Post extends Component {
       return (
         <Fragment>
           <Layout>
+            <Helmet>
+              <title>{this.props.blog.post.title + " - TravelFeed"}</title>
+              <link rel="canonical" href={this.props.blog.post.canonicalUrl} />
+              <meta
+                property="description"
+                content={this.props.blog.post.excerpt}
+              />
+              <meta
+                property="og:title"
+                content={this.props.blog.post.title + " - TravelFeed"}
+              />
+              <meta property="og:type" content="article" />
+              <meta
+                property="og:url"
+                content={
+                  "https://travelfeed.io/@" +
+                  this.props.blog.post.author +
+                  "/" +
+                  this.props.blog.post.permlink
+                }
+              />
+              <meta property="og:image" content={this.props.blog.post.image} />
+              <meta
+                property="og:description"
+                content={this.props.blog.post.excerpt}
+              />
+              <meta property="og:site_name" content="Busy" />
+              <meta property="article:tag" content="travel" />
+              <meta
+                property="article:published_time"
+                content={this.props.blog.post.created}
+              />
+              <meta
+                property="twitter:card"
+                content={
+                  this.props.blog.post.image ? "summary_large_image" : "summary"
+                }
+              />
+              <meta property="twitter:site" content={"@travelfeed-io"} />
+              <meta
+                property="twitter:title"
+                content={this.props.blog.post.title + " - TravelFeed"}
+              />
+              <meta
+                property="twitter:description"
+                content={this.props.blog.post.excerpt}
+              />
+              <meta
+                property="twitter:image"
+                content={this.props.blog.post.image}
+              />
+            </Helmet>
             <Grid container spacing={16} alignItems="center" justify="center">
               <Grid item lg={7} md={8} sm={11} xs={12}>
                 <Card>
@@ -150,7 +220,7 @@ class Post extends Component {
                   <CardContent style={styles.content}>
                     <div
                       className="postcontent"
-                      dangerouslySetInnerHTML={this.props.blog.post.body}
+                      dangerouslySetInnerHTML={this.props.blog.post.bodyText}
                     />
                   </CardContent>
                 </Card>

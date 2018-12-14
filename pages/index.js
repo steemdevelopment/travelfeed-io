@@ -2,6 +2,8 @@ import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
 import Layout from "../components/Layout.js";
+import sanitize from "sanitize-html";
+import { getHtml } from "../components/busy/Body";
 import { Client } from "dsteem";
 import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
@@ -25,7 +27,6 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import red from "@material-ui/core/colors/red";
 import Router from "next/router";
 
 const client = new Client("https://api.steemit.com");
@@ -211,7 +212,8 @@ class Index extends Component {
                 post.author !== "travelfeed" &&
                 isBlacklisted(post.author, post.permlink) === false
               ) {
-                let excerpt = post.body;
+                let htmlBody = getHtml(post.body, {}, "text");
+                let excerpt = sanitize(htmlBody, { allowedTags: [] });
                 excerpt = removeMd(excerpt, { useImgAltText: false });
                 excerpt = excerpt.replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
                 excerpt = excerpt.replace(

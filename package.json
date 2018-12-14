@@ -15,14 +15,18 @@
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
     "dsteem": "^0.11.2",
+    "embedjs": "0.0.11",
     "express": "^4.16.4",
     "jss": "^9.8.7",
-    "marked": "^0.5.2",
     "next": "^7.0.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-helmet": "^5.2.0",
     "react-jss": "^8.6.1",
-    "remove-markdown": "^0.3.0"
+    "remarkable": "^1.7.1",
+    "sanitize-html": "^1.19.3",
+    "url-parse": "^1.4.4",
+    "xmldom": "^0.1.27"
   },
   "devDependencies": {
     "@babel/core": "^7.2.0",

@@ -2,9 +2,10 @@ import "@babel/polyfill";
 import React, { Component } from "react";
 import Layout from "../components/Layout.js";
 import isBlacklisted from "../helpers/isBlacklisted";
+import sanitize from "sanitize-html";
+import { getHtml } from "../components/busy/Body";
 import { Client } from "dsteem";
 import Link from "next/link";
-import removeMd from "remove-markdown";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -189,14 +190,12 @@ class Blog extends Component {
               ) {
                 let excerpt = post.body;
                 if (json.tags.indexOf("travelfeeddaily") > -1 === true) {
-                  excerpt = excerpt.split("<br>");
-                  excerpt = excerpt.length > 0 ? excerpt[1] : excerpt[0];
+                  const esplit = excerpt.split("<br>");
+                  excerpt = esplit.length > 0 ? esplit[1] : excerpt;
                 }
-                excerpt = removeMd(excerpt, { useImgAltText: false }).substring(
-                  0,
-                  250
-                );
-                excerpt = excerpt.replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
+                excerpt = getHtml(excerpt, {}, "text");
+                excerpt = sanitize(excerpt, { allowedTags: [] });
+                excerpt = excerpt.substring(0, 250);
                 const posttag =
                   typeof json.tags != "undefined" && json.tags.length > 3
                     ? json.tags[4]

@@ -73,7 +73,7 @@ class Index extends Component {
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
     if (lastpermlink === "") {
-      const tagargs = { tag: "travelfeed", limit: 1 };
+      const tagargs = { tag: "travelfeed", limit: 31 };
       const tagstream = await client.database.getDiscussions("blog", tagargs);
       try {
         lastpermlink =
@@ -96,6 +96,8 @@ class Index extends Component {
     };
     const stream = await client.database.getDiscussions("blog", args);
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
+    lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
+    delete stream[stream.length - 1];
     try {
       if (stream.length == 0) {
         this.setState({
@@ -103,7 +105,6 @@ class Index extends Component {
           isLoading: false
         });
       }
-      lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
       const loadposts = this.state.loadposts.concat(stream);
       this.setState({
         lastpermlink: lastpermlink,
@@ -252,7 +253,7 @@ class Index extends Component {
                 processed.push(post.permlink);
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>
-                    <Card key={post.permlink + count} style={styles.card}>
+                    <Card key={post.permlink} style={styles.card}>
                       <CardHeader
                         avatar={
                           <Link

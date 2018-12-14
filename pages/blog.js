@@ -77,6 +77,7 @@ class Blog extends Component {
         });
       }
       lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
+      delete stream[stream.length - 1];
       const loadposts = this.state.loadposts.concat(stream);
       this.setState({
         lastpermlink: lastpermlink,
@@ -218,7 +219,7 @@ class Blog extends Component {
                 processed.push(post.permlink);
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>
-                    <Card key={post.permlink + count} style={styles.card}>
+                    <Card key={post.permlink} style={styles.card}>
                       <CardActionArea>
                         <CardMedia style={styles.media} image={image}>
                           <Link

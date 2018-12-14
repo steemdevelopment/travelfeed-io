@@ -205,7 +205,7 @@ class Blog extends Component {
                 const posttag =
                   typeof json.tags != "undefined" && json.tags.length > 3
                     ? json.tags[4]
-                    : "";
+                    : "travelfeed";
                 //todo: try fetching first image from post if no image is defined in json_metadata
                 let totalmiles = 0;
                 //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.
@@ -220,12 +220,16 @@ class Blog extends Component {
                   <Grid item lg={3} md={4} sm={6} xs={12}>
                     <Card key={post.permlink} style={styles.card}>
                       <CardActionArea>
-                        <CardMedia style={styles.media} image={image}>
+                        <CardMedia
+                          className="pt-2 text-right"
+                          style={styles.media}
+                          image={image}
+                        >
                           <Link
                             as={`/created/${posttag}`}
                             href={`/tag?sortby=created&&tag=${posttag}`}
                           >
-                            {posttag}
+                            <span className="bg-dark text-white-50 p-1 rounded-left" />
                           </Link>
                         </CardMedia>
                         <Link

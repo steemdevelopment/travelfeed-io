@@ -19,12 +19,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
+import CommentIcon from "@material-ui/icons/Comment";
 import Grid from "@material-ui/core/Grid";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import Avatar from "@material-ui/core/Avatar";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -37,8 +37,7 @@ const styles = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: "black"
+    overflow: "hidden"
   },
   gridList: {
     flexWrap: "nowrap",
@@ -186,7 +185,7 @@ class Index extends Component {
                           }}
                           actionIcon={
                             <IconButton>
-                              <StarBorderIcon style={styles.title} />
+                              <FlightIcon style={styles.title} />
                             </IconButton>
                           }
                         />
@@ -197,7 +196,12 @@ class Index extends Component {
               })}
             </GridList>
           </div>
-          <Typography variant="display1" align="center" gutterBottom={true}>
+          <Typography
+            variant="display1"
+            align="center"
+            gutterBottom={true}
+            className="p-5"
+          >
             Featured Posts
           </Typography>
           <Grid container spacing={16} alignItems="center" justify="center">
@@ -288,12 +292,18 @@ class Index extends Component {
                         subheader={created}
                       />
                       <CardActionArea>
-                        <CardMedia style={styles.media} image={image}>
+                        <CardMedia
+                          style={styles.media}
+                          className="pt-2 text-right"
+                          image={image}
+                        >
                           <Link
                             as={`/created/${posttag}`}
                             href={`/tag?sortby=created&tag=${posttag}`}
                           >
-                            {posttag}
+                            <span className="bg-dark text-white-50 p-1 rounded-left">
+                              {posttag}
+                            </span>
                           </Link>
                         </CardMedia>
                         <Link
@@ -318,9 +328,17 @@ class Index extends Component {
                       </CardActionArea>
                       <CardActions>
                         <IconButton aria-label="Upvote">
-                          <FlightIcon />
+                          <FlightIcon className="mr" />
                         </IconButton>
-                        <Typography noWrap>{totalmiles}</Typography>
+                        <Typography noWrap className="text-muted">
+                          {totalmiles}
+                        </Typography>
+                        <IconButton aria-label="Upvote">
+                          <CommentIcon className="mr" />
+                        </IconButton>
+                        <Typography noWrap className="text-muted">
+                          {post.replies.length}
+                        </Typography>
                       </CardActions>
                     </Card>
                   </Grid>

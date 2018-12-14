@@ -1,6 +1,56 @@
+a {
+  color: #1e88e5;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 .postcontent img {
   width: calc(100% + 130px) !important;
   padding: 20px 0;
   margin-left: -65px;
   margin-right: -65px;
+}
+.postcontent {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.46429em;
+}
+.postcontent h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.20588em;
+}
+.postcontent h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  line-height: 1.13333em;
+  margin-left: -0.02em;
+}
+.postcontent h3 {
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.30357em;
+  margin-left: -0.02em;
+  letter-spacing: -0.02em;
+}
+.postcontent h4 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.33;
+  letter-spacing: 0em;
+}
+.postcontent h5 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.0075em;
+}
+.postcontent h6 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.0075em;
 }

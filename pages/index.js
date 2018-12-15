@@ -8,7 +8,7 @@ import { Client } from "dsteem";
 import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
-import removeMd from "remove-markdown";
+import readingTime from "reading-time";
 import dateFromJsonString from "../helpers/dateFromJsonString";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -122,6 +122,7 @@ class Index extends Component {
     }
   };
   componentDidMount() {
+    this.streamBlog();
     window.onscroll = () => {
       const {
         streamBlog,
@@ -219,21 +220,21 @@ class Index extends Component {
                 isBlacklisted(post.author, post.permlink) === false
               ) {
                 let htmlBody = getHtml(post.body, {}, "text");
-                let excerpt = sanitize(htmlBody, { allowedTags: [] });
-                excerpt = removeMd(excerpt, { useImgAltText: false });
-                excerpt = excerpt.replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
-                excerpt = excerpt.replace(
-                  /[^\sa-zA-Z0-9(?)(')(`)(’)(#)(!)(´)(-)(()())(\])([)]+/g,
-                  ""
-                );
-                excerpt = excerpt.substring(0, 250);
+                let sanitized = sanitize(htmlBody, { allowedTags: [] });
+                let excerpt = sanitized
+                  .replace(/(?:https?|ftp):\/\/[\n\S]+/g, "")
+                  .replace(
+                    /[^\sa-zA-Z0-9(?)(')(`)(’)(#)(!)(´)(-)(()())(\])([)]+/g,
+                    ""
+                  )
+                  .substring(0, 250);
                 let title = post.title.replace(
                   /[^\sa-zA-Z0-9(?)(')(`)(’)(-)(#)(!)(´)(()())(\])([)]+/g,
                   ""
                 );
                 title =
                   title.length > 85 ? title.substring(0, 81) + "[...]" : title;
-
+                const readtime = readingTime(sanitized);
                 const posttag =
                   typeof json.tags != "undefined" && json.tags.length > 0
                     ? json.tags[1]
@@ -289,7 +290,7 @@ class Index extends Component {
                             {post.author}
                           </Link>
                         }
-                        subheader={created}
+                        subheader={created + " | " + readtime.text}
                       />
                       <CardActionArea>
                         <CardMedia

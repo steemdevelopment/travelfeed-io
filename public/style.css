@@ -1,3 +1,9 @@
+body {
+  word-wrap: break-word;
+}
+.MuiGrid-container-37 {
+  margin-left: -16px !important;
+}
 a {
   color: #1e88e5;
   text-decoration: none;
@@ -5,15 +11,16 @@ a {
 a:hover {
   text-decoration: underline;
 }
-.postcontent img {
-  width: calc(100% + 130px) !important;
+.postcontent img,
+.postcontent iframe {
+  width: calc(100% + 48px) !important;
   padding: 20px 0;
-  margin-left: -65px;
-  margin-right: -65px;
+  margin-left: -24px;
+  margin-right: -24px;
 }
 .postcontent {
   color: rgba(0, 0, 0, 0.87);
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   line-height: 1.46429em;
@@ -53,4 +60,18 @@ a:hover {
   font-weight: 500;
   line-height: 1.6;
   letter-spacing: 0.0075em;
+}
+a .username {
+  color: black;
+}
+.cpointer {
+  cursor: pointer;
+}
+button:focus,
+button:active,
+button:hover,
+.btn:active,
+.btn.active {
+  outline: 0px !important;
+  -webkit-appearance: none;
 }

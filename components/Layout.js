@@ -50,7 +50,9 @@ const Layout = props => (
       <meta name="theme-color" content="#ffffff" />
     </Head>
     <Header />
-    <div style={{ padding: "20px" }}>{props.children}</div>
+    <div id="content" style={{ paddingTop: "80px" }}>
+      {props.children}
+    </div>
   </Fragment>
 );
 

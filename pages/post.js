@@ -3,30 +3,24 @@ import "@babel/polyfill";
 import Layout from "../components/Layout.js";
 import { Helmet } from "react-helmet";
 import getImage from "../helpers/getImage";
-import removeMd from "remove-markdown";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
 import dateFromJsonString from "../helpers/dateFromJsonString";
+import sanitize from "sanitize-html";
+import readingTime from "reading-time";
+import Button from "@material-ui/core/Button";
 import { getHtml } from "../components/busy/Body";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import IconButton from "@material-ui/core/IconButton";
-import CardMedia from "@material-ui/core/CardMedia";
 import Link from "next/link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { withStyles } from "@material-ui/core/styles";
-
-const styles = {
-  media: {
-    height: 250
-  }
-};
+import BookmarkIcon from "@material-ui/icons/Bookmark";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -44,8 +38,6 @@ class Post extends Component {
       author,
       permlink
     ]);
-    const json = JSON.parse(post.json_metadata);
-    const tags = json.tags == "undefined" ? json.tags : [""];
     if (
       post.id === 0 ||
       JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 === false
@@ -57,27 +49,30 @@ class Post extends Component {
       };
       return { blog };
     }
+    const json = JSON.parse(post.json_metadata);
+    const tags = json.tags == "undefined" ? json.tags : [""];
     const json_date = '{ "date": "' + post.created + 'Z" }';
     const date_object = new Date(
       JSON.parse(json_date, dateFromJsonString).date
     );
     const created = date_object.toDateString();
     const image = getImage(post.json_metadata, post.body, "1000x0");
-    let htmlBody = getHtml(post.body, {}, "text");
-    htmlBody = htmlBody
+    let getbody = post.body.replace(
+      /((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))/gi,
+      "https://steemitimages.com/1000x0/$1"
+    );
+    let htmlBody = getHtml(getbody, {}, "text")
       .replace(
-        /(?:[^"])((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:[^"])/,
+        /(?:[^"])((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:[^"])/gi,
         '<img src="$1"><'.replace(
-          /((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?="))/g,
+          /((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?="))/gi,
           "$1"
         )
       )
-      .replace(/src="/g, 'src="https://steemitimages.com/1000x0/')
-      .replace(/<a/g, '<a rel="nofollow')
-      .replace(/https:\/\/steemit.com/g, "");
+      .replace(/<a/gi, '<a rel="nofollow"')
+      .replace(/https:\/\/steemit.com/gi, "");
     const bodyText = { __html: htmlBody };
-    let excerpt = removeMd(htmlBody, { useImgAltText: false });
-    excerpt = excerpt.substring(0, 143) + ` by ${post.author}`;
+    let excerpt = htmlBody.substring(0, 143) + ` by ${post.author}`;
     let excerpt_title =
       post.title.length > 100
         ? post.title.substring(0, 96) + "[...]"
@@ -85,6 +80,8 @@ class Post extends Component {
     // todo: Implement canonical URL from condenser
     let canonicalUrl =
       "https://steemit.com/@" + post.author + "/" + post.permlink;
+    let sanitized = sanitize(htmlBody, { allowedTags: [] });
+    const readtime = readingTime(sanitized);
     const blog = {
       post: {
         author: post.author,
@@ -95,7 +92,8 @@ class Post extends Component {
         bodyText: bodyText,
         excerpt: excerpt,
         excerpt_title: excerpt_title,
-        canonicalUrl: canonicalUrl
+        canonicalUrl: canonicalUrl,
+        readtime: readtime
       }
     };
     return { blog };
@@ -119,7 +117,10 @@ class Post extends Component {
           </Layout>
         </Fragment>
       );
-    } else if (typeof this.props.blog.post.blacklisted !== "undefined") {
+    } else if (
+      typeof this.props.blog.post.blacklisted !== "undefined" ||
+      this.props.blog.post.readtime.words < 250
+    ) {
       return (
         <Fragment>
           <Layout>
@@ -193,7 +194,7 @@ class Post extends Component {
             />
           </Helmet>
           <Layout>
-            <div>
+            <Fragment>
               <Grid container spacing={16} alignItems="center" justify="center">
                 <Grid item lg={7} md={8} sm={11} xs={12}>
                   <Card>
@@ -204,7 +205,7 @@ class Post extends Component {
                           href={`/blog?author=${this.props.blog.post.author}`}
                         >
                           <Avatar
-                            style={{ cursor: "pointer" }}
+                            className="cpointer"
                             src={`https://steemitimages.com/u/${
                               this.props.blog.post.author
                             }/avatar/small`}
@@ -213,35 +214,40 @@ class Post extends Component {
                       }
                       action={
                         <IconButton>
-                          <MoreVertIcon />
+                          <BookmarkIcon />
                         </IconButton>
                       }
                       title={
-                        <Link
-                          as={`/@${this.props.blog.post.author}`}
-                          href={`/blog?author=${this.props.blog.post.author}`}
-                        >
-                          {this.props.blog.post.author}
-                        </Link>
+                        <Fragment>
+                          <Link
+                            as={`/@${this.props.blog.post.author}`}
+                            href={`/blog?author=${this.props.blog.post.author}`}
+                          >
+                            <a className="text-dark cpointer">
+                              {this.props.blog.post.author}
+                            </a>
+                          </Link>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            color="primary"
+                            className="ml-2 p-0"
+                          >
+                            Follow
+                          </Button>
+                        </Fragment>
                       }
-                      subheader={this.props.blog.post.created}
+                      subheader={
+                        this.props.blog.post.created +
+                        " | " +
+                        this.props.blog.post.readtime.text
+                      }
                     />
-                    <CardMedia
-                      style={styles.media}
-                      image={this.props.blog.post.image}
-                    />
-                    <CardContent style={styles.content}>
-                      <Link
-                        as={`/created/${this.props.blog.post.tags[0]}`}
-                        href={`/tag?sortby=created&tag=${
-                          this.props.blog.post.tags[0]
-                        }`}
+                    <CardContent>
+                      <Typography
+                        variant="display1"
+                        className="text-dark font-weight-bold"
                       >
-                        <span className="badge badge-dark">
-                          {this.props.blog.post.tags}
-                        </span>
-                      </Link>
-                      <Typography gutterBottom variant="h5" component="h2">
                         {this.props.blog.post.title}
                       </Typography>
                       <hr />
@@ -249,11 +255,46 @@ class Post extends Component {
                         className="postcontent"
                         dangerouslySetInnerHTML={this.props.blog.post.bodyText}
                       />
+                      <hr />
+                      <Typography>Written by:</Typography>
+                      <Link
+                        as={`/@${this.props.blog.post.author}`}
+                        href={`/blog?author=${this.props.blog.post.author}`}
+                      >
+                        <Avatar
+                          style={{ cursor: "pointer" }}
+                          src={`https://steemitimages.com/u/${
+                            this.props.blog.post.author
+                          }/avatar/small`}
+                        />
+                      </Link>
+                      <IconButton>
+                        <BookmarkIcon />
+                      </IconButton>
+                      <Fragment>
+                        <Link
+                          as={`/@${this.props.blog.post.author}`}
+                          href={`/blog?author=${this.props.blog.post.author}`}
+                        >
+                          <a className="text-dark cpointer">
+                            {this.props.blog.post.author}
+                          </a>
+                        </Link>
+                        <Typography>Profile description</Typography>
+                        <Button variant="outlined" size="small" color="primary">
+                          Follow
+                        </Button>
+                      </Fragment>
                     </CardContent>
                   </Card>
                 </Grid>
+                <Grid item lg={6} md={6} sm={11} xs={12}>
+                  <Card>
+                    <CardContent>Comment placeholder</CardContent>
+                  </Card>
+                </Grid>
               </Grid>
-            </div>
+            </Fragment>
           </Layout>
         </Fragment>
       );
@@ -264,4 +305,4 @@ Post.propTypes = {
   blog: PropTypes.object
 };
 
-export default withStyles(styles)(Post);
+export default Post;

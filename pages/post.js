@@ -51,6 +51,18 @@ class Post extends Component {
       };
       return { blog };
     }
+
+    if (
+      post.id === 0 ||
+      JSON.parse(post.json_metadata).tags.indexOf("nsfw") > -1 === true
+    ) {
+      const blog = {
+        post: {
+          blacklisted: true
+        }
+      };
+      return { blog };
+    }
     const json = JSON.parse(post.json_metadata);
     const tags = json.tags != "undefined" ? json.tags : [""];
     const json_date = '{ "date": "' + post.created + 'Z" }';
@@ -279,12 +291,15 @@ class Post extends Component {
                           <div className="col-8">
                             {this.props.blog.post.tags.map(tag => {
                               return (
-                                <span
+                                <Link
+                                  as={`/created/${tag}`}
+                                  href={`/tag?sortby=created&tag=${tag}`}
                                   key={tag}
-                                  className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded cpointer"
                                 >
-                                  {tag}
-                                </span>
+                                  <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded cpointer">
+                                    {tag}
+                                  </span>
+                                </Link>
                               );
                             })}
                           </div>

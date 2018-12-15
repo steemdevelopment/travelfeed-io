@@ -27,6 +27,45 @@ app
       res.redirect(`/@${author}/${permlink}`);
     });
 
+    server.get("/created/:tag", (req, res) => {
+      const actualPage = "/tag";
+      const queryParams = {
+        sortby: "created",
+        tag: req.params.tag
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/hot/:tag", (req, res) => {
+      const actualPage = "/tag";
+      const queryParams = {
+        sortby: "hot",
+        tag: req.params.tag
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/trending/:tag", (req, res) => {
+      const actualPage = "/tag";
+      const queryParams = {
+        sortby: "trending",
+        tag: req.params.tag
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/blog", (req, res) => {
+      const actualPage = "/blog";
+      const queryParams = {
+        author: "travelfeed"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/@travelfeed", (req, res) => {
+      res.redirect("/blog");
+    });
+
     server.get("/@:author", (req, res) => {
       const actualPage = "/blog";
       const queryParams = {

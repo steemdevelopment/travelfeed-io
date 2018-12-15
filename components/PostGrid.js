@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import sanitize from "sanitize-html";
 import { getHtml } from "../components/busy/Body";
 import { Client } from "dsteem";
+import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
 import readingTime from "reading-time";
@@ -14,6 +15,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import CommentIcon from "@material-ui/icons/Comment";
@@ -29,6 +31,7 @@ class PostGrid extends Component {
   state = {
     type: this.props.type,
     filter: this.props.filter,
+    sortby: this.props.sortby,
     error: false,
     hasMore: true,
     isLoading: false,
@@ -42,9 +45,16 @@ class PostGrid extends Component {
     });
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
+    var filtertype = "blog";
+    if (this.state.type == "tag") {
+      filtertype = this.state.sortby;
+    }
     if (lastpermlink === "") {
       var tagargs = { tag: this.state.filter, limit: 25 };
-      const tagstream = await client.database.getDiscussions("blog", tagargs);
+      const tagstream = await client.database.getDiscussions(
+        filtertype,
+        tagargs
+      );
       try {
         lastpermlink =
           tagstream.length > 0 ? tagstream[tagstream.length - 1].permlink : "";
@@ -60,11 +70,18 @@ class PostGrid extends Component {
     }
     var args = {
       tag: this.state.filter,
-      limit: 20,
+      limit: 100,
       start_author: lastauthor,
       start_permlink: lastpermlink
     };
-    if (this.state.type == "blog") {
+    if (this.state.type == "curationfeed") {
+      args = {
+        tag: this.state.filter,
+        limit: 25,
+        start_author: lastauthor,
+        start_permlink: lastpermlink
+      };
+    } else if (this.state.type == "tag") {
       args = {
         tag: this.state.filter,
         limit: 100,
@@ -72,7 +89,7 @@ class PostGrid extends Component {
         start_permlink: lastpermlink
       };
     }
-    const stream = await client.database.getDiscussions("blog", args);
+    const stream = await client.database.getDiscussions(filtertype, args);
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
     delete stream[stream.length - 1];
@@ -98,6 +115,16 @@ class PostGrid extends Component {
       });
     }
   };
+  setSort(sortby) {
+    this.setState({
+      sortby: sortby,
+      stream: [],
+      lastauthor: "",
+      lastpermlink: ""
+    });
+    window.history.pushState("", "", `/${sortby}/${this.state.filter}/`);
+    this.streamBlog();
+  }
   componentDidMount() {
     this.streamBlog();
     window.onscroll = () => {
@@ -118,9 +145,54 @@ class PostGrid extends Component {
     let count = 0;
     const { error, hasMore, isLoading } = this.state;
     let processed = [];
+    var selector = "";
+    if (this.state.type == "tag") {
+      var created_variant =
+        this.state.sortby != "created" ? "outlined" : "contained";
+      var hot_variant = this.state.sortby != "hot" ? "outlined" : "contained";
+      var trending_variant =
+        this.state.sortby != "trending" ? "outlined" : "contained";
+      selector = (
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+          <div className="pb-4 text-center">
+            <Link as={`/created/${this.state.filter}`}>
+              <Button
+                variant={created_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("created")}
+              >
+                Created
+              </Button>
+            </Link>
+            <Link as={`/hot/${this.state.filter}`}>
+              <Button
+                variant={hot_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("hot")}
+              >
+                Hot
+              </Button>
+            </Link>
+            <Link as={`/trending/${this.state.filter}`}>
+              <Button
+                variant={trending_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("trending")}
+              >
+                Trending
+              </Button>
+            </Link>
+          </div>
+        </Grid>
+      );
+    }
     return (
       <Fragment>
         <Grid container spacing={16} alignItems="center" justify="center">
+          {selector}
           {this.state.stream.map(post => {
             const json = JSON.parse(post.json_metadata);
             let htmlBody = getHtml(post.body, {}, "text");
@@ -133,13 +205,15 @@ class PostGrid extends Component {
             if (
               ((processed.indexOf(post.permlink) > -1 === false && count < 8) ||
                 this.state.stream.length > 24) &&
-              ((this.state.type == "curationfeed" &&
-                post.author != this.state.filter) ||
+              (this.state.type == "tag" ||
+                (this.state.type == "curationfeed" &&
+                  post.author != this.state.filter) ||
                 (this.state.type == "blog" &&
                   post.author == this.state.filter)) &&
               isBlacklisted(post.author, post.permlink) === false &&
               readtime.words > 250 &&
-              json.tags.indexOf("travelfeed") > -1 === true
+              json.tags.indexOf("travelfeed") > -1 === true &&
+              json.tags.indexOf("nsfw") > -1 === false
             ) {
               const replaceex = /[^\sa-zA-Z0-9(?)(')(`)(,)(\-)(’)(#)(!)(´)(:)(()())(\])([)]+/g;
               let excerpt = sanitized
@@ -158,12 +232,7 @@ class PostGrid extends Component {
                 JSON.parse(json_date, dateFromJsonString).date
               );
               const created = date_object.toDateString();
-              const image =
-                typeof json.image != "undefined" &&
-                json.image.length > 0 &&
-                json.image[0] !== ""
-                  ? "https://steemitimages.com/600x400/" + json.image[0]
-                  : "https://steemitimages.com/640x640/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png";
+              const image = getImage(post.json_metadata, post.body, "550x300");
               //todo: try fetching first image from post if no image is defined in json_metadata
               let totalmiles = 0;
               //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.
@@ -267,12 +336,14 @@ class PostGrid extends Component {
   }
 }
 PostGrid.defaultProps = {
-  stream: [{}]
+  stream: [{}],
+  sortby: "default"
 };
 
 PostGrid.propTypes = {
   type: PropTypes.string.isRequired,
   filter: PropTypes.string.isRequired,
+  sortby: PropTypes.string,
   stream: PropTypes.array
 };
 

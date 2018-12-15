@@ -27,7 +27,11 @@ class Index extends Component {
         >
           Featured Posts
         </Typography>
-        <PostGrid stream={this.props.stream} />
+        <PostGrid
+          stream={this.props.stream}
+          type="curationfeed"
+          filter="travelfeed"
+        />
       </Layout>
     );
   }

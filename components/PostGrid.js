@@ -27,6 +27,8 @@ const client = new Client("https://api.steemit.com");
 
 class PostGrid extends Component {
   state = {
+    type: this.props.type,
+    filter: this.props.filter,
     error: false,
     hasMore: true,
     isLoading: false,
@@ -34,7 +36,6 @@ class PostGrid extends Component {
     lastpermlink: "",
     stream: this.props.stream
   };
-
   streamBlog = async () => {
     this.setState({
       isLoading: true
@@ -42,7 +43,7 @@ class PostGrid extends Component {
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
     if (lastpermlink === "") {
-      const tagargs = { tag: "travelfeed", limit: 25 };
+      var tagargs = { tag: this.state.filter, limit: 25 };
       const tagstream = await client.database.getDiscussions("blog", tagargs);
       try {
         lastpermlink =
@@ -57,12 +58,20 @@ class PostGrid extends Component {
         });
       }
     }
-    const args = {
-      tag: "travelfeed",
+    var args = {
+      tag: this.state.filter,
       limit: 20,
       start_author: lastauthor,
       start_permlink: lastpermlink
     };
+    if (this.state.type == "blog") {
+      args = {
+        tag: this.state.filter,
+        limit: 100,
+        start_author: lastauthor,
+        start_permlink: lastpermlink
+      };
+    }
     const stream = await client.database.getDiscussions("blog", args);
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
@@ -114,6 +123,9 @@ class PostGrid extends Component {
         <Grid container spacing={16} alignItems="center" justify="center">
           {this.state.stream.map(post => {
             const json = JSON.parse(post.json_metadata);
+            let htmlBody = getHtml(post.body, {}, "text");
+            let sanitized = sanitize(htmlBody, { allowedTags: [] });
+            const readtime = readingTime(sanitized);
             // Filter out:
             // - Filter out duplicates. This does not work for some reason..
             // - Limit initial fetch to 7 posts
@@ -121,25 +133,22 @@ class PostGrid extends Component {
             if (
               ((processed.indexOf(post.permlink) > -1 === false && count < 8) ||
                 this.state.stream.length > 24) &&
-              post.author !== "travelfeed" &&
-              isBlacklisted(post.author, post.permlink) === false
+              ((this.state.type == "curationfeed" &&
+                post.author != this.state.filter) ||
+                (this.state.type == "blog" &&
+                  post.author == this.state.filter)) &&
+              isBlacklisted(post.author, post.permlink) === false &&
+              readtime.words > 250 &&
+              json.tags.indexOf("travelfeed") > -1 === true
             ) {
-              let htmlBody = getHtml(post.body, {}, "text");
-              let sanitized = sanitize(htmlBody, { allowedTags: [] });
+              const replaceex = /[^\sa-zA-Z0-9(?)(')(`)(,)(\-)(’)(#)(!)(´)(:)(()())(\])([)]+/g;
               let excerpt = sanitized
                 .replace(/(?:https?|ftp):\/\/[\n\S]+/g, "")
-                .replace(
-                  /[^\sa-zA-Z0-9(?)(')(`)(’)(#)(!)(´)(-)(()())(\])([)]+/g,
-                  ""
-                )
+                .replace(replaceex, "")
                 .substring(0, 250);
-              let title = post.title.replace(
-                /[^\sa-zA-Z0-9(?)(')(`)(’)(-)(#)(!)(´)(()())(\])([)]+/g,
-                ""
-              );
+              let title = post.title.replace(replaceex, "");
               title =
                 title.length > 85 ? title.substring(0, 81) + "[...]" : title;
-              const readtime = readingTime(sanitized);
               const posttag =
                 typeof json.tags != "undefined" && json.tags.length > 0
                   ? json.tags[1]
@@ -257,8 +266,13 @@ class PostGrid extends Component {
     );
   }
 }
+PostGrid.defaultProps = {
+  stream: [{}]
+};
 
 PostGrid.propTypes = {
+  type: PropTypes.string.isRequired,
+  filter: PropTypes.string.isRequired,
   stream: PropTypes.array
 };
 

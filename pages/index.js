@@ -74,7 +74,7 @@ class Index extends Component {
     let lastpermlink = this.state.lastpermlink;
     let lastauthor = this.state.lastauthor;
     if (lastpermlink === "") {
-      const tagargs = { tag: "travelfeed", limit: 31 };
+      const tagargs = { tag: "travelfeed", limit: 25 };
       const tagstream = await client.database.getDiscussions("blog", tagargs);
       try {
         lastpermlink =
@@ -138,7 +138,7 @@ class Index extends Component {
     };
   }
   static async getInitialProps() {
-    const args = { tag: "travelfeed", limit: 30 };
+    const args = { tag: "travelfeed", limit: 24 };
     const stream = await client.database.getDiscussions("blog", args);
     return { stream };
   }
@@ -215,7 +215,7 @@ class Index extends Component {
               if (
                 ((processed.indexOf(post.permlink) > -1 === false &&
                   count < 8) ||
-                  restream.length > 30) &&
+                  restream.length > 24) &&
                 post.author !== "travelfeed" &&
                 isBlacklisted(post.author, post.permlink) === false
               ) {
@@ -334,7 +334,7 @@ class Index extends Component {
                         <Typography noWrap className="text-muted">
                           {totalmiles}
                         </Typography>
-                        <IconButton aria-label="Upvote">
+                        <IconButton aria-label="Comments">
                           <CommentIcon className="mr" />
                         </IconButton>
                         <Typography noWrap className="text-muted">

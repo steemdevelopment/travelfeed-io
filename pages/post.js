@@ -24,6 +24,17 @@ import CardHeader from "@material-ui/core/CardHeader";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 
 class Post extends Component {
+  state = {
+    profiledesc: "Profile description placeholder"
+  };
+  async getProfile() {
+    // TODO: get current author name from permlink
+    const acc = await client.database.getAccounts(["travelfeed"]);
+    console.log(acc[0].json_metadata);
+  }
+  componentDidMount() {
+    this.getProfile();
+  }
   static async getInitialProps(props) {
     const { author } = props.query;
     const { permlink } = props.query;
@@ -264,14 +275,14 @@ class Post extends Component {
                       />
                       <hr />
                       <div className="text-center">
-                        <Typography variant="title" className="p-2">
+                        <Typography variant="h5" className="p-2">
                           Written by:
                         </Typography>
                         <Link
                           as={`/@${this.props.blog.post.author}`}
                           href={`/blog?author=${this.props.blog.post.author}`}
                         >
-                          <div>
+                          <div className="pb-2">
                             <img
                               style={{ cursor: "pointer" }}
                               src={`https://steemitimages.com/u/${
@@ -291,11 +302,17 @@ class Post extends Component {
                                 this.props.blog.post.author
                               }`}
                             >
-                              <a className="text-dark cpointer">
+                              <Typography
+                                variant="title"
+                                className="text-dark cpointer"
+                              >
                                 {this.props.blog.post.author}
-                              </a>
+                              </Typography>
                             </Link>
                           </div>
+                          <p className="p-2">{this.state.profiledesc}</p>
+                        </Fragment>
+                        <div>
                           <Button
                             variant="outlined"
                             size="small"
@@ -303,8 +320,7 @@ class Post extends Component {
                           >
                             Follow
                           </Button>
-                          <p className="p-2">Profile description placeholder</p>
-                        </Fragment>
+                        </div>
                       </div>
                       <hr />
                       <div className="container">

@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet";
 import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
+import PostAuthorProfile from "../components/PostAuthorProfile";
 import dateFromJsonString from "../helpers/dateFromJsonString";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
@@ -24,17 +25,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 
 class Post extends Component {
-  state = {
-    profiledesc: "Profile description placeholder"
-  };
-  async getProfile() {
-    // TODO: get current author name from permlink
-    const acc = await client.database.getAccounts(["travelfeed"]);
-    console.log(acc[0].json_metadata);
-  }
-  componentDidMount() {
-    this.getProfile();
-  }
   static async getInitialProps(props) {
     const { author } = props.query;
     const { permlink } = props.query;
@@ -274,52 +264,13 @@ class Post extends Component {
                         dangerouslySetInnerHTML={this.props.blog.post.bodyText}
                       />
                       <hr />
-                      <div className="text-center">
-                        <Typography variant="h5" className="p-2">
-                          Written by:
-                        </Typography>
-                        <Link
-                          as={`/@${this.props.blog.post.author}`}
-                          href={`/blog?author=${this.props.blog.post.author}`}
-                        >
-                          <div className="pb-2">
-                            <img
-                              style={{ cursor: "pointer" }}
-                              src={`https://steemitimages.com/u/${
-                                this.props.blog.post.author
-                              }/avatar`}
-                              width="80"
-                              height="80"
-                              className="rounded-circle"
+                      <div className="container">
+                        <div className="row justify-content-center">
+                          <div className="col-lg-6 col-md-9 col-sm-12">
+                            <PostAuthorProfile
+                              author={this.props.blog.post.author}
                             />
                           </div>
-                        </Link>
-                        <Fragment>
-                          <div>
-                            <Link
-                              as={`/@${this.props.blog.post.author}`}
-                              href={`/blog?author=${
-                                this.props.blog.post.author
-                              }`}
-                            >
-                              <Typography
-                                variant="title"
-                                className="text-dark cpointer"
-                              >
-                                {this.props.blog.post.author}
-                              </Typography>
-                            </Link>
-                          </div>
-                          <p className="p-2">{this.state.profiledesc}</p>
-                        </Fragment>
-                        <div>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="primary"
-                          >
-                            Follow
-                          </Button>
                         </div>
                       </div>
                       <hr />

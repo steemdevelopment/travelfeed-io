@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
+import AuthorProfile from "../components/AuthorProfile";
 
 const client = new Client("https://api.steemit.com");
 
@@ -62,6 +63,7 @@ class Blog extends Component {
     } else {
       return (
         <Layout>
+          <AuthorProfile author={this.props.args.author} />
           <PostGrid
             stream={this.props.args.stream}
             type="blog"

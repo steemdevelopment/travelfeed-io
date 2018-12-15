@@ -232,7 +232,7 @@ class PostGrid extends Component {
                 JSON.parse(json_date, dateFromJsonString).date
               );
               const created = date_object.toDateString();
-              const image = getImage(post.json_metadata, post.body, "550x300");
+              const image = getImage(post.json_metadata, post.body, "400x0");
               //todo: try fetching first image from post if no image is defined in json_metadata
               let totalmiles = 0;
               //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.

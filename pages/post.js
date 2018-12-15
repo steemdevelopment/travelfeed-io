@@ -71,20 +71,20 @@ class Post extends Component {
     );
     const created = date_object.toDateString();
     const image = getImage(post.json_metadata, post.body, "1000x0");
-    let getbody = post.body.replace(
-      /((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))/gi,
-      "https://steemitimages.com/1000x0/$1"
-    );
-    let htmlBody = getHtml(getbody, {}, "text")
+    let getbody = post.body
       .replace(
-        /(?:[^"])((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:[^"])/gi,
-        '<img src="$1"><'.replace(
-          /((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?="))/gi,
-          "$1"
-        )
+        /(?:(?<=(?:src="))|(?:(?<=(?:\())))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=["|)]))/gi,
+        "https://steemitimages.com/1000x0/$1"
       )
-      .replace(/<a/gi, '<a rel="nofollow"')
-      .replace(/https:\/\/steemit.com/gi, "");
+      .replace(
+        /(?:(?<=[^"|^(|^s|^t]))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=[^"|^)]))/gi,
+        '<img src="https://steemitimages.com/1000x0/$1"/>'
+      )
+      .replace(/^(https:\/\/steemitimages\.com\/0x0\/)/, "");
+    let htmlBody = getHtml(getbody, {}, "text")
+      .replace(/https:\/\/steemit.com/gi, "")
+      .replace(/(href=)(?=(?:"http))/gi, 'rel="nofollow" href=')
+      .replace(/(target="_blank" href=)(?=(?:"\/))/gi, "href=");
     const bodyText = { __html: htmlBody };
     let excerpt = htmlBody.substring(0, 143) + ` by ${post.author}`;
     let excerpt_title =

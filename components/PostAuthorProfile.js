@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 class PostAuthorProfile extends Component {
   state = {
     author: this.props.author,
-    profiledesc: "Profile description placeholder"
+    profiledesc: "A TravelFeed author."
   };
   async getProfile() {
     // TODO: get current author name from permlink

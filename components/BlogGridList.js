@@ -43,33 +43,33 @@ class BlogGridList extends Component {
                 post.author === "travelfeed" &&
                 json.tags.indexOf("travelfeeddaily") > -1 === true
               ) {
-                const image = getImage(post.json_metadata, post.body, "900x0");
+                const image = getImage(post.json_metadata, post.body, "700x0");
                 return (
-                  <GridListTile
-                    key={post.permlink}
-                    style={{
-                      height: "250px"
-                    }}
+                  <Link
+                    as={`/@${post.author}/${post.permlink}`}
+                    href={`/post?author=${post.author}&permlink=${
+                      post.permlink
+                    }`}
+                    passHref
                   >
-                    <Link
-                      as={`/@${post.author}/${post.permlink}`}
-                      href={`/post?author=${post.author}&permlink=${
-                        post.permlink
-                      }`}
-                      passHref
-                    >
-                      <a>
-                        <img src={image} />
-                      </a>
-                    </Link>
-                    <Link
-                      as={`/@${post.author}/${post.permlink}`}
-                      href={`/post?author=${post.author}&permlink=${
-                        post.permlink
-                      }`}
-                      passHref
-                    >
-                      <a>
+                    <a>
+                      <GridListTile
+                        key={post.permlink}
+                        style={{
+                          height: "250px"
+                        }}
+                      >
+                        <div
+                          className="second-slide"
+                          style={{
+                            backgroundImage: `url(${image})`,
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center top",
+                            backgroundSize: "cover",
+                            width: "600px",
+                            height: "100%"
+                          }}
+                        />
                         <GridListTileBar
                           title={post.title}
                           style={{
@@ -82,31 +82,42 @@ class BlogGridList extends Component {
                             </IconButton>
                           }
                         />
-                      </a>
-                    </Link>
-                  </GridListTile>
+                      </GridListTile>
+                    </a>
+                  </Link>
                 );
               }
             })}
-            <GridListTile
-              style={{
-                height: "250px"
-              }}
+
+            <Link
+              as={`/blog`}
+              href={`/blog?author=travelfeed`}
+              prefetch
+              passHref
             >
-              <Link
-                as={`/blog`}
-                href={`/blog?author=travelfeed`}
-                prefetch
-                passHref
-              >
-                <a>
-                  <img src="" />
-                </a>
-              </Link>
-              <Link as={`/blog`} href={`/blog?author=travelfeed`} passHref>
-                <a>
+              <a>
+                <GridListTile
+                  style={{
+                    height: "250px"
+                  }}
+                  className="cpointer"
+                >
+                  <a>
+                    <div
+                      className="second-slide"
+                      style={{
+                        backgroundImage:
+                          "url( https://steemitimages.com/900x0/https://cdn.steemitimages.com/DQmUT2EJjDC1CHPmbFaGyyCgmxnqdKQZDJNMwZEgskjZgPU/continuetoblog.jpg)",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center center",
+                        backgroundSize: "cover",
+                        width: "600px",
+                        height: "100%"
+                      }}
+                    />
+                  </a>
                   <GridListTileBar
-                    title="See more on our Blog"
+                    title="Read more on our Blog"
                     style={{
                       background:
                         "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
@@ -117,9 +128,9 @@ class BlogGridList extends Component {
                       </IconButton>
                     }
                   />
-                </a>
-              </Link>
-            </GridListTile>
+                </GridListTile>
+              </a>
+            </Link>
           </GridList>
         </div>
       </Fragment>

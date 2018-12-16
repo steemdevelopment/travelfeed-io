@@ -31,6 +31,7 @@ class Index extends Component {
         <div>
           <BlogGridList stream={this.props.stream} />
         </div>
+        <div id="discover" />
         <PostGrid
           stream={this.props.stream}
           type="curationfeed"

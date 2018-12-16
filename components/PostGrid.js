@@ -176,6 +176,19 @@ class PostGrid extends Component {
     var trending_variant =
       this.state.sortby != "trending" ? "outlined" : "contained";
     if (this.state.selector == "curationfeed") {
+      let heading = "Feed";
+      if (this.state.sortby == "featured") {
+        heading = "Editor's Choice";
+      }
+      if (this.state.sortby == "created") {
+        heading = "New Posts";
+      }
+      if (this.state.sortby == "hot") {
+        heading = "Taking Off";
+      }
+      if (this.state.sortby == "trending") {
+        heading = "High Up in the Air";
+      }
       selector = (
         <Fragment>
           <Typography
@@ -184,7 +197,7 @@ class PostGrid extends Component {
             gutterBottom={true}
             className="pt-5"
           >
-            {this.state.sortby.replace(/^\w/, c => c.toUpperCase())} Posts
+            {heading}
           </Typography>
           <Grid item lg={12} md={12} sm={12} xs={12}>
             <div className="pb-4 text-center">
@@ -202,7 +215,7 @@ class PostGrid extends Component {
                 className="m-2"
                 onClick={() => this.setSort("created")}
               >
-                Created
+                New
               </Button>
               <Button
                 variant={hot_variant}

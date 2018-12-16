@@ -1,6 +1,9 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
+import Button from "@material-ui/core/Button";
 import Helmet from "react-helmet";
+import Link from "next/link";
 
 class FrontPageHeader extends Component {
   render() {
@@ -34,79 +37,102 @@ class FrontPageHeader extends Component {
           </ol>
           <div className="carousel-inner">
             <div className="carousel-item active">
-              <img
+              <div
                 className="first-slide"
-                src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-                alt="First slide"
+                style={{
+                  backgroundImage: "url(/img/header-1.jpg)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center center",
+                  backgroundSize: "cover",
+                  width: "100%",
+                  height: "100%"
+                }}
               />
               <div className="container">
-                <div className="carousel-caption text-left">
-                  <h1>Example headline.</h1>
+                <div className="carousel-caption text-light text-dark">
+                  <h1>TravelFeed: The Travel Community.</h1>
+                  <div className="row justify-content-center">
+                    <div className="col-md-6">
+                      <p>
+                        On TravelFeed, you can discover great travel content by
+                        hundreds of independrend travellers like yourself!
+                      </p>
+                    </div>
+                  </div>
                   <p>
-                    Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                    Donec id elit non mi porta gravida at eget metus. Nullam id
-                    dolor id nibh ultricies vehicula ut id elit.
-                  </p>
-                  <p>
-                    <a
-                      className="btn btn-lg btn-primary"
-                      href="#"
-                      role="button"
-                    >
-                      Sign up today
-                    </a>
+                    <Link href="#discover">
+                      <Button color="secondary" variant="contained">
+                        Discover Now
+                      </Button>
+                    </Link>
                   </p>
                 </div>
               </div>
             </div>
             <div className="carousel-item">
-              <img
+              <div
                 className="second-slide"
-                src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-                alt="Second slide"
+                style={{
+                  backgroundImage: "url(/img/header-2.jpg)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center center",
+                  backgroundSize: "cover",
+                  width: "100%",
+                  height: "100%"
+                }}
               />
               <div className="container">
-                <div className="carousel-caption">
-                  <h1>Another example headline.</h1>
+                <div className="carousel-caption text-dark">
+                  <h1>Share your Story.</h1>
+                  <div className="row justify-content-center">
+                    <div className="col-md-6">
+                      <p>
+                        We all have stories to share. This is why we offer you a
+                        free Blog hosted on the uncensorable Steem Blockchain
+                        and accessible ad-free through your own subdomain.
+                      </p>
+                    </div>
+                  </div>
                   <p>
-                    Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                    Donec id elit non mi porta gravida at eget metus. Nullam id
-                    dolor id nibh ultricies vehicula ut id elit.
-                  </p>
-                  <p>
-                    <a
-                      className="btn btn-lg btn-primary"
-                      href="#"
-                      role="button"
-                    >
-                      Learn more
-                    </a>
+                    <Link href="">
+                      <Button color="primary" variant="outlined">
+                        Learn more
+                      </Button>
+                    </Link>
                   </p>
                 </div>
               </div>
             </div>
             <div className="carousel-item">
-              <img
+              <div
                 className="third-slide"
-                src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
-                alt="Third slide"
+                style={{
+                  backgroundImage: "url(/img/header-3.jpg)",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center right",
+                  backgroundSize: "cover",
+                  width: "100%",
+                  height: "100%"
+                }}
               />
               <div className="container">
-                <div className="carousel-caption text-right">
-                  <h1>One more for good measure.</h1>
+                <div className="carousel-caption text-right text-dark">
+                  <h1>Get Rewarded.</h1>
+                  <div className="row">
+                    <div className="col-md-6" />
+                    <div className="col-md-6 text-right">
+                      <p>
+                        When readers like your post, they will hit the 'take
+                        off' button and assign miles to it. After seven days,
+                        you can claim the reward for your post in
+                        cryptocurrency.
+                      </p>
+                    </div>
+                  </div>
                   <p>
-                    Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-                    Donec id elit non mi porta gravida at eget metus. Nullam id
-                    dolor id nibh ultricies vehicula ut id elit.
-                  </p>
-                  <p>
-                    <a
-                      className="btn btn-lg btn-primary"
-                      href="#"
-                      role="button"
-                    >
-                      Browse gallery
-                    </a>
+                    <Button color="inherit" variant="outlined">
+                      Join the Community
+                    </Button>
                   </p>
                 </div>
               </div>

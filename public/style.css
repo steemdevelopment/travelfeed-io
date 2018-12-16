@@ -1,3 +1,7 @@
+html,
+body {
+  scroll-behavior: smooth !important;
+}
 body {
   word-wrap: break-word;
 }

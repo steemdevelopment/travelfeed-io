@@ -214,6 +214,7 @@ class Post extends Component {
                         as={`/@${this.props.blog.post.author}`}
                         href={`/blog?author=${this.props.blog.post.author}`}
                         passHref
+                        prefetch
                       >
                         <a>
                           <Avatar

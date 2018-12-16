@@ -11,17 +11,20 @@ class PostAuthorProfile extends Component {
   state = {
     author: this.props.author,
     profiledesc: "A TravelFeed author.",
-    cover: ""
+    cover:
+      "https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv/Steem_Gradient_Blue.png"
   };
   async getProfile() {
     // TODO: get current author name from permlink
     const acc = await client.database.getAccounts([this.state.author]);
-    const json = JSON.parse(acc[0].json_metadata);
-    const about = json.profile.about;
-    const cover = `https://steemitimages.com/1500x0/${
-      json.profile.cover_image
-    }`;
-    this.setState({ profiledesc: about, cover: cover });
+    if (acc[0].json_metadata != "") {
+      const json = JSON.parse(acc[0].json_metadata);
+      const about = json.profile.about;
+      const cover = `https://steemitimages.com/1500x0/${
+        json.profile.cover_image
+      }`;
+      this.setState({ profiledesc: about, cover: cover });
+    }
   }
   componentDidMount() {
     this.getProfile();

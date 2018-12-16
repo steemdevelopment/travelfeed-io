@@ -123,7 +123,7 @@ class Post extends Component {
       return (
         <Fragment>
           <Layout>
-            <Grid container spacing={16} alignItems="center" justify="center">
+            <Grid container spacing={0} alignItems="center" justify="center">
               <Grid item lg={7} md={8} sm={11} xs={12}>
                 <Card>
                   <CardContent>
@@ -144,7 +144,7 @@ class Post extends Component {
       return (
         <Fragment>
           <Layout>
-            <Grid container spacing={16} alignItems="center" justify="center">
+            <Grid container spacing={0} alignItems="center" justify="center">
               <Grid item lg={7} md={8} sm={11} xs={12}>
                 <Card>
                   <CardContent>
@@ -215,7 +215,7 @@ class Post extends Component {
           </Helmet>
           <Layout>
             <Fragment>
-              <Grid container spacing={16} alignItems="center" justify="center">
+              <Grid container spacing={0} alignItems="center" justify="center">
                 <Grid item lg={7} md={8} sm={11} xs={12}>
                   <Card>
                     <CardHeader

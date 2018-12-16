@@ -33,7 +33,7 @@ class Blog extends Component {
     if (typeof this.props.args.stream.notfound !== "undefined") {
       return (
         <Layout>
-          <Grid container spacing={16} alignItems="center" justify="center">
+          <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
                 <CardContent>
@@ -47,7 +47,7 @@ class Blog extends Component {
     } else if (typeof this.props.args.stream.blacklisted !== "undefined") {
       return (
         <Layout>
-          <Grid container spacing={16} alignItems="center" justify="center">
+          <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
                 <CardContent>

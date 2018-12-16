@@ -265,7 +265,13 @@ class PostGrid extends Component {
     }
     return (
       <Fragment>
-        <Grid container spacing={16} alignItems="center" justify="center">
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justify="center"
+          className="p-3"
+        >
           {selector}
           {this.state.stream.map(post => {
             const json = JSON.parse(post.json_metadata);
@@ -319,7 +325,7 @@ class PostGrid extends Component {
               processed.push(post.permlink);
               return (
                 <Grid item lg={3} md={4} sm={6} xs={12}>
-                  <Card key={post.permlink}>
+                  <Card key={post.permlink} className="m-2">
                     <CardHeader
                       avatar={
                         <Link

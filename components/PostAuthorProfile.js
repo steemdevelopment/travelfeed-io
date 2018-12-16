@@ -13,11 +13,12 @@ class PostAuthorProfile extends Component {
     profiledesc: "A TravelFeed author."
   };
   async getProfile() {
-    // TODO: get current author name from permlink
     const acc = await client.database.getAccounts([this.state.author]);
-    const json = JSON.parse(acc[0].json_metadata);
-    const about = json.profile.about;
-    this.setState({ profiledesc: about });
+    if (acc[0].json_metadata != "") {
+      const json = JSON.parse(acc[0].json_metadata);
+      const about = json.profile.about;
+      this.setState({ profiledesc: about });
+    }
   }
   componentDidMount() {
     this.getProfile();

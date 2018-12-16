@@ -37,7 +37,7 @@ class Tag extends Component {
     if (typeof this.props.args.stream.notfound !== "undefined") {
       return (
         <Layout>
-          <Grid container spacing={16} alignItems="center" justify="center">
+          <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
                 <CardContent>

@@ -360,16 +360,7 @@ class PostGrid extends Component {
                         style={{ height: 140 }}
                         className="pt-2 text-right"
                         image={image}
-                      >
-                        <Link
-                          as={`/created/${posttag}`}
-                          href={`/tag?sortby=created&tag=${posttag}`}
-                        >
-                          <span className="bg-dark text-white-50 p-1 rounded-left">
-                            {posttag}
-                          </span>
-                        </Link>
-                      </CardMedia>
+                      />
                       <Link
                         as={`/@${post.author}/${post.permlink}`}
                         href={`/post?author=${post.author}&permlink=${
@@ -385,18 +376,31 @@ class PostGrid extends Component {
                       </Link>
                     </CardActionArea>
                     <CardActions>
-                      <IconButton aria-label="Upvote">
-                        <FlightIcon className="mr" />
-                      </IconButton>
-                      <Typography noWrap className="text-muted">
-                        {totalmiles}
-                      </Typography>
-                      <IconButton aria-label="Comments">
-                        <CommentIcon className="mr" />
-                      </IconButton>
-                      <Typography noWrap className="text-muted">
-                        {post.replies.length}
-                      </Typography>
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-6 p-0">
+                            <IconButton aria-label="Upvote">
+                              <FlightIcon className="mr" />
+                            </IconButton>
+                            <span className="text-muted font-weight-bold">
+                              {totalmiles}
+                            </span>
+                          </div>
+                          <div className="col-6 pt-2 p-0 text-right">
+                            <Link
+                              as={`/created/${posttag}`}
+                              href={`/tag?sortby=created&tag=${posttag}`}
+                            >
+                              <span
+                                className="badge badge-secondary p-1 pl-2 pr-2 rounded cpointer small"
+                                style={{ fontSize: "0.6rem" }}
+                              >
+                                {posttag.toUpperCase()}
+                              </span>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                     </CardActions>
                   </Card>
                 </Grid>

@@ -288,7 +288,15 @@ class Post extends Component {
                       <hr />
                       <div className="container">
                         <div className="row">
-                          <div className="col-8">
+                          <div className="col-2 p-0">
+                            <IconButton aria-label="Upvote">
+                              <FlightIcon className="mr" />
+                            </IconButton>
+                            <span className="text-muted font-weight-bold">
+                              {this.props.blog.post.totalmiles}
+                            </span>
+                          </div>
+                          <div className="col-10 text-right p-0 pt-2">
                             {this.props.blog.post.tags.map(tag => {
                               return (
                                 <Link
@@ -302,14 +310,6 @@ class Post extends Component {
                                 </Link>
                               );
                             })}
-                          </div>
-                          <div className="col-4 text-right">
-                            <IconButton aria-label="Upvote">
-                              <FlightIcon className="mr" />
-                              <Typography noWrap className="text-muted">
-                                {this.props.blog.post.totalmiles}
-                              </Typography>
-                            </IconButton>
                           </div>
                         </div>
                       </div>

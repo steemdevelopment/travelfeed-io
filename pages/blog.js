@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
 import AuthorProfile from "../components/AuthorProfile";
+import Helmet from "react-helmet";
 
 const client = new Client("https://api.steemit.com");
 
@@ -32,6 +33,9 @@ class Blog extends Component {
     if (typeof this.props.args.stream.notfound !== "undefined") {
       return (
         <Fragment>
+          <Helmet>
+            <title>{"404 - Not Found"}</title>
+          </Helmet>
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -46,6 +50,9 @@ class Blog extends Component {
     } else if (typeof this.props.args.stream.blacklisted !== "undefined") {
       return (
         <Fragment>
+          <Helmet>
+            <title>{"404 - Not Found"}</title>
+          </Helmet>
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -60,8 +67,21 @@ class Blog extends Component {
         </Fragment>
       );
     } else {
+      const author = this.props.args.author.replace(/^\w/, c =>
+        c.toUpperCase()
+      );
+      const description =
+        author +
+        "'s Blog on TravelFeed. Join the TravelFeed community, write your own travel blog and start earning!";
       return (
         <Fragment>
+          <Helmet>
+            <title>
+              {author + "'s Blog on TravelFeed: The Travel Community"}
+            </title>
+            <meta property="description" content={description} />
+            <meta property="og:description" content={description} />
+          </Helmet>
           <AuthorProfile author={this.props.args.author} />
           <PostGrid
             stream={this.props.args.stream}

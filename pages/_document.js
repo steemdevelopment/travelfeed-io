@@ -1,26 +1,62 @@
 import React from "react";
-import PropTypes from "prop-types";
 import Document, { Head, Main, NextScript } from "next/document";
+import Helmet from "react-helmet";
+import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
-import Header from "../components/Header";
+import getPageContext from "../src/getPageContext";
 
-class MyDocument extends Document {
-  render() {
-    const { pageContext } = this.props;
+const pageContext = getPageContext();
+
+export default class extends Document {
+  static async getInitialProps(...args) {
+    const documentProps = await super.getInitialProps(...args);
+    // see https://github.com/nfl/react-helmet#server-usage for more information
+    // 'head' was occupied by 'renderPage().head', we cannot use it
+    return { ...documentProps, helmet: Helmet.renderStatic() };
+  }
+
+  // should render on <html>
+  get helmetHtmlAttrComponents() {
+    return this.props.helmet.htmlAttributes.toComponent();
+  }
+
+  // should render on <body>
+  get helmetBodyAttrComponents() {
+    return this.props.helmet.bodyAttributes.toComponent();
+  }
+
+  // should render on <head>
+  get helmetHeadComponents() {
+    return Object.keys(this.props.helmet)
+      .filter(el => el !== "htmlAttributes" && el !== "bodyAttributes")
+      .map(el => this.props.helmet[el].toComponent());
+  }
+
+  get helmetJsx() {
     return (
-      <html lang="en" dir="ltr">
+      <Helmet
+        htmlAttributes={{ lang: "en" }}
+        title="Hello next.js!"
+        meta={[
+          {
+            name: "viewport",
+            content:
+              "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          },
+          { property: "og:site_name", content: "TravelFeed" },
+          { property: "article:tag", content: "travel" },
+          { themeColor: pageContext.theme.palette.primary.main }
+        ]}
+      />
+    );
+  }
+
+  render() {
+    return (
+      <html {...this.helmetHtmlAttrComponents}>
         <Head>
-          <meta charSet="utf-8" />
-          {/* Use minimum-scale=1 to enable GPU rasterization */}
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          />
-          {/* PWA primary color */}
-          <meta
-            name="theme-color"
-            content={pageContext.theme.palette.primary.main}
-          />
+          {this.helmetJsx}
+          {this.helmetHeadComponents}
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -53,7 +89,7 @@ class MyDocument extends Document {
           />
           <link rel="stylesheet" href="/style.css" />
         </Head>
-        <body>
+        <body {...this.helmetBodyAttrComponents}>
           <Main />
           <NextScript />
         </body>
@@ -62,7 +98,7 @@ class MyDocument extends Document {
   }
 }
 
-MyDocument.getInitialProps = ctx => {
+Document.getInitialProps = ctx => {
   // Resolution order
   //
   // On the server:
@@ -118,5 +154,3 @@ MyDocument.getInitialProps = ctx => {
     )
   };
 };
-
-export default MyDocument;

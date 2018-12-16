@@ -1,6 +1,6 @@
 import React from "react";
 import App, { Container } from "next/app";
-import Head from "next/head";
+import Helmet from "react-helmet";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import JssProvider from "react-jss/lib/JssProvider";
@@ -25,9 +25,6 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
     return (
       <Container>
-        <Head>
-          <title>TravelFeed</title>
-        </Head>
         {/* Wrap every page in Jss and Theme providers */}
         <JssProvider
           registry={this.pageContext.sheetsRegistry}

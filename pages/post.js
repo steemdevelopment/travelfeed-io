@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
-import { Helmet } from "react-helmet";
+import Helmet from "react-helmet";
 import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
@@ -73,16 +73,16 @@ class Post extends Component {
     const image = getImage(post.json_metadata, post.body, "1000x0");
     let htmlBody = RegexBody(post.body);
     const bodyText = { __html: htmlBody };
-    let excerpt = htmlBody.substring(0, 143) + ` by ${post.author}`;
     let excerpt_title =
       post.title.length > 100
         ? post.title.substring(0, 96) + "[...]"
         : post.title;
     // todo: Implement canonical URL from condenser
     let canonicalUrl =
-      "https://steemit.com/@" + post.author + "/" + post.permlink;
+      "https://steemit.com/travelfeed/@" + post.author + "/" + post.permlink;
     let sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
+    let excerpt = sanitized.substring(0, 143) + `[...] by ${post.author}`;
     let totalmiles = 0;
     //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.
     for (let vote = 0; vote < post.active_votes.length; vote++) {
@@ -143,10 +143,18 @@ class Post extends Component {
         </Fragment>
       );
     } else {
+      const author = this.props.blog.post.author.replace(/^\w/, c =>
+        c.toUpperCase()
+      );
       return (
         <Fragment>
           <Helmet>
-            <title>{this.props.blog.post.title + " - TravelFeed"}</title>
+            <title>
+              {this.props.blog.post.title +
+                " - " +
+                author +
+                "'s Blog on TravelFeed"}
+            </title>
             <link rel="canonical" href={this.props.blog.post.canonicalUrl} />
             <meta
               property="description"
@@ -171,19 +179,12 @@ class Post extends Component {
               property="og:description"
               content={this.props.blog.post.excerpt}
             />
-            <meta property="og:site_name" content="Busy" />
-            <meta property="article:tag" content="travel" />
-            <meta
-              property="article:published_time"
-              content={this.props.blog.post.created}
-            />
             <meta
               property="twitter:card"
               content={
                 this.props.blog.post.image ? "summary_large_image" : "summary"
               }
             />
-            <meta property="twitter:site" content={"@travelfeed-io"} />
             <meta
               property="twitter:title"
               content={this.props.blog.post.title + " - TravelFeed"}

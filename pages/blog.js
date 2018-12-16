@@ -1,6 +1,5 @@
 import "@babel/polyfill";
-import React, { Component } from "react";
-import Layout from "../components/Layout.js";
+import React, { Component, Fragment } from "react";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
 import Card from "@material-ui/core/Card";
@@ -32,7 +31,7 @@ class Blog extends Component {
   render() {
     if (typeof this.props.args.stream.notfound !== "undefined") {
       return (
-        <Layout>
+        <Fragment>
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -42,11 +41,11 @@ class Blog extends Component {
               </Card>
             </Grid>
           </Grid>
-        </Layout>
+        </Fragment>
       );
     } else if (typeof this.props.args.stream.blacklisted !== "undefined") {
       return (
-        <Layout>
+        <Fragment>
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -58,18 +57,18 @@ class Blog extends Component {
               </Card>
             </Grid>
           </Grid>
-        </Layout>
+        </Fragment>
       );
     } else {
       return (
-        <Layout>
+        <Fragment>
           <AuthorProfile author={this.props.args.author} />
           <PostGrid
             stream={this.props.args.stream}
             type="blog"
             filter={this.props.args.author}
           />
-        </Layout>
+        </Fragment>
       );
     }
   }

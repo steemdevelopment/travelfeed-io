@@ -1,6 +1,5 @@
 import "@babel/polyfill";
-import React, { Component } from "react";
-import Layout from "../components/Layout.js";
+import React, { Component, Fragment } from "react";
 import { Client } from "dsteem";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -36,7 +35,7 @@ class Tag extends Component {
   render() {
     if (typeof this.props.args.stream.notfound !== "undefined") {
       return (
-        <Layout>
+        <Fragment>
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -46,11 +45,11 @@ class Tag extends Component {
               </Card>
             </Grid>
           </Grid>
-        </Layout>
+        </Fragment>
       );
     } else {
       return (
-        <Layout>
+        <Fragment>
           <div className="text-center pt-4 pb-2">
             <Typography variant="display3">#{this.props.args.tag}</Typography>
           </div>
@@ -60,7 +59,7 @@ class Tag extends Component {
             sortby={this.props.args.sortby}
             filter={this.props.args.tag}
           />
-        </Layout>
+        </Fragment>
       );
     }
   }

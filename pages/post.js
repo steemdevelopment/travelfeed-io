@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
-import Layout from "../components/Layout.js";
 import { Helmet } from "react-helmet";
 import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
@@ -111,19 +110,17 @@ class Post extends Component {
     if (this.props.blog.post.id === 0) {
       return (
         <Fragment>
-          <Layout>
-            <Grid container spacing={0} alignItems="center" justify="center">
-              <Grid item lg={7} md={8} sm={11} xs={12}>
-                <Card>
-                  <CardContent>
-                    <Typography>
-                      This post does not exist on TravelFeed yet.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+          <Grid container spacing={0} alignItems="center" justify="center">
+            <Grid item lg={7} md={8} sm={11} xs={12}>
+              <Card>
+                <CardContent>
+                  <Typography>
+                    This post does not exist on TravelFeed yet.
+                  </Typography>
+                </CardContent>
+              </Card>
             </Grid>
-          </Layout>
+          </Grid>
         </Fragment>
       );
     } else if (
@@ -132,19 +129,17 @@ class Post extends Component {
     ) {
       return (
         <Fragment>
-          <Layout>
-            <Grid container spacing={0} alignItems="center" justify="center">
-              <Grid item lg={7} md={8} sm={11} xs={12}>
-                <Card>
-                  <CardContent>
-                    <Typography>
-                      This post or author is blacklisted from TravelFeed.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+          <Grid container spacing={0} alignItems="center" justify="center">
+            <Grid item lg={7} md={8} sm={11} xs={12}>
+              <Card>
+                <CardContent>
+                  <Typography>
+                    This post or author is blacklisted from TravelFeed.
+                  </Typography>
+                </CardContent>
+              </Card>
             </Grid>
-          </Layout>
+          </Grid>
         </Fragment>
       );
     } else {
@@ -202,125 +197,129 @@ class Post extends Component {
               content={this.props.blog.post.image}
             />
           </Helmet>
-          <Layout>
-            <Fragment>
-              <Grid container spacing={0} alignItems="center" justify="center">
-                <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
-                  <Card>
-                    <CardHeader
-                      avatar={
+          <Fragment>
+            <Grid
+              container
+              spacing={0}
+              className="pt-4"
+              alignItems="center"
+              justify="center"
+            >
+              <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
+                <Card>
+                  <CardHeader
+                    avatar={
+                      <Link
+                        as={`/@${this.props.blog.post.author}`}
+                        href={`/blog?author=${this.props.blog.post.author}`}
+                        passHref
+                      >
+                        <a>
+                          <Avatar
+                            className="cpointer"
+                            src={`https://steemitimages.com/u/${
+                              this.props.blog.post.author
+                            }/avatar/small`}
+                          />
+                        </a>
+                      </Link>
+                    }
+                    action={
+                      <IconButton>
+                        <BookmarkIconBorder />
+                      </IconButton>
+                    }
+                    title={
+                      <Fragment>
                         <Link
                           as={`/@${this.props.blog.post.author}`}
                           href={`/blog?author=${this.props.blog.post.author}`}
                           passHref
                         >
-                          <a>
-                            <Avatar
-                              className="cpointer"
-                              src={`https://steemitimages.com/u/${
-                                this.props.blog.post.author
-                              }/avatar/small`}
-                            />
+                          <a className="text-dark cpointer">
+                            {this.props.blog.post.author}
                           </a>
                         </Link>
-                      }
-                      action={
-                        <IconButton>
-                          <BookmarkIconBorder />
-                        </IconButton>
-                      }
-                      title={
-                        <Fragment>
-                          <Link
-                            as={`/@${this.props.blog.post.author}`}
-                            href={`/blog?author=${this.props.blog.post.author}`}
-                            passHref
-                          >
-                            <a className="text-dark cpointer">
-                              {this.props.blog.post.author}
-                            </a>
-                          </Link>
-                          <Button
-                            variant="outlined"
-                            size="small"
-                            color="primary"
-                            className="ml-2 p-0"
-                          >
-                            Follow
-                          </Button>
-                        </Fragment>
-                      }
-                      subheader={
-                        this.props.blog.post.created +
-                        " | " +
-                        this.props.blog.post.readtime.text
-                      }
-                    />
-                    <CardContent>
-                      <Typography
-                        variant="display1"
-                        className="text-dark font-weight-bold"
-                      >
-                        {this.props.blog.post.title}
-                      </Typography>
-                      <hr />
-                      <div
-                        className="postcontent"
-                        dangerouslySetInnerHTML={this.props.blog.post.bodyText}
-                      />
-                      <hr />
-                      <div className="container">
-                        <div className="row justify-content-center">
-                          <div className="col-lg-6 col-md-9 col-sm-12">
-                            <PostAuthorProfile
-                              author={this.props.blog.post.author}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <hr />
-                      <div className="container">
-                        <div className="row">
-                          <div className="col-2 p-0">
-                            <IconButton aria-label="Upvote">
-                              <FlightIcon className="mr" />
-                            </IconButton>
-                            <span className="text-muted font-weight-bold">
-                              {this.props.blog.post.totalmiles}
-                            </span>
-                          </div>
-                          <div className="col-10 text-right p-0 pt-2">
-                            {this.props.blog.post.tags.map(tag => {
-                              return (
-                                <Link
-                                  as={`/created/${tag}`}
-                                  href={`/tag?sortby=created&tag=${tag}`}
-                                  key={tag}
-                                  passHref
-                                >
-                                  <a>
-                                    <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded cpointer">
-                                      {tag}
-                                    </span>
-                                  </a>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">
-                  <PostComments
-                    author={this.props.blog.post.author}
-                    permlink={this.props.blog.post.permlink}
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="primary"
+                          className="ml-2 p-0"
+                        >
+                          Follow
+                        </Button>
+                      </Fragment>
+                    }
+                    subheader={
+                      this.props.blog.post.created +
+                      " | " +
+                      this.props.blog.post.readtime.text
+                    }
                   />
-                </Grid>
+                  <CardContent>
+                    <Typography
+                      variant="display1"
+                      className="text-dark font-weight-bold"
+                    >
+                      {this.props.blog.post.title}
+                    </Typography>
+                    <hr />
+                    <div
+                      className="postcontent"
+                      dangerouslySetInnerHTML={this.props.blog.post.bodyText}
+                    />
+                    <hr />
+                    <div className="container">
+                      <div className="row justify-content-center">
+                        <div className="col-lg-6 col-md-9 col-sm-12">
+                          <PostAuthorProfile
+                            author={this.props.blog.post.author}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-2 p-0">
+                          <IconButton aria-label="Upvote">
+                            <FlightIcon className="mr" />
+                          </IconButton>
+                          <span className="text-muted font-weight-bold">
+                            {this.props.blog.post.totalmiles}
+                          </span>
+                        </div>
+                        <div className="col-10 text-right p-0 pt-2">
+                          {this.props.blog.post.tags.map(tag => {
+                            return (
+                              <Link
+                                as={`/created/${tag}`}
+                                href={`/tag?sortby=created&tag=${tag}`}
+                                key={tag}
+                                passHref
+                              >
+                                <a>
+                                  <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded cpointer">
+                                    {tag}
+                                  </span>
+                                </a>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </Grid>
-            </Fragment>
-          </Layout>
+              <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">
+                <PostComments
+                  author={this.props.blog.post.author}
+                  permlink={this.props.blog.post.permlink}
+                />
+              </Grid>
+            </Grid>
+          </Fragment>
         </Fragment>
       );
     }

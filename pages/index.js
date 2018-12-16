@@ -1,11 +1,9 @@
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
 import { Client } from "dsteem";
 import BlogGridList from "../components/BlogGridList";
 import PostGrid from "../components/PostGrid";
-import Typography from "@material-ui/core/Typography";
-import Layout from "../components/Layout";
 
 const client = new Client("https://api.steemit.com");
 
@@ -17,8 +15,8 @@ class Index extends Component {
   }
   render() {
     return (
-      <Layout>
-        <div style={{ marginTop: "-15px" }}>
+      <Fragment>
+        <div>
           <BlogGridList stream={this.props.stream} />
         </div>
         <PostGrid
@@ -26,7 +24,7 @@ class Index extends Component {
           type="curationfeed"
           filter="travelfeed"
         />
-      </Layout>
+      </Fragment>
     );
   }
 }

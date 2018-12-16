@@ -1,9 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
 import getImage from "../helpers/getImage";
 import Link from "next/link";
-import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import GridList from "@material-ui/core/GridList";
@@ -42,52 +41,58 @@ class BlogGridList extends Component {
   };
   render() {
     return (
-      <div style={styles.root}>
-        <GridList style={styles.gridList} cols={2.5}>
-          {this.props.stream.map(post => {
-            const json = JSON.parse(post.json_metadata);
-            if (
-              post.author === "travelfeed" &&
-              json.tags.indexOf("travelfeeddaily") > -1 === true
-            ) {
-              const image = getImage(post.json_metadata, post.body, "600x400");
-              return (
-                <GridListTile key={post.permlink}>
-                  <img
-                    src={image}
-                    onClick={() =>
-                      Router.push(`/@${post.author}/${post.permlink}`)
-                    }
-                    style={{ cursor: "pointer" }}
-                  />
-                  <Link
-                    as={`/@${post.author}/${post.permlink}`}
-                    href={`/post?author=${post.author}&permlink=${
-                      post.permlink
-                    }`}
-                    passHref
-                  >
-                    <a>
-                      <GridListTileBar
-                        title={post.title}
-                        styles={{
-                          root: styles.titleBar,
-                          title: styles.title
-                        }}
-                        actionIcon={
-                          <IconButton>
-                            <FlightIcon style={styles.title} />
-                          </IconButton>
-                        }
-                      />
-                    </a>
-                  </Link>
-                </GridListTile>
-              );
-            }
-          })}
-        </GridList>
-      </div>
+      <Fragment>
+        <div style={styles.root}>
+          <GridList style={styles.gridList} cols={2.5}>
+            {this.props.stream.map(post => {
+              const json = JSON.parse(post.json_metadata);
+              if (
+                post.author === "travelfeed" &&
+                json.tags.indexOf("travelfeeddaily") > -1 === true
+              ) {
+                const image = getImage(
+                  post.json_metadata,
+                  post.body,
+                  "600x400"
+                );
+                return (
+                  <GridListTile key={post.permlink}>
+                    <img
+                      src={image}
+                      onClick={() =>
+                        Router.push(`/@${post.author}/${post.permlink}`)
+                      }
+                      style={{ cursor: "pointer" }}
+                    />
+                    <Link
+                      as={`/@${post.author}/${post.permlink}`}
+                      href={`/post?author=${post.author}&permlink=${
+                        post.permlink
+                      }`}
+                      passHref
+                    >
+                      <a>
+                        <GridListTileBar
+                          title={post.title}
+                          styles={{
+                            root: styles.titleBar,
+                            title: styles.title
+                          }}
+                          actionIcon={
+                            <IconButton>
+                              <FlightIcon style={styles.title} />
+                            </IconButton>
+                          }
+                        />
+                      </a>
+                    </Link>
+                  </GridListTile>
+                );
+              }
+            })}
+          </GridList>
+        </div>
+      </Fragment>
     );
   }
 }
@@ -96,4 +101,4 @@ BlogGridList.propTypes = {
   stream: PropTypes.array
 };
 
-export default withStyles(styles)(BlogGridList);
+export default BlogGridList;

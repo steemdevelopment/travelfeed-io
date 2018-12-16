@@ -1,5 +1,22 @@
-const author_blacklist = [""];
-const permlink_blacklist = [""];
+var author_blacklist = [
+  "partiko",
+  "steem-ua",
+  "ocdb",
+  "steemitboard",
+  "drotto",
+  "treeplanter",
+  "coolbot",
+  "microbot",
+  "cabbage-dealer",
+  "entrust",
+  "sharkbank",
+  "sleepagent",
+  "kakibukit",
+  "ssg-community",
+  "esteemapp",
+  "steem-plus"
+];
+var permlink_blacklist = [];
 
 const isBlacklisted = (author, permlink) => {
   if (

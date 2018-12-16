@@ -7,6 +7,7 @@ import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
 import PostAuthorProfile from "../components/PostAuthorProfile";
 import dateFromJsonString from "../helpers/dateFromJsonString";
+import PostComments from "../components/PostComments";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import Button from "@material-ui/core/Button";
@@ -22,7 +23,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
+import BookmarkIconBorder from "@material-ui/icons/BookmarkBorder";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -103,6 +104,7 @@ class Post extends Component {
     }
     const blog = {
       post: {
+        permlink: post.permlink,
         author: post.author,
         title: post.title,
         tags: tags,
@@ -216,7 +218,7 @@ class Post extends Component {
           <Layout>
             <Fragment>
               <Grid container spacing={0} alignItems="center" justify="center">
-                <Grid item lg={7} md={8} sm={11} xs={12}>
+                <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
                   <Card>
                     <CardHeader
                       avatar={
@@ -234,7 +236,7 @@ class Post extends Component {
                       }
                       action={
                         <IconButton>
-                          <BookmarkIcon />
+                          <BookmarkIconBorder />
                         </IconButton>
                       }
                       title={
@@ -316,10 +318,11 @@ class Post extends Component {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item lg={6} md={6} sm={11} xs={12}>
-                  <Card>
-                    <CardContent>Comment placeholder</CardContent>
-                  </Card>
+                <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">
+                  <PostComments
+                    author={this.props.blog.post.author}
+                    permlink={this.props.blog.post.permlink}
+                  />
                 </Grid>
               </Grid>
             </Fragment>

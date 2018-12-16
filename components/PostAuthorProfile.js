@@ -16,8 +16,9 @@ class PostAuthorProfile extends Component {
     const acc = await client.database.getAccounts([this.state.author]);
     if (acc[0].json_metadata != "") {
       const json = JSON.parse(acc[0].json_metadata);
-      const about = json.profile.about;
-      this.setState({ profiledesc: about });
+      const profiledesc =
+        json.profile.about != "" ? json.profile.about : this.state.profiledesc;
+      this.setState({ profiledesc: profiledesc });
     }
   }
   componentDidMount() {

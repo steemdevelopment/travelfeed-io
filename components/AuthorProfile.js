@@ -4,27 +4,30 @@ import { Client } from "dsteem";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
-import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
 
 class PostAuthorProfile extends Component {
   state = {
     author: this.props.author,
-    profiledesc: "A TravelFeed author.",
-    cover:
-      "https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv/Steem_Gradient_Blue.png"
+    profiledesc: "",
+    cover: ""
   };
   async getProfile() {
     // TODO: get current author name from permlink
     const acc = await client.database.getAccounts([this.state.author]);
+    var profiledesc = "A TravelFeed author.";
+    var cover =
+      "https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv/Steem_Gradient_Blue.png";
     if (acc[0].json_metadata != "") {
       const json = JSON.parse(acc[0].json_metadata);
-      const about = json.profile.about;
-      const cover = `https://steemitimages.com/1500x0/${
-        json.profile.cover_image
-      }`;
-      this.setState({ profiledesc: about, cover: cover });
+      profiledesc =
+        json.profile.about != "" ? json.profile.about : "A TravelFeed author.";
+      cover =
+        typeof json.profile.cover_image != "undefined"
+          ? `https://steemitimages.com/1500x0/${json.profile.cover_image}`
+          : "https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv/Steem_Gradient_Blue.png";
     }
+    this.setState({ profiledesc: profiledesc, cover: cover });
   }
   componentDidMount() {
     this.getProfile();

@@ -54,6 +54,15 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
+    server.get("/featured/travelfeed", (req, res) => {
+      const actualPage = "/tag";
+      const queryParams = {
+        sortby: "featured",
+        tag: "travelfeed"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
     server.get("/blog", (req, res) => {
       const actualPage = "/blog";
       const queryParams = {

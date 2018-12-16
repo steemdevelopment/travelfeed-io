@@ -1,7 +1,6 @@
 import "@babel/polyfill";
 import React, { Component } from "react";
 import Layout from "../components/Layout.js";
-import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -14,12 +13,21 @@ const client = new Client("https://api.steemit.com");
 
 class Tag extends Component {
   static async getInitialProps(props) {
-    let { sortby } = props.query;
+    var { sortby } = props.query;
     let { tag } = props.query;
     const args = { tag: tag, limit: 24 };
+    var type = "tag";
+    if (sortby == "featured") {
+      type = "blog";
+      sortby = "blog";
+    }
     try {
       const stream = await client.database.getDiscussions(sortby, args);
-      return { args: { sortby: sortby, tag: tag, stream: stream } };
+      if (sortby == "blog") {
+        type = "curationfeed";
+        sortby = "featured";
+      }
+      return { args: { sortby: sortby, tag: tag, type: type, stream: stream } };
     } catch {
       const stream = { args: { stream: { notfound: true } } };
       return stream;
@@ -48,7 +56,7 @@ class Tag extends Component {
           </div>
           <PostGrid
             stream={this.props.args.stream}
-            type="tag"
+            type={this.props.args.type}
             sortby={this.props.args.sortby}
             filter={this.props.args.tag}
           />
@@ -59,7 +67,7 @@ class Tag extends Component {
 }
 
 Tag.propTypes = {
-  args: PropTypes.array
+  args: PropTypes.object
 };
 
 export default Tag;

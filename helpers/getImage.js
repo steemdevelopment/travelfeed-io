@@ -11,7 +11,7 @@ const getImage = (json_metadata, body, size) => {
     image = `https://steemitimages.com/${size}/` + json.image[0];
   } else {
     const imatch = body.match(
-      /(?:(?<=(?:src="))|(?:(?<=(?:\())))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=["|)]))/i
+      /(?:(?<=(?:src="|src='))|(?:(?<=(?:\(|>))))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=["|)|<]))/i
     );
     if (imatch !== null) {
       image = `https://steemitimages.com/${size}/` + imatch[0];

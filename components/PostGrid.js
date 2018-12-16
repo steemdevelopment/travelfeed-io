@@ -35,8 +35,10 @@ class PostGrid extends Component {
     error: false,
     hasMore: true,
     isLoading: false,
+    position: this.props.position,
     lastauthor: "",
     lastpermlink: "",
+    selector: "",
     stream: this.props.stream
   };
   streamBlog = async () => {
@@ -49,7 +51,7 @@ class PostGrid extends Component {
     if (this.state.type == "tag") {
       filtertype = this.state.sortby;
     }
-    if (lastpermlink === "") {
+    if (lastpermlink == "") {
       var tagargs = { tag: this.state.filter, limit: 25 };
       const tagstream = await client.database.getDiscussions(
         filtertype,
@@ -63,7 +65,6 @@ class PostGrid extends Component {
       } catch (err) {
         this.setState({
           error: err.message,
-          snackbar: true,
           isLoading: false
         });
       }
@@ -88,6 +89,13 @@ class PostGrid extends Component {
         start_author: lastauthor,
         start_permlink: lastpermlink
       };
+    }
+    if (this.state.position == 0) {
+      args = {
+        tag: this.state.filter,
+        limit: 24
+      };
+      this.setState({ position: 1 });
     }
     const stream = await client.database.getDiscussions(filtertype, args);
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
@@ -115,17 +123,32 @@ class PostGrid extends Component {
       });
     }
   };
-  setSort(sortby) {
-    this.setState({
-      sortby: sortby,
-      stream: [],
-      lastauthor: "",
-      lastpermlink: ""
-    });
+  async setSort(sortby) {
+    if (sortby == "featured") {
+      await this.setState({
+        sortby: sortby,
+        position: 0,
+        stream: [],
+        type: "curationfeed"
+      });
+    } else {
+      await this.setState({
+        sortby: sortby,
+        position: 0,
+        stream: [],
+        type: "tag"
+      });
+    }
     window.history.pushState("", "", `/${sortby}/${this.state.filter}/`);
     this.streamBlog();
   }
   componentDidMount() {
+    if (this.state.type == "tag") {
+      this.setState({ selector: "tag" });
+    }
+    if (this.state.type == "curationfeed") {
+      this.setState({ selector: "curationfeed" });
+    }
     this.streamBlog();
     window.onscroll = () => {
       const {
@@ -146,12 +169,63 @@ class PostGrid extends Component {
     const { error, hasMore, isLoading } = this.state;
     let processed = [];
     var selector = "";
-    if (this.state.type == "tag") {
-      var created_variant =
-        this.state.sortby != "created" ? "outlined" : "contained";
-      var hot_variant = this.state.sortby != "hot" ? "outlined" : "contained";
-      var trending_variant =
-        this.state.sortby != "trending" ? "outlined" : "contained";
+    var featured_variant =
+      this.state.sortby != "featured" ? "outlined" : "contained";
+    var created_variant =
+      this.state.sortby != "created" ? "outlined" : "contained";
+    var hot_variant = this.state.sortby != "hot" ? "outlined" : "contained";
+    var trending_variant =
+      this.state.sortby != "trending" ? "outlined" : "contained";
+    if (this.state.selector == "curationfeed") {
+      selector = (
+        <Fragment>
+          <Typography
+            variant="display1"
+            align="center"
+            gutterBottom={true}
+            className="pt-5"
+          >
+            {this.state.sortby.replace(/^\w/, c => c.toUpperCase())} Posts
+          </Typography>
+          <Grid item lg={12} md={12} sm={12} xs={12}>
+            <div className="pb-4 text-center">
+              <Button
+                variant={featured_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("featured")}
+              >
+                Featured
+              </Button>
+              <Button
+                variant={created_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("created")}
+              >
+                Created
+              </Button>
+              <Button
+                variant={hot_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("hot")}
+              >
+                Hot
+              </Button>
+              <Button
+                variant={trending_variant}
+                color="primary"
+                className="m-2"
+                onClick={() => this.setSort("trending")}
+              >
+                Trending
+              </Button>
+            </div>
+          </Grid>
+        </Fragment>
+      );
+    } else if (this.state.selector == "tag") {
       selector = (
         <Grid item lg={12} md={12} sm={12} xs={12}>
           <div className="pb-4 text-center">
@@ -337,14 +411,16 @@ class PostGrid extends Component {
 }
 PostGrid.defaultProps = {
   stream: [{}],
-  sortby: "default"
+  sortby: "featured",
+  position: 25
 };
 
 PostGrid.propTypes = {
   type: PropTypes.string.isRequired,
   filter: PropTypes.string.isRequired,
   sortby: PropTypes.string,
-  stream: PropTypes.array
+  stream: PropTypes.array,
+  position: PropTypes.number
 };
 
 export default PostGrid;

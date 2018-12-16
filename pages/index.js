@@ -19,14 +19,6 @@ class Index extends Component {
     return (
       <Layout>
         <BlogGridList stream={this.props.stream} />
-        <Typography
-          variant="display1"
-          align="center"
-          gutterBottom={true}
-          className="p-5"
-        >
-          Featured Posts
-        </Typography>
         <PostGrid
           stream={this.props.stream}
           type="curationfeed"

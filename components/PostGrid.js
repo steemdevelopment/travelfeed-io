@@ -330,13 +330,16 @@ class PostGrid extends Component {
                         <Link
                           as={`/@${post.author}`}
                           href={`/blog?author=${post.author}`}
+                          passHref
                         >
-                          <Avatar
-                            style={{ cursor: "pointer" }}
-                            src={`https://steemitimages.com/u/${
-                              post.author
-                            }/avatar/small`}
-                          />
+                          <a>
+                            <Avatar
+                              style={{ cursor: "pointer" }}
+                              src={`https://steemitimages.com/u/${
+                                post.author
+                              }/avatar/small`}
+                            />
+                          </a>
                         </Link>
                       }
                       action={
@@ -348,6 +351,7 @@ class PostGrid extends Component {
                         <Link
                           as={`/@${post.author}`}
                           href={`/blog?author=${post.author}`}
+                          passHref
                         >
                           <a className="text-dark">{post.author}</a>
                         </Link>
@@ -365,13 +369,23 @@ class PostGrid extends Component {
                         href={`/post?author=${post.author}&permlink=${
                           post.permlink
                         }`}
+                        passHref
                       >
-                        <CardContent>
-                          <Typography gutterBottom variant="h5" component="h2">
-                            {title}
-                          </Typography>
-                          <Typography component="p">{excerpt} [...]</Typography>
-                        </CardContent>
+                        <a>
+                          {" "}
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="h2"
+                            >
+                              {title}
+                            </Typography>
+                            <Typography component="p">
+                              {excerpt} [...]
+                            </Typography>
+                          </CardContent>
+                        </a>
                       </Link>
                     </CardActionArea>
                     <CardActions>
@@ -389,13 +403,17 @@ class PostGrid extends Component {
                             <Link
                               as={`/created/${posttag}`}
                               href={`/tag?sortby=created&tag=${posttag}`}
+                              passHref
                             >
-                              <span
-                                className="badge badge-secondary p-1 pl-2 pr-2 rounded cpointer small"
-                                style={{ fontSize: "0.6rem" }}
-                              >
-                                {posttag.toUpperCase()}
-                              </span>
+                              <a>
+                                {" "}
+                                <span
+                                  className="badge badge-secondary p-1 pl-2 pr-2 rounded cpointer small"
+                                  style={{ fontSize: "0.6rem" }}
+                                >
+                                  {posttag.toUpperCase()}
+                                </span>
+                              </a>
                             </Link>
                           </div>
                         </div>

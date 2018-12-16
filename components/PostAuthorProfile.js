@@ -33,26 +33,32 @@ class PostAuthorProfile extends Component {
         <Link
           as={`/@${this.props.author}`}
           href={`/blog?author=${this.props.author}`}
+          passHref
         >
-          <div className="pb-2">
-            <img
-              style={{ cursor: "pointer" }}
-              src={`https://steemitimages.com/u/${this.props.author}/avatar`}
-              width="80"
-              height="80"
-              className="rounded-circle"
-            />
-          </div>
+          <a>
+            <div className="pb-2">
+              <img
+                style={{ cursor: "pointer" }}
+                src={`https://steemitimages.com/u/${this.props.author}/avatar`}
+                width="80"
+                height="80"
+                className="rounded-circle"
+              />
+            </div>
+          </a>
         </Link>
         <Fragment>
           <div>
             <Link
               as={`/@${this.props.author}`}
               href={`/blog?author=${this.props.author}`}
+              passHref
             >
-              <Typography variant="title" className="text-dark cpointer">
-                {this.props.author}
-              </Typography>
+              <a>
+                <Typography variant="title" className="text-dark cpointer">
+                  {this.props.author}
+                </Typography>
+              </a>
             </Link>
           </div>
           <p className="p-2">{this.state.profiledesc}</p>

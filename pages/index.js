@@ -18,7 +18,9 @@ class Index extends Component {
   render() {
     return (
       <Layout>
-        <BlogGridList stream={this.props.stream} />
+        <div style={{ marginTop: "-15px" }}>
+          <BlogGridList stream={this.props.stream} />
+        </div>
         <PostGrid
           stream={this.props.stream}
           type="curationfeed"

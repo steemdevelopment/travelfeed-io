@@ -65,19 +65,22 @@ class BlogGridList extends Component {
                     href={`/post?author=${post.author}&permlink=${
                       post.permlink
                     }`}
+                    passHref
                   >
-                    <GridListTileBar
-                      title={post.title}
-                      styles={{
-                        root: styles.titleBar,
-                        title: styles.title
-                      }}
-                      actionIcon={
-                        <IconButton>
-                          <FlightIcon style={styles.title} />
-                        </IconButton>
-                      }
-                    />
+                    <a>
+                      <GridListTileBar
+                        title={post.title}
+                        styles={{
+                          root: styles.titleBar,
+                          title: styles.title
+                        }}
+                        actionIcon={
+                          <IconButton>
+                            <FlightIcon style={styles.title} />
+                          </IconButton>
+                        }
+                      />
+                    </a>
                   </Link>
                 </GridListTile>
               );

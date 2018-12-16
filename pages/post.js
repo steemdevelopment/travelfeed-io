@@ -11,7 +11,7 @@ import PostComments from "../components/PostComments";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import Button from "@material-ui/core/Button";
-import { getHtml } from "../components/busy/Body";
+import RegexBody from "../helpers/RegexBody";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
 import Card from "@material-ui/core/Card";
@@ -72,20 +72,7 @@ class Post extends Component {
     );
     const created = date_object.toDateString();
     const image = getImage(post.json_metadata, post.body, "1000x0");
-    let getbody = post.body
-      .replace(
-        /(?:(?<=(?:src="))|(?:(?<=(?:\())))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=["|)]))/gi,
-        "https://steemitimages.com/1000x0/$1"
-      )
-      .replace(
-        /(?:(?<=[^"|^(|^s|^t]))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=[^"|^)]))/gi,
-        '<img src="https://steemitimages.com/1000x0/$1"/>'
-      )
-      .replace(/^(https:\/\/steemitimages\.com\/0x0\/)/, "");
-    let htmlBody = getHtml(getbody, {}, "text")
-      .replace(/https:\/\/steemit.com/gi, "")
-      .replace(/(href=)(?=(?:"http))/gi, 'rel="nofollow" href=')
-      .replace(/(target="_blank" href=)(?=(?:"\/))/gi, "href=");
+    let htmlBody = RegexBody(post.body);
     const bodyText = { __html: htmlBody };
     let excerpt = htmlBody.substring(0, 143) + ` by ${post.author}`;
     let excerpt_title =
@@ -225,13 +212,16 @@ class Post extends Component {
                         <Link
                           as={`/@${this.props.blog.post.author}`}
                           href={`/blog?author=${this.props.blog.post.author}`}
+                          passHref
                         >
-                          <Avatar
-                            className="cpointer"
-                            src={`https://steemitimages.com/u/${
-                              this.props.blog.post.author
-                            }/avatar/small`}
-                          />
+                          <a>
+                            <Avatar
+                              className="cpointer"
+                              src={`https://steemitimages.com/u/${
+                                this.props.blog.post.author
+                              }/avatar/small`}
+                            />
+                          </a>
                         </Link>
                       }
                       action={
@@ -244,6 +234,7 @@ class Post extends Component {
                           <Link
                             as={`/@${this.props.blog.post.author}`}
                             href={`/blog?author=${this.props.blog.post.author}`}
+                            passHref
                           >
                             <a className="text-dark cpointer">
                               {this.props.blog.post.author}
@@ -305,10 +296,13 @@ class Post extends Component {
                                   as={`/created/${tag}`}
                                   href={`/tag?sortby=created&tag=${tag}`}
                                   key={tag}
+                                  passHref
                                 >
-                                  <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded cpointer">
-                                    {tag}
-                                  </span>
+                                  <a>
+                                    <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded cpointer">
+                                      {tag}
+                                    </span>
+                                  </a>
                                 </Link>
                               );
                             })}

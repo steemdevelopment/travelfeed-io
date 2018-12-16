@@ -14,7 +14,10 @@ var author_blacklist = [
   "kakibukit",
   "ssg-community",
   "esteemapp",
-  "steem-plus"
+  "steem-plus",
+  "minnowsupport",
+  "snackplus",
+  "pixresteemer"
 ];
 var permlink_blacklist = [];
 

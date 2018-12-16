@@ -7,13 +7,13 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import RegexBody from "../helpers/RegexBody";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "@babel/polyfill";
 import isBlacklisted from "../helpers/isBlacklisted";
 import PostAuthorProfile from "../components/PostAuthorProfile";
 import dateFromJsonString from "../helpers/dateFromJsonString";
-import { getHtml } from "../components/busy/Body";
 import IconButton from "@material-ui/core/IconButton";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import Avatar from "@material-ui/core/Avatar";
@@ -84,7 +84,7 @@ class PostComments extends Component {
                 '<img src="https://steemitimages.com/1000x0/$1"/>'
               )
               .replace(/^(https:\/\/steemitimages\.com\/0x0\/)/, "");
-            let htmlBody = getHtml(getbody, {}, "text")
+            let htmlBody = RegexBody(getbody, {}, "text")
               .replace(/https:\/\/steemit.com/gi, "")
               .replace(/(href=)(?=(?:"http))/gi, 'rel="nofollow" href=')
               .replace(/(target="_blank" href=)(?=(?:"\/))/gi, "href=");
@@ -102,13 +102,16 @@ class PostComments extends Component {
                       <Link
                         as={`/@${comment.author}`}
                         href={`/blog?author=${comment.author}`}
+                        passHref
                       >
-                        <Avatar
-                          className="cpointer"
-                          src={`https://steemitimages.com/u/${
-                            comment.author
-                          }/avatar/small`}
-                        />
+                        <a>
+                          <Avatar
+                            className="cpointer"
+                            src={`https://steemitimages.com/u/${
+                              comment.author
+                            }/avatar/small`}
+                          />
+                        </a>
                       </Link>
                     }
                     action={
@@ -121,6 +124,7 @@ class PostComments extends Component {
                         <Link
                           as={`/@${comment.author}`}
                           href={`/blog?author=${comment.author}`}
+                          passHref
                         >
                           <a className="text-dark cpointer">{comment.author}</a>
                         </Link>

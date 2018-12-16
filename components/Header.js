@@ -12,16 +12,16 @@ const Header = () => (
       <Grid container spacing={16} alignItems="center" justify="center">
         <Grid item lg={9} md={10} sm={12} xs={12}>
           <Toolbar>
-            <Link href="/">
-              <Typography
-                variant="headline"
-                color="inherit"
-                style={{ flexGrow: 1 }}
-                className="font-weight-bold cpointer"
-                noWrap
-              >
-                TravelFeed
-              </Typography>
+            <Link href="/" passHref>
+              <a style={{ flexGrow: 1 }} className="text-dark">
+                <Typography
+                  variant="headline"
+                  className="font-weight-bold cpointer"
+                  noWrap
+                >
+                  TravelFeed
+                </Typography>
+              </a>
             </Link>
             <Button color="primary" variant="outlined">
               Join Now

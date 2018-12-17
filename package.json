@@ -1,16 +1,19 @@
 {
   "name": "travelfeed-io",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.1.0",
+  "description": "The TravelFeed dApp. Powered by Node, Express, React, Next and the Steem Blockchain.",
   "main": "index.js",
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
   },
+  "engines": {
+    "node": "10.14.1"
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Julian Peters",
+  "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",

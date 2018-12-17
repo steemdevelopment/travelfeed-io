@@ -16,7 +16,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import BookmarkIconBorder from "@material-ui/icons/BookmarkBorder";
+import StarIcon from "@material-ui/icons/Star";
 import IconButton from "@material-ui/core/IconButton";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import Grid from "@material-ui/core/Grid";
@@ -187,7 +187,7 @@ class PostGrid extends Component {
         heading = "Taking Off";
       }
       if (this.state.sortby == "trending") {
-        heading = "High Up in the Air";
+        heading = "Above the Clouds";
       }
       selector = (
         <Fragment>
@@ -327,11 +327,22 @@ class PostGrid extends Component {
               const image = getImage(post.json_metadata, post.body, "400x0");
               //todo: try fetching first image from post if no image is defined in json_metadata
               let totalmiles = 0;
+              var iscurated = <Fragment />;
               //Proposal for voting system: Each user can give between 0.1 and 10 "miles", each 0.1 mile equals a 1% upvote.
               for (let vote = 0; vote < post.active_votes.length; vote++) {
                 totalmiles += Math.round(
                   post.active_votes[vote].percent / 1000
                 );
+                if (
+                  post.active_votes[vote].voter == "travelfeed" &&
+                  post.active_votes[vote].percent > 8000
+                ) {
+                  iscurated = (
+                    <IconButton>
+                      <StarIcon />
+                    </IconButton>
+                  );
+                }
               }
               ++count;
               processed.push(post.permlink);
@@ -355,11 +366,7 @@ class PostGrid extends Component {
                           </a>
                         </Link>
                       }
-                      action={
-                        <IconButton>
-                          <BookmarkIconBorder />
-                        </IconButton>
-                      }
+                      action={iscurated}
                       title={
                         <Link
                           as={`/@${post.author}`}
@@ -439,9 +446,13 @@ class PostGrid extends Component {
           })}
           {!error && <Typography>{error}</Typography>}
           {isLoading && (
-            <Grid item xs={1}>
-              <CircularProgress />
-            </Grid>
+            <div className="p-5">
+              <Grid item xs={1}>
+                <div className="p-5">
+                  <CircularProgress />
+                </div>
+              </Grid>
+            </div>
           )}
           {!hasMore && <Typography>That is all :)</Typography>}
         </Grid>

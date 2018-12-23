@@ -11,18 +11,35 @@ import Tooltip from "@material-ui/core/Tooltip";
 import InputBase from "@material-ui/core/InputBase";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
+import TextField from "@material-ui/core/TextField";
 
 class Index extends Component {
   state = {
-    readtime: { words: 0, text: "0 min read" }
+    readtime: { words: 0, text: "0 min read" },
+    location: ""
   };
   handleEditorChange = e => {
-    // console.log("Content was updated:", e.target.getContent());
-    let sanitized = sanitize(e.target.getContent(), { allowedTags: [] });
+    const bodyText = e.target.getContent();
+    console.log("Content was updated:", bodyText);
+    let sanitized = sanitize(bodyText, { allowedTags: [] });
     const readtime = readingTime(sanitized);
-    this.setState({
-      readtime: readtime
-    });
+    var swmregex = /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong\b/i;
+    const location = swmregex.exec(bodyText);
+    var lat = 0.0;
+    var long = 0.0;
+    if (location != null && location.length > 2) {
+      lat = location[1];
+      long = location[2];
+      this.setState({
+        readtime: readtime,
+        location: [lat, long]
+      });
+    } else {
+      this.setState({
+        readtime: readtime,
+        location: ""
+      });
+    }
   };
   render() {
     const wordCount = this.state.readtime.words;
@@ -50,6 +67,12 @@ class Index extends Component {
         <Helmet>
           <title>{"Publish | TravelFeed: The Travel Community"}</title>
           <script src="/js/tinymce/tinymce.min.js" />
+          <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcSWDf27U1epBvPVgSzLYqw0Z5FzNoOI4&libraries=places&callback=initAutocomplete"
+            async
+            defer
+          />
+          <script src="/js/places-autocomplete.js" />
         </Helmet>
         <Grid container spacing={0} alignItems="center" justify="center">
           <Grid item lg={7} md={8} sm={11} xs={12}>
@@ -60,10 +83,8 @@ class Index extends Component {
                   className="font-weight-bold"
                   placeholder="Title"
                   style={{ fontSize: "40px !important" }}
-                  multiline
                 />
                 <div className="postcontent">
-                  Preview | HTML
                   <Editor
                     initialValue="<p>We can't wait to hear your travel story...</p>"
                     init={{
@@ -73,18 +94,46 @@ class Index extends Component {
                       plugins:
                         "autolink link image textpattern hr map media table paste code",
                       selection_toolbar:
-                        "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote | code",
-                      insert_toolbar: "quickimage media map quicktable hr",
+                        "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote",
+                      insert_toolbar:
+                        "quickimage media map quicktable hr | code",
                       browser_spellcheck: true,
                       extended_valid_elements:
-                        "+iframe[src|width|height|name|align|class]"
+                        "+iframe[src|width|height|name|align|class]",
+                      mobile: { theme: "mobile" }
                     }}
                     onChange={this.handleEditorChange}
                   />
                 </div>
-                Pick Location, tags
+                <div />
+                <div>
+                  {/* <input
+                    id="pac-input"
+                    className="controls"
+                    type="text"
+                    placeholder="Search Box"
+                  />
+                  <div id="map" /> */}
+                </div>
                 <div className="container">
                   <div className="row">
+                    <div className="col-6">
+                      <TextField
+                        id="standard-with-placeholder"
+                        label="Tags"
+                        placeholder="Set up to 4 tags"
+                        margin="normal"
+                      />
+                    </div>
+                    <div className="col-6 text-right">
+                      <TextField
+                        id="standard-with-placeholder"
+                        label="Location"
+                        placeholder="Add a map to the post"
+                        value={this.state.location}
+                        margin="normal"
+                      />
+                    </div>
                     <div className="col-6 p-0 pt-2">
                       <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
                         {wordCount + " words"}

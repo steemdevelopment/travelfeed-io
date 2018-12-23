@@ -15,7 +15,8 @@ a:hover {
 .postcontent a:hover {
   text-decoration: underline;
 }
-.postcontent img {
+.postcontent img,
+.fullwidth {
   width: calc(100% + 48px) !important;
   padding: 20px 0;
   margin-left: -24px;

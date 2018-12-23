@@ -5,6 +5,7 @@ import getImage from "../helpers/getImage";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { Client } from "dsteem";
 import PostAuthorProfile from "../components/PostAuthorProfile";
+import PostMap from "../components/PostMap";
 import dateFromJsonString from "../helpers/dateFromJsonString";
 import PostComments from "../components/PostComments";
 import sanitize from "sanitize-html";
@@ -88,6 +89,17 @@ class Post extends Component {
     for (let vote = 0; vote < post.active_votes.length; vote++) {
       totalmiles += Math.round(post.active_votes[vote].percent / 1000);
     }
+    var swmregex = /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong\b/i;
+    const swm = swmregex.exec(post.body);
+    var lat = 0.0;
+    var long = 0.0;
+    if (swm != null && swm.length > 2) {
+      lat = swm[1];
+      long = swm[2];
+    }
+    const location = {
+      coordinates: { lat: parseFloat(lat), lng: parseFloat(long) }
+    };
     const blog = {
       post: {
         permlink: post.permlink,
@@ -101,7 +113,8 @@ class Post extends Component {
         excerpt_title: excerpt_title,
         canonicalUrl: canonicalUrl,
         readtime: readtime,
-        totalmiles: totalmiles
+        totalmiles: totalmiles,
+        location: location
       }
     };
     return { blog };
@@ -271,6 +284,9 @@ class Post extends Component {
                       dangerouslySetInnerHTML={this.props.blog.post.bodyText}
                     />
                     <hr />
+                    <div className="fullwidth">
+                      <PostMap location={this.props.blog.post.location} />
+                    </div>
                     <div className="container">
                       <div className="row justify-content-center">
                         <div className="col-lg-6 col-md-9 col-sm-12">

@@ -88,7 +88,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -118,8 +118,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _material_ui_core_Card__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/CardContent */ "@material-ui/core/CardContent");
 /* harmony import */ var _material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Typography */ "@material-ui/core/Typography");
-/* harmony import */ var _material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/Button */ "@material-ui/core/Button");
+/* harmony import */ var _material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _material_ui_core_Tooltip__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/Tooltip */ "@material-ui/core/Tooltip");
+/* harmony import */ var _material_ui_core_Tooltip__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Tooltip__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/InputBase */ "@material-ui/core/InputBase");
+/* harmony import */ var _material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var sanitize_html__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! sanitize-html */ "sanitize-html");
+/* harmony import */ var sanitize_html__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(sanitize_html__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var reading_time__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! reading-time */ "reading-time");
+/* harmony import */ var reading_time__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(reading_time__WEBPACK_IMPORTED_MODULE_12__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -150,6 +158,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
+
+
 var Index =
 /*#__PURE__*/
 function (_Component) {
@@ -168,8 +180,23 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(Index)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "state", {
+      readtime: {
+        words: 0,
+        text: "0 min read"
+      }
+    });
+
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "handleEditorChange", function (e) {
-      console.log("Content was updated:", e.target.getContent());
+      // console.log("Content was updated:", e.target.getContent());
+      var sanitized = sanitize_html__WEBPACK_IMPORTED_MODULE_11___default()(e.target.getContent(), {
+        allowedTags: []
+      });
+      var readtime = reading_time__WEBPACK_IMPORTED_MODULE_12___default()(sanitized);
+
+      _this.setState({
+        readtime: readtime
+      });
     });
 
     return _this;
@@ -178,6 +205,25 @@ function (_Component) {
   _createClass(Index, [{
     key: "render",
     value: function render() {
+      var wordCount = this.state.readtime.words;
+      var readTime = this.state.readtime.text;
+      var publishBtn = "";
+
+      if (wordCount > 250) {
+        publishBtn = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8___default.a, {
+          color: "primary",
+          variant: "outlined"
+        }, "Publish Now");
+      } else {
+        publishBtn = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Tooltip__WEBPACK_IMPORTED_MODULE_9___default.a, {
+          title: "You need to write at least 250 words before you can publish your post"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Button__WEBPACK_IMPORTED_MODULE_8___default.a, {
+          color: "primary",
+          variant: "outlined",
+          disabled: true
+        }, "Publish Now")));
+      }
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_helmet__WEBPACK_IMPORTED_MODULE_4___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, "Publish | TravelFeed: The Travel Community"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("script", {
         src: "/js/tinymce/tinymce.min.js"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Grid__WEBPACK_IMPORTED_MODULE_5___default.a, {
@@ -191,18 +237,44 @@ function (_Component) {
         md: 8,
         sm: 11,
         xs: 12
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_6___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_7___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Typography__WEBPACK_IMPORTED_MODULE_8___default.a, {
-        variant: "display1",
-        className: "text-dark font-weight-bold"
-      }, "Publish"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Title, Categories, Content, Location, Preview"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tinymce_tinymce_react__WEBPACK_IMPORTED_MODULE_2__["Editor"], {
-        initialValue: "<p>This is the initial content of the editor</p>",
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_Card__WEBPACK_IMPORTED_MODULE_6___default.a, {
+        className: "mb-5"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CardContent__WEBPACK_IMPORTED_MODULE_7___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_InputBase__WEBPACK_IMPORTED_MODULE_10___default.a, {
+        autoFocus: true,
+        className: "font-weight-bold",
+        placeholder: "Title",
+        style: {
+          fontSize: "40px !important"
+        },
+        multiline: true
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "postcontent"
+      }, "Preview | HTML", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tinymce_tinymce_react__WEBPACK_IMPORTED_MODULE_2__["Editor"], {
+        initialValue: "<p>We can't wait to hear your travel story...</p>",
         init: {
           branding: false,
-          plugins: "link image code",
-          toolbar: "undo redo | bold italic | alignleft aligncenter alignright | code"
+          theme: "inlite",
+          inline: true,
+          plugins: "autolink link image textpattern hr map media table paste code",
+          selection_toolbar: "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote | code",
+          insert_toolbar: "quickimage media map quicktable hr",
+          browser_spellcheck: true,
+          extended_valid_elements: "+iframe[src|width|height|name|align|class]"
         },
         onChange: this.handleEditorChange
-      }))))));
+      })), "Pick Location, tags", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-6 p-0 pt-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
+      }, wordCount + " words"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
+      }, readTime)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-6 text-right p-0"
+      }, publishBtn))))))));
     }
   }]);
 
@@ -216,7 +288,7 @@ Index.propTypes = {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!********************************!*\
   !*** multi ./pages/publish.js ***!
   \********************************/
@@ -236,6 +308,17 @@ module.exports = __webpack_require__(/*! ./pages/publish.js */"./pages/publish.j
 /***/ (function(module, exports) {
 
 module.exports = require("@babel/polyfill");
+
+/***/ }),
+
+/***/ "@material-ui/core/Button":
+/*!*******************************************!*\
+  !*** external "@material-ui/core/Button" ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Button");
 
 /***/ }),
 
@@ -272,14 +355,25 @@ module.exports = require("@material-ui/core/Grid");
 
 /***/ }),
 
-/***/ "@material-ui/core/Typography":
-/*!***********************************************!*\
-  !*** external "@material-ui/core/Typography" ***!
-  \***********************************************/
+/***/ "@material-ui/core/InputBase":
+/*!**********************************************!*\
+  !*** external "@material-ui/core/InputBase" ***!
+  \**********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("@material-ui/core/Typography");
+module.exports = require("@material-ui/core/InputBase");
+
+/***/ }),
+
+/***/ "@material-ui/core/Tooltip":
+/*!********************************************!*\
+  !*** external "@material-ui/core/Tooltip" ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Tooltip");
 
 /***/ }),
 
@@ -324,6 +418,28 @@ module.exports = require("react");
 /***/ (function(module, exports) {
 
 module.exports = require("react-helmet");
+
+/***/ }),
+
+/***/ "reading-time":
+/*!*******************************!*\
+  !*** external "reading-time" ***!
+  \*******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("reading-time");
+
+/***/ }),
+
+/***/ "sanitize-html":
+/*!********************************!*\
+  !*** external "sanitize-html" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("sanitize-html");
 
 /***/ })
 

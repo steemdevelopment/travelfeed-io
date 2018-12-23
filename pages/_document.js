@@ -4,9 +4,8 @@ import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
 import getPageContext from "../src/getPageContext";
-
 const pageContext = getPageContext();
-
+require("dotenv").config();
 export default class extends Document {
   static async getInitialProps(...args) {
     const documentProps = await super.getInitialProps(...args);

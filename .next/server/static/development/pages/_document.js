@@ -156,6 +156,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var pageContext = Object(_src_getPageContext__WEBPACK_IMPORTED_MODULE_6__["default"])();
 
+__webpack_require__(/*! dotenv */ "dotenv").config();
+
 var _default =
 /*#__PURE__*/
 function (_Document) {
@@ -480,6 +482,17 @@ module.exports = require("@material-ui/core/colors/indigo");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/styles");
+
+/***/ }),
+
+/***/ "dotenv":
+/*!*************************!*\
+  !*** external "dotenv" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("dotenv");
 
 /***/ }),
 

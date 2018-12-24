@@ -138,7 +138,9 @@
     // Map default API key in settings for each services.
     SERVICES.forEach(function(name) {
       var service = SERVICES[name];
-      service.key = editor.settings[name + "_api_key"] || "";
+      service.key =
+        editor.settings[name + "_api_key"] ||
+        "AIzaSyCeNORcI3Grr5ZyFnVCO777eGWDff5EmJ4";
     });
 
     var render = this.render.bind(this);
@@ -156,13 +158,6 @@
           return { text: SERVICES[service].name, value: service };
         }),
         onselect: render
-      },
-      {
-        type: "textbox",
-        name: "key",
-        label: "API Key",
-        required: true,
-        onchange: render
       },
       {
         type: "textbox",
@@ -284,17 +279,6 @@
           return { text: level, value: level };
         }),
         onselect: render
-      },
-      {
-        type: "textbox",
-        name: "style",
-        label: "Style",
-        ariaLabel: "Style",
-        tooltip:
-          "Custom style to alter the presentation of a specific feature (roads, parks, and other features) of the map",
-        multiline: true,
-        rows: 3,
-        onchange: render
       },
       {
         type: "listbox",

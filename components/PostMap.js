@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import GoogleMapReact from "google-map-react";
 import Typography from "@material-ui/core/Typography";
 
-const AnyReactComponent = ({ text }) => (
+const MapMarker = () => (
   <div>
     <div className="pin" />
     <div className="pulse" />
@@ -201,10 +201,9 @@ class SimpleMap extends Component {
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}
           >
-            <AnyReactComponent
+            <MapMarker
               lat={this.state.center.lat}
               lng={this.state.center.lng}
-              text={"Kreyser Avrora"}
             />
           </GoogleMapReact>
         </div>

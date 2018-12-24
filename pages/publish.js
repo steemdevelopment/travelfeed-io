@@ -74,9 +74,15 @@ class Index extends Component {
           />
           <script src="/js/places-autocomplete.js" />
         </Helmet>
-        <Grid container spacing={0} alignItems="center" justify="center">
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justify="center"
+          className="pt-4 pb-4"
+        >
           <Grid item lg={7} md={8} sm={11} xs={12}>
-            <Card className="mb-5">
+            <Card>
               <CardContent>
                 <InputBase
                   autoFocus={true}
@@ -86,7 +92,7 @@ class Index extends Component {
                 />
                 <div className="postcontent">
                   <Editor
-                    initialValue="<p>We can't wait to hear your travel story...</p>"
+                    initialValue="<p>You can select text to format it. Add a new paragraph to add images, media, maps, tables or dividers. Happy blogging, we can't wait to hear your travel story!</p>"
                     init={{
                       branding: false,
                       theme: "inlite",
@@ -95,8 +101,7 @@ class Index extends Component {
                         "autolink link image textpattern hr map media table paste code",
                       selection_toolbar:
                         "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote",
-                      insert_toolbar:
-                        "quickimage media map quicktable hr | code",
+                      insert_toolbar: "image media map quicktable hr | code",
                       browser_spellcheck: true,
                       extended_valid_elements:
                         "+iframe[src|width|height|name|align|class]",
@@ -117,21 +122,23 @@ class Index extends Component {
                 </div>
                 <div className="container">
                   <div className="row">
-                    <div className="col-6">
+                    <div className="col-md-6">
                       <TextField
                         id="standard-with-placeholder"
                         label="Tags"
-                        placeholder="Set up to 4 tags"
+                        placeholder="Tags separated by spaces"
                         margin="normal"
+                        fullWidth
                       />
                     </div>
-                    <div className="col-6 text-right">
+                    <div className="col-md-6 text-right">
                       <TextField
                         id="standard-with-placeholder"
                         label="Location"
-                        placeholder="Add a map to the post"
+                        placeholder="Add a map to the post to add a location"
                         value={this.state.location}
                         margin="normal"
+                        fullWidth
                       />
                     </div>
                     <div className="col-6 p-0 pt-2">

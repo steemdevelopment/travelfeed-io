@@ -23,20 +23,13 @@ a:hover {
   margin-right: -24px;
 }
 .postcontent iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
+  /* Todo: Add CSS styles (with :before?) that display all iframes at full  width */
+  position: relative;
   width: 100%;
   height: 100%;
-  /* width: calc(100% + 48px) !important;
   padding: 20px 0;
   margin-left: -24px;
   margin-right: -24px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; */
 }
 .postcontent {
   color: rgba(0, 0, 0, 0.87);
@@ -122,6 +115,7 @@ button:hover,
 /* places map selector */
 #map {
   height: 200px;
+  width: 300px;
 }
 .controls {
   background-color: #fff;
@@ -152,4 +146,10 @@ button:hover,
 }
 #map #infowindow-content {
   display: inline;
+}
+/* editor */
+.mce-content-body {
+  min-height: 350px;
+  outline: 0px !important;
+  -webkit-appearance: none;
 }

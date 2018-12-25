@@ -13,7 +13,7 @@ import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import TextField from "@material-ui/core/TextField";
 
-class Index extends Component {
+class Publish extends Component {
   state = {
     readtime: { words: 0, text: "0 min read" },
     location: ""
@@ -161,8 +161,8 @@ class Index extends Component {
   }
 }
 
-Index.propTypes = {
+Publish.propTypes = {
   stream: PropTypes.array
 };
 
-export default Index;
+export default Publish;

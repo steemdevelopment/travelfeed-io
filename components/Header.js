@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Link from "next/link";
+import { getLoginURL } from "../utils/LoginToken";
 
 const Header = () => (
   <Fragment>
@@ -24,10 +25,12 @@ const Header = () => (
                   </Typography>
                 </a>
               </Link>
-              <Button color="primary" variant="outlined">
+              <Button href="/join" color="primary" variant="outlined">
                 Join Now
               </Button>
-              <Button color="primary">Sign In</Button>
+              <Button href={getLoginURL} color="primary">
+                Sign In
+              </Button>
             </Toolbar>
           </Grid>
         </Grid>

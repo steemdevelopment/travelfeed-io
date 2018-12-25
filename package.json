@@ -17,6 +17,7 @@
   "dependencies": {
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
+    "@material-ui/lab": "^3.0.0-alpha.26",
     "@tinymce/tinymce-react": "^2.4.0",
     "dsteem": "^0.11.2",
     "embedjs": "0.0.11",

@@ -10,7 +10,7 @@ import dateFromJsonString from "../helpers/dateFromJsonString";
 import PostComments from "../components/PostComments";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
-import Button from "@material-ui/core/Button";
+import FollowButton from "../components/FollowButton";
 import RegexBody from "../helpers/RegexBody";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
@@ -255,14 +255,10 @@ class Post extends Component {
                             {this.props.blog.post.author}
                           </a>
                         </Link>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          color="primary"
-                          className="ml-2 p-0"
-                        >
-                          Follow
-                        </Button>
+                        <FollowButton
+                          author={this.props.blog.post.author}
+                          style="minimal"
+                        />
                       </Fragment>
                     }
                     subheader={

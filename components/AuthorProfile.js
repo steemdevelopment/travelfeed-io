@@ -1,10 +1,10 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import { Client } from "dsteem";
-import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
 import Typography from "@material-ui/core/Typography";
+import FollowButton from "./FollowButton";
 
 class PostAuthorProfile extends Component {
   state = {
@@ -67,9 +67,7 @@ class PostAuthorProfile extends Component {
                 <p className="p-2">{this.state.profiledesc}</p>
               </Fragment>
               <div>
-                <Button variant="outlined" size="small" color="inherit">
-                  Follow
-                </Button>
+                <FollowButton author={this.props.author} style="default" />
               </div>
             </div>
           </div>

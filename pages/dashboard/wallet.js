@@ -5,12 +5,12 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 
-class Dashboard extends Component {
+class Wallet extends Component {
   render() {
     return (
       <Fragment>
         <Helmet>
-          <title>{"Dashboard | TravelFeed: The Travel Community"}</title>
+          <title>{"Wallet | TravelFeed: The Travel Community"}</title>
         </Helmet>
         <Header drawer={true} />
         <Grid
@@ -24,7 +24,7 @@ class Dashboard extends Component {
           <Grid item lg={7} md={8} sm={11} xs={12}>
             <Card>
               <CardContent>
-                <p>The dashboard will be available soon.</p>
+                <p>The wallet will be available soon.</p>
               </CardContent>
             </Card>
           </Grid>
@@ -34,4 +34,4 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+export default Wallet;

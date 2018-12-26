@@ -30,7 +30,7 @@ class Index extends Component {
         <div>
           <FrontPageHeader />
         </div>
-        <div>
+        <div className="pt-5">
           <BlogGridList stream={this.props.stream} />
         </div>
         <div id="discover" />

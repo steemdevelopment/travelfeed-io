@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import GridPostCard from "./GridPostCard";
+import PostListItem from "./PostListItem";
 
 const client = new Client("https://api.steemit.com");
 
@@ -299,15 +300,27 @@ class PostGrid extends Component {
               //todo: try fetching first image from post if no image is defined in json_metadata
               ++count;
               processed.push(post.permlink);
-              return (
-                <Grid item lg={3} md={4} sm={6} xs={12}>
-                  <GridPostCard
-                    post={post}
-                    sanitized={sanitized}
-                    readtime={readtime}
-                  />
-                </Grid>
-              );
+              if (this.props.postsyle == "list") {
+                return (
+                  <Grid item lg={3} md={4} sm={6} xs={12}>
+                    <PostListItem
+                      post={post}
+                      sanitized={sanitized}
+                      readtime={readtime}
+                    />
+                  </Grid>
+                );
+              } else {
+                return (
+                  <Grid item lg={3} md={4} sm={6} xs={12}>
+                    <GridPostCard
+                      post={post}
+                      sanitized={sanitized}
+                      readtime={readtime}
+                    />
+                  </Grid>
+                );
+              }
             }
           })}
           {!error && <Typography>{error}</Typography>}
@@ -327,7 +340,7 @@ class PostGrid extends Component {
   }
 }
 PostGrid.defaultProps = {
-  stream: [{}],
+  stream: [],
   sortby: "featured",
   position: 25
 };

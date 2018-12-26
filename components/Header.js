@@ -27,7 +27,13 @@ import PostsIcon from "@material-ui/icons/ChromeReaderMode";
 import DraftIcon from "@material-ui/icons/Cloud";
 import BookmarkIcon from "@material-ui/icons/Star";
 import WalletIcon from "@material-ui/icons/AttachMoney";
+import SettingsIcon from "@material-ui/icons/Settings";
 import PublishIcon from "@material-ui/icons/Create";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+import ProfileIcon from "@material-ui/icons/Person";
+import RepliesIcon from "@material-ui/icons/Reply";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import CommentsIcon from "@material-ui/icons/Comment";
 import MenuIcon from "@material-ui/icons/Menu";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
@@ -187,17 +193,42 @@ class Header extends Component {
                     <MenuList>
                       <Link href="/dashboard" passHref>
                         <a>
-                          <MenuItem>Dashboard</MenuItem>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <DashboardIcon />{" "}
+                              <ListItemText inset primary="Dashboard" />
+                            </ListItemIcon>
+                          </MenuItem>
+                        </a>
+                      </Link>
+                      <Link href="/dashboard/publish" passHref>
+                        <a>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <PublishIcon />
+                              <ListItemText inset primary="New Post" />
+                            </ListItemIcon>
+                          </MenuItem>
                         </a>
                       </Link>
                       <Link href={"/@" + this.state.user} passHref>
                         <a>
-                          <MenuItem>Profile</MenuItem>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <ProfileIcon />
+                              <ListItemText inset primary="Profile" />
+                            </ListItemIcon>
+                          </MenuItem>
                         </a>
                       </Link>
-                      <MenuItem onClick={() => this.handleLogout()}>
-                        Logout
-                      </MenuItem>
+                      <a>
+                        <MenuItem onClick={() => this.handleLogout()}>
+                          <ListItemIcon>
+                            <LogoutIcon />
+                            <ListItemText inset primary="Logout" />
+                          </ListItemIcon>
+                        </MenuItem>
+                      </a>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>
@@ -297,16 +328,6 @@ class Header extends Component {
                 </ListItem>
               </a>
             </Link>
-            <Link href="/dashboard/posts" passHref>
-              <a>
-                <ListItem button>
-                  <ListItemIcon>
-                    <PostsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Posts" />
-                </ListItem>
-              </a>
-            </Link>
             <Link href="/dashboard/publish" passHref>
               <a>
                 <ListItem button>
@@ -327,6 +348,46 @@ class Header extends Component {
                 </ListItem>
               </a>
             </Link>
+            <Link href="/dashboard/posts" passHref>
+              <a>
+                <ListItem button>
+                  <ListItemIcon>
+                    <PostsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Posts" />
+                </ListItem>
+              </a>
+            </Link>
+            <Link href="/dashboard/comments" passHref>
+              <a>
+                <ListItem button>
+                  <ListItemIcon>
+                    <CommentsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Comments" />
+                </ListItem>
+              </a>
+            </Link>
+            <Link href="/dashboard/replies" passHref>
+              <a>
+                <ListItem button>
+                  <ListItemIcon>
+                    <RepliesIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Replies" />
+                </ListItem>
+              </a>
+            </Link>
+            <Link href="/dashboard/notifications" passHref>
+              <a>
+                <ListItem button>
+                  <ListItemIcon>
+                    <NotificationsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Notifications" />
+                </ListItem>
+              </a>
+            </Link>
           </List>
           <Divider />
           <List>
@@ -340,6 +401,16 @@ class Header extends Component {
                 </ListItem>
               </a>
             </Link>
+            <Link href="/dashboard/profile" passHref>
+              <a>
+                <ListItem button>
+                  <ListItemIcon>
+                    <ProfileIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Profile" />
+                </ListItem>
+              </a>
+            </Link>
             <Link href="/dashboard/wallet" passHref>
               <a>
                 <ListItem button>
@@ -347,6 +418,16 @@ class Header extends Component {
                     <WalletIcon />
                   </ListItemIcon>
                   <ListItemText primary="Wallet" />
+                </ListItem>
+              </a>
+            </Link>
+            <Link href="/dashboard/settings" passHref>
+              <a>
+                <ListItem button>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Settings" />
                 </ListItem>
               </a>
             </Link>

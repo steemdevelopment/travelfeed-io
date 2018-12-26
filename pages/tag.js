@@ -59,7 +59,6 @@ class Tag extends Component {
       return (
         <Fragment>
           <Helmet>
-            <Header />
             <title>
               {"#" +
                 this.props.args.tag +
@@ -68,6 +67,7 @@ class Tag extends Component {
             <meta property="description" content={description} />
             <meta property="og:description" content={description} />
           </Helmet>
+          <Header />
           <div className="text-center pt-4 pb-2">
             <Typography variant="display3">#{this.props.args.tag}</Typography>
           </div>

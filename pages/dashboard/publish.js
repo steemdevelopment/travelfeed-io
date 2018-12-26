@@ -68,12 +68,12 @@ class Publish extends Component {
         <Helmet>
           <title>{"Publish | TravelFeed: The Travel Community"}</title>
           <script src="/js/tinymce/tinymce.min.js" />
-          <script
+          {/* <script
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcSWDf27U1epBvPVgSzLYqw0Z5FzNoOI4&libraries=places&callback=initAutocomplete"
             async
             defer
           />
-          <script src="/js/places-autocomplete.js" />
+          <script src="/js/places-autocomplete.js" /> */}
         </Helmet>
         <Header drawer={true} />
         <Grid

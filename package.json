@@ -36,6 +36,7 @@
     "remarkable": "^1.7.1",
     "sanitize-html": "^1.19.3",
     "steemconnect": "^2.0.1",
+    "tinymce": "^4.9.2",
     "url-parse": "^1.4.4",
     "xmldom": "^0.1.27"
   },

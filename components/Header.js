@@ -148,11 +148,9 @@ class Header extends Component {
             </Button>
           </a>
         </Link>
-        <Link href={getLoginURL} passHref>
-          <a>
-            <Button color="primary">Sign In</Button>
-          </a>
-        </Link>
+        <a href={getLoginURL}>
+          <Button color="primary">Sign In</Button>
+        </a>
       </Fragment>
     );
     if (this.state.user != null) {

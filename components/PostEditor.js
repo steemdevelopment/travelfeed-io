@@ -112,14 +112,7 @@ class Publish extends Component {
           className="font-weight-bold inputtitle"
           placeholder="Title"
         />
-        {editor}
-        {/* <div className="postcontent" id="tiny">
-          <p>
-            You can select text to format it. Add a new paragraph to add images,
-            media, maps, tables or dividers. Happy blogging, we can't wait to
-            hear your travel story!
-          </p>
-        </div> */}
+        <div className="postcontent">{editor}</div>
         <div />
         <div className="container">
           <div className="row">

@@ -71,12 +71,15 @@ class VoteSlider extends Component {
     }
   }
   render() {
+    var sliderstyle = {};
+    var rowitem1 = "col-2 p-0";
+    var rowitem2 = "col-10 text-right p-0 pt-2";
+    if (this.props.sliderstyle == "gridcard") {
+      sliderstyle = { fontSize: "0.6rem" };
+      rowitem1 = "col-6 p-0";
+      rowitem2 = "col-6 pt-2 p-0 text-right";
+    }
     const post = this.props.post;
-    const json = JSON.parse(post.json_metadata);
-    const posttag =
-      typeof json.tags != "undefined" && json.tags.length > 0
-        ? json.tags[1]
-        : "";
     var cardFooter = <Fragment />;
     var voteButton = (
       <IconButton aria-label="Upvote" onClick={() => this.expandVoteBar()}>
@@ -99,28 +102,32 @@ class VoteSlider extends Component {
         <CardActions>
           <div className="container">
             <div className="row">
-              <div className="col-6 p-0">
+              <div className={rowitem1}>
                 {voteButton}
                 <span className="text-muted font-weight-bold">
                   {this.state.totalmiles}
                 </span>
               </div>
-              <div className="col-6 pt-2 p-0 text-right">
-                <Link
-                  as={`/created/${posttag}`}
-                  href={`/tag?sortby=created&tag=${posttag}`}
-                  passHref
-                >
-                  <a>
-                    {" "}
-                    <span
-                      className="badge badge-secondary p-1 pl-2 pr-2 rounded cpointer small"
-                      style={{ fontSize: "0.6rem" }}
+              <div className={rowitem2}>
+                {this.props.tags.map(tag => {
+                  return (
+                    <Link
+                      as={`/created/${tag}`}
+                      href={`/tag?sortby=created&tag=${tag}`}
+                      key={tag}
+                      passHref
                     >
-                      {posttag.toUpperCase()}
-                    </span>
-                  </a>
-                </Link>
+                      <a>
+                        <span
+                          className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
+                          style={sliderstyle}
+                        >
+                          {tag.toUpperCase()}
+                        </span>
+                      </a>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>

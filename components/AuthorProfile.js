@@ -67,7 +67,7 @@ class PostAuthorProfile extends Component {
                 <p className="p-2">{this.state.profiledesc}</p>
               </Fragment>
               <div>
-                <FollowButton author={this.props.author} style="default" />
+                <FollowButton author={this.props.author} btnstyle="default" />
               </div>
             </div>
           </div>

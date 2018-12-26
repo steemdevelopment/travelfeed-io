@@ -99,7 +99,7 @@ class PostCard extends Component {
             </a>
           </Link>
         </CardActionArea>
-        <VoteSlider post={post} />
+        <VoteSlider post={post} tags={[posttag]} sliderstyle="gridcard" />
       </Card>
     );
   }

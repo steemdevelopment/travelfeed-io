@@ -9,7 +9,7 @@ const client = new Client("https://api.steemit.com");
 class followButton extends Component {
   state = {
     author: this.props.author,
-    style: this.props.style,
+    style: this.props.btnstyle,
     followed: false,
     user: null
   };

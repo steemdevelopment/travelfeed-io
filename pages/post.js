@@ -24,6 +24,7 @@ import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
 import BookmarkIconBorder from "@material-ui/icons/BookmarkBorder";
 import VoteSlider from "../components/VoteSlider";
+import Header from "../components/Header";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -67,6 +68,7 @@ class Post extends Component {
     if (post.id === 0) {
       return (
         <Fragment>
+          <Header />
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -87,6 +89,7 @@ class Post extends Component {
     if (typeof post.blacklisted !== "undefined" || readtime.words < 250) {
       return (
         <Fragment>
+          <Header />
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -154,6 +157,7 @@ class Post extends Component {
             <meta property="twitter:image" content={image} />
           </Helmet>
           <Fragment>
+            <Header subheader={author} />
             <Grid
               container
               spacing={0}
@@ -221,9 +225,8 @@ class Post extends Component {
                         </div>
                       </div>
                     </div>
-                    <hr />
-                    <VoteSlider post={post} tags={tags} sliderstyle="post" />
                   </CardContent>
+                  <VoteSlider post={post} tags={tags} sliderstyle="post" />
                 </Card>
               </Grid>
               <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">

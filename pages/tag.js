@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
+import Header from "../components/Header";
 
 const client = new Client("https://api.steemit.com");
 
@@ -40,6 +41,7 @@ class Tag extends Component {
           <Helmet>
             <title>{"404 - Not Found"}</title>
           </Helmet>
+          <Header />
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -57,6 +59,7 @@ class Tag extends Component {
       return (
         <Fragment>
           <Helmet>
+            <Header />
             <title>
               {"#" +
                 this.props.args.tag +

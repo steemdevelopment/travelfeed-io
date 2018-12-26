@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from "react";
-import { setToken, setUser } from "../utils/token";
+import { setToken, setUser } from "../../utils/token";
+import Header from "../../components/Header";
 
 class Join extends Component {
   static async getInitialProps({ req }) {
@@ -17,6 +18,7 @@ class Join extends Component {
   render() {
     return (
       <Fragment>
+        <Header />
         <p>Placeholder</p>
       </Fragment>
     );

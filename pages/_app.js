@@ -40,7 +40,7 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <Header />
+            {/* <Header /> */}
             <div style={{ paddingTop: "65px" }} />
             <Component pageContext={this.pageContext} {...pageProps} />
           </MuiThemeProvider>

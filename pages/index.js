@@ -6,6 +6,7 @@ import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from "../components/BlogGridList";
 import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
+import Header from "../components/Header";
 
 const client = new Client("https://api.steemit.com");
 
@@ -25,6 +26,7 @@ class Index extends Component {
           <meta property="description" content={description} />
           <meta property="og:description" content={description} />
         </Helmet>
+        <Header />
         <div>
           <FrontPageHeader />
         </div>

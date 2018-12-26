@@ -15,7 +15,8 @@ class VoteSlider extends Component {
     loading: 100,
     weight: 5,
     hasVoted: false,
-    totalmiles: 0
+    totalmiles: 0,
+    user: null
   };
   getTotalMiles() {
     const post = this.props.post;
@@ -65,7 +66,8 @@ class VoteSlider extends Component {
       if (post.active_votes[vote].voter == user) {
         this.setState({
           weight: Math.round(post.active_votes[vote].percent / 1000),
-          hasVoted: true
+          hasVoted: true,
+          user: user
         });
       }
     }
@@ -82,10 +84,19 @@ class VoteSlider extends Component {
     const post = this.props.post;
     var cardFooter = <Fragment />;
     var voteButton = (
-      <IconButton aria-label="Upvote" onClick={() => this.expandVoteBar()}>
-        <FlightIcon className="mr" />
-      </IconButton>
+      <Link href="/join" passHref>
+        <IconButton aria-label="Upvote">
+          <FlightIcon className="mr" />
+        </IconButton>
+      </Link>
     );
+    if (this.state.user != null) {
+      voteButton = (
+        <IconButton aria-label="Upvote" onClick={() => this.expandVoteBar()}>
+          <FlightIcon className="mr" />
+        </IconButton>
+      );
+    }
     if (this.state.hasVoted == true) {
       voteButton = (
         <IconButton

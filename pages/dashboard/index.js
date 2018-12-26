@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 
 class Join extends Component {
   render() {

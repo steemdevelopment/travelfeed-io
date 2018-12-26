@@ -12,6 +12,7 @@ import InputBase from "@material-ui/core/InputBase";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import TextField from "@material-ui/core/TextField";
+import Header from "../components/Header";
 
 class Publish extends Component {
   state = {
@@ -74,6 +75,7 @@ class Publish extends Component {
           />
           <script src="/js/places-autocomplete.js" />
         </Helmet>
+        <Header />
         <Grid
           container
           spacing={0}

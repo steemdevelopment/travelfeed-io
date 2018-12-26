@@ -11,8 +11,6 @@ export const getToken = () => localStorage.getItem("access_token");
 export const logout = () => {
   localStorage.removeItem("access_token");
   localStorage.removeItem("username");
-  api.revokeToken(function(err, res) {
-    console.log(err, res);
-  });
+  api.revokeToken();
 };
 export const getLoginURL = api.getLoginURL();

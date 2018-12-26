@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
 import AuthorProfile from "../components/AuthorProfile";
 import Helmet from "react-helmet";
+import Header from "../components/Header";
 
 const client = new Client("https://api.steemit.com");
 
@@ -36,6 +37,7 @@ class Blog extends Component {
           <Helmet>
             <title>{"404 - Not Found"}</title>
           </Helmet>
+          <Header />
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -82,6 +84,7 @@ class Blog extends Component {
             <meta property="description" content={description} />
             <meta property="og:description" content={description} />
           </Helmet>
+          <Header />
           <AuthorProfile author={this.props.args.author} />
           <PostGrid
             stream={this.props.args.stream}

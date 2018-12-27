@@ -102,7 +102,7 @@ const styles = theme => ({
 
 class Header extends Component {
   state = {
-    user: null,
+    user: "",
     menuopen: false,
     open: false
   };
@@ -139,21 +139,24 @@ class Header extends Component {
       subheader = <span>{"| " + this.props.subheader}</span>;
     }
     const { menuopen } = this.state;
-    var me = (
-      <Fragment>
-        <Link href="/join" passHref>
-          <a>
-            <Button color="primary" variant="outlined">
-              Join Now
-            </Button>
+    var me = <Fragment />;
+    if (this.state.user == null) {
+      me = (
+        <Fragment>
+          <Link href="/join" passHref>
+            <a>
+              <Button color="primary" variant="outlined">
+                Join Now
+              </Button>
+            </a>
+          </Link>
+          <a href={getLoginURL}>
+            <Button color="primary">Sign In</Button>
           </a>
-        </Link>
-        <a href={getLoginURL}>
-          <Button color="primary">Sign In</Button>
-        </a>
-      </Fragment>
-    );
-    if (this.state.user != null) {
+        </Fragment>
+      );
+    }
+    if (this.state.user != null && this.state.user != "") {
       me = (
         <Fragment>
           <Button

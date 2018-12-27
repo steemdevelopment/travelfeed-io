@@ -25,6 +25,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import BookmarkIconBorder from "@material-ui/icons/BookmarkBorder";
 import VoteSlider from "../components/VoteSlider";
 import Header from "../components/Header";
+import NotFound from "../components/NotFound";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -65,42 +66,18 @@ class Post extends Component {
   }
   render() {
     const post = this.props.post;
-    if (post.id === 0) {
-      return (
-        <Fragment>
-          <Header />
-          <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item lg={7} md={8} sm={11} xs={12}>
-              <Card>
-                <CardContent>
-                  <Typography>
-                    This post does not exist on TravelFeed yet.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Fragment>
-      );
-    }
     let htmlBody = RegexBody(post.body);
     let sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
-    if (typeof post.blacklisted !== "undefined" || readtime.words < 250) {
+    if (
+      post.id === 0 ||
+      typeof post.blacklisted !== "undefined" ||
+      readtime.words < 250
+    ) {
       return (
         <Fragment>
           <Header />
-          <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item lg={7} md={8} sm={11} xs={12}>
-              <Card>
-                <CardContent>
-                  <Typography>
-                    This post or author is blacklisted from TravelFeed.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
+          <NotFound statusCode={404} />
         </Fragment>
       );
     } else {

@@ -1,10 +1,8 @@
 import React, { Fragment, Component } from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Avatar from "@material-ui/core/Avatar";
 import getImage from "../helpers/getImage";
 import dateFromJsonString from "../helpers/dateFromJsonString";
 import StarIcon from "@material-ui/icons/Star";

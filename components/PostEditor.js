@@ -11,6 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import { comment } from "../utils/actions";
 import { APP_VERSION } from "../config";
 import { extractSWM, permlinkFromTitle } from "../utils/regex";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 class Publish extends Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class Publish extends Component {
     this.state = {
       title: "",
       content: this.props.initialValue,
-      tags: ""
+      tags: "",
+      completed: 0
     };
     this.handleTitleEditorChange = this.handleTitleEditorChange.bind(this);
     this.handleContentEditorChange = this.handleContentEditorChange.bind(this);
@@ -49,15 +51,24 @@ class Publish extends Component {
     require("tinymce/plugins/code");
     this.setState({ mounted: true });
   }
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
+  };
+  success() {
+    clearInterval(this.timer);
+    this.setState({ completed: 0 });
+    // todo: redirect
+  }
   publishPost() {
     const parentAuthor = "";
-    var allTags = this.state.tags.split(" ");
-    var parentPermlink = allTags[0];
+    var parentPermlink = "travelfeed";
     var title = this.state.title;
     var permlink = permlinkFromTitle(title);
     var body = this.state.content;
     var location = this.getLocation(body);
-    var metadata = '{"tags":[';
+    var allTags = this.state.tags.split(" ");
+    var metadata = '{"tags":["travelfeed",';
     for (var i = 0; i < allTags.length; i++) {
       metadata += '"' + allTags[i] + '"';
       if (i + 1 < allTags.length) {
@@ -68,7 +79,8 @@ class Publish extends Component {
       '],"app":"' + APP_VERSION + '","coordinates":"' + location + '"}';
     // todo: Parse body for images and links and include them in the json_metadata
     var jsonMetadata = JSON.parse(metadata);
-    comment(parentAuthor, parentPermlink, permlink, title, body, jsonMetadata);
+    this.timer = setInterval(this.progress, 20);
+    // comment(parentAuthor, parentPermlink, permlink, title, body, jsonMetadata);
   }
   getLocation(bodyText) {
     var coordinates = extractSWM(bodyText);
@@ -81,6 +93,9 @@ class Publish extends Component {
     }
   }
   render() {
+    if (this.state.completed == 100) {
+      this.success();
+    }
     const bodyText = this.state.content;
     let sanitized = sanitize(bodyText, { allowedTags: [] });
     const readingtime = readingTime(sanitized);
@@ -88,15 +103,30 @@ class Publish extends Component {
     const readTime = readingtime.text;
     var location = this.getLocation(bodyText);
     var publishBtn = "";
+    var progress = <Fragment />;
+    if (this.state.completed != 0) {
+      progress = (
+        <CircularProgress
+          variant="determinate"
+          value={this.state.completed}
+          className="p-1"
+          size={35}
+          thickness={5}
+        />
+      );
+    }
     if (wordCount > 250 && this.state.title != "" && this.state.tags != "") {
       publishBtn = (
-        <Button
-          color="primary"
-          variant="outlined"
-          onClick={() => this.publishPost()}
-        >
-          Publish Now
-        </Button>
+        <Fragment>
+          {progress}
+          <Button
+            color="primary"
+            variant="outlined"
+            onClick={() => this.publishPost()}
+          >
+            Publish Now
+          </Button>{" "}
+        </Fragment>
       );
     } else {
       publishBtn = (

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import GoogleMapReact from "google-map-react";
 import Typography from "@material-ui/core/Typography";
+import { GMAPS_JS_APIKEY } from "../config";
 
 const MapMarker = () => (
   <div>
@@ -196,7 +197,7 @@ class SimpleMap extends Component {
         <div style={{ height: "250px", width: "100%" }}>
           <GoogleMapReact
             bootstrapURLKeys={{
-              key: "AIzaSyCcSWDf27U1epBvPVgSzLYqw0Z5FzNoOI4"
+              key: GMAPS_JS_APIKEY
             }}
             defaultCenter={this.state.center}
             defaultZoom={this.state.zoom}

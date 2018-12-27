@@ -4,9 +4,46 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
+import NotFound from "../../components/NotFound";
+import { getUser } from "../../utils/token";
 
 class Drafts extends Component {
+  state = { user: "" };
+  getUser() {
+    this.setState({ user: getUser() });
+  }
+  componentDidMount() {
+    this.getUser();
+  }
   render() {
+    var content = (
+      <Grid item lg={7} md={8} sm={11} xs={12}>
+        <Card>
+          <CardContent />
+        </Card>
+      </Grid>
+    );
+    if (this.state.user == null) {
+      content = (
+        <Grid item lg={7} md={8} sm={11} xs={12}>
+          <NotFound statusCode="logged_out" />
+        </Grid>
+      );
+    } else if (this.state.user != null && this.state.user != "") {
+      content = (
+        <Grid item lg={7} md={8} sm={11} xs={12}>
+          <Card>
+            <CardContent>
+              <h1>Drafts</h1>
+              <p>
+                Viewing and editing your automatically saved drafts will be
+                available soon.
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
+      );
+    }
     return (
       <Fragment>
         <Helmet>
@@ -21,13 +58,7 @@ class Drafts extends Component {
           className="pt-4 pb-4"
           style={{ paddingLeft: "75px" }}
         >
-          <Grid item lg={7} md={8} sm={11} xs={12}>
-            <Card>
-              <CardContent>
-                <p>Automatically saved drafts will be available soon.</p>
-              </CardContent>
-            </Card>
-          </Grid>
+          {content}
         </Grid>
       </Fragment>
     );

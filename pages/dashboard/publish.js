@@ -1,36 +1,59 @@
-/* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, Component } from "react";
-import "@babel/polyfill";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
+import Header from "../../components/Header";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import InputBase from "@material-ui/core/InputBase";
-import sanitize from "sanitize-html";
-import readingTime from "reading-time";
-import TextField from "@material-ui/core/TextField";
-import Header from "../../components/Header";
+import Helmet from "react-helmet";
+import NotFound from "../../components/NotFound";
+import { getUser } from "../../utils/token";
 import PostEditor from "../../components/PostEditor";
 
-class Publish extends Component {
+class Bookmarks extends Component {
   state = {
+    user: "",
     readtime: { words: 0, text: "0 min read" },
-    location: "",
-    mounted: false
+    location: ""
   };
+  getUser() {
+    this.setState({ user: getUser() });
+  }
   componentDidMount() {
-    this.setState({ mounted: true });
+    this.getUser();
   }
   render() {
-    return (
-      <Fragment>
-        <Helmet>
-          <title>{"Publish | TravelFeed: The Travel Community"}</title>
-        </Helmet>
-        <Header drawer={true} />
+    var content = (
+      <Grid
+        container
+        spacing={0}
+        alignItems="center"
+        justify="center"
+        className="pt-4 pb-4"
+        style={{ paddingLeft: "75px" }}
+      >
+        <Grid item lg={7} md={8} sm={11} xs={12}>
+          <Card>
+            <CardContent />
+          </Card>
+        </Grid>{" "}
+      </Grid>
+    );
+    if (this.state.user == null) {
+      content = (
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justify="center"
+          className="pt-4 pb-4"
+          style={{ paddingLeft: "75px" }}
+        >
+          <Grid item lg={7} md={8} sm={11} xs={12}>
+            <NotFound statusCode="logged_out" />
+          </Grid>{" "}
+        </Grid>
+      );
+    } else if (this.state.user != null && this.state.user != "") {
+      content = (
         <Grid
           container
           spacing={0}
@@ -47,9 +70,18 @@ class Publish extends Component {
             </Card>
           </Grid>
         </Grid>
+      );
+    }
+    return (
+      <Fragment>
+        <Helmet>
+          <title>{"Bookmarks | TravelFeed: The Travel Community"}</title>
+        </Helmet>
+        <Header drawer={true} />
+        {content}
       </Fragment>
     );
   }
 }
 
-export default Publish;
+export default Bookmarks;

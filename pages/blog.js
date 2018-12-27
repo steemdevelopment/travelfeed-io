@@ -191,7 +191,7 @@ class Post extends Component {
                   />
                   <CardContent>
                     <Typography
-                      variant="display1"
+                      variant="h4"
                       className="text-dark font-weight-bold"
                     >
                       {post.title}

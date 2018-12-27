@@ -34,7 +34,7 @@ export default class extends Document {
     return (
       <Helmet
         htmlAttributes={{ lang: "en" }}
-        title="Hello next.js!"
+        title="TravelFeed"
         meta={[
           {
             name: "viewport",

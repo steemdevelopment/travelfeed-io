@@ -13,6 +13,7 @@ import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
 import { regExcerpt, regTitle } from "../utils/regex";
 import VoteSlider from "./VoteSlider";
+import PropTypes from "prop-types";
 
 class PostCard extends Component {
   render() {
@@ -104,5 +105,11 @@ class PostCard extends Component {
     );
   }
 }
+
+PostCard.propTypes = {
+  post: PropTypes.object,
+  readtime: PropTypes.object,
+  sanitized: PropTypes.string
+};
 
 export default PostCard;

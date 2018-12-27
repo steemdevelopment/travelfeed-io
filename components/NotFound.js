@@ -3,6 +3,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import Error from "next/error";
+import PropTypes from "prop-types";
+
 class NotFound extends Component {
   render() {
     var helmet = <title>{"Error | TravelFeed"}</title>;
@@ -30,5 +32,9 @@ class NotFound extends Component {
     );
   }
 }
+
+NotFound.propTypes = {
+  statusCode: PropTypes.number | PropTypes.string
+};
 
 export default NotFound;

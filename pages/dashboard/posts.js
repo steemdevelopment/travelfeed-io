@@ -1,8 +1,6 @@
 import React, { Fragment, Component } from "react";
 import Header from "../../components/Header";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import NotFound from "../../components/NotFound";
 import { getUser } from "../../utils/token";
@@ -43,7 +41,7 @@ class Bookmarks extends Component {
           className="pt-4 pb-4"
           style={{ paddingLeft: "75px" }}
         >
-          <PostGrid type="blog" filter={this.state.user} postsyle="list" />
+          <PostGrid type="blog" filter={this.state.user} poststyle="list" />
         </Grid>
       );
     }

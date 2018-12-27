@@ -60,7 +60,7 @@ class PostAuthorProfile extends Component {
               </div>
               <Fragment>
                 <div>
-                  <Typography variant="title" className="text-light">
+                  <Typography variant="h6" className="text-light">
                     {this.props.author}
                   </Typography>
                 </div>

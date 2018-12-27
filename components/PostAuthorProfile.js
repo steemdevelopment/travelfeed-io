@@ -55,7 +55,7 @@ class PostAuthorProfile extends Component {
               passHref
             >
               <a>
-                <Typography variant="title" className="text-dark cpointer">
+                <Typography variant="h6" className="text-dark cpointer">
                   {this.props.author}
                 </Typography>
               </a>

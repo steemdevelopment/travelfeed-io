@@ -12,8 +12,9 @@ import { comment } from "../utils/actions";
 import { APP_VERSION } from "../config";
 import { extractSWM, permlinkFromTitle } from "../utils/regex";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import PropTypes from "prop-types";
 
-class Publish extends Component {
+class PostEditor extends Component {
   constructor(props) {
     super(props);
 
@@ -80,7 +81,7 @@ class Publish extends Component {
     // todo: Parse body for images and links and include them in the json_metadata
     var jsonMetadata = JSON.parse(metadata);
     this.timer = setInterval(this.progress, 20);
-    // comment(parentAuthor, parentPermlink, permlink, title, body, jsonMetadata);
+    comment(parentAuthor, parentPermlink, permlink, title, body, jsonMetadata);
   }
   getLocation(bodyText) {
     var coordinates = extractSWM(bodyText);
@@ -215,4 +216,15 @@ class Publish extends Component {
   }
 }
 
-export default Publish;
+PostEditor.defaultProps = {
+  initialValue: ""
+};
+
+PostEditor.propTypes = {
+  comment: PropTypes.object,
+  initialValue: PropTypes.string,
+  parentAuthor: PropTypes.string,
+  parentPermlink: PropTypes.string
+};
+
+export default PostEditor;

@@ -18,7 +18,7 @@ class BlogGridList extends Component {
     return (
       <Fragment>
         <Typography
-          variant="display1"
+          variant="h4"
           align="center"
           gutterBottom={true}
           className="pb-2"

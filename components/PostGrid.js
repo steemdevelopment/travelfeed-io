@@ -182,7 +182,7 @@ class PostGrid extends Component {
       selector = (
         <Fragment>
           <Typography
-            variant="display1"
+            variant="h4"
             align="center"
             gutterBottom={true}
             className="pt-5"
@@ -300,7 +300,7 @@ class PostGrid extends Component {
               //todo: try fetching first image from post if no image is defined in json_metadata
               ++count;
               processed.push(post.permlink);
-              if (this.props.postsyle == "list") {
+              if (this.props.poststyle == "list") {
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>
                     <PostListItem
@@ -350,7 +350,8 @@ PostGrid.propTypes = {
   filter: PropTypes.string.isRequired,
   sortby: PropTypes.string,
   stream: PropTypes.array,
-  position: PropTypes.number
+  position: PropTypes.number,
+  poststyle: PropTypes.string
 };
 
 export default PostGrid;

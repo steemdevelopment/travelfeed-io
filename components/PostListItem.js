@@ -1,46 +1,26 @@
-import React, { Fragment, Component } from "react";
+import React, { Component } from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import getImage from "../helpers/getImage";
 import dateFromJsonString from "../helpers/dateFromJsonString";
-import StarIcon from "@material-ui/icons/Star";
 import CardActions from "@material-ui/core/CardActions";
-import IconButton from "@material-ui/core/IconButton";
 import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
 import { regExcerpt, regTitle } from "../utils/regex";
+import PropTypes from "prop-types";
 
 class PostCard extends Component {
   render() {
     const post = this.props.post;
-    var isCurated = <Fragment />;
-    for (let vote = 0; vote < post.active_votes.length; vote++) {
-      if (
-        post.active_votes[vote].voter == "travelfeed" &&
-        post.active_votes[vote].percent > 8000
-      ) {
-        isCurated = (
-          <IconButton>
-            <StarIcon />
-          </IconButton>
-        );
-      }
-    }
     let sanitized = this.props.sanitized;
-    const readtime = this.props.readtime;
     let title = regTitle(post.title);
     title = title.length > 85 ? title.substring(0, 81) + "[...]" : title;
     const json_date = '{ "date": "' + post.created + 'Z" }';
     const date_object = new Date(
       JSON.parse(json_date, dateFromJsonString).date
     );
-    const json = JSON.parse(post.json_metadata);
-    const posttag =
-      typeof json.tags != "undefined" && json.tags.length > 0
-        ? json.tags[1]
-        : "";
     let excerpt = regExcerpt(sanitized);
     const created = date_object.toDateString();
     const image = getImage(post.json_metadata, post.body, "400x0");
@@ -58,7 +38,6 @@ class PostCard extends Component {
             passHref
           >
             <a>
-              {" "}
               <CardContent>
                 <p>{created}</p>
                 <Typography gutterBottom variant="h5" component="h2">
@@ -76,5 +55,10 @@ class PostCard extends Component {
     );
   }
 }
+
+PostCard.propTypes = {
+  post: PropTypes.object.isRequired,
+  sanitized: PropTypes.string
+};
 
 export default PostCard;

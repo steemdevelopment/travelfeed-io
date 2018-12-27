@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import GoogleMapReact from "google-map-react";
 import Typography from "@material-ui/core/Typography";
 import { GMAPS_JS_APIKEY } from "../config";
+import PropTypes from "prop-types";
 
 const MapMarker = () => (
   <div>
@@ -176,7 +177,7 @@ const MapMarker = () => (
   </div>
 );
 
-class SimpleMap extends Component {
+class PostMap extends Component {
   state = {
     center: this.props.location.coordinates,
     zoom: 7
@@ -214,4 +215,8 @@ class SimpleMap extends Component {
   }
 }
 
-export default SimpleMap;
+PostMap.propTypes = {
+  location: PropTypes.object.isRequired
+};
+
+export default PostMap;

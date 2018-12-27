@@ -8,6 +8,7 @@ import { getUser } from "../utils/token";
 import Link from "next/link";
 import { vote } from "../utils/actions";
 import Slider from "@material-ui/lab/Slider";
+import PropTypes from "prop-types";
 
 class VoteSlider extends Component {
   state = {
@@ -185,5 +186,11 @@ class VoteSlider extends Component {
     return <Fragment>{cardFooter}</Fragment>;
   }
 }
+
+VoteSlider.propTypes = {
+  post: PropTypes.object.isRequired,
+  sliderstyle: PropTypes.string,
+  tags: PropTypes.array
+};
 
 export default VoteSlider;

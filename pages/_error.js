@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import NotFound from "../components/NotFound";
 import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {
@@ -28,3 +29,7 @@ export default class Error extends React.Component {
     );
   }
 }
+
+Error.propTypes = {
+  statusCode: PropTypes.number
+};

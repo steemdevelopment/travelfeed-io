@@ -1,14 +1,12 @@
 import React, { Fragment, Component } from "react";
 import Header from "../../components/Header";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import NotFound from "../../components/NotFound";
-import { getUser } from "../../utils/token";
 import { setToken, setUser } from "../../utils/token";
 import Dashboard from "./index";
 import Router from "next/router";
+import PropTypes from "prop-types";
 
 class Login extends Component {
   state = { user: "" };
@@ -58,5 +56,10 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  access_token: PropTypes.string,
+  username: PropTypes.string
+};
 
 export default Login;

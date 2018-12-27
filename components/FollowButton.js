@@ -5,6 +5,7 @@ import { getUser } from "../utils/token";
 import Link from "next/link";
 import { Client } from "dsteem";
 const client = new Client("https://api.steemit.com");
+import PropTypes from "prop-types";
 
 class followButton extends Component {
   state = {
@@ -54,7 +55,7 @@ class followButton extends Component {
   render() {
     var btnclass = "ml-2 p-0";
     if (this.state.style == "default") {
-      var btnclass = "m-1";
+      btnclass = "m-1";
     }
     var btn = (
       <Link href={"/join"} passHref>
@@ -144,5 +145,14 @@ class followButton extends Component {
     return <Fragment>{btn}</Fragment>;
   }
 }
+
+followButton.defaultProps = {
+  btnstyle: "default"
+};
+
+followButton.propTypes = {
+  author: PropTypes.string.isRequired,
+  btnstyle: PropTypes.string
+};
 
 export default followButton;

@@ -1,4 +1,5 @@
 //Gets the image from the json_metadata if they are defined, if not it crawls the body for an image, if none is found it returns a placeholder
+import { imageRegex } from "../utils/regex";
 
 const getImage = (json_metadata, body, size) => {
   const json = JSON.parse(json_metadata);
@@ -10,9 +11,7 @@ const getImage = (json_metadata, body, size) => {
   ) {
     image = `https://steemitimages.com/${size}/` + json.image[0];
   } else {
-    const imatch = body.match(
-      /(?:(?<=(?:src="|src='))|(?:(?<=(?:\(|>))))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=["|)|<]))/i
-    );
+    const imatch = body.match(imageRegex);
     if (imatch !== null) {
       image = `https://steemitimages.com/${size}/` + imatch[0];
     } else {

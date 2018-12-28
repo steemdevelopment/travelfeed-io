@@ -78,28 +78,27 @@ class PostCard extends Component {
           }
           subheader={created + " | " + readtime.text}
         />
-        <CardActionArea>
-          <CardMedia
-            style={{ height: 140 }}
-            className="pt-2 text-right"
-            image={image}
-          />
-          <Link
-            as={`/@${post.author}/${post.permlink}`}
-            href={`/post?author=${post.author}&permlink=${post.permlink}`}
-            passHref
-          >
-            <a>
-              {" "}
+        <Link
+          as={`/@${post.author}/${post.permlink}`}
+          href={`/post?author=${post.author}&permlink=${post.permlink}`}
+          passHref
+        >
+          <a>
+            <CardActionArea>
+              <CardMedia
+                style={{ height: 140 }}
+                className="pt-2 text-right"
+                image={image}
+              />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {title}
                 </Typography>
                 <Typography component="p">{excerpt} [...]</Typography>
               </CardContent>
-            </a>
-          </Link>
-        </CardActionArea>
+            </CardActionArea>
+          </a>
+        </Link>
         <VoteSlider post={post} tags={[posttag]} sliderstyle="gridcard" />
       </Card>
     );

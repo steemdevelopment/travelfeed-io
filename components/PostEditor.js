@@ -70,6 +70,7 @@ class PostEditor extends Component {
     require("tinymce/plugins/table");
     require("tinymce/plugins/paste");
     require("tinymce/plugins/code");
+    require("tinymce/plugins/autosave");
     this.setState({ mounted: true });
   }
   progress = () => {
@@ -204,14 +205,18 @@ class PostEditor extends Component {
             },
             skin_url: "/tinymce/skins/lightgray",
             plugins:
-              "autolink link image textpattern hr map media table paste code",
+              "autolink link image textpattern hr map media table paste code autosave",
             selection_toolbar:
               "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote",
-            insert_toolbar: "image media map quicktable hr | code",
+            insert_toolbar:
+              "image media map quicktable hr | code | restoredraft",
             browser_spellcheck: true,
             extended_valid_elements:
               "+iframe[src|width|height|name|align|class]",
-            mobile: { theme: "mobile" }
+            mobile: { theme: "mobile" },
+            autosave_ask_before_unload: true,
+            autosave_interval: "20s",
+            autosave_retention: "120m"
           }}
           value={this.state.content}
           onEditorChange={this.handleContentEditorChange}
@@ -277,7 +282,7 @@ PostEditor.propTypes = {
   initialValue: PropTypes.string,
   parentAuthor: PropTypes.string,
   parentPermlink: PropTypes.string,
-  edit: PropTypes.object,
+  edit: PropTypes.any,
   enqueueSnackbar: PropTypes.function
 };
 

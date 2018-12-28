@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from "react";
 import CardActions from "@material-ui/core/CardActions";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
+import FlightVotedIcon from "@material-ui/icons/Flight";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -117,7 +118,7 @@ class VoteSlider extends Component {
           onClick={() => this.expandVoteBar()}
           color="primary"
         >
-          <FlightIcon className="mr" />
+          <FlightVotedIcon className="mr" />
         </IconButton>
       );
     }

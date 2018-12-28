@@ -6,7 +6,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import NotFound from "../components/NotFound";
 import Button from "@material-ui/core/Button";
-import Link from "next/link";
 import Router from "next/router";
 
 class Exit extends Component {

@@ -17,13 +17,7 @@ class Dashboard extends Component {
     this.getUser();
   }
   render() {
-    var content = (
-      <Grid item lg={7} md={8} sm={11} xs={12}>
-        <Card>
-          <CardContent />
-        </Card>
-      </Grid>
-    );
+    var content = <Fragment />;
     if (this.state.user == null) {
       content = (
         <Grid item lg={7} md={8} sm={11} xs={12}>
@@ -52,11 +46,11 @@ class Dashboard extends Component {
                 </li>
               </ul>
               <p>
-                Or,
+                Or,{" "}
                 <Link href="/" passhref>
-                  <a>return to the main app to discover great travel content</a>
-                </Link>
-                .
+                  <a>return to the main app</a>
+                </Link>{" "}
+                to discover great travel content.
               </p>
             </CardContent>
           </Card>

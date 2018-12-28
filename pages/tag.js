@@ -22,6 +22,9 @@ class Tag extends Component {
       type = "blog";
       sortby = "blog";
     }
+    if (sortby == "feed") {
+      return { args: { sortby: sortby, tag: tag, type: "feed", stream: [] } };
+    }
     try {
       const stream = await client.database.getDiscussions(sortby, args);
       if (sortby == "blog") {

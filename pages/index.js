@@ -8,7 +8,7 @@ import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
 import Header from "../components/Header";
 import { getUser } from "../utils/token";
-import DEFAULT_META_DESCRIPTION from "../config";
+import { DEFAULT_META_DESCRIPTION } from "../config";
 
 const client = new Client("https://api.steemit.com");
 

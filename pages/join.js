@@ -2,7 +2,7 @@
 import React, { Fragment, Component } from "react";
 import Header from "../components/Header";
 import Helmet from "react-helmet";
-import DEFAULT_META_DESCRIPTION from "../config";
+import { DEFAULT_META_DESCRIPTION } from "../config";
 
 class Join extends Component {
   render() {

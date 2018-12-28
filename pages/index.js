@@ -8,6 +8,7 @@ import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
 import Header from "../components/Header";
 import { getUser } from "../utils/token";
+import DEFAULT_META_DESCRIPTION from "../config";
 
 const client = new Client("https://api.steemit.com");
 
@@ -25,8 +26,6 @@ class Index extends Component {
     return { stream };
   }
   render() {
-    const description =
-      "Find inspiration for your travels on TravelFeed. Join the TravelFeed community, write your own travel blog and start earning!";
     var slider = <Fragment />;
     if (this.state.user == null) {
       slider = (
@@ -40,8 +39,8 @@ class Index extends Component {
       <Fragment>
         <Helmet>
           <title>{"TravelFeed: The Travel Community"}</title>
-          <meta property="description" content={description} />
-          <meta property="og:description" content={description} />
+          <meta property="description" content={DEFAULT_META_DESCRIPTION} />
+          <meta property="og:description" content={DEFAULT_META_DESCRIPTION} />
         </Helmet>
         <Header />
         {slider}

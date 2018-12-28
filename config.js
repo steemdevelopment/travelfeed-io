@@ -7,3 +7,6 @@ if (process.env.NODE_ENV == "production") {
   url = "https://travelfeed.io/dashboard/login";
 }
 export const STEEMCONNECT_CALLBACK_URL = url;
+
+export const DEFAULT_META_DESCRIPTION =
+  "Find inspiration for your travels on TravelFeed. Join the TravelFeed community, write your own travel blog and start earning!";

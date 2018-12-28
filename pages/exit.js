@@ -7,6 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import NotFound from "../components/NotFound";
 import Button from "@material-ui/core/Button";
 import Router from "next/router";
+import Helmet from "react-helmet";
 
 class Exit extends Component {
   static async getInitialProps({ req }) {
@@ -51,6 +52,9 @@ class Exit extends Component {
     }
     return (
       <Fragment>
+        <Helmet>
+          <title>{"External Link | TravelFeed"}</title>
+        </Helmet>
         <Header />
         <Grid
           container

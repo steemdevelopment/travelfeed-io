@@ -16,11 +16,12 @@ import PropTypes from "prop-types";
 import { getUser } from "../utils/token";
 import { getImageList } from "../helpers/getImage";
 import Router from "next/router";
+import { withSnackbar } from "notistack";
+import Post from "../pages/post";
 
 class PostEditor extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       title: "",
       content: this.props.initialValue,
@@ -30,6 +31,14 @@ class PostEditor extends Component {
     this.handleTitleEditorChange = this.handleTitleEditorChange.bind(this);
     this.handleContentEditorChange = this.handleContentEditorChange.bind(this);
     this.handleTagsEditorChange = this.handleTagsEditorChange.bind(this);
+  }
+  newNotification(notification) {
+    if (notification != undefined) {
+      const text = notification[0];
+      const variant = notification[1];
+      this.props.enqueueSnackbar(text, { variant });
+      this.setState({ success: true });
+    }
   }
   handleTitleEditorChange(title) {
     this.setState({ title: title.target.value });
@@ -108,9 +117,18 @@ class PostEditor extends Component {
     if (this.props.edit == false) {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
     }
+    this.timer = setInterval(this.progress, 60);
     this.setState({ user: username, permlink: permlink });
-    this.timer = setInterval(this.progress, 20);
-    comment(parentAuthor, parentPermlink, permlink, title, body, jsonMetadata);
+    comment(
+      parentAuthor,
+      parentPermlink,
+      permlink,
+      title,
+      body,
+      jsonMetadata
+    ).then(result => {
+      this.newNotification(result);
+    });
   }
   getLocation(bodyText) {
     var coordinates = extractSWM(bodyText);
@@ -171,7 +189,7 @@ class PostEditor extends Component {
       );
     }
     var editor = <Fragment />;
-    if (this.state.completed == 100) {
+    if (this.state.completed == 100 && this.state.success == true) {
       this.success();
       const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
@@ -260,7 +278,8 @@ PostEditor.propTypes = {
   initialValue: PropTypes.string,
   parentAuthor: PropTypes.string,
   parentPermlink: PropTypes.string,
-  edit: PropTypes.object
+  edit: PropTypes.object,
+  enqueueSnackbar: PropTypes.function
 };
 
-export default PostEditor;
+export default withSnackbar(PostEditor);

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { vote } from "../utils/actions";
 import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
+import { withSnackbar } from "notistack";
 
 class VoteSlider extends Component {
   state = {
@@ -19,6 +20,13 @@ class VoteSlider extends Component {
     totalmiles: 0,
     user: null
   };
+  newNotification(notification) {
+    if (notification != undefined) {
+      const text = notification[0];
+      const variant = notification[1];
+      this.props.enqueueSnackbar(text, { variant });
+    }
+  }
   getTotalMiles() {
     const post = this.props.post;
     let totalmiles = 0;
@@ -38,7 +46,9 @@ class VoteSlider extends Component {
   }
   votePost(author, permlink) {
     const weight = this.state.weight * 1000;
-    vote(author, permlink, weight);
+    vote(author, permlink, weight).then(result => {
+      this.newNotification(result);
+    });
     this.setState({
       loading: 0
     });
@@ -190,7 +200,8 @@ class VoteSlider extends Component {
 VoteSlider.propTypes = {
   post: PropTypes.object.isRequired,
   sliderstyle: PropTypes.string,
-  tags: PropTypes.array
+  tags: PropTypes.array,
+  enqueueSnackbar: PropTypes.function
 };
 
-export default VoteSlider;
+export default withSnackbar(VoteSlider);

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Client } from "dsteem";
 const client = new Client("https://api.steemit.com");
 import PropTypes from "prop-types";
+import { withSnackbar } from "notistack";
 
 class followButton extends Component {
   state = {
@@ -14,6 +15,13 @@ class followButton extends Component {
     followed: false,
     user: null
   };
+  newNotification(notification) {
+    if (notification != undefined) {
+      const text = notification[0];
+      const variant = notification[1];
+      this.props.enqueueSnackbar(text, { variant });
+    }
+  }
   async isInFollowList(user) {
     const followlist = await client.call("follow_api", "get_following", [
       user,
@@ -28,19 +36,25 @@ class followButton extends Component {
     }
   }
   followAuthor = author => {
-    follow(author);
+    follow(author).then(result => {
+      this.newNotification(result);
+    });
     this.setState({
       followed: true
     });
   };
   unfollowAuthor = author => {
-    unfollow(author);
+    unfollow(author).then(result => {
+      this.newNotification(result);
+    });
     this.setState({
       followed: false
     });
   };
   ignoreAuthor = author => {
-    ignore(author);
+    ignore(author).then(result => {
+      this.newNotification(result);
+    });
     this.setState({
       followed: false
     });
@@ -152,7 +166,8 @@ followButton.defaultProps = {
 
 followButton.propTypes = {
   author: PropTypes.string.isRequired,
-  btnstyle: PropTypes.string
+  btnstyle: PropTypes.string,
+  enqueueSnackbar: PropTypes.function
 };
 
-export default followButton;
+export default withSnackbar(followButton);

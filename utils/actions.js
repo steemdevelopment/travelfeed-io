@@ -1,13 +1,24 @@
 import api from "./SteemConnectAPI";
 import { getUser, getToken } from "./token";
 
-export const vote = (author, permlink, weight) => {
+export const vote = async (author, permlink, weight) => {
   api.setAccessToken(getToken());
   const voter = getUser();
-  api.vote(voter, author, permlink, weight);
+  return await api.vote(
+    voter,
+    author,
+    permlink,
+    weight,
+    await function(err) {
+      if (err != undefined) {
+        return ["Could not vote: " + err, "error"];
+      }
+      return;
+    }
+  );
 };
 
-export const comment = (
+export const comment = async (
   parentAuthor,
   parentPermlink,
   permlink,
@@ -17,31 +28,64 @@ export const comment = (
 ) => {
   api.setAccessToken(getToken());
   const author = getUser();
-  api.comment(
+  return await api.comment(
     parentAuthor,
     parentPermlink,
     author,
     permlink,
     title,
     body,
-    jsonMetadata
+    jsonMetadata,
+    await function(err) {
+      if (err != undefined) {
+        return ["Could not post: " + err, "error"];
+      }
+      return ["Post was posted successfully", "success"];
+    }
   );
 };
 
-export const follow = following => {
+export const follow = async following => {
   api.setAccessToken(getToken());
   const follower = getUser();
-  api.follow(follower, following);
+  return await api.follow(
+    follower,
+    following,
+    await function(err) {
+      if (err != undefined) {
+        return ["Could not follow user: " + err, "error"];
+      }
+      return;
+    }
+  );
 };
 
-export const unfollow = unfollowing => {
+export const unfollow = async unfollowing => {
   api.setAccessToken(getToken());
   const unfollower = getUser();
-  api.unfollow(unfollower, unfollowing);
+  return await api.unfollow(
+    unfollower,
+    unfollowing,
+    await function(err) {
+      if (err != undefined) {
+        return ["Could not unfollow user: " + err, "error"];
+      }
+      return;
+    }
+  );
 };
 
-export const ignore = following => {
+export const ignore = async following => {
   api.setAccessToken(getToken());
   const follower = getUser();
-  api.ignore(follower, following);
+  return await api.ignore(
+    follower,
+    following,
+    await function(err) {
+      if (err != undefined) {
+        return ["Could not ignore user: " + err, "error"];
+      }
+      return;
+    }
+  );
 };

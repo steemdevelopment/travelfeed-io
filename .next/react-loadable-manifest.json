@@ -137,7 +137,7 @@
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
   ],
-  "./../node_modules/webpack/buildin/global.js": [
+  "./../../../webpack/buildin/global.js": [
     {
       "id": 30,
       "name": "./node_modules/webpack/buildin/global.js",
@@ -507,7 +507,7 @@
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
   ],
-  "@material-ui/core/RootRef": [
+  "../RootRef": [
     {
       "id": 267,
       "name": "./node_modules/@material-ui/core/RootRef/index.js",
@@ -547,7 +547,7 @@
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
   ],
-  "@material-ui/core/ButtonBase": [
+  "../ButtonBase": [
     {
       "id": 279,
       "name": "./node_modules/@material-ui/core/ButtonBase/index.js",
@@ -753,7 +753,7 @@
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
   ],
-  "../../modules/es6.string.iterator": [
+  "../modules/es6.string.iterator": [
     {
       "id": 658,
       "name": "./node_modules/core-js/library/modules/es6.string.iterator.js",
@@ -967,16 +967,10 @@
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
   ],
-  "./assertThisInitialized": [
+  "@babel/runtime/helpers/assertThisInitialized": [
     {
       "id": 689,
       "name": "./node_modules/@material-ui/core/node_modules/@babel/runtime/helpers/assertThisInitialized.js",
-      "file": "static/chunks/commons.d0689f1769fcb4fd8211.js",
-      "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
-    },
-    {
-      "id": 1010,
-      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
       "file": "static/chunks/commons.d0689f1769fcb4fd8211.js",
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
@@ -989,7 +983,7 @@
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }
   ],
-  "@material-ui/core/colors/indigo": [
+  "../colors/indigo": [
     {
       "id": 691,
       "name": "./node_modules/@material-ui/core/colors/indigo.js",
@@ -3039,6 +3033,14 @@
     {
       "id": 1006,
       "name": "./node_modules/@material-ui/core/RootRef/RootRef.js",
+      "file": "static/chunks/commons.d0689f1769fcb4fd8211.js",
+      "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
+    }
+  ],
+  "./assertThisInitialized": [
+    {
+      "id": 1010,
+      "name": "./node_modules/@babel/runtime/helpers/assertThisInitialized.js",
       "file": "static/chunks/commons.d0689f1769fcb4fd8211.js",
       "publicPath": "static/chunks/commons.d0689f1769fcb4fd8211.js"
     }

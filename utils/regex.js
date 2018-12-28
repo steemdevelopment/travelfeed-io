@@ -2,7 +2,7 @@ export const imageRegex = /(https?:\/\/(?:[-a-zA-Z0-9._]*[-a-zA-Z0-9])(?::\d{2,5
 
 export const ownUrl = /^(localhost|travelfeed\.io|travelfeedio\.herokuapp.com)$/;
 
-export const allowedTitleChars = /[^\sa-zA-Z0-9(?)(')(`)(,)(\-)(’)(#)(!)(´)(:)(()())(\])([)]+/g;
+export const allowedTitleChars = /[^\sa-zA-Z0-9(?)(')(/)(`)(,)(\-)(’)(#)(!)(´)(:)(()())(\])([)]+/g;
 
 export const nospecialchars = /[^a-zA-Z0-9]/g;
 

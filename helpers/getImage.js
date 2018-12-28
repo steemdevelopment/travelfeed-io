@@ -1,6 +1,12 @@
 //Gets the image from the json_metadata if they are defined, if not it crawls the body for an image, if none is found it returns a placeholder
 import { imageRegex } from "../utils/regex";
 
+export const getImageList = body => {
+  body = body.replace(/(https:\/\/steemitimages\.com\/1000x0\/)/g, "");
+  const image = body.match(imageRegex);
+  return image;
+};
+
 const getImage = (json_metadata, body, size) => {
   const json = JSON.parse(json_metadata);
   let image = "";

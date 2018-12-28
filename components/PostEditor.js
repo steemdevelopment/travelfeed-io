@@ -9,10 +9,13 @@ import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import TextField from "@material-ui/core/TextField";
 import { comment } from "../utils/actions";
-import { APP_VERSION } from "../config";
+import { APP_VERSION, ROOTURL } from "../config";
 import { extractSWM, permlinkFromTitle } from "../utils/regex";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PropTypes from "prop-types";
+import { getUser } from "../utils/token";
+import { getImageList } from "../helpers/getImage";
+import Router from "next/router";
 
 class PostEditor extends Component {
   constructor(props) {
@@ -38,6 +41,15 @@ class PostEditor extends Component {
     this.setState({ tags: tags.target.value });
   }
   componentDidMount() {
+    if (this.props.edit != false) {
+      const json = JSON.parse(this.props.edit.json_metadata);
+      var tags = json.tags != "undefined" ? json.tags : [""];
+      tags = String(tags).replace(/,/g, " ");
+      this.setState({
+        title: this.props.edit.title,
+        tags: tags
+      });
+    }
     require("tinymce/tinymce");
     require("tinymce/themes/mobile/theme");
     require("tinymce/themes/inlite/theme");
@@ -59,16 +71,17 @@ class PostEditor extends Component {
   success() {
     clearInterval(this.timer);
     this.setState({ completed: 0 });
-    // todo: redirect
   }
   publishPost() {
-    const parentAuthor = "";
+    var parentAuthor = "";
     var parentPermlink = "travelfeed";
     var title = this.state.title;
     var permlink = permlinkFromTitle(title);
     var body = this.state.content;
     var location = this.getLocation(body);
     var allTags = this.state.tags.split(" ");
+    var imageList = getImageList(body);
+    imageList = JSON.stringify(imageList);
     var metadata = '{"tags":["travelfeed",';
     for (var i = 0; i < allTags.length; i++) {
       metadata += '"' + allTags[i] + '"';
@@ -77,9 +90,25 @@ class PostEditor extends Component {
       }
     }
     metadata +=
-      '],"app":"' + APP_VERSION + '","coordinates":"' + location + '"}';
+      '],"app":"' +
+      APP_VERSION +
+      '","image":' +
+      imageList +
+      ',"coordinates":"' +
+      location +
+      '"}';
     // todo: Parse body for images and links and include them in the json_metadata
     var jsonMetadata = JSON.parse(metadata);
+    var username = getUser();
+    if (this.props.edit != false) {
+      const json = JSON.parse(this.props.edit.json_metadata);
+      parentPermlink = json.tags != "undefined" ? json.tags[0] : "travelfeed";
+      permlink = this.props.edit.permlink;
+    }
+    if (this.props.edit == false) {
+      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
+    }
+    this.setState({ user: username, permlink: permlink });
     this.timer = setInterval(this.progress, 20);
     comment(parentAuthor, parentPermlink, permlink, title, body, jsonMetadata);
   }
@@ -94,8 +123,9 @@ class PostEditor extends Component {
     }
   }
   render() {
-    if (this.state.completed == 100) {
-      this.success();
+    var submittext = "Publish";
+    if (this.props.edit != false) {
+      submittext = "Edit";
     }
     const bodyText = this.state.content;
     let sanitized = sanitize(bodyText, { allowedTags: [] });
@@ -125,7 +155,7 @@ class PostEditor extends Component {
             variant="outlined"
             onClick={() => this.publishPost()}
           >
-            Publish Now
+            {submittext}
           </Button>
         </Fragment>
       );
@@ -134,14 +164,18 @@ class PostEditor extends Component {
         <Tooltip title="You need to write at least 250 words and set a title and at least one tag before you can publish your post">
           <span>
             <Button color="primary" variant="outlined" disabled>
-              Publish Now
+              {submittext}
             </Button>
           </span>
         </Tooltip>
       );
     }
     var editor = <Fragment />;
-    if (this.state.mounted == true) {
+    if (this.state.completed == 100) {
+      this.success();
+      const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
+      Router.push(url);
+    } else if (this.state.mounted == true) {
       editor = (
         <Editor
           init={{
@@ -217,14 +251,16 @@ class PostEditor extends Component {
 }
 
 PostEditor.defaultProps = {
-  initialValue: ""
+  initialValue: "",
+  edit: false
 };
 
 PostEditor.propTypes = {
   comment: PropTypes.object,
   initialValue: PropTypes.string,
   parentAuthor: PropTypes.string,
-  parentPermlink: PropTypes.string
+  parentPermlink: PropTypes.string,
+  edit: PropTypes.object
 };
 
 export default PostEditor;

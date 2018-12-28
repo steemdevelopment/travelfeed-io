@@ -302,13 +302,11 @@ class PostGrid extends Component {
               processed.push(post.permlink);
               if (this.props.poststyle == "list") {
                 return (
-                  <Grid item lg={3} md={4} sm={6} xs={12}>
-                    <PostListItem
-                      post={post}
-                      sanitized={sanitized}
-                      readtime={readtime}
-                    />
-                  </Grid>
+                  <PostListItem
+                    post={post}
+                    sanitized={sanitized}
+                    readtime={readtime}
+                  />
                 );
               } else {
                 return (

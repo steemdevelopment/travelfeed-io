@@ -70,15 +70,17 @@ class VoteSlider extends Component {
     }
   };
   componentDidMount() {
-    const post = this.props.post;
     const user = getUser();
+    this.setState({
+      user: user
+    });
+    const post = this.props.post;
     this.getTotalMiles();
     for (let vote = 0; vote < post.active_votes.length; vote++) {
       if (post.active_votes[vote].voter == user) {
         this.setState({
           weight: Math.round(post.active_votes[vote].percent / 1000),
-          hasVoted: true,
-          user: user
+          hasVoted: true
         });
       }
     }

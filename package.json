@@ -39,14 +39,14 @@
     "steemconnect": "^2.0.1",
     "tinymce": "^4.9.2",
     "url-parse": "^1.4.4",
-    "xmldom": "^0.1.27"
-  },
-  "devDependencies": {
+    "xmldom": "^0.1.27",
     "@babel/core": "^7.2.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.2.0",
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.4",
+    "babel-loader": "^8.0.4"
+  },
+  "devDependencies": {
     "dotenv": "^6.2.0",
     "eslint": "^5.10.0",
     "eslint-plugin-react": "^7.11.1"

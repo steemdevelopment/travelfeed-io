@@ -32,6 +32,7 @@ import PublishIcon from "@material-ui/icons/Create";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import RepliesIcon from "@material-ui/icons/Reply";
+import DownIcon from "@material-ui/icons/ArrowDropDown";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import CommentsIcon from "@material-ui/icons/Comment";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -173,6 +174,7 @@ class Header extends Component {
                 this.state.user
               }/avatar/small`}
             />
+            <DownIcon />
           </Button>
           <Popper
             open={menuopen}

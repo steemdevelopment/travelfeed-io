@@ -17,7 +17,6 @@ import { getUser } from "../utils/token";
 import { getImageList } from "../helpers/getImage";
 import Router from "next/router";
 import { withSnackbar } from "notistack";
-import Post from "../pages/post";
 
 class PostEditor extends Component {
   constructor(props) {

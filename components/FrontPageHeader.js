@@ -25,11 +25,11 @@ const items = [
           </div>
         </div>
         <p>
-          <Link href="#discover">
+          <a href="#discover">
             <Button color="secondary" variant="contained">
               Discover Now
             </Button>
-          </Link>
+          </a>
         </p>
       </div>
     ),
@@ -50,10 +50,12 @@ const items = [
           </div>
         </div>
         <p>
-          <Link href="">
-            <Button color="primary" variant="outlined">
-              Learn more
-            </Button>
+          <Link href="/join" passHref>
+            <a>
+              <Button color="primary" variant="outlined">
+                Learn more
+              </Button>
+            </a>
           </Link>
         </p>
       </div>
@@ -76,9 +78,13 @@ const items = [
           </div>
         </div>
         <p>
-          <Button color="inherit" variant="outlined">
-            Join the Community
-          </Button>
+          <Link href="/join" passHref>
+            <a>
+              <Button color="inherit" variant="outlined">
+                Join the Community
+              </Button>
+            </a>
+          </Link>
         </p>
       </div>
     ),

@@ -139,4 +139,5 @@ button:hover,
 }
 .carousel-inner .active {
   opacity: 1;
+  z-index: 100;
 }

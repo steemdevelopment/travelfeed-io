@@ -37,7 +37,8 @@ class PostAuthorProfile extends Component {
       backgroundImage: "url(" + this.state.cover + ")",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center center",
-      backgroundSize: "cover"
+      backgroundSize: "cover",
+      marginTop: "-10px"
     };
     return (
       <div className="text-center p-5 mb-3" style={divStyle}>

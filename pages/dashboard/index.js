@@ -52,7 +52,7 @@ class Dashboard extends Component {
                 </li>
               </ul>
               <p>
-                Or,{" "}
+                Or,
                 <Link href="/" passhref>
                   <a>return to the main app to discover great travel content</a>
                 </Link>

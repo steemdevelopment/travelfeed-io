@@ -126,7 +126,7 @@ class PostEditor extends Component {
             onClick={() => this.publishPost()}
           >
             Publish Now
-          </Button>{" "}
+          </Button>
         </Fragment>
       );
     } else {

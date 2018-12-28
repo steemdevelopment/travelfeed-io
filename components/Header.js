@@ -196,7 +196,7 @@ class Header extends Component {
                         <a>
                           <MenuItem>
                             <ListItemIcon>
-                              <DashboardIcon />{" "}
+                              <DashboardIcon />
                               <ListItemText inset primary="Dashboard" />
                             </ListItemIcon>
                           </MenuItem>

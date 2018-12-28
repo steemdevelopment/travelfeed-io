@@ -34,7 +34,7 @@ class Bookmarks extends Component {
           <Card>
             <CardContent />
           </Card>
-        </Grid>{" "}
+        </Grid>
       </Grid>
     );
     if (this.state.user == null) {
@@ -49,7 +49,7 @@ class Bookmarks extends Component {
         >
           <Grid item lg={7} md={8} sm={11} xs={12}>
             <NotFound statusCode="logged_out" />
-          </Grid>{" "}
+          </Grid>
         </Grid>
       );
     } else if (this.state.user != null && this.state.user != "") {

@@ -13,8 +13,6 @@ import URL from "url-parse";
 import { ownUrl } from "../../utils/regex";
 
 const knownDomains = [
-  "localhost",
-  "travelfeed.io",
   "busy.org",
   "steempeak.com",
   "steemit.com",
@@ -214,15 +212,16 @@ export default ({
       const url = new URL(href);
       const hostname = url.hostname || "localhost";
 
-      if (["https", "http"].indexOf(url.protocol) || !hostname.match(ownUrl)) {
-        attys.target = "_blank";
-        attys.rel = "nofollow noopener";
-      }
-
       if (secureLinks && knownDomains.indexOf(hostname) === -1) {
         href = `/exit?url=${encodeURIComponent(href)}`;
+        attys.rel = "nofollow";
+      } else if (
+        ["https", "http"].indexOf(url.protocol) ||
+        !hostname.match(ownUrl)
+      ) {
+        attys.target = "_blank";
+        attys.rel = "nofollow noopener noreferrer";
       }
-
       attys.href = href;
 
       return {

@@ -8,7 +8,7 @@ This function is extracted from the source code of busy.org and Condenser with s
 
 import sanitizeHtml from "sanitize-html";
 import sanitizeConfig from "./PostParser/SanitizeConfig";
-// import htmlReady from "./PostParser/HtmlReady";
+import htmlReady from "./PostParser/HtmlReady";
 import improve from "./PostParser/improve";
 import Remarkable from "remarkable";
 import { imageRegex, htmlComment } from "../utils/regex";
@@ -35,8 +35,8 @@ const parseBody = body => {
   // Render markdown to HTML
   parsedBody = remarkable.render(parsedBody);
   // Todo: Implement Condenser/Busy HTML parsing
-  // const htmlReadyOptions = { mutate: true, resolveIframe: true };
-  // parsedBody = htmlReady(parsedBody, htmlReadyOptions).html;
+  const htmlReadyOptions = { mutate: true, resolveIframe: true };
+  parsedBody = htmlReady(parsedBody, htmlReadyOptions).html;
   // Todo: Embeds
   // Sanitize
   parsedBody = sanitizeHtml(

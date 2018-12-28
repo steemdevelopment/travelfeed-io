@@ -4,7 +4,7 @@ This function is extracted from the source code of busy.org and condenser with s
  * 
  * 
  * https://github.com/busyorg/busy/blob/a09049a4cb18103363fb578ebaec57b35c7d15e0/src/client/vendor/SanitizeConfig.js
- * https://github.com/busyorg/busy/blob/a09049a4cb18103363fb578ebaec57b35c7d15e0/src/client/vendor/SanitizeConfig.jshttps://raw.githubusercontent.com/steemit/steemit.com/354c08a10cf88e0828a70dbf7ed9082698aea20d/app/utils/SanitizeConfig.js
+ * https://raw.githubusercontent.com/steemit/steemit.com/354c08a10cf88e0828a70dbf7ed9082698aea20d/app/utils/SanitizeConfig.js
  *
  */
 
@@ -23,7 +23,17 @@ const knownDomains = [
   "instagram.com",
   "facebook.com",
   "discord.gg",
-  "steemitworldmap.com"
+  "steemitworldmap.com",
+  "www.travelfeed.io",
+  "www.busy.org",
+  "www.steempeak.com",
+  "www.steemit.com",
+  "www.d.tube",
+  "www.youtube.com",
+  "www.instagram.com",
+  "www.facebook.com",
+  "www.discord.gg",
+  "www.steemitworldmap.com"
 ];
 
 const iframeWhitelist = [

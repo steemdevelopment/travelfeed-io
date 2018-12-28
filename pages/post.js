@@ -11,7 +11,7 @@ import PostComments from "../components/PostComments";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import FollowButton from "../components/FollowButton";
-import RegexBody from "../helpers/RegexBody";
+import parseBody from "../helpers/parseBody";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
 import Card from "@material-ui/core/Card";
@@ -66,7 +66,7 @@ class Post extends Component {
   }
   render() {
     const post = this.props.post;
-    let htmlBody = RegexBody(post.body);
+    let htmlBody = parseBody(post.body);
     let sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
     if (

@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
 import sanitize from "sanitize-html";
-import { getHtml } from "../components/busy/Body";
+import parseBody from "../helpers/parseBody";
 import { Client } from "dsteem";
 import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
@@ -277,7 +277,7 @@ class PostGrid extends Component {
           {selector}
           {this.state.stream.map(post => {
             const json = JSON.parse(post.json_metadata);
-            let htmlBody = getHtml(post.body, {}, "text");
+            let htmlBody = parseBody(post.body);
             let sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
             // Filter out:

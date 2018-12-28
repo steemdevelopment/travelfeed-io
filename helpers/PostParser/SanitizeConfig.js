@@ -1,14 +1,31 @@
-import sanitizeHtml from "sanitize-html";
-import URL from "url-parse";
-import { ownUrl } from "./regexHelpers";
-import { knownDomains } from "./constants";
-
 /**
-This function is extracted from steemit.com source code and does the same tasks with some slight-
+This function is extracted from the source code of busy.org and condenser with some slight-
  * adjustments to meet our needs. Refer to the main one in case of future problems:
- * https://raw.githubusercontent.com/steemit/steemit.com/354c08a10cf88e0828a70dbf7ed9082698aea20d/app/utils/SanitizeConfig.js
+ * 
+ * 
+ * https://github.com/busyorg/busy/blob/a09049a4cb18103363fb578ebaec57b35c7d15e0/src/client/vendor/SanitizeConfig.js
+ * https://github.com/busyorg/busy/blob/a09049a4cb18103363fb578ebaec57b35c7d15e0/src/client/vendor/SanitizeConfig.jshttps://raw.githubusercontent.com/steemit/steemit.com/354c08a10cf88e0828a70dbf7ed9082698aea20d/app/utils/SanitizeConfig.js
  *
  */
+
+import sanitizeHtml from "sanitize-html";
+import URL from "url-parse";
+import { ownUrl } from "../../utils/regex";
+
+const knownDomains = [
+  "localhost",
+  "travelfeed.io",
+  "busy.org",
+  "steempeak.com",
+  "steemit.com",
+  "d.tube",
+  "youtube.com",
+  "instagram.com",
+  "facebook.com",
+  "discord.gg",
+  "steemitworldmap.com"
+];
+
 const iframeWhitelist = [
   {
     re: /^(https?:)?\/\/player.vimeo.com\/video\/.*/i,
@@ -113,8 +130,8 @@ export default ({
               webkitallowfullscreen: "webkitallowfullscreen", // deprecated but required for vimeo : https://vimeo.com/forums/help/topic:278181
               mozallowfullscreen: "mozallowfullscreen", // deprecated but required for vimeo
               src,
-              width: large ? "640" : "480",
-              height: large ? "360" : "270"
+              width: large ? "960" : "480",
+              height: large ? "540" : "270"
             }
           };
         }
@@ -189,6 +206,7 @@ export default ({
 
       if (["https", "http"].indexOf(url.protocol) || !hostname.match(ownUrl)) {
         attys.target = "_blank";
+        attys.rel = "nofollow noopener";
       }
 
       if (secureLinks && knownDomains.indexOf(hostname) === -1) {

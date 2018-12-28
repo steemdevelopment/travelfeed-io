@@ -6,7 +6,7 @@ import Link from "next/link";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import RegexBody from "../helpers/RegexBody";
+import parseBody from "../helpers/parseBody";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "@babel/polyfill";
@@ -71,20 +71,7 @@ class PostComments extends Component {
       <Fragment>
         {this.state.stream.map(comment => {
           if (isBlacklisted(comment.author, "none") != true) {
-            let getbody = comment.body
-              .replace(
-                /(?:(?<=(?:src="))|(?:(?<=(?:\())))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=["|)]))/gi,
-                "https://steemitimages.com/1000x0/$1"
-              )
-              .replace(
-                /(?:(?<=[^"|^(|^s|^t]))((?:https|http)?:\/\/.*\.(?:png|jpg|gif|jpeg))(?:(?=[^"|^)]))/gi,
-                '<img src="https://steemitimages.com/1000x0/$1"/>'
-              )
-              .replace(/^(https:\/\/steemitimages\.com\/0x0\/)/, "");
-            let htmlBody = RegexBody(getbody, {}, "text")
-              .replace(/https:\/\/steemit.com/gi, "")
-              .replace(/(href=)(?=(?:"http))/gi, 'rel="nofollow" href=')
-              .replace(/(target="_blank" href=)(?=(?:"\/))/gi, "href=");
+            let htmlBody = parseBody(comment.body);
             const bodyText = { __html: htmlBody };
             const json_date = '{ "date": "' + comment.created + 'Z" }';
             const date_object = new Date(

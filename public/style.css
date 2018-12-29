@@ -96,7 +96,26 @@ a:hover {
   margin-right: 0.25em;
   vertical-align: -0.4em;
 }
-
+.postcontent table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  background-color: transparent;
+  display: table;
+  border: 1px;
+  border-collapse: separate;
+  border-spacing: 2px;
+  border-color: grey;
+}
+.postcontent td {
+  padding: 0.5rem 0.625rem 0.625rem;
+}
+.postcontent tr {
+  background-color: #fcfcfc;
+}
+.postcontent tr:nth-child(even) {
+  background-color: #f4f4f4;
+}
 blockquote > center {
   margin: 0 -50px 0 -50px !important;
 }

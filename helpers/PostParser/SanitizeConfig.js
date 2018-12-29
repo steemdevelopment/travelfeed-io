@@ -195,16 +195,6 @@ export default ({
         attribs: attys
       };
     },
-    td: (tagName, attribs) => {
-      const attys = {};
-      if (attribs.style === "text-align:right") {
-        attys.style = "text-align:right";
-      }
-      return {
-        tagName,
-        attribs: attys
-      };
-    },
     a: (tagName, attribs) => {
       let { href } = attribs;
       if (!href) href = "#";

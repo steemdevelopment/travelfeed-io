@@ -71,7 +71,7 @@ class PostComments extends Component {
       <Fragment>
         {this.state.stream.map(comment => {
           if (isBlacklisted(comment.author, "none") != true) {
-            let htmlBody = parseBody(comment.body);
+            let htmlBody = parseBody(comment.body, {});
             const bodyText = { __html: htmlBody };
             const json_date = '{ "date": "' + comment.created + 'Z" }';
             const date_object = new Date(

@@ -6,7 +6,7 @@ import NotFound from "../../components/NotFound";
 import { getUser } from "../../utils/token";
 import PostGrid from "../../components/PostGrid";
 
-class Bookmarks extends Component {
+class Posts extends Component {
   state = { user: "" };
   getUser() {
     this.setState({ user: getUser() });
@@ -48,7 +48,7 @@ class Bookmarks extends Component {
     return (
       <Fragment>
         <Helmet>
-          <title>{"Bookmarks | TravelFeed: The Travel Community"}</title>
+          <title>{"My Posts | TravelFeed: The Travel Community"}</title>
         </Helmet>
         <Header drawer={true} />
         {content}
@@ -57,4 +57,4 @@ class Bookmarks extends Component {
   }
 }
 
-export default Bookmarks;
+export default Posts;

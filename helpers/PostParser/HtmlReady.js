@@ -255,9 +255,7 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
     const tagLower = tag2.toLowerCase();
     if (hashtags) hashtags.add(tagLower);
     if (!mutate) return tag;
-    return (
-      space + `<a href="https://steemit.com/created/${tagLower}">${tag}</a>`
-    );
+    return space + `<a href="/created/${tagLower}">${tag}</a>`;
   });
 
   return content;

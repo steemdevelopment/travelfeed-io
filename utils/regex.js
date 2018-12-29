@@ -12,6 +12,8 @@ export const allURLs = /(?:https?|ftp):\/\/[\n\S]+/g;
 
 export const htmlComment = /<!--([\s\S]+?)(-->|$)/g;
 
+export const markdownComment = /\[\/\/\]:\S?\s\(.*\)/g;
+
 export const regExcerpt = text => {
   return text
     .replace(allURLs, "")

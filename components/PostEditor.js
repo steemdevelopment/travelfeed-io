@@ -91,7 +91,7 @@ class PostEditor extends Component {
     var allTags = this.state.tags.split(" ");
     var imageList = getImageList(body);
     imageList = JSON.stringify(imageList);
-    var metadata = '{"tags":["travelfeed",';
+    var metadata = '{"tags":[';
     for (var i = 0; i < allTags.length; i++) {
       metadata += '"' + allTags[i] + '"';
       if (i + 1 < allTags.length) {
@@ -230,7 +230,10 @@ class PostEditor extends Component {
             },
             autosave_ask_before_unload: true,
             autosave_interval: "20s",
-            autosave_retention: "120m"
+            autosave_retention: "120m",
+            relative_urls: false,
+            remove_script_host: false,
+            document_base_url: "https://travelfeed.io/"
           }}
           value={this.state.content}
           onEditorChange={this.handleContentEditorChange}

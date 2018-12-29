@@ -66,7 +66,7 @@ class Post extends Component {
   }
   render() {
     const post = this.props.post;
-    let htmlBody = parseBody(post.body);
+    let htmlBody = parseBody(post.body, {});
     let sanitized = sanitize(htmlBody, { allowedTags: [] });
     const readtime = readingTime(sanitized);
     if (

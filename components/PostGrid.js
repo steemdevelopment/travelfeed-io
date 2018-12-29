@@ -277,7 +277,7 @@ class PostGrid extends Component {
           {selector}
           {this.state.stream.map(post => {
             const json = JSON.parse(post.json_metadata);
-            let htmlBody = parseBody(post.body);
+            let htmlBody = parseBody(post.body, {});
             let sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
             // Filter out:

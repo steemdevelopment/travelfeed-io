@@ -11,7 +11,12 @@ import sanitizeConfig from "./PostParser/SanitizeConfig";
 import htmlReady from "./PostParser/HtmlReady";
 import improve from "./PostParser/improve";
 import Remarkable from "remarkable";
-import { imageRegex, htmlComment } from "../utils/regex";
+import {
+  imageRegex,
+  htmlComment,
+  markdownComment,
+  swmregex
+} from "../utils/regex";
 
 // Initialise Markdown parser
 const remarkable = new Remarkable({
@@ -22,29 +27,37 @@ const remarkable = new Remarkable({
   quotes: "“”‘’"
 });
 
-const parseBody = body => {
+const parseBody = (body, options) => {
   // Remove HTML comments
   let parsedBody = body.replace(htmlComment, "");
+  //remove markdown comment
+  parsedBody = parsedBody.replace(markdownComment, "");
+  //remove remaining SWM snippets
+  parsedBody = parsedBody.replace(swmregex, "");
   // Proxify Image urls
-  parsedBody = parsedBody.replace(
-    imageRegex,
-    "https://steemitimages.com/1000x0/$1"
-  );
-  // Latex
-  parsedBody = improve(parsedBody);
+  if (options.editor != true) {
+    parsedBody = parsedBody.replace(
+      imageRegex,
+      "https://steemitimages.com/1000x0/$1"
+    );
+    // Latex
+    parsedBody = improve(parsedBody);
+  }
   // Render markdown to HTML
   parsedBody = remarkable.render(parsedBody);
-  // Todo: Implement Condenser/Busy HTML parsing
   const htmlReadyOptions = { mutate: true, resolveIframe: true };
   parsedBody = htmlReady(parsedBody, htmlReadyOptions).html;
-  // Todo: Embeds
   // Sanitize
-  parsedBody = sanitizeHtml(
-    parsedBody,
-    sanitizeConfig({
-      secureLinks: true
-    })
-  );
+  if (options.editor != true) {
+    parsedBody = sanitizeHtml(
+      parsedBody,
+      sanitizeConfig({
+        secureLinks: true
+      })
+    );
+  } else {
+    parsedBody = parsedBody.replace(/"\.\.\//g, '"https://travelfeed.io/');
+  }
   return parsedBody;
 };
 

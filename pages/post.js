@@ -27,6 +27,7 @@ import VoteSlider from "../components/VoteSlider";
 import Header from "../components/Header";
 import NotFound from "../components/NotFound";
 import InvalidPost from "../components/InvalidPost";
+import { extractSWM } from "../utils/regex";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -63,12 +64,12 @@ class Post extends Component {
     const readtime = readingTime(sanitized);
     const url = "https://steemit.com/@" + post.author + "/" + post.permlink;
     if (
-      readtime.words < 250 ||
+      (post.author != "travelfeed" && readtime.words < 250) ||
       isBlacklisted(post.author, post.permlink) === true ||
       (post.category != "travelfeed" &&
-        JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > 1 ===
+        JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 ===
           false) ||
-      JSON.parse(post.json_metadata).tags.indexOf("nsfw") > 1 === true
+      JSON.parse(post.json_metadata).tags.indexOf("nsfw") > -1 === true
     ) {
       return <InvalidPost url={url} />;
     }
@@ -85,8 +86,7 @@ class Post extends Component {
     let canonicalUrl =
       "https://steemit.com/travelfeed/@" + post.author + "/" + post.permlink;
     let excerpt = sanitized.substring(0, 143) + `[...] by ${post.author}`;
-    var swmregex = /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong\b/i;
-    const swm = swmregex.exec(post.body);
+    const swm = extractSWM(post.body);
     var lat = 0.0;
     var long = 0.0;
     if (swm != null && swm.length > 2) {

@@ -24,7 +24,7 @@ class PostEditor extends Component {
     this.state = {
       title: "",
       content: this.props.initialValue,
-      tags: "",
+      tags: "travelfeed",
       completed: 0
     };
     this.handleTitleEditorChange = this.handleTitleEditorChange.bind(this);

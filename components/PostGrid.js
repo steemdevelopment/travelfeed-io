@@ -285,18 +285,19 @@ class PostGrid extends Component {
             // - Limit initial fetch to 7 posts
             // - Exclude resteems
             if (
-              ((processed.indexOf(post.permlink) > -1 === false && count < 8) ||
+              (((processed.indexOf(post.permlink) > -1 === false &&
+                count < 8) ||
                 this.state.stream.length > 24) &&
-              (this.state.type == "tag" ||
-                (this.state.type == "curationfeed" &&
-                  post.author != this.state.filter) ||
-                (this.state.type == "blog" &&
-                  post.author == this.state.filter)) &&
-              isBlacklisted(post.author, post.permlink) === false &&
-              readtime.words > 250 &&
-              post.category != "travelfeed" &&
-              json.tags.indexOf("travelfeed") > -1 === true &&
-              json.tags.indexOf("nsfw") > -1 === false
+                (this.state.type == "tag" ||
+                  (this.state.type == "curationfeed" &&
+                    post.author != this.state.filter) ||
+                  (this.state.type == "blog" &&
+                    post.author == this.state.filter)) &&
+                isBlacklisted(post.author, post.permlink) === false &&
+                readtime.words > 250 &&
+                post.category == "travelfeed") ||
+              (json.tags.indexOf("travelfeed") > -1 === true &&
+                json.tags.indexOf("nsfw") > -1 === false)
             ) {
               //todo: try fetching first image from post if no image is defined in json_metadata
               ++count;

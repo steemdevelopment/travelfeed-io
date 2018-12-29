@@ -213,7 +213,21 @@ class PostEditor extends Component {
             browser_spellcheck: true,
             extended_valid_elements:
               "+iframe[src|width|height|name|align|class]",
-            mobile: { theme: "mobile" },
+            mobile: {
+              theme: "mobile",
+              plugins:
+                "autolink link image textpattern hr map media table paste code autosave",
+              inline: false,
+              toolbar: [
+                "undo",
+                "bold",
+                "italic",
+                "styleselect",
+                "h2",
+                "quicklink",
+                "image"
+              ]
+            },
             autosave_ask_before_unload: true,
             autosave_interval: "20s",
             autosave_retention: "120m"

@@ -294,6 +294,7 @@ class PostGrid extends Component {
                   post.author == this.state.filter)) &&
               isBlacklisted(post.author, post.permlink) === false &&
               readtime.words > 250 &&
+              post.category != "travelfeed" &&
               json.tags.indexOf("travelfeed") > -1 === true &&
               json.tags.indexOf("nsfw") > -1 === false
             ) {

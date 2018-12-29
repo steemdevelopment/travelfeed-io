@@ -46,7 +46,9 @@ class Post extends Component {
     ]);
     if (
       post.id === 0 ||
-      JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 === false
+      (post.category != "travelfeed" &&
+        JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 ===
+          false)
     ) {
       post = {
         post: {

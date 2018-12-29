@@ -52,6 +52,9 @@ const iframeWhitelist = [
     fn: src => src.replace(/\?.+$/, "") // strip query string (yt: autoplay=1,controls=0,showinfo=0, etc)
   },
   {
+    re: /^(https?:)?\/\/www\.google\.com\/maps\/embed.*/i
+  },
+  {
     re: /^(https?:)?\/\/w.soundcloud.com\/player\/.*/i,
     fn: src => {
       if (!src) return null;

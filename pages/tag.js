@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
+import Header from "../components/Header";
 
 const client = new Client("https://api.steemit.com");
 
@@ -20,6 +21,9 @@ class Tag extends Component {
     if (sortby == "featured") {
       type = "blog";
       sortby = "blog";
+    }
+    if (sortby == "feed") {
+      return { args: { sortby: sortby, tag: tag, type: "feed", stream: [] } };
     }
     try {
       const stream = await client.database.getDiscussions(sortby, args);
@@ -40,6 +44,7 @@ class Tag extends Component {
           <Helmet>
             <title>{"404 - Not Found"}</title>
           </Helmet>
+          <Header />
           <Grid container spacing={0} alignItems="center" justify="center">
             <Grid item lg={7} md={8} sm={11} xs={12}>
               <Card>
@@ -65,6 +70,7 @@ class Tag extends Component {
             <meta property="description" content={description} />
             <meta property="og:description" content={description} />
           </Helmet>
+          <Header />
           <div className="text-center pt-4 pb-2">
             <Typography variant="display3">#{this.props.args.tag}</Typography>
           </div>

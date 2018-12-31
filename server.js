@@ -14,6 +14,15 @@ app
 
     server.use(express.static("public"));
 
+    server.get("/@:user/feed", (req, res) => {
+      const actualPage = "/tag";
+      const queryParams = {
+        sortby: "feed",
+        tag: req.params.user
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
     server.get("/@:author/:permlink", (req, res) => {
       const actualPage = "/post";
       const queryParams = {

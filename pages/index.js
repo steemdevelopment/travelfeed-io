@@ -6,29 +6,45 @@ import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from "../components/BlogGridList";
 import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
+import Header from "../components/Header";
+import { getUser } from "../utils/token";
+import { DEFAULT_META_DESCRIPTION } from "../config";
 
 const client = new Client("https://api.steemit.com");
 
 class Index extends Component {
+  state = { user: null };
+  getUser() {
+    this.setState({ user: getUser() });
+  }
+  componentDidMount() {
+    this.getUser();
+  }
   static async getInitialProps() {
     const args = { tag: "travelfeed", limit: 24 };
     const stream = await client.database.getDiscussions("blog", args);
     return { stream };
   }
   render() {
-    const description =
-      "Find inspiration for your travels on TravelFeed. Join the TravelFeed community, write your own travel blog and start earning!";
+    var slider = <Fragment />;
+    if (this.state.user == null) {
+      slider = (
+        <div style={{ marginTop: "-10px" }}>
+          <FrontPageHeader />
+        </div>
+      );
+    }
+
     return (
       <Fragment>
         <Helmet>
           <title>{"TravelFeed: The Travel Community"}</title>
-          <meta property="description" content={description} />
-          <meta property="og:description" content={description} />
+          <meta property="description" content={DEFAULT_META_DESCRIPTION} />
+          <meta property="og:description" content={DEFAULT_META_DESCRIPTION} />
         </Helmet>
-        <div>
-          <FrontPageHeader />
-        </div>
-        <div>
+        <Header />
+        {slider}
+        <div className="pt-5">
           <BlogGridList stream={this.props.stream} />
         </div>
         <div id="discover" />

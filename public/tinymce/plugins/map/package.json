@@ -1,0 +1,67 @@
+{
+  "_from": "@brandextract/tinymce-plugin-map",
+  "_id": "@brandextract/tinymce-plugin-map@0.3.0",
+  "_inBundle": false,
+  "_integrity": "sha1-lu1tklPTDcRdqEOfH+tho64vb+8=",
+  "_location": "/@brandextract/tinymce-plugin-map",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@brandextract/tinymce-plugin-map",
+    "name": "@brandextract/tinymce-plugin-map",
+    "escapedName": "@brandextract%2ftinymce-plugin-map",
+    "scope": "@brandextract",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@brandextract/tinymce-plugin-map/-/tinymce-plugin-map-0.3.0.tgz",
+  "_shasum": "96ed6d9253d30dc45da8439f1feb61a3ae2f6fef",
+  "_spec": "@brandextract/tinymce-plugin-map",
+  "_where": "/Users/jp/Documents/GitHub/travelfeed-io",
+  "author": {
+    "name": "BrandExtract"
+  },
+  "bugs": {
+    "url": "https://github.com/BrandExtract/tinymce-plugin-map/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "A TinyMCE plugin to insert a map",
+  "devDependencies": {
+    "pre-commit": "^1.2.2",
+    "uglify-js": "^2.7.5"
+  },
+  "homepage": "https://github.com/BrandExtract/tinymce-plugin-map#readme",
+  "keywords": [
+    "TinyMCE",
+    "plugin",
+    "Google",
+    "Maps"
+  ],
+  "license": "ISC",
+  "main": "plugin.js",
+  "name": "@brandextract/tinymce-plugin-map",
+  "pre-commit": [
+    "build",
+    "docs",
+    "git"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrandExtract/tinymce-plugin-map.git"
+  },
+  "scripts": {
+    "build": "uglifyjs --compress properties,dead_code --mangle --output plugin.min.js --source-map plugin.js.map plugin.js",
+    "docs": "cp -r plugin.js.map plugin.min.js img langs docs/scripts/tinymce/plugins/map",
+    "git": "git add -u",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.3.0"
+}

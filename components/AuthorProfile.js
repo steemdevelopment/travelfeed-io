@@ -1,10 +1,10 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import { Client } from "dsteem";
-import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 const client = new Client("https://api.steemit.com");
 import Typography from "@material-ui/core/Typography";
+import FollowButton from "./FollowButton";
 
 class PostAuthorProfile extends Component {
   state = {
@@ -37,7 +37,8 @@ class PostAuthorProfile extends Component {
       backgroundImage: "url(" + this.state.cover + ")",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center center",
-      backgroundSize: "cover"
+      backgroundSize: "cover",
+      marginTop: "-10px"
     };
     return (
       <div className="text-center p-5 mb-3" style={divStyle}>
@@ -60,16 +61,14 @@ class PostAuthorProfile extends Component {
               </div>
               <Fragment>
                 <div>
-                  <Typography variant="title" className="text-light">
+                  <Typography variant="h6" className="text-light">
                     {this.props.author}
                   </Typography>
                 </div>
                 <p className="p-2">{this.state.profiledesc}</p>
               </Fragment>
               <div>
-                <Button variant="outlined" size="small" color="inherit">
-                  Follow
-                </Button>
+                <FollowButton author={this.props.author} btnstyle="default" />
               </div>
             </div>
           </div>

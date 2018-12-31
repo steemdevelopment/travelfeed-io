@@ -106,17 +106,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var next_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/app */ "next/app");
 /* harmony import */ var next_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_app__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! next/head */ "next/head");
-/* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
-/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core/CssBaseline */ "@material-ui/core/CssBaseline");
-/* harmony import */ var _material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-jss/lib/JssProvider */ "react-jss/lib/JssProvider");
-/* harmony import */ var react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _src_getPageContext__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../src/getPageContext */ "./src/getPageContext.js");
-/* harmony import */ var _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/colors/blue */ "@material-ui/core/colors/blue");
-/* harmony import */ var _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
+/* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/CssBaseline */ "@material-ui/core/CssBaseline");
+/* harmony import */ var _material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-jss/lib/JssProvider */ "react-jss/lib/JssProvider");
+/* harmony import */ var react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _src_getPageContext__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../src/getPageContext */ "./src/getPageContext.js");
+/* harmony import */ var notistack__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! notistack */ "notistack");
+/* harmony import */ var notistack__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(notistack__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
@@ -145,16 +143,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
-var theme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["createMuiTheme"])({
-  palette: {
-    primary: _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_7___default.a,
-    secondary: {
-      main: "#f44336"
-    }
-  }
-});
-
 var MyApp =
 /*#__PURE__*/
 function (_App) {
@@ -166,7 +154,7 @@ function (_App) {
     _classCallCheck(this, MyApp);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MyApp).call(this, props));
-    _this.pageContext = Object(_src_getPageContext__WEBPACK_IMPORTED_MODULE_6__["default"])();
+    _this.pageContext = Object(_src_getPageContext__WEBPACK_IMPORTED_MODULE_5__["default"])();
     return _this;
   }
 
@@ -186,15 +174,21 @@ function (_App) {
       var _this$props = this.props,
           Component = _this$props.Component,
           pageProps = _this$props.pageProps;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_1__["Container"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_head__WEBPACK_IMPORTED_MODULE_2___default.a, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("title", null, "My page")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_5___default.a, {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(next_app__WEBPACK_IMPORTED_MODULE_1__["Container"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_jss_lib_JssProvider__WEBPACK_IMPORTED_MODULE_4___default.a, {
         registry: this.pageContext.sheetsRegistry,
         generateClassName: this.pageContext.generateClassName
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_3__["MuiThemeProvider"], {
-        theme: theme,
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_2__["MuiThemeProvider"], {
+        theme: this.pageContext.theme,
         sheetsManager: this.pageContext.sheetsManager
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_4___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Component, _extends({
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_material_ui_core_CssBaseline__WEBPACK_IMPORTED_MODULE_3___default.a, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          paddingTop: "65px"
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(notistack__WEBPACK_IMPORTED_MODULE_6__["SnackbarProvider"], {
+        maxSnack: 3
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Component, _extends({
         pageContext: this.pageContext
-      }, pageProps)))));
+      }, pageProps))))));
     }
   }]);
 
@@ -219,10 +213,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jss__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jss__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core/styles */ "@material-ui/core/styles");
 /* harmony import */ var _material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _material_ui_core_colors_purple__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/colors/purple */ "@material-ui/core/colors/purple");
-/* harmony import */ var _material_ui_core_colors_purple__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_purple__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/colors/green */ "@material-ui/core/colors/green");
-/* harmony import */ var _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _material_ui_core_colors_indigo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @material-ui/core/colors/indigo */ "@material-ui/core/colors/indigo");
+/* harmony import */ var _material_ui_core_colors_indigo__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_indigo__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core/colors/blue */ "@material-ui/core/colors/blue");
+/* harmony import */ var _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_3__);
 /* eslint-disable no-underscore-dangle */
 
 
@@ -233,14 +227,14 @@ __webpack_require__.r(__webpack_exports__);
 var theme = Object(_material_ui_core_styles__WEBPACK_IMPORTED_MODULE_1__["createMuiTheme"])({
   palette: {
     primary: {
-      light: _material_ui_core_colors_purple__WEBPACK_IMPORTED_MODULE_2___default.a[300],
-      main: _material_ui_core_colors_purple__WEBPACK_IMPORTED_MODULE_2___default.a[500],
-      dark: _material_ui_core_colors_purple__WEBPACK_IMPORTED_MODULE_2___default.a[700]
+      light: _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_3___default.a[300],
+      main: _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_3___default.a[700],
+      dark: _material_ui_core_colors_blue__WEBPACK_IMPORTED_MODULE_3___default.a[700]
     },
     secondary: {
-      light: _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_3___default.a[300],
-      main: _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_3___default.a[500],
-      dark: _material_ui_core_colors_green__WEBPACK_IMPORTED_MODULE_3___default.a[700]
+      light: _material_ui_core_colors_indigo__WEBPACK_IMPORTED_MODULE_2___default.a[300],
+      main: _material_ui_core_colors_indigo__WEBPACK_IMPORTED_MODULE_2___default.a[500],
+      dark: _material_ui_core_colors_indigo__WEBPACK_IMPORTED_MODULE_2___default.a[700]
     }
   },
   typography: {
@@ -311,25 +305,14 @@ module.exports = require("@material-ui/core/colors/blue");
 
 /***/ }),
 
-/***/ "@material-ui/core/colors/green":
-/*!*************************************************!*\
-  !*** external "@material-ui/core/colors/green" ***!
-  \*************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("@material-ui/core/colors/green");
-
-/***/ }),
-
-/***/ "@material-ui/core/colors/purple":
+/***/ "@material-ui/core/colors/indigo":
 /*!**************************************************!*\
-  !*** external "@material-ui/core/colors/purple" ***!
+  !*** external "@material-ui/core/colors/indigo" ***!
   \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("@material-ui/core/colors/purple");
+module.exports = require("@material-ui/core/colors/indigo");
 
 /***/ }),
 
@@ -366,14 +349,14 @@ module.exports = require("next/app");
 
 /***/ }),
 
-/***/ "next/head":
+/***/ "notistack":
 /*!****************************!*\
-  !*** external "next/head" ***!
+  !*** external "notistack" ***!
   \****************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = require("next/head");
+module.exports = require("notistack");
 
 /***/ }),
 

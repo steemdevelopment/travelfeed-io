@@ -1,11 +1,10 @@
 import React from "react";
 import App, { Container } from "next/app";
-import Helmet from "react-helmet";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import JssProvider from "react-jss/lib/JssProvider";
 import getPageContext from "../src/getPageContext";
-import Header from "../components/Header";
+import { SnackbarProvider } from "notistack";
 
 class MyApp extends App {
   constructor(props) {
@@ -40,9 +39,11 @@ class MyApp extends App {
             <CssBaseline />
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            <Header />
+            {/* <Header /> */}
             <div style={{ paddingTop: "65px" }} />
-            <Component pageContext={this.pageContext} {...pageProps} />
+            <SnackbarProvider maxSnack={3}>
+              <Component pageContext={this.pageContext} {...pageProps} />
+            </SnackbarProvider>
           </MuiThemeProvider>
         </JssProvider>
       </Container>

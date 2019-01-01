@@ -244,6 +244,10 @@ class PostEditor extends Component {
       <Fragment>
         <InputBase
           autoFocus={true}
+          inputProps={{
+            maxLength: 100
+          }}
+          multiline={true}
           className="font-weight-bold inputtitle"
           placeholder="Title"
           value={this.state.title}

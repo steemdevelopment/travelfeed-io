@@ -38,10 +38,9 @@ class BlogGridList extends Component {
             cols={2.5}
           >
             {this.props.stream.map(post => {
-              const json = JSON.parse(post.json_metadata);
               if (
-                post.author === "travelfeed" &&
-                json.tags.indexOf("travelfeeddaily") > -1 === true
+                post.author === "travelfeed" ||
+                post.author === "jpphotography"
               ) {
                 const image = getImage(post.json_metadata, post.body, "700x0");
                 return (

@@ -115,6 +115,9 @@ class PostEditor extends Component {
       permlink = this.props.edit.permlink;
     }
     if (this.props.type == "comment") {
+      permlink = `re-${
+        this.props.edit.parent_permlink
+      }-${Date.now().toString()}`;
       parentAuthor = this.props.edit.parent_author;
       parentPermlink = this.props.edit.parent_permlink;
     }
@@ -168,7 +171,10 @@ class PostEditor extends Component {
         />
       );
     }
-    if (wordCount > 250 && this.state.title != "" && this.state.tags != "") {
+    if (
+      (wordCount > 250 && this.state.title != "" && this.state.tags != "") ||
+      this.props.type == "comment"
+    ) {
       publishBtn = (
         <Fragment>
           {progress}
@@ -195,8 +201,10 @@ class PostEditor extends Component {
     var editor = <Fragment />;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
-      const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
-      Router.push(url);
+      if (this.props.type != "comment") {
+        var url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
+        Router.push(url);
+      }
     } else if (this.state.mounted == true) {
       editor = (
         <Editor
@@ -250,15 +258,7 @@ class PostEditor extends Component {
           <div className="w-100">
             <div className="postcontent border p-3">{editor}</div>
           </div>
-          <div>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => this.publishPost()}
-            >
-              Submit Comment
-            </Button>
-          </div>
+          <div>{publishBtn}</div>
         </Fragment>
       );
     }
@@ -327,8 +327,6 @@ PostEditor.defaultProps = {
 PostEditor.propTypes = {
   comment: PropTypes.object,
   initialValue: PropTypes.string,
-  parentAuthor: PropTypes.string,
-  parentPermlink: PropTypes.string,
   edit: PropTypes.object,
   mode: PropTypes.string,
   type: PropTypes.string,

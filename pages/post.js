@@ -28,6 +28,7 @@ import Header from "../components/Header";
 import NotFound from "../components/NotFound";
 import InvalidPost from "../components/InvalidPost";
 import { extractSWM } from "../utils/regex";
+import AppIcon from "../components/AppIcon";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -150,9 +151,12 @@ class Post extends Component {
                     </Link>
                   }
                   action={
-                    <IconButton>
-                      <BookmarkIconBorder />
-                    </IconButton>
+                    <Fragment>
+                      <IconButton>
+                        <BookmarkIconBorder />
+                      </IconButton>
+                      <AppIcon post={this.props.post} />
+                    </Fragment>
                   }
                   title={
                     <Fragment>

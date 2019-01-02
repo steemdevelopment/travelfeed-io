@@ -6,8 +6,8 @@ import CardContent from "@material-ui/core/CardContent";
 import parseBody from "../helpers/parseBody";
 import "@babel/polyfill";
 import dateFromJsonString from "../helpers/dateFromJsonString";
-import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@material-ui/core/Avatar";
+import AppIcon from "./AppIcon";
 import CardHeader from "@material-ui/core/CardHeader";
 import PropTypes from "prop-types";
 import VoteSlider from "./VoteSlider";
@@ -35,7 +35,6 @@ class PostpostItem extends Component {
     if (this.props.post.depth > 1) {
       debth = `${String(this.props.post.depth * 20)}px`;
     }
-    console.log(debth);
     return (
       <Fragment>
         <Card className="mb-3" style={{ marginLeft: debth }}>
@@ -56,6 +55,7 @@ class PostpostItem extends Component {
                 </a>
               </Link>
             }
+            action={<AppIcon post={this.props.post} />}
             title={
               <Fragment>
                 <Link

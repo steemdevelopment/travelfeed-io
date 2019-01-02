@@ -11,6 +11,7 @@ import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
+import VoteSlider from "./VoteSlider";
 
 class PostpostItem extends Component {
   render() {
@@ -62,6 +63,7 @@ class PostpostItem extends Component {
           <CardContent>
             <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
           </CardContent>
+          <VoteSlider post={this.props.post} tags={[]} mode="comment" />
         </Card>
       </Fragment>
     );

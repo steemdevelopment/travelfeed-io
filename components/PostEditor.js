@@ -49,7 +49,7 @@ class PostEditor extends Component {
     this.setState({ tags: tags.target.value });
   }
   componentDidMount() {
-    if (this.props.edit != false) {
+    if (this.props.mode == "edit") {
       const json = JSON.parse(this.props.edit.json_metadata);
       var tags = json.tags != "undefined" ? json.tags : [""];
       tags = String(tags).replace(/,/g, " ");
@@ -109,10 +109,14 @@ class PostEditor extends Component {
     // todo: Parse body for images and links and include them in the json_metadata
     var jsonMetadata = JSON.parse(metadata);
     var username = getUser();
-    if (this.props.edit != false) {
+    if (this.props.mode == "edit") {
       const json = JSON.parse(this.props.edit.json_metadata);
       parentPermlink = json.tags != "undefined" ? json.tags[0] : "travelfeed";
       permlink = this.props.edit.permlink;
+    }
+    if (this.props.type == "comment") {
+      parentAuthor = this.props.edit.parent_author;
+      parentPermlink = this.props.edit.parent_permlink;
     }
     if (this.props.edit == false) {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
@@ -142,7 +146,7 @@ class PostEditor extends Component {
   }
   render() {
     var submittext = "Publish";
-    if (this.props.edit != false) {
+    if (this.props.mode == "edit") {
       submittext = "Edit";
     }
     const bodyText = this.state.content;
@@ -240,6 +244,24 @@ class PostEditor extends Component {
         />
       );
     }
+    if (this.props.type == "comment") {
+      return (
+        <Fragment>
+          <div className="w-100">
+            <div className="postcontent border p-3">{editor}</div>
+          </div>
+          <div>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => this.publishPost()}
+            >
+              Submit Comment
+            </Button>
+          </div>
+        </Fragment>
+      );
+    }
     return (
       <Fragment>
         <InputBase
@@ -254,7 +276,7 @@ class PostEditor extends Component {
           onChange={this.handleTitleEditorChange}
           fullWidth
         />
-        <div className="postcontent">{editor}</div>
+        <div className="postcontent posteditor">{editor}</div>
         <div />
         <div className="container">
           <div className="row">
@@ -307,7 +329,9 @@ PostEditor.propTypes = {
   initialValue: PropTypes.string,
   parentAuthor: PropTypes.string,
   parentPermlink: PropTypes.string,
-  edit: PropTypes.any,
+  edit: PropTypes.object,
+  mode: PropTypes.string,
+  type: PropTypes.string,
   enqueueSnackbar: PropTypes.function
 };
 

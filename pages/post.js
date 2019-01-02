@@ -192,7 +192,7 @@ class Post extends Component {
                     </div>
                   </div>
                 </CardContent>
-                <VoteSlider post={post} tags={tags} sliderstyle="post" />
+                <VoteSlider post={post} tags={tags} mode="post" />
               </Card>
             </Grid>
             <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">

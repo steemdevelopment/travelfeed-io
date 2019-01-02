@@ -64,7 +64,7 @@ class BlogGridList extends Component {
                           style={{
                             backgroundImage: `url(${image})`,
                             backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center top",
+                            backgroundPosition: "center center",
                             backgroundSize: "cover",
                             width: "600px",
                             height: "100%"

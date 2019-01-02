@@ -3,8 +3,6 @@ import "@babel/polyfill";
 import PropTypes from "prop-types";
 import getImage from "../helpers/getImage";
 import Link from "next/link";
-import IconButton from "@material-ui/core/IconButton";
-import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
@@ -75,11 +73,6 @@ class BlogGridList extends Component {
                             background:
                               "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
                           }}
-                          actionIcon={
-                            <IconButton>
-                              <FlightIcon className="text-light" />
-                            </IconButton>
-                          }
                         />
                       </GridListTile>
                     </a>
@@ -121,11 +114,6 @@ class BlogGridList extends Component {
                       background:
                         "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
                     }}
-                    actionIcon={
-                      <IconButton>
-                        <FlightIcon className="text-light" />
-                      </IconButton>
-                    }
                   />
                 </GridListTile>
               </a>

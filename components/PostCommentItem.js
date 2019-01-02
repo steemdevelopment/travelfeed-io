@@ -9,9 +9,9 @@ import dateFromJsonString from "../helpers/dateFromJsonString";
 import IconButton from "@material-ui/core/IconButton";
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import PropTypes from "prop-types";
 import VoteSlider from "./VoteSlider";
+import PostComments from "./PostComments";
 
 class PostpostItem extends Component {
   render() {
@@ -22,9 +22,23 @@ class PostpostItem extends Component {
       JSON.parse(json_date, dateFromJsonString).date
     );
     const created = date_object.toDateString();
+    var children = <Fragment />;
+    if (this.props.post.children > 0) {
+      children = (
+        <PostComments
+          author={this.props.post.author}
+          permlink={this.props.post.permlink}
+        />
+      );
+    }
+    var debth = 0;
+    if (this.props.post.depth > 1) {
+      debth = `${String(this.props.post.depth * 20)}px`;
+    }
+    console.log(debth);
     return (
       <Fragment>
-        <Card className="mb-3">
+        <Card className="mb-3" style={{ marginLeft: debth }}>
           <CardHeader
             avatar={
               <Link
@@ -41,11 +55,6 @@ class PostpostItem extends Component {
                   />
                 </a>
               </Link>
-            }
-            action={
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
             }
             title={
               <Fragment>
@@ -65,6 +74,7 @@ class PostpostItem extends Component {
           </CardContent>
           <VoteSlider post={this.props.post} tags={[]} mode="comment" />
         </Card>
+        {children}
       </Fragment>
     );
   }

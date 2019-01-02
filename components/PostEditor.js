@@ -261,6 +261,10 @@ class PostEditor extends Component {
             <div className="col-md-6">
               <TextField
                 label="Tags"
+                inputProps={{
+                  maxLength: 100
+                }}
+                multiline={true}
                 placeholder="Tags separated by spaces"
                 margin="normal"
                 value={this.state.tags}

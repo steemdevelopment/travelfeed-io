@@ -29,6 +29,7 @@ import NotFound from "../components/NotFound";
 import InvalidPost from "../components/InvalidPost";
 import { extractSWM } from "../utils/regex";
 import AppIcon from "../components/AppIcon";
+import Router from "next/router";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -39,6 +40,15 @@ class Post extends Component {
       permlink
     ]);
     return { post };
+  }
+  componentDidMount() {
+    if (this.props.post.depth > 1) {
+      Router.replace(
+        `/@${this.props.post.root_author}/${this.props.post.root_permlink}/#${
+          this.props.post.permlink
+        }`
+      );
+    }
   }
   render() {
     const post = this.props.post;

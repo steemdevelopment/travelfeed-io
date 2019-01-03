@@ -168,36 +168,12 @@ class VoteSlider extends Component {
     if (this.state.voteExpanded == false) {
       cardFooter = (
         <CardActions>
-          <div className="container">
-            <div className="row">
-              <div className={rowitem1}>
-                {commentButton} {voteButton}
-                <span className="text-muted font-weight-bold">
-                  {this.state.totalmiles}
-                </span>
-              </div>
-              <div className={rowitem2}>
-                {this.props.tags.map(tag => {
-                  return (
-                    <Link
-                      as={`/created/${tag}`}
-                      href={`/tag?sortby=created&tag=${tag}`}
-                      key={tag}
-                      passHref
-                    >
-                      <a>
-                        <span
-                          className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
-                          style={sliderstyle}
-                        >
-                          {tag.toUpperCase()}
-                        </span>
-                      </a>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
+          <div>
+            {voteButton}
+            <span className="text-muted font-weight-bold">
+              {this.state.totalmiles}
+            </span>
+            {commentButton}
           </div>
         </CardActions>
       );
@@ -242,14 +218,16 @@ class VoteSlider extends Component {
     if (this.state.commentExpanded == true) {
       cardFooter = (
         <CardActions>
-          <PostEditor
-            type="comment"
-            initialValue="Write a reply now!"
-            edit={{
-              parent_author: post.author,
-              parent_permlink: post.permlink
-            }}
-          />
+          <div className="w-100">
+            <PostEditor
+              type="comment"
+              initialValue="Write a reply now!"
+              edit={{
+                parent_author: post.author,
+                parent_permlink: post.permlink
+              }}
+            />
+          </div>
           <IconButton onClick={() => this.collapseCommentBar()}>
             <CloseIcon />
           </IconButton>

@@ -98,14 +98,14 @@ class PostEditor extends Component {
         metadata += ",";
       }
     }
-    metadata +=
-      '],"app":"' +
-      APP_VERSION +
-      '","image":' +
-      imageList +
-      ',"coordinates":"' +
-      location +
-      '"}';
+    metadata += '],"app":"' + APP_VERSION + '"';
+    if (imageList != "null") {
+      metadata += ',"image":' + imageList;
+    }
+    if (location != "") {
+      metadata += ',"coordinates":"' + location + '"';
+    }
+    metadata += "}";
     // todo: Parse body for images and links and include them in the json_metadata
     var jsonMetadata = JSON.parse(metadata);
     var username = getUser();
@@ -201,10 +201,8 @@ class PostEditor extends Component {
     var editor = <Fragment />;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
-      if (this.props.type != "comment") {
-        var url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
-        Router.push(url);
-      }
+      var url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
+      Router.push(url);
     } else if (this.state.mounted == true) {
       editor = (
         <Editor
@@ -258,7 +256,7 @@ class PostEditor extends Component {
           <div className="w-100">
             <div className="postcontent border p-3">{editor}</div>
           </div>
-          <div>{publishBtn}</div>
+          <div className="text-right pt-1">{publishBtn}</div>
         </Fragment>
       );
     }

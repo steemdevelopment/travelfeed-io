@@ -37,7 +37,11 @@ class PostpostItem extends Component {
     }
     return (
       <Fragment>
-        <Card className="mb-3" style={{ marginLeft: debth }}>
+        <Card
+          className="mb-3"
+          style={{ marginLeft: debth }}
+          id={this.props.post.permlink}
+        >
           <CardHeader
             avatar={
               <Link

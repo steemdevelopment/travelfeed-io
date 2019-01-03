@@ -3,8 +3,15 @@ import PropTypes from "prop-types";
 
 class AppIcon extends Component {
   render() {
-    const json = JSON.parse(this.props.post.json_metadata);
-    const app = json.app != "undefined" ? json.app.split("/")[0] : "";
+    try {
+      const json = JSON.parse(this.props.post.json_metadata);
+      var app =
+        json.app != undefined && json.app.indexOf("/") > -1 === true
+          ? json.app.split("/")[0]
+          : "";
+    } catch {
+      app = "";
+    }
     if (app == "travelfeed") {
       return (
         <Fragment>

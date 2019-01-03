@@ -62,7 +62,10 @@ class PostComments extends Component {
     return (
       <Fragment>
         {this.state.stream.map(comment => {
-          if (isBlacklisted(comment.author, "none") != true) {
+          if (
+            isBlacklisted(comment.author, "none", { commentblacklist: true }) !=
+            true
+          ) {
             return <PostCommentItem post={comment} />;
           }
         })}

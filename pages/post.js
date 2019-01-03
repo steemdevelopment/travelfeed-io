@@ -76,7 +76,7 @@ class Post extends Component {
     const url = "https://steemit.com/@" + post.author + "/" + post.permlink;
     if (
       (post.author != "travelfeed" && readtime.words < 250) ||
-      isBlacklisted(post.author, post.permlink) === true ||
+      isBlacklisted(post.author, post.permlink, {}) === true ||
       (post.category != "travelfeed" &&
         JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 ===
           false) ||

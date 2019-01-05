@@ -33,7 +33,7 @@ class Login extends Component {
         </Grid>
       );
     } else if (this.state.user != undefined && this.state.user != "") {
-      Router.push("/dashboard");
+      Router.replace("/dashboard");
       content = <Dashboard />;
     }
     return (

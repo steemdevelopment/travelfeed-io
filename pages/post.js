@@ -42,7 +42,7 @@ class Post extends Component {
     return { post };
   }
   componentDidMount() {
-    if (this.props.post.depth > 1) {
+    if (this.props.post.depth > 0) {
       Router.replace(
         `/@${this.props.post.root_author}/${this.props.post.root_permlink}/#${
           this.props.post.permlink

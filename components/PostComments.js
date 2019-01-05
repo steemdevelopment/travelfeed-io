@@ -71,9 +71,9 @@ class PostComments extends Component {
         })}
         {!error && <Typography>{error}</Typography>}
         {isLoading && (
-          <Grid item xs={1}>
+          <div className="text-center">
             <CircularProgress />
-          </Grid>
+          </div>
         )}
       </Fragment>
     );

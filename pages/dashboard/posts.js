@@ -41,7 +41,12 @@ class Posts extends Component {
           className="pt-4 pb-4"
           style={{ paddingLeft: "75px" }}
         >
-          <PostGrid type="blog" filter={this.state.user} poststyle="list" />
+          <PostGrid
+            type="blog"
+            filter={this.state.user}
+            poststyle="list"
+            position={0}
+          />
         </Grid>
       );
     }

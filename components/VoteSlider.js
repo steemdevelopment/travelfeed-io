@@ -111,8 +111,8 @@ class VoteSlider extends Component {
   }
   render() {
     var sliderstyle = {};
-    var rowitem1 = "col-2 p-0";
-    var rowitem2 = "col-10 text-right p-0 pt-2";
+    var rowitem1 = "col-5 p-0";
+    var rowitem2 = "col-7 text-right p-0 pt-2";
     if (this.props.mode == "gridcard") {
       sliderstyle = { fontSize: "0.6rem" };
       rowitem1 = "col-6 p-0";
@@ -168,12 +168,37 @@ class VoteSlider extends Component {
     if (this.state.voteExpanded == false) {
       cardFooter = (
         <CardActions>
-          <div>
-            {voteButton}
-            <span className="text-muted font-weight-bold">
-              {this.state.totalmiles}
-            </span>
-            {commentButton}
+          <div className="container">
+            <div className="row">
+              <div className={rowitem1}>
+                {voteButton}
+                <span className="text-muted font-weight-bold">
+                  {this.state.totalmiles}
+                  {commentButton}
+                </span>
+              </div>
+              <div className={rowitem2}>
+                {this.props.tags.map(tag => {
+                  return (
+                    <Link
+                      as={`/created/${tag}`}
+                      href={`/tag?sortby=created&tag=${tag}`}
+                      key={tag}
+                      passHref
+                    >
+                      <a>
+                        <span
+                          className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded"
+                          style={sliderstyle}
+                        >
+                          {tag.toUpperCase()}
+                        </span>
+                      </a>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </CardActions>
       );

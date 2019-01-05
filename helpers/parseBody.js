@@ -36,24 +36,16 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(swmregex, "");
   //Replace Steemit links with Travelfeed
   parsedBody = parsedBody.replace(
-    /https:\/\/steemit\.com\/@/g,
-    "https://travelfeed.io/@"
+    /https:\/\/steemit\.com/g,
+    "https://travelfeed.io"
   );
   parsedBody = parsedBody.replace(
-    /https:\/\/steemit\.com\/created\//g,
-    "https://travelfeed.io/created/"
+    /https:\/\/busy\.org/g,
+    "https://travelfeed.io"
   );
   parsedBody = parsedBody.replace(
-    /https:\/\/steemit\.com\/created\//g,
-    "https://travelfeed.io/trending/"
-  );
-  parsedBody = parsedBody.replace(
-    /https:\/\/steemit\.com\/created\//g,
-    "https://travelfeed.io/hot/"
-  );
-  parsedBody = parsedBody.replace(
-    /https:\/\/steemit\.com\/travelfeed\//g,
-    "https://travelfeed.io/"
+    /https:\/\/steempeak\.com/g,
+    "https://travelfeed.io"
   );
   // Proxify Image urls
   if (options.editor != true) {

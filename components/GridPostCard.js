@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import { regExcerpt, regTitle } from "../utils/regex";
 import VoteSlider from "./VoteSlider";
 import PropTypes from "prop-types";
+import AppIcon from "./AppIcon";
 
 class PostCard extends Component {
   render() {
@@ -66,7 +67,12 @@ class PostCard extends Component {
               </a>
             </Link>
           }
-          action={isCurated}
+          action={
+            <Fragment>
+              {isCurated}
+              <AppIcon post={this.props.post} />
+            </Fragment>
+          }
           title={
             <Link
               as={`/@${post.author}`}
@@ -99,7 +105,7 @@ class PostCard extends Component {
             </CardActionArea>
           </a>
         </Link>
-        <VoteSlider post={post} tags={[posttag]} sliderstyle="gridcard" />
+        <VoteSlider post={post} tags={[posttag]} mode="gridcard" />
       </Card>
     );
   }

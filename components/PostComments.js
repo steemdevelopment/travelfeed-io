@@ -2,20 +2,12 @@ import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
 import { Client } from "dsteem";
-import Link from "next/link";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import parseBody from "../helpers/parseBody";
 import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "@babel/polyfill";
 import isBlacklisted from "../helpers/isBlacklisted";
-import dateFromJsonString from "../helpers/dateFromJsonString";
-import IconButton from "@material-ui/core/IconButton";
-import Avatar from "@material-ui/core/Avatar";
-import CardHeader from "@material-ui/core/CardHeader";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import PostCommentItem from "./PostCommentItem";
 
 const client = new Client("https://api.steemit.com");
 
@@ -70,68 +62,18 @@ class PostComments extends Component {
     return (
       <Fragment>
         {this.state.stream.map(comment => {
-          if (isBlacklisted(comment.author, "none") != true) {
-            let htmlBody = parseBody(comment.body, {});
-            const bodyText = { __html: htmlBody };
-            const json_date = '{ "date": "' + comment.created + 'Z" }';
-            const date_object = new Date(
-              JSON.parse(json_date, dateFromJsonString).date
-            );
-            const created = date_object.toDateString();
-            return (
-              <Fragment>
-                <Card className="mb-3">
-                  <CardHeader
-                    avatar={
-                      <Link
-                        as={`/@${comment.author}`}
-                        href={`/blog?author=${comment.author}`}
-                        passHref
-                      >
-                        <a>
-                          <Avatar
-                            className="cpointer"
-                            src={`https://steemitimages.com/u/${
-                              comment.author
-                            }/avatar/small`}
-                          />
-                        </a>
-                      </Link>
-                    }
-                    action={
-                      <IconButton>
-                        <MoreVertIcon />
-                      </IconButton>
-                    }
-                    title={
-                      <Fragment>
-                        <Link
-                          as={`/@${comment.author}`}
-                          href={`/blog?author=${comment.author}`}
-                          passHref
-                        >
-                          <a className="text-dark cpointer">{comment.author}</a>
-                        </Link>
-                      </Fragment>
-                    }
-                    subheader={created}
-                  />
-                  <CardContent>
-                    <div
-                      className="postcontent"
-                      dangerouslySetInnerHTML={bodyText}
-                    />
-                  </CardContent>
-                </Card>
-              </Fragment>
-            );
+          if (
+            isBlacklisted(comment.author, "none", { commentblacklist: true }) !=
+            true
+          ) {
+            return <PostCommentItem post={comment} />;
           }
         })}
         {!error && <Typography>{error}</Typography>}
         {isLoading && (
-          <Grid item xs={1}>
+          <div className="text-center">
             <CircularProgress />
-          </Grid>
+          </div>
         )}
       </Fragment>
     );

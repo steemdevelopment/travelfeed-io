@@ -288,9 +288,13 @@ class PostGrid extends Component {
               (this.state.type == "tag" ||
                 (this.state.type == "curationfeed" &&
                   post.author != this.state.filter) ||
-                (this.state.type == "blog" &&
-                  post.author == this.state.filter)) &&
-              isBlacklisted(post.author, post.permlink) === false &&
+                ((this.state.type == "blog" &&
+                  this.state.filter == "travelfeed" &&
+                  (post.author == "travelfeed" ||
+                    post.author == "jpphotography")) ||
+                  (this.state.type == "blog" &&
+                    post.author == this.state.filter))) &&
+              isBlacklisted(post.author, post.permlink, {}) === false &&
               readtime.words > 250 &&
               (post.category == "travelfeed" ||
                 json.tags.indexOf("travelfeed") > -1 === true) &&

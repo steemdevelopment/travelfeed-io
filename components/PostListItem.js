@@ -88,6 +88,7 @@ class PostCard extends Component {
           <PostEditor
             initialValue={parseBody(post.body, { editor: true }) + swmextract}
             edit={post}
+            mode="edit"
           />
         </CardContent>
       );

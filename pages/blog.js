@@ -15,7 +15,7 @@ const client = new Client("https://api.steemit.com");
 class Blog extends Component {
   static async getInitialProps(props) {
     let { author } = props.query;
-    if (isBlacklisted(author, "none") === true) {
+    if (isBlacklisted(author, "none", {}) === true) {
       const stream = { args: { stream: { blacklisted: true } } };
       return stream;
     }

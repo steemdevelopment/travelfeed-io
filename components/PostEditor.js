@@ -49,7 +49,7 @@ class PostEditor extends Component {
     this.setState({ tags: tags.target.value });
   }
   componentDidMount() {
-    if (this.props.edit != false) {
+    if (this.props.mode == "edit") {
       const json = JSON.parse(this.props.edit.json_metadata);
       var tags = json.tags != "undefined" ? json.tags : [""];
       tags = String(tags).replace(/,/g, " ");
@@ -98,21 +98,28 @@ class PostEditor extends Component {
         metadata += ",";
       }
     }
-    metadata +=
-      '],"app":"' +
-      APP_VERSION +
-      '","image":' +
-      imageList +
-      ',"coordinates":"' +
-      location +
-      '"}';
+    metadata += '],"app":"' + APP_VERSION + '"';
+    if (imageList != "null") {
+      metadata += ',"image":' + imageList;
+    }
+    if (location != "") {
+      metadata += ',"coordinates":"' + location + '"';
+    }
+    metadata += "}";
     // todo: Parse body for images and links and include them in the json_metadata
     var jsonMetadata = JSON.parse(metadata);
     var username = getUser();
-    if (this.props.edit != false) {
+    if (this.props.mode == "edit") {
       const json = JSON.parse(this.props.edit.json_metadata);
       parentPermlink = json.tags != "undefined" ? json.tags[0] : "travelfeed";
       permlink = this.props.edit.permlink;
+    }
+    if (this.props.type == "comment") {
+      permlink = `re-${
+        this.props.edit.parent_permlink
+      }-${Date.now().toString()}`;
+      parentAuthor = this.props.edit.parent_author;
+      parentPermlink = this.props.edit.parent_permlink;
     }
     if (this.props.edit == false) {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
@@ -142,7 +149,7 @@ class PostEditor extends Component {
   }
   render() {
     var submittext = "Publish";
-    if (this.props.edit != false) {
+    if (this.props.mode == "edit") {
       submittext = "Edit";
     }
     const bodyText = this.state.content;
@@ -164,7 +171,10 @@ class PostEditor extends Component {
         />
       );
     }
-    if (wordCount > 250 && this.state.title != "" && this.state.tags != "") {
+    if (
+      (wordCount > 250 && this.state.title != "" && this.state.tags != "") ||
+      this.props.type == "comment"
+    ) {
       publishBtn = (
         <Fragment>
           {progress}
@@ -191,7 +201,7 @@ class PostEditor extends Component {
     var editor = <Fragment />;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
-      const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
+      var url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
     } else if (this.state.mounted == true) {
       editor = (
@@ -240,23 +250,41 @@ class PostEditor extends Component {
         />
       );
     }
+    if (this.props.type == "comment") {
+      return (
+        <Fragment>
+          <div className="w-100">
+            <div className="postcontent border p-3">{editor}</div>
+          </div>
+          <div className="text-right pt-1">{publishBtn}</div>
+        </Fragment>
+      );
+    }
     return (
       <Fragment>
         <InputBase
           autoFocus={true}
+          inputProps={{
+            maxLength: 100
+          }}
+          multiline={true}
           className="font-weight-bold inputtitle"
           placeholder="Title"
           value={this.state.title}
           onChange={this.handleTitleEditorChange}
           fullWidth
         />
-        <div className="postcontent">{editor}</div>
+        <div className="postcontent posteditor">{editor}</div>
         <div />
         <div className="container">
           <div className="row">
             <div className="col-md-6">
               <TextField
                 label="Tags"
+                inputProps={{
+                  maxLength: 100
+                }}
+                multiline={true}
                 placeholder="Tags separated by spaces"
                 margin="normal"
                 value={this.state.tags}
@@ -297,9 +325,9 @@ PostEditor.defaultProps = {
 PostEditor.propTypes = {
   comment: PropTypes.object,
   initialValue: PropTypes.string,
-  parentAuthor: PropTypes.string,
-  parentPermlink: PropTypes.string,
-  edit: PropTypes.any,
+  edit: PropTypes.object,
+  mode: PropTypes.string,
+  type: PropTypes.string,
   enqueueSnackbar: PropTypes.function
 };
 

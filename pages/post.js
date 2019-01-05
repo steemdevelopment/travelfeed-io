@@ -28,6 +28,8 @@ import Header from "../components/Header";
 import NotFound from "../components/NotFound";
 import InvalidPost from "../components/InvalidPost";
 import { extractSWM } from "../utils/regex";
+import AppIcon from "../components/AppIcon";
+import Router from "next/router";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -38,6 +40,15 @@ class Post extends Component {
       permlink
     ]);
     return { post };
+  }
+  componentDidMount() {
+    if (this.props.post.depth > 0) {
+      Router.replace(
+        `/@${this.props.post.root_author}/${this.props.post.root_permlink}/#${
+          this.props.post.permlink
+        }`
+      );
+    }
   }
   render() {
     const post = this.props.post;
@@ -65,7 +76,7 @@ class Post extends Component {
     const url = "https://steemit.com/@" + post.author + "/" + post.permlink;
     if (
       (post.author != "travelfeed" && readtime.words < 250) ||
-      isBlacklisted(post.author, post.permlink) === true ||
+      isBlacklisted(post.author, post.permlink, {}) === true ||
       (post.category != "travelfeed" &&
         JSON.parse(post.json_metadata).tags.indexOf("travelfeed") > -1 ===
           false) ||
@@ -150,9 +161,12 @@ class Post extends Component {
                     </Link>
                   }
                   action={
-                    <IconButton>
-                      <BookmarkIconBorder />
-                    </IconButton>
+                    <Fragment>
+                      <IconButton>
+                        <BookmarkIconBorder />
+                      </IconButton>
+                      <AppIcon post={this.props.post} />
+                    </Fragment>
                   }
                   title={
                     <Fragment>
@@ -192,7 +206,7 @@ class Post extends Component {
                     </div>
                   </div>
                 </CardContent>
-                <VoteSlider post={post} tags={tags} sliderstyle="post" />
+                <VoteSlider post={post} tags={tags} mode="post" />
               </Card>
             </Grid>
             <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">

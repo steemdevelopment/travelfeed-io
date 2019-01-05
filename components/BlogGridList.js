@@ -3,8 +3,6 @@ import "@babel/polyfill";
 import PropTypes from "prop-types";
 import getImage from "../helpers/getImage";
 import Link from "next/link";
-import IconButton from "@material-ui/core/IconButton";
-import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
@@ -38,10 +36,9 @@ class BlogGridList extends Component {
             cols={2.5}
           >
             {this.props.stream.map(post => {
-              const json = JSON.parse(post.json_metadata);
               if (
-                post.author === "travelfeed" &&
-                json.tags.indexOf("travelfeeddaily") > -1 === true
+                post.author === "travelfeed" ||
+                post.author === "jpphotography"
               ) {
                 const image = getImage(post.json_metadata, post.body, "700x0");
                 return (
@@ -64,7 +61,7 @@ class BlogGridList extends Component {
                           style={{
                             backgroundImage: `url(${image})`,
                             backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center top",
+                            backgroundPosition: "center center",
                             backgroundSize: "cover",
                             width: "600px",
                             height: "100%"
@@ -76,11 +73,6 @@ class BlogGridList extends Component {
                             background:
                               "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
                           }}
-                          actionIcon={
-                            <IconButton>
-                              <FlightIcon className="text-light" />
-                            </IconButton>
-                          }
                         />
                       </GridListTile>
                     </a>
@@ -122,11 +114,6 @@ class BlogGridList extends Component {
                       background:
                         "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)"
                     }}
-                    actionIcon={
-                      <IconButton>
-                        <FlightIcon className="text-light" />
-                      </IconButton>
-                    }
                   />
                 </GridListTile>
               </a>

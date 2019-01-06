@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { Client } from "dsteem";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Router from "next/router";
+import Link from "next/link";
 
 const client = new Client("https://api.steemit.com");
 
@@ -339,6 +339,22 @@ class Profile extends Component {
                   fullWidth
                 />
                 {updatebtn}
+                <Link
+                  as={`/@${this.props.user}`}
+                  href={`/blog?author=${this.props.user}`}
+                  passHref
+                >
+                  <a>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => this.linkBuilder()}
+                      className="ml-2"
+                    >
+                      View your public profile
+                    </Button>
+                  </a>
+                </Link>
               </CardContent>
             </Card>
           </Grid>

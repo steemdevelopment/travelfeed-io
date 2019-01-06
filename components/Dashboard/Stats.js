@@ -11,7 +11,7 @@ class Stats extends Component {
     return (
       <Fragment>
         <Helmet>
-          <title>{"Stats | TravelFeed: The Travel Community"}</title>
+          <title>{"Dashboard | TravelFeed: The Travel Community"}</title>
         </Helmet>
         <Grid
           container
@@ -29,13 +29,21 @@ class Stats extends Component {
                 <p>For now, you can:</p>
                 <ul>
                   <li>
-                    <Link href="/Stats/publish" passhref>
-                      <a>Publish a new post</a>
+                    <Link
+                      as="/dashboard/publish"
+                      href="/dashboard?page=publish"
+                      passhref
+                    >
+                      <a>Write a new post</a>
                     </Link>
                   </li>
                   <li>
-                    <Link href="/Stats/posts" passhref>
-                      <a>View your published posts</a>
+                    <Link
+                      as="/dashboard/posts"
+                      href="/dashboard?page=posts"
+                      passhref
+                    >
+                      <a>View and edit your published posts</a>
                     </Link>
                   </li>
                 </ul>

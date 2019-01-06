@@ -4,7 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
 import NotFound from "../components/NotFound";
 import { setToken, setUser } from "../utils/token";
-import Dashboard from "../components/dashboard/index";
+import Dashboard from "./dashboard";
 import Router from "next/router";
 import PropTypes from "prop-types";
 

@@ -42,6 +42,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
+const drawerWidth = 200;
+
 const styles = theme => ({
   root: {
     display: "flex"
@@ -54,8 +56,8 @@ const styles = theme => ({
     })
   },
   appBarShift: {
-    marginLeft: 200,
-    width: `calc(100% - ${200}px)`,
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
@@ -69,12 +71,12 @@ const styles = theme => ({
     display: "none"
   },
   drawer: {
-    width: 200,
+    width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap"
   },
   drawerOpen: {
-    width: 200,
+    width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
@@ -103,7 +105,6 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3
   }
 });
-
 class Dashboard extends Component {
   state = { user: "", open: true };
   static async getInitialProps(props) {
@@ -135,8 +136,17 @@ class Dashboard extends Component {
       return (
         <Fragment>
           <Header />
-          <Grid item lg={7} md={8} sm={11} xs={12}>
-            <NotFound statusCode="logged_out" />
+          <Grid
+            container
+            spacing={0}
+            alignItems="center"
+            justify="center"
+            className="pt-4 pb-4"
+            style={{ paddingLeft: "75px" }}
+          >
+            <Grid item lg={7} md={8} sm={11} xs={12}>
+              <NotFound statusCode="logged_out" />
+            </Grid>
           </Grid>
         </Fragment>
       );
@@ -353,11 +363,11 @@ class Dashboard extends Component {
       content = <Stats user={this.state.user} />;
     }
     return (
-      <Fragment>
-        <div style={{ flexGrow: 1 }}>{appbar}</div>
+      <div className={classes.root}>
+        {appbar}
         {drawer}
-        <div>{content}</div>
-      </Fragment>
+        <main className={classes.content}>{content}</main>
+      </div>
     );
   }
 }

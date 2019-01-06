@@ -17,7 +17,6 @@ class Posts extends Component {
           alignItems="center"
           justify="center"
           className="pt-4 pb-4"
-          style={{ paddingLeft: "75px" }}
         >
           <PostGrid
             type="blog"

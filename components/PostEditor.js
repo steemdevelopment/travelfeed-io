@@ -99,6 +99,7 @@ class PostEditor extends Component {
       }
     }
     metadata += '],"app":"' + APP_VERSION + '"';
+    metadata += ',"community":"travelfeed"';
     if (imageList != "null") {
       metadata += ',"image":' + imageList;
     }

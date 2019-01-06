@@ -1,9 +1,6 @@
 import React, { Fragment, Component } from "react";
 import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Helmet from "react-helmet";
 import NotFound from "../components/NotFound";
 import { getUser } from "../utils/token";
 import Link from "next/link";
@@ -23,13 +20,6 @@ import { withStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import Grow from "@material-ui/core/Grow";
-import Avatar from "@material-ui/core/Avatar";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
@@ -42,10 +32,8 @@ import BookmarkIcon from "@material-ui/icons/Star";
 import WalletIcon from "@material-ui/icons/AttachMoney";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PublishIcon from "@material-ui/icons/Create";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import RepliesIcon from "@material-ui/icons/Reply";
-import DownIcon from "@material-ui/icons/ArrowDropDown";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import CommentsIcon from "@material-ui/icons/Comment";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -117,7 +105,7 @@ const styles = theme => ({
 });
 
 class Dashboard extends Component {
-  state = { user: "", open: false };
+  state = { user: "", open: true };
   static async getInitialProps(props) {
     const { page } = props.query;
     return { page };
@@ -136,7 +124,14 @@ class Dashboard extends Component {
   }
   render() {
     const { classes } = this.props;
-    if (this.state.user == null || this.state.user == "") {
+    if (this.state.user == "") {
+      return (
+        <Fragment>
+          <Header />
+        </Fragment>
+      );
+    }
+    if (this.state.user == null) {
       return (
         <Fragment>
           <Header />
@@ -202,7 +197,7 @@ class Dashboard extends Component {
         </div>
         <Divider />
         <List>
-          <Link href="/dashboard" passHref>
+          <Link as="/dashboard" href="/dashboard?page=stats" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -212,7 +207,7 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/publish" passHref>
+          <Link as="/dashboard/publish" href="/dashboard?page=publish" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -222,7 +217,7 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/drafts" passHref>
+          <Link as="/dashboard/drafts" href="/dashboard?page=drafts" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -232,7 +227,7 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/posts" passHref>
+          <Link as="/dashboard/posts" href="/dashboard?page=posts" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -242,7 +237,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/comments" passHref>
+          <Link
+            as="/dashboard/comments"
+            href="/dashboard?page=comments"
+            passHref
+          >
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -252,7 +251,7 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/replies" passHref>
+          <Link as="/dashboard/replies" href="/dashboard?page=replies" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -262,7 +261,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/notifications" passHref>
+          <Link
+            as="/dashboard/notifications"
+            href="/dashboard?page=notifications"
+            passHref
+          >
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -275,7 +278,11 @@ class Dashboard extends Component {
         </List>
         <Divider />
         <List>
-          <Link href="/dashboard/bookmarks" passHref>
+          <Link
+            as="/dashboard/bookmarks"
+            href="/dashboard?page=bookmarks"
+            passHref
+          >
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -285,7 +292,7 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/profile" passHref>
+          <Link as="/dashboard/profile" href="/dashboard?page=profile" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -295,7 +302,7 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/wallet" passHref>
+          <Link as="/dashboard/wallet" href="/dashboard?page=wallet" passHref>
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -305,7 +312,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/settings" passHref>
+          <Link
+            as="/dashboard/settings"
+            href="/dashboard?page=settings"
+            passHref
+          >
             <a>
               <ListItem button>
                 <ListItemIcon>
@@ -318,7 +329,29 @@ class Dashboard extends Component {
         </List>
       </Drawer>
     );
-    const content = <Settings />;
+    if (this.props.page == "publish") {
+      var content = <Publish />;
+    } else if (this.props.page == "drafts") {
+      content = <Drafts />;
+    } else if (this.props.page == "posts") {
+      content = <Posts user={this.state.user} />;
+    } else if (this.props.page == "comments") {
+      content = <Comments />;
+    } else if (this.props.page == "replies") {
+      content = <Replies />;
+    } else if (this.props.page == "notifications") {
+      content = <Notifications />;
+    } else if (this.props.page == "bookmarks") {
+      content = <Bookmarks />;
+    } else if (this.props.page == "profile") {
+      content = <Profile />;
+    } else if (this.props.page == "wallet") {
+      content = <Wallet />;
+    } else if (this.props.page == "settings") {
+      content = <Settings />;
+    } else {
+      content = <Stats user={this.state.user} />;
+    }
     return (
       <Fragment>
         <div style={{ flexGrow: 1 }}>{appbar}</div>

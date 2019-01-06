@@ -2,6 +2,7 @@ import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
 import PostGrid from "../PostGrid";
+import PropTypes from "prop-types";
 
 class Posts extends Component {
   render() {
@@ -20,7 +21,7 @@ class Posts extends Component {
         >
           <PostGrid
             type="blog"
-            filter={this.state.user}
+            filter={this.props.user}
             poststyle="list"
             position={0}
           />
@@ -29,5 +30,9 @@ class Posts extends Component {
     );
   }
 }
+
+Posts.propTypes = {
+  user: PropTypes.user
+};
 
 export default Posts;

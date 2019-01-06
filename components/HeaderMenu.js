@@ -108,7 +108,11 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/dashboard/publish" passHref>
+                      <Link
+                        as="/dashboard/publish"
+                        href="/dashboard/?page=publish"
+                        passHref
+                      >
                         <a>
                           <MenuItem>
                             <ListItemIcon>
@@ -118,12 +122,16 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href={"/@" + this.state.user} passHref>
+                      <Link
+                        as="/dashboard/posts"
+                        href="/dashboard/?page=posts"
+                        passHref
+                      >
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <ProfileIcon />
-                              <ListItemText inset primary="Profile" />
+                              <ListItemText inset primary="My Posts" />
                             </ListItemIcon>
                           </MenuItem>
                         </a>

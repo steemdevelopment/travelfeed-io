@@ -5,7 +5,9 @@ import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import { Client } from "dsteem";
+import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import Router from "next/router";
 
 const client = new Client("https://api.steemit.com");
 
@@ -178,10 +180,41 @@ class Profile extends Component {
       youtube: youtube
     });
   }
+  linkBuilder() {
+    if (this.state.changed.length == 0) {
+      return "#";
+    }
+    var link = "https://steemconnect.com/sign/profile-update?";
+    var count = 0;
+    for (let info of this.state.changed) {
+      if (count > 0) {
+        link += "&";
+      }
+      link += info + "=" + this.state[info];
+      ++count;
+    }
+    window.open(link, "_blank");
+  }
   componentDidMount() {
     this.getProfile();
   }
   render() {
+    var updatebtn = (
+      <Button color="primary" variant="outlined" disabled>
+        Update
+      </Button>
+    );
+    if (this.state.changed.length > 0) {
+      updatebtn = (
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => this.linkBuilder()}
+        >
+          Update
+        </Button>
+      );
+    }
     return (
       <Fragment>
         <Helmet>
@@ -305,6 +338,7 @@ class Profile extends Component {
                   onChange={this.handleEditorChange_youtube}
                   fullWidth
                 />
+                {updatebtn}
               </CardContent>
             </Card>
           </Grid>

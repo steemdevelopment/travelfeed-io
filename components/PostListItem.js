@@ -21,6 +21,9 @@ class PostCard extends Component {
   openEditor() {
     this.setState({ editor: true });
   }
+  closeEditor() {
+    this.setState({ editor: false });
+  }
   render() {
     const post = this.props.post;
     let sanitized = this.props.sanitized;
@@ -90,6 +93,16 @@ class PostCard extends Component {
             edit={post}
             mode="edit"
           />
+          <span className="text-light pl-2">
+            <Button
+              color="primary"
+              variant="outlined"
+              className="p-0 pl-2 pr-2"
+              onClick={() => this.closeEditor()}
+            >
+              <span className="pr-1">Close Editor</span>
+            </Button>
+          </span>
         </CardContent>
       );
     }

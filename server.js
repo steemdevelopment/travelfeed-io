@@ -94,6 +94,86 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
+    server.get("/dashboard/publish", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "publish"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/drafts", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "drafts"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/posts", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "posts"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/comments", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "comments"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/replies", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "replies"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/notifications", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "notifications"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/bookmarks", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "bookmarks"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/profile", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "profile"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/wallet", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "stats"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/dashboard/settings", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "settings"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
     server.get("*", (req, res) => {
       return handle(req, res);
     });

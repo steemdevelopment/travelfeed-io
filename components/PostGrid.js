@@ -154,7 +154,6 @@ class PostGrid extends Component {
     };
   }
   render() {
-    let count = 0;
     const { error, hasMore, isLoading } = this.state;
     let processed = [];
     var selector = "";
@@ -300,8 +299,6 @@ class PostGrid extends Component {
                 json.tags.indexOf("travelfeed") > -1 === true) &&
               json.tags.indexOf("nsfw") > -1 === false
             ) {
-              //todo: try fetching first image from post if no image is defined in json_metadata
-              ++count;
               processed.push(post.permlink);
               if (this.props.poststyle == "list") {
                 return (
@@ -325,7 +322,14 @@ class PostGrid extends Component {
             }
           })}
           {!error && <Typography>{error}</Typography>}
-          {isLoading && (
+          {isLoading && this.props.poststyle == "list" && (
+            <Grid item lg={8} md={10} sm={11} xs={12}>
+              <div className="p-5 text-center">
+                <CircularProgress />
+              </div>
+            </Grid>
+          )}
+          {isLoading && this.props.poststyle != "list" && (
             <div className="p-5">
               <Grid item xs={1}>
                 <div className="p-5">

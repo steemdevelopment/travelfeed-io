@@ -1,11 +1,11 @@
 export const DEFAULT_IMAGE = "";
-export const APP_VERSION = "travelfeed/0.2.2";
+export const APP_VERSION = "travelfeed/0.2.3";
 export const GMAPS_JS_APIKEY = "AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c";
 
-var url = "http://localhost:3000/dashboard/login";
+var url = "http://localhost:3000/login";
 var rooturl = "http://localhost:3000";
 if (process.env.NODE_ENV == "production") {
-  url = "https://travelfeed.io/dashboard/login";
+  url = "https://travelfeed.io/login";
   rooturl = "https://travelfeed.io";
 }
 export const STEEMCONNECT_CALLBACK_URL = url;

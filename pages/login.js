@@ -1,10 +1,10 @@
 import React, { Fragment, Component } from "react";
-import Header from "../../components/Header";
+import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
-import NotFound from "../../components/NotFound";
-import { setToken, setUser } from "../../utils/token";
-import Dashboard from "./index";
+import NotFound from "../components/NotFound";
+import { setToken, setUser } from "../utils/token";
+import Dashboard from "../components/dashboard/index";
 import Router from "next/router";
 import PropTypes from "prop-types";
 
@@ -41,7 +41,7 @@ class Login extends Component {
         <Helmet>
           <title>{"Login | TravelFeed: The Travel Community"}</title>
         </Helmet>
-        <Header drawer={true} />
+        <Header />
         <Grid
           container
           spacing={0}

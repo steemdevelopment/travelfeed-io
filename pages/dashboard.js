@@ -112,7 +112,7 @@ class Dashboard extends Component {
     return { page };
   }
   handleDrawerOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: false });
   };
   handleDrawerClose = () => {
     this.setState({ open: false });
@@ -122,6 +122,10 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     this.getUser();
+    console.log(window.innerWidth);
+    if (window.innerWidth < 750) {
+      this.setState({ open: false });
+    }
   }
   render() {
     const { classes } = this.props;

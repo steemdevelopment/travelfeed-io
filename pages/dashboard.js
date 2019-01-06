@@ -358,7 +358,7 @@ class Dashboard extends Component {
     } else if (this.props.page == "bookmarks") {
       content = <Bookmarks />;
     } else if (this.props.page == "profile") {
-      content = <Profile />;
+      content = <Profile user={this.state.user} />;
     } else if (this.props.page == "wallet") {
       content = <Wallet />;
     } else if (this.props.page == "settings") {

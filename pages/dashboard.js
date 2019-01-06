@@ -10,6 +10,10 @@ import Link from "next/link";
 
 class Dashboard extends Component {
   state = { user: "" };
+  static async getInitialProps(props) {
+    const { page } = props.query;
+    return { page };
+  }
   getUser() {
     this.setState({ user: getUser() });
   }

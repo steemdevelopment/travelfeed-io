@@ -202,7 +202,7 @@ class Profile extends Component {
                 <TextField
                   label="Name"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 20
                   }}
                   multiline={true}
                   placeholder="Your display name"
@@ -214,7 +214,7 @@ class Profile extends Component {
                 <TextField
                   label="Profile description"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 160
                   }}
                   multiline={true}
                   placeholder="Profile description"
@@ -226,9 +226,8 @@ class Profile extends Component {
                 <TextField
                   label="Profile image"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 1000
                   }}
-                  multiline={true}
                   placeholder="Profile image"
                   margin="normal"
                   value={this.state.profile_image}
@@ -238,9 +237,8 @@ class Profile extends Component {
                 <TextField
                   label="Cover image"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 1000
                   }}
-                  multiline={true}
                   placeholder="Cover image for your blog"
                   margin="normal"
                   value={this.state.cover_image}
@@ -250,7 +248,7 @@ class Profile extends Component {
                 <TextField
                   label="Location"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 30
                   }}
                   multiline={true}
                   placeholder="Your location"
@@ -274,7 +272,7 @@ class Profile extends Component {
                 <TextField
                   label="Facebook"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 50
                   }}
                   multiline={true}
                   placeholder="Your Facebook username or fanpage"
@@ -286,7 +284,7 @@ class Profile extends Component {
                 <TextField
                   label="Instagram"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 30
                   }}
                   multiline={true}
                   placeholder="Your Instagram username"
@@ -298,7 +296,7 @@ class Profile extends Component {
                 <TextField
                   label="Youtube"
                   inputProps={{
-                    maxLength: 100
+                    maxLength: 20
                   }}
                   multiline={true}
                   placeholder="Your Youtube username"

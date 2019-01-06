@@ -32,6 +32,15 @@ const parseBody = (body, options) => {
   let parsedBody = body.replace(htmlComment, "");
   //remove markdown comment
   parsedBody = parsedBody.replace(markdownComment, "");
+  //Remove partiko ads
+  parsedBody = parsedBody.replace(
+    /Posted using \[Partiko Android]\(https:\/\/steemit\.com\/@partiko-android\)/g,
+    ""
+  );
+  parsedBody = parsedBody.replace(
+    /Posted using \[Partiko iOS]\(https:\/\/steemit\.com\/@partiko-ios\)/g,
+    ""
+  );
   //remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, "");
   //Replace Steemit links with Travelfeed

@@ -41,6 +41,30 @@ const parseBody = (body, options) => {
     /Posted using \[Partiko iOS]\(https:\/\/steemit\.com\/@partiko-ios\)/g,
     ""
   );
+  // Remove travelfeed ads
+  parsedBody = parsedBody.replace(
+    /<hr \/><center>View this post <a href="https:\/\/travelfeed\.io\/@.*">on the TravelFeed dApp<\/a> for the best experience\.<\/center>/g,
+    ""
+  );
+  // Remove dclick ads
+  parsedBody = parsedBody.replace(/\[!\[dclick-imagead]\(h.*\)]\(.*\)/g, "");
+  parsedBody = parsedBody.replace(
+    /#####.*<sub>.*\*\*Sponsored \( Powered by \[dclick]\(https:\/\/www\.dclick\.io\) \)\*\* <\/sub>/g,
+    ""
+  );
+  // Remove tripsteem ads
+  parsedBody = parsedBody.replace(
+    /<a href='https:\/\/.*tripsteem\.com\/post\/.*'>.*<\/a>/g,
+    ""
+  );
+  parsedBody = parsedBody.replace(
+    /This is posted on <a href='https:\/\/en\.tripsteem\.com\/'><b>trips\.teem/g,
+    ""
+  );
+  parsedBody = parsedBody.replace(
+    /<a href='https:\/\/en\.tripsteem\.com\/'>!\[image]\(https:\/\/cdn\.steemitimages\.com\/DQmUjAKXsageaSrVo4CgqvDGePsw7CbVFRfNv91fQrW9kuL\/banner_en\.jpg\)<\/a>/g,
+    ""
+  );
   //remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, "");
   //Replace Steemit links with Travelfeed

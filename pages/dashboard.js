@@ -41,6 +41,7 @@ import classNames from "classnames";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
 
 const drawerWidth = 200;
 
@@ -112,7 +113,7 @@ class Dashboard extends Component {
     return { page };
   }
   handleDrawerOpen = () => {
-    this.setState({ open: false });
+    this.setState({ open: true });
   };
   handleDrawerClose = () => {
     this.setState({ open: false });
@@ -122,7 +123,6 @@ class Dashboard extends Component {
   }
   componentDidMount() {
     this.getUser();
-    console.log(window.innerWidth);
     if (window.innerWidth < 750) {
       this.setState({ open: false });
     }
@@ -375,5 +375,10 @@ class Dashboard extends Component {
     );
   }
 }
+
+Dashboard.propTypes = {
+  classes: PropTypes.object,
+  page: PropTypes.string
+};
 
 export default withStyles(styles, { withTheme: true })(Dashboard);

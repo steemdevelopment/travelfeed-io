@@ -56,7 +56,7 @@ class Replies extends Component {
         >
           <Grid item lg={8} md={10} sm={11} xs={12}>
             <div className="text-center">
-              <h1>Replies to you</h1>
+              <h1>Replies to You</h1>
             </div>
           </Grid>
         </Grid>

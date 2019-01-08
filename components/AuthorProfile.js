@@ -80,7 +80,7 @@ class PostAuthorProfile extends Component {
       backgroundImage: "url(" + this.state.cover_image + ")",
       backgroundRepeat: "no-repeat",
       backgroundPosition: "center center",
-      backgroundSize: "cover_image",
+      backgroundSize: "cover",
       marginTop: "-10px"
     };
     var location = <Fragment />;

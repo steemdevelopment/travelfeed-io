@@ -53,6 +53,7 @@ export const comment_author_blacklist = [
   "microbot",
   "nanobot",
   "minibot",
+  "millibot",
   "treeplanter",
   "esteemapp",
   "tuanis",

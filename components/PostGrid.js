@@ -44,20 +44,21 @@ class PostGrid extends Component {
     if (lastpermlink == "") {
       try {
         if (this.state.type == "comments") {
-          var tagstream = await client.call(
-            "condenser_api",
-            "get_discussions_by_comments",
-            [{ limit: 1, start_author: this.state.filter, start_permlink: "" }]
-          );
-          console.log(tagstream);
+          lastauthor = this.state.filter;
+          lastpermlink = "";
         } else {
           var tagargs = { tag: this.state.filter, limit: 25 };
-          tagstream = await client.database.getDiscussions(filtertype, tagargs);
+          var tagstream = await client.database.getDiscussions(
+            filtertype,
+            tagargs
+          );
+          lastpermlink =
+            tagstream.length > 0
+              ? tagstream[tagstream.length - 1].permlink
+              : "";
+          lastauthor =
+            tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
         }
-        lastpermlink =
-          tagstream.length > 0 ? tagstream[tagstream.length - 1].permlink : "";
-        lastauthor =
-          tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
       } catch (err) {
         this.setState({
           error: err.message,
@@ -85,6 +86,13 @@ class PostGrid extends Component {
         start_author: lastauthor,
         start_permlink: lastpermlink
       };
+    } else if (this.state.type == "comments") {
+      filtertype = "comments";
+      args = {
+        limit: 10,
+        start_author: lastauthor,
+        start_permlink: lastpermlink
+      };
     }
     if (this.state.position == 0) {
       args = {
@@ -93,16 +101,7 @@ class PostGrid extends Component {
       };
       this.setState({ position: 1 });
     }
-    if (this.state.type == "comments") {
-      var stream = await client.call(
-        "condenser_api",
-        "get_discussions_by_comments",
-        [{ limit: 25, start_author: lastauthor, start_permlink: lastpermlink }]
-      );
-      console.log(stream);
-    } else {
-      stream = await client.database.getDiscussions(filtertype, args);
-    }
+    const stream = await client.database.getDiscussions(filtertype, args);
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
     delete stream[stream.length - 1];
@@ -291,7 +290,6 @@ class PostGrid extends Component {
         >
           {selector}
           {this.state.stream.map(post => {
-            console.log(post);
             const json = JSON.parse(post.json_metadata);
             let htmlBody = parseBody(post.body, {});
             let sanitized = sanitize(htmlBody, { allowedTags: [] });

@@ -28,7 +28,6 @@ class Comments extends Component {
           type="comments"
           filter={this.props.user}
           poststyle="commentitem"
-          position={0}
         />
       </Fragment>
     );

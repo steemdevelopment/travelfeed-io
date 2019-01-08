@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import GridPostCard from "./GridPostCard";
 import PostListItem from "./PostListItem";
+import PostCommentItem from "./PostCommentItem";
 
 const client = new Client("https://api.steemit.com");
 
@@ -41,16 +42,23 @@ class PostGrid extends Component {
       filtertype = this.state.sortby;
     }
     if (lastpermlink == "") {
-      var tagargs = { tag: this.state.filter, limit: 25 };
-      const tagstream = await client.database.getDiscussions(
-        filtertype,
-        tagargs
-      );
       try {
-        lastpermlink =
-          tagstream.length > 0 ? tagstream[tagstream.length - 1].permlink : "";
-        lastauthor =
-          tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
+        if (this.state.type == "comments") {
+          lastauthor = this.state.filter;
+          lastpermlink = "";
+        } else {
+          var tagargs = { tag: this.state.filter, limit: 25 };
+          var tagstream = await client.database.getDiscussions(
+            filtertype,
+            tagargs
+          );
+          lastpermlink =
+            tagstream.length > 0
+              ? tagstream[tagstream.length - 1].permlink
+              : "";
+          lastauthor =
+            tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
+        }
       } catch (err) {
         this.setState({
           error: err.message,
@@ -78,6 +86,13 @@ class PostGrid extends Component {
         start_author: lastauthor,
         start_permlink: lastpermlink
       };
+    } else if (this.state.type == "comments") {
+      filtertype = "comments";
+      args = {
+        limit: 10,
+        start_author: lastauthor,
+        start_permlink: lastpermlink
+      };
     }
     if (this.state.position == 0) {
       args = {
@@ -91,20 +106,22 @@ class PostGrid extends Component {
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
     delete stream[stream.length - 1];
     try {
-      if (stream.length == 0) {
+      console.log(stream.length);
+      if (stream.length < 2) {
         this.setState({
           hasMore: false,
           isLoading: false
         });
+      } else {
+        const loadposts = this.state.stream.concat(stream);
+        this.setState({
+          lastpermlink: lastpermlink,
+          lastauthor: lastauthor,
+          stream: loadposts,
+          isLoading: false,
+          hasMore: true
+        });
       }
-      const loadposts = this.state.stream.concat(stream);
-      this.setState({
-        lastpermlink: lastpermlink,
-        lastauthor: lastauthor,
-        stream: loadposts,
-        isLoading: false,
-        hasMore: true
-      });
     } catch (err) {
       this.setState({
         error: err.message,
@@ -275,7 +292,11 @@ class PostGrid extends Component {
         >
           {selector}
           {this.state.stream.map(post => {
-            const json = JSON.parse(post.json_metadata);
+            try {
+              var json = JSON.parse(post.json_metadata);
+            } catch {
+              json = {};
+            }
             let htmlBody = parseBody(post.body, {});
             let sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
@@ -284,7 +305,8 @@ class PostGrid extends Component {
             // - Limit initial fetch to 7 posts
             // - Exclude resteems
             if (
-              (this.state.type == "tag" ||
+              this.state.type == "comments" ||
+              ((this.state.type == "tag" ||
                 (this.state.type == "curationfeed" &&
                   post.author != this.state.filter) ||
                 ((this.state.type == "blog" &&
@@ -293,11 +315,11 @@ class PostGrid extends Component {
                     post.author == "jpphotography")) ||
                   (this.state.type == "blog" &&
                     post.author == this.state.filter))) &&
-              isBlacklisted(post.author, post.permlink, {}) === false &&
-              readtime.words > 250 &&
-              (post.category == "travelfeed" ||
-                json.tags.indexOf("travelfeed") > -1 === true) &&
-              json.tags.indexOf("nsfw") > -1 === false
+                isBlacklisted(post.author, post.permlink, {}) === false &&
+                readtime.words > 250 &&
+                (post.category == "travelfeed" ||
+                  json.tags.indexOf("travelfeed") > -1 === true) &&
+                json.tags.indexOf("nsfw") > -1 === false)
             ) {
               processed.push(post.permlink);
               if (this.props.poststyle == "list") {
@@ -307,6 +329,16 @@ class PostGrid extends Component {
                     sanitized={sanitized}
                     readtime={readtime}
                   />
+                );
+              } else if (this.props.poststyle == "commentitem") {
+                return (
+                  <Grid item lg={8} md={10} sm={11} xs={12}>
+                    <PostCommentItem
+                      post={post}
+                      loadreplies={false}
+                      title={true}
+                    />
+                  </Grid>
                 );
               } else {
                 return (
@@ -322,23 +354,33 @@ class PostGrid extends Component {
             }
           })}
           {!error && <Typography>{error}</Typography>}
-          {isLoading && this.props.poststyle == "list" && (
-            <Grid item lg={8} md={10} sm={11} xs={12}>
-              <div className="p-5 text-center">
-                <CircularProgress />
-              </div>
-            </Grid>
-          )}
-          {isLoading && this.props.poststyle != "list" && (
-            <div className="p-5">
-              <Grid item xs={1}>
-                <div className="p-5">
+          {isLoading &&
+            (this.props.poststyle == "list" ||
+              this.props.poststyle == "commentitem") && (
+              <Grid item lg={8} md={10} sm={11} xs={12}>
+                <div className="p-5 text-center">
                   <CircularProgress />
                 </div>
               </Grid>
-            </div>
-          )}
-          {!hasMore && <Typography>That is all :)</Typography>}
+            )}
+          {isLoading &&
+            (this.props.poststyle != "list" &&
+              this.props.poststyle != "commentitem") && (
+              <div className="p-5">
+                <Grid item xs={1}>
+                  <div className="p-5">
+                    <CircularProgress />
+                  </div>
+                </Grid>
+              </div>
+            )}
+          {!hasMore &&
+            (this.props.poststyle == "list" ||
+              this.props.poststyle == "commentitem") && (
+              <Grid item lg={8} md={10} sm={11} xs={12}>
+                <hr />
+              </Grid>
+            )}
         </Grid>
       </Fragment>
     );

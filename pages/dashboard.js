@@ -350,9 +350,9 @@ class Dashboard extends Component {
     } else if (this.props.page == "posts") {
       content = <Posts user={this.state.user} />;
     } else if (this.props.page == "comments") {
-      content = <Comments />;
+      content = <Comments user={this.state.user} />;
     } else if (this.props.page == "replies") {
-      content = <Replies />;
+      content = <Replies user={this.state.user} />;
     } else if (this.props.page == "notifications") {
       content = <Notifications />;
     } else if (this.props.page == "bookmarks") {

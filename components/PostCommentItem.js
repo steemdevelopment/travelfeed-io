@@ -23,7 +23,7 @@ class PostpostItem extends Component {
     );
     const created = date_object.toDateString();
     var children = <Fragment />;
-    if (this.props.post.children > 0) {
+    if (this.props.post.children > 0 && this.props.loadreplies == true) {
       children = (
         <PostComments
           author={this.props.post.author}
@@ -32,7 +32,7 @@ class PostpostItem extends Component {
       );
     }
     var debth = 0;
-    if (this.props.post.depth > 1) {
+    if (this.props.post.depth > 1 && this.props.loadreplies == true) {
       debth = `${String(this.props.post.depth * 20)}px`;
     }
     return (
@@ -84,8 +84,13 @@ class PostpostItem extends Component {
   }
 }
 
+PostpostItem.defaultProps = {
+  loadreplies: true
+};
+
 PostpostItem.propTypes = {
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  loadreplies: PropTypes.bool
 };
 
 export default PostpostItem;

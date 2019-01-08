@@ -327,7 +327,7 @@ class PostGrid extends Component {
                   />
                 );
               } else if (this.props.poststyle == "commentitem") {
-                return <PostCommentItem post={post} />;
+                return <PostCommentItem post={post} loadreplies={false} />;
               } else {
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>

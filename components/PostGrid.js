@@ -47,7 +47,7 @@ class PostGrid extends Component {
           var tagstream = await client.call(
             "condenser_api",
             "get_discussions_by_comments",
-            [{ limit: 25, start_author: this.state.filter, start_permlink: "" }]
+            [{ limit: 1, start_author: this.state.filter, start_permlink: "" }]
           );
           console.log(tagstream);
         } else {
@@ -327,7 +327,15 @@ class PostGrid extends Component {
                   />
                 );
               } else if (this.props.poststyle == "commentitem") {
-                return <PostCommentItem post={post} loadreplies={false} />;
+                return (
+                  <Grid item lg={8} md={10} sm={11} xs={12}>
+                    <PostCommentItem
+                      post={post}
+                      loadreplies={false}
+                      title={true}
+                    />
+                  </Grid>
+                );
               } else {
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>
@@ -342,22 +350,26 @@ class PostGrid extends Component {
             }
           })}
           {!error && <Typography>{error}</Typography>}
-          {isLoading && this.props.poststyle == "list" && (
-            <Grid item lg={8} md={10} sm={11} xs={12}>
-              <div className="p-5 text-center">
-                <CircularProgress />
-              </div>
-            </Grid>
-          )}
-          {isLoading && this.props.poststyle != "list" && (
-            <div className="p-5">
-              <Grid item xs={1}>
-                <div className="p-5">
+          {isLoading &&
+            (this.props.poststyle == "list" ||
+              this.props.poststyle == "commentitem") && (
+              <Grid item lg={8} md={10} sm={11} xs={12}>
+                <div className="p-5 text-center">
                   <CircularProgress />
                 </div>
               </Grid>
-            </div>
-          )}
+            )}
+          {isLoading &&
+            (this.props.poststyle != "list" &&
+              this.props.poststyle != "commentitem") && (
+              <div className="p-5">
+                <Grid item xs={1}>
+                  <div className="p-5">
+                    <CircularProgress />
+                  </div>
+                </Grid>
+              </div>
+            )}
           {!hasMore && <Typography>That is all :)</Typography>}
         </Grid>
       </Fragment>

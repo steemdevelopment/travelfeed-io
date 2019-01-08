@@ -12,6 +12,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import PropTypes from "prop-types";
 import VoteSlider from "./VoteSlider";
 import PostComments from "./PostComments";
+import Typography from "@material-ui/core/Typography";
 
 class PostpostItem extends Component {
   render() {
@@ -34,6 +35,26 @@ class PostpostItem extends Component {
     var debth = 0;
     if (this.props.post.depth > 1 && this.props.loadreplies == true) {
       debth = `${String(this.props.post.depth * 20)}px`;
+    }
+    var title = <Fragment />;
+    if (this.props.title == true) {
+      title = (
+        <Link
+          as={`/@${this.props.post.root_author}/${
+            this.props.post.root_permlink
+          }`}
+          href={`/post?author=${this.props.post.root_author}&permlink=${
+            this.props.post.root_permlink
+          }`}
+          passHref
+        >
+          <a>
+            <Typography gutterBottom variant="h5">
+              Re: {this.props.post.root_title}
+            </Typography>
+          </a>
+        </Link>
+      );
     }
     return (
       <Fragment>
@@ -74,6 +95,7 @@ class PostpostItem extends Component {
             subheader={created}
           />
           <CardContent>
+            {title}
             <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
           </CardContent>
           <VoteSlider post={this.props.post} tags={[]} mode="comment" />
@@ -85,12 +107,14 @@ class PostpostItem extends Component {
 }
 
 PostpostItem.defaultProps = {
-  loadreplies: true
+  loadreplies: true,
+  title: false
 };
 
 PostpostItem.propTypes = {
   post: PropTypes.object.isRequired,
-  loadreplies: PropTypes.bool
+  loadreplies: PropTypes.bool,
+  title: PropTypes.bool
 };
 
 export default PostpostItem;

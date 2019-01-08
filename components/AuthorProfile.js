@@ -184,7 +184,10 @@ class PostAuthorProfile extends Component {
                   {youtube}
                 </p>
                 <div>
-                  <FollowButton author={this.props.author} btnstyle="default" />
+                  <FollowButton
+                    author={this.props.author}
+                    btnstyle="whiteborder"
+                  />
                 </div>
               </div>
             </div>

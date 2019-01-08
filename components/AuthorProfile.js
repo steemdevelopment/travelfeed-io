@@ -133,7 +133,7 @@ class PostAuthorProfile extends Component {
           target="_blank"
           rel="nofollow noreferrer noopener"
         >
-          <i className="fab fa-youtube p-1" />
+          <i className="fab fa-youtube text-light fa-2x p-1" />
         </a>
       );
     }

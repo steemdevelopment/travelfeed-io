@@ -32,7 +32,10 @@ class PostAuthorProfile extends Component {
     var youtube = "";
     if (acc[0].json_metadata != "") {
       const json = JSON.parse(acc[0].json_metadata);
-      name = typeof json.profile.name != "undefined" ? json.profile.name : "";
+      name =
+        typeof json.profile.name != "undefined"
+          ? json.profile.name
+          : this.props.author;
       about =
         typeof json.profile.about != "undefined" ? json.profile.about : "";
       location =

@@ -284,7 +284,9 @@ class PostGrid extends Component {
             // - Limit initial fetch to 7 posts
             // - Exclude resteems
             if (
-              (this.state.type == "tag" ||
+              (this.state.type == "comments" ||
+                this.state.type == "replies" ||
+                this.state.type == "tag" ||
                 (this.state.type == "curationfeed" &&
                   post.author != this.state.filter) ||
                 ((this.state.type == "blog" &&

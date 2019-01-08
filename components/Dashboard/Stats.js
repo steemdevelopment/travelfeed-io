@@ -46,6 +46,33 @@ class Stats extends Component {
                       <a>View and edit your published posts</a>
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      as="/dashboard/comments"
+                      href="/dashboard?page=comments"
+                      passhref
+                    >
+                      <a>View your comments</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      as="/dashboard/replies"
+                      href="/dashboard?page=replies"
+                      passhref
+                    >
+                      <a>View replies to you</a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      as="/dashboard/profile"
+                      href="/dashboard?page=profile"
+                      passhref
+                    >
+                      <a>Edit your profile</a>
+                    </Link>
+                  </li>
                 </ul>
                 <p>
                   Or,{" "}

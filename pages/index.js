@@ -1,7 +1,7 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
-import { Client } from "dsteem";
+import { client } from "../helpers/client";
 import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from "../components/BlogGridList";
 import PostGrid from "../components/PostGrid";
@@ -9,8 +9,6 @@ import Helmet from "react-helmet";
 import Header from "../components/Header";
 import { getUser } from "../utils/token";
 import { DEFAULT_META_DESCRIPTION } from "../config";
-
-const client = new Client("https://api.steemit.com");
 
 class Index extends Component {
   state = { user: null };

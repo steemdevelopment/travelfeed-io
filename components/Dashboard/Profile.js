@@ -4,12 +4,10 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
-import { Client } from "dsteem";
+import { client } from "../../helpers/client";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Link from "next/link";
-
-const client = new Client("https://api.steemit.com");
 
 class Profile extends Component {
   constructor(props) {

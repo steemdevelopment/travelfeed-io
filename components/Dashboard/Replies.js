@@ -2,11 +2,9 @@ import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
-import { Client } from "dsteem";
+import { client } from "../../helpers/client";
 import PostCommentItem from "../PostCommentItem";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
-const client = new Client("https://api.steemit.com");
 
 class Replies extends Component {
   state = {

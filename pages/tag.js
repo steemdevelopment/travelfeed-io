@@ -1,6 +1,6 @@
 import "@babel/polyfill";
 import React, { Component, Fragment } from "react";
-import { Client } from "dsteem";
+import { client } from "../helpers/client";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -9,8 +9,6 @@ import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
 import Helmet from "react-helmet";
 import Header from "../components/Header";
-
-const client = new Client("https://api.steemit.com");
 
 class Tag extends Component {
   static async getInitialProps(props) {

@@ -1,14 +1,12 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
-import { Client } from "dsteem";
+import { client } from "../helpers/client";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "@babel/polyfill";
 import isBlacklisted from "../helpers/isBlacklisted";
 import PostCommentItem from "./PostCommentItem";
-
-const client = new Client("https://api.steemit.com");
 
 class PostComments extends Component {
   state = {

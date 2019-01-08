@@ -5,6 +5,15 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import JssProvider from "react-jss/lib/JssProvider";
 import getPageContext from "../src/getPageContext";
 import { SnackbarProvider } from "notistack";
+import NProgress from "nprogress";
+import Router from "next/router";
+
+Router.events.on("routeChangeStart", url => {
+  console.log(`Loading: ${url}`);
+  NProgress.start();
+});
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 class MyApp extends App {
   constructor(props) {

@@ -13,9 +13,7 @@ import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
 import PostEditor from "./PostEditor";
-import { Client } from "dsteem";
-
-const client = new Client("https://api.steemit.com");
+import { client } from "../helpers/client";
 
 class VoteSlider extends Component {
   state = {

@@ -25,7 +25,8 @@ class VoteSlider extends Component {
     weight: 5,
     hasVoted: false,
     totalmiles: 0,
-    user: null
+    user: null,
+    activeVotes: null
   };
   newNotification(notification) {
     if (notification != undefined) {
@@ -36,8 +37,10 @@ class VoteSlider extends Component {
   }
   getTotalMiles = async () => {
     let totalmiles = 0;
-    for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
-      totalmiles += Math.round(this.state.activeVotes[vote].percent / 1000);
+    if (this.state.activeVotes != null) {
+      for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
+        totalmiles += Math.round(this.state.activeVotes[vote].percent / 1000);
+      }
     }
     this.setState({ totalmiles: totalmiles });
   };
@@ -100,12 +103,14 @@ class VoteSlider extends Component {
     });
     await this.getActiveVotes();
     this.getTotalMiles();
-    for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
-      if (this.state.activeVotes[vote].voter == user) {
-        this.setState({
-          weight: Math.round(this.state.activeVotes[vote].percent / 1000),
-          hasVoted: true
-        });
+    if (this.state.activeVotes != null) {
+      for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
+        if (this.state.activeVotes[vote].voter == user) {
+          this.setState({
+            weight: Math.round(this.state.activeVotes[vote].percent / 1000),
+            hasVoted: true
+          });
+        }
       }
     }
   }

@@ -1,11 +1,47 @@
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
+import PropTypes from "prop-types";
+import { Client } from "dsteem";
+import PostCommentItem from "../PostCommentItem";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+const client = new Client("https://api.steemit.com");
 
 class Replies extends Component {
+  state = {
+    stream: null
+  };
+  streamReplies = async () => {
+    const stream = await client.call("tags_api", "get_replies_by_last_update", [
+      this.props.user,
+      "",
+      100
+    ]);
+    this.setState({
+      stream: stream
+    });
+  };
+  componentDidMount() {
+    this.streamReplies();
+  }
   render() {
+    var content = (
+      <Grid item lg={8} md={10} sm={11} xs={12}>
+        <div className="p-5 text-center">
+          <CircularProgress />
+        </div>
+      </Grid>
+    );
+    if (this.state.stream != null) {
+      content = this.state.stream.map(post => {
+        return (
+          <Grid item lg={8} md={10} sm={11} xs={12} key={post.id}>
+            <PostCommentItem post={post} loadreplies={false} title={true} />
+          </Grid>
+        );
+      });
+    }
     return (
       <Fragment>
         <Helmet>
@@ -18,18 +54,28 @@ class Replies extends Component {
           justify="center"
           className="pt-4 pb-4"
         >
-          <Grid item lg={7} md={8} sm={11} xs={12}>
-            <Card>
-              <CardContent>
-                <h1>Replies</h1>
-                <p>Viewing your recent replies will be available soon.</p>
-              </CardContent>
-            </Card>
+          <Grid item lg={8} md={10} sm={11} xs={12}>
+            <div className="text-center">
+              <h1>Replies to You</h1>
+            </div>
           </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={0}
+          alignItems="center"
+          justify="center"
+          className="p-3"
+        >
+          {content}
         </Grid>
       </Fragment>
     );
   }
 }
+
+Replies.propTypes = {
+  user: PropTypes.string.isRequired
+};
 
 export default Replies;

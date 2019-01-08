@@ -35,6 +35,7 @@ export const comment_author_blacklist = [
   "steem-plus",
   "steemitboard",
   "photochainreward",
+  "teamnz",
   "tipu",
   "steem-ua",
   "altobot",

@@ -72,27 +72,33 @@ class followButton extends Component {
     }
     var btn = (
       <Link href={"/join"} passHref>
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
-          className={btnclass}
-        >
+        <span className="badge badge-secondary p-1 ml-2 rounded cpointer">
           Follow
-        </Button>
+        </span>
       </Link>
     );
+    if (this.state.style == "default") {
+      btn = (
+        <Link href={"/join"} passHref>
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            className="m-1"
+          >
+            Follow
+          </Button>
+        </Link>
+      );
+    }
     if (this.state.followed != false) {
       btn = (
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
+        <span
           onClick={() => this.unfollowAuthor(this.state.author)}
-          className={btnclass}
+          className="badge badge-secondary p-1 ml-2 rounded cpointer"
         >
           Unfollow
-        </Button>
+        </span>
       );
       if (this.state.style == "default") {
         btn = (
@@ -120,15 +126,12 @@ class followButton extends Component {
       }
     } else if (this.state.user != null) {
       btn = (
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
+        <span
           onClick={() => this.followAuthor(this.state.author)}
-          className={btnclass}
+          className="badge badge-secondary p-1 ml-2 rounded cpointer"
         >
           Follow
-        </Button>
+        </span>
       );
       if (this.state.style == "default") {
         btn = (

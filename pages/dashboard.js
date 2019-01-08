@@ -107,7 +107,7 @@ const styles = theme => ({
   }
 });
 class Dashboard extends Component {
-  state = { user: "", open: true };
+  state = { user: "", open: true, active: null };
   static async getInitialProps(props) {
     const { page } = props.query;
     return { page };
@@ -121,6 +121,9 @@ class Dashboard extends Component {
   getUser() {
     this.setState({ user: getUser() });
   }
+  setActive = item => {
+    this.setState({ active: item });
+  };
   componentDidMount() {
     this.getUser();
     if (window.innerWidth < 750) {
@@ -213,7 +216,10 @@ class Dashboard extends Component {
         <List>
           <Link as="/dashboard" href="/dashboard?page=stats" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "stats" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
@@ -223,7 +229,10 @@ class Dashboard extends Component {
           </Link>
           <Link as="/dashboard/publish" href="/dashboard?page=publish" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "publish" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <PublishIcon />
                 </ListItemIcon>
@@ -233,7 +242,10 @@ class Dashboard extends Component {
           </Link>
           <Link as="/dashboard/drafts" href="/dashboard?page=drafts" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "drafts" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <DraftIcon />
                 </ListItemIcon>
@@ -243,7 +255,10 @@ class Dashboard extends Component {
           </Link>
           <Link as="/dashboard/posts" href="/dashboard?page=posts" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "posts" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <PostsIcon />
                 </ListItemIcon>
@@ -257,7 +272,10 @@ class Dashboard extends Component {
             passHref
           >
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "comments" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <CommentsIcon />
                 </ListItemIcon>
@@ -267,7 +285,10 @@ class Dashboard extends Component {
           </Link>
           <Link as="/dashboard/replies" href="/dashboard?page=replies" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "replies" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <RepliesIcon />
                 </ListItemIcon>
@@ -281,7 +302,10 @@ class Dashboard extends Component {
             passHref
           >
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "notifications" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <NotificationsIcon />
                 </ListItemIcon>
@@ -298,7 +322,10 @@ class Dashboard extends Component {
             passHref
           >
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "bookmarks" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <BookmarkIcon />
                 </ListItemIcon>
@@ -308,7 +335,10 @@ class Dashboard extends Component {
           </Link>
           <Link as="/dashboard/profile" href="/dashboard?page=profile" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "profile" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <ProfileIcon />
                 </ListItemIcon>
@@ -318,7 +348,10 @@ class Dashboard extends Component {
           </Link>
           <Link as="/dashboard/wallet" href="/dashboard?page=wallet" passHref>
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "wallet" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <WalletIcon />
                 </ListItemIcon>
@@ -332,7 +365,10 @@ class Dashboard extends Component {
             passHref
           >
             <a>
-              <ListItem button>
+              <ListItem
+                selected={this.state.active == "settings" ? true : false}
+                button
+              >
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
@@ -345,26 +381,81 @@ class Dashboard extends Component {
     );
     if (this.props.page == "publish") {
       var content = <Publish />;
+      {
+        if (this.state.active != "publish") {
+          this.setActive("publish");
+        }
+      }
     } else if (this.props.page == "drafts") {
       content = <Drafts />;
+      {
+        if (this.state.active != "drafts") {
+          this.setActive("drafts");
+        }
+      }
     } else if (this.props.page == "posts") {
       content = <Posts user={this.state.user} />;
+      {
+        if (this.state.active != "posts") {
+          this.setActive("posts");
+        }
+      }
     } else if (this.props.page == "comments") {
       content = <Comments user={this.state.user} />;
+      {
+        if (this.state.active != "comments") {
+          this.setActive("comments");
+        }
+      }
     } else if (this.props.page == "replies") {
       content = <Replies user={this.state.user} />;
+      {
+        if (this.state.active != "replies") {
+          this.setActive("replies");
+        }
+      }
     } else if (this.props.page == "notifications") {
       content = <Notifications />;
+      {
+        if (this.state.active != "notifications") {
+          this.setActive("notifications");
+        }
+      }
     } else if (this.props.page == "bookmarks") {
       content = <Bookmarks />;
+      {
+        if (this.state.active != "bookmarks") {
+          this.setActive("bookmarks");
+        }
+      }
     } else if (this.props.page == "profile") {
       content = <Profile user={this.state.user} />;
+      {
+        if (this.state.active != "profile") {
+          this.setActive("profile");
+        }
+      }
     } else if (this.props.page == "wallet") {
       content = <Wallet />;
+      {
+        if (this.state.active != "wallet") {
+          this.setActive("wallet");
+        }
+      }
     } else if (this.props.page == "settings") {
       content = <Settings />;
+      {
+        if (this.state.active != "settings") {
+          this.setActive("settings");
+        }
+      }
     } else {
       content = <Stats user={this.state.user} />;
+      {
+        if (this.state.active != "stats") {
+          this.setActive("stats");
+        }
+      }
     }
     return (
       <div className={classes.root}>

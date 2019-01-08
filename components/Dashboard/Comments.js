@@ -24,7 +24,12 @@ class Comments extends Component {
             </div>
           </Grid>
         </Grid>
-        <PostGrid type="comments" filter={this.props.user} />
+        <PostGrid
+          type="comments"
+          filter={this.props.user}
+          poststyle="commentitem"
+          position={0}
+        />
       </Fragment>
     );
   }

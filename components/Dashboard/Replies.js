@@ -2,7 +2,7 @@ import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
-import PostGrid from "../PostGrid";
+// import PostGrid from "../PostGrid";
 
 class Replies extends Component {
   render() {
@@ -24,7 +24,12 @@ class Replies extends Component {
             </div>
           </Grid>
         </Grid>
-        <PostGrid type="replies" filter={this.props.user} />
+        {/* <PostGrid
+          type="replies"
+          filter={this.props.user}
+          poststyle="commentitem"
+          position={0}
+        /> */}
       </Fragment>
     );
   }

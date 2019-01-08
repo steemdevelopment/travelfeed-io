@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import GridPostCard from "./GridPostCard";
 import PostListItem from "./PostListItem";
+import PostCommentItem from "./PostCommentItem";
 
 const client = new Client("https://api.steemit.com");
 
@@ -41,12 +42,18 @@ class PostGrid extends Component {
       filtertype = this.state.sortby;
     }
     if (lastpermlink == "") {
-      var tagargs = { tag: this.state.filter, limit: 25 };
-      const tagstream = await client.database.getDiscussions(
-        filtertype,
-        tagargs
-      );
       try {
+        if (this.state.type == "comments") {
+          var tagstream = await client.call(
+            "condenser_api",
+            "get_discussions_by_comments",
+            [{ limit: 25, start_author: this.state.filter, start_permlink: "" }]
+          );
+          console.log(tagstream);
+        } else {
+          var tagargs = { tag: this.state.filter, limit: 25 };
+          tagstream = await client.database.getDiscussions(filtertype, tagargs);
+        }
         lastpermlink =
           tagstream.length > 0 ? tagstream[tagstream.length - 1].permlink : "";
         lastauthor =
@@ -86,7 +93,16 @@ class PostGrid extends Component {
       };
       this.setState({ position: 1 });
     }
-    const stream = await client.database.getDiscussions(filtertype, args);
+    if (this.state.type == "comments") {
+      var stream = await client.call(
+        "condenser_api",
+        "get_discussions_by_comments",
+        [{ limit: 25, start_author: lastauthor, start_permlink: lastpermlink }]
+      );
+      console.log(stream);
+    } else {
+      stream = await client.database.getDiscussions(filtertype, args);
+    }
     lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
     delete stream[stream.length - 1];
@@ -275,6 +291,7 @@ class PostGrid extends Component {
         >
           {selector}
           {this.state.stream.map(post => {
+            console.log(post);
             const json = JSON.parse(post.json_metadata);
             let htmlBody = parseBody(post.body, {});
             let sanitized = sanitize(htmlBody, { allowedTags: [] });
@@ -284,9 +301,8 @@ class PostGrid extends Component {
             // - Limit initial fetch to 7 posts
             // - Exclude resteems
             if (
-              (this.state.type == "comments" ||
-                this.state.type == "replies" ||
-                this.state.type == "tag" ||
+              this.state.type == "comments" ||
+              ((this.state.type == "tag" ||
                 (this.state.type == "curationfeed" &&
                   post.author != this.state.filter) ||
                 ((this.state.type == "blog" &&
@@ -295,11 +311,11 @@ class PostGrid extends Component {
                     post.author == "jpphotography")) ||
                   (this.state.type == "blog" &&
                     post.author == this.state.filter))) &&
-              isBlacklisted(post.author, post.permlink, {}) === false &&
-              readtime.words > 250 &&
-              (post.category == "travelfeed" ||
-                json.tags.indexOf("travelfeed") > -1 === true) &&
-              json.tags.indexOf("nsfw") > -1 === false
+                isBlacklisted(post.author, post.permlink, {}) === false &&
+                readtime.words > 250 &&
+                (post.category == "travelfeed" ||
+                  json.tags.indexOf("travelfeed") > -1 === true) &&
+                json.tags.indexOf("nsfw") > -1 === false)
             ) {
               processed.push(post.permlink);
               if (this.props.poststyle == "list") {
@@ -310,6 +326,8 @@ class PostGrid extends Component {
                     readtime={readtime}
                   />
                 );
+              } else if (this.props.poststyle == "commentitem") {
+                return <PostCommentItem post={post} />;
               } else {
                 return (
                   <Grid item lg={3} md={4} sm={6} xs={12}>

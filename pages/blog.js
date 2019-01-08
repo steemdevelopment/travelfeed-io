@@ -1,7 +1,7 @@
 import "@babel/polyfill";
 import React, { Component, Fragment } from "react";
 import isBlacklisted from "../helpers/isBlacklisted";
-import { Client } from "dsteem";
+import { client } from "../helpers/client";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
@@ -9,8 +9,6 @@ import AuthorProfile from "../components/AuthorProfile";
 import Helmet from "react-helmet";
 import Header from "../components/Header";
 import NotFound from "../components/NotFound";
-
-const client = new Client("https://api.steemit.com");
 
 class Blog extends Component {
   static async getInitialProps(props) {

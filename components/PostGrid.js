@@ -3,7 +3,7 @@ import "@babel/polyfill";
 import PropTypes from "prop-types";
 import sanitize from "sanitize-html";
 import parseBody from "../helpers/parseBody";
-import { Client } from "dsteem";
+import { client } from "../helpers/client";
 import isBlacklisted from "../helpers/isBlacklisted";
 import Link from "next/link";
 import readingTime from "reading-time";
@@ -14,8 +14,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import GridPostCard from "./GridPostCard";
 import PostListItem from "./PostListItem";
 import PostCommentItem from "./PostCommentItem";
-
-const client = new Client("https://api.steemit.com");
 
 class PostGrid extends Component {
   state = {
@@ -106,7 +104,6 @@ class PostGrid extends Component {
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
     delete stream[stream.length - 1];
     try {
-      console.log(stream.length);
       if (stream.length < 2) {
         this.setState({
           hasMore: false,

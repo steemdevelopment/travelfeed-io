@@ -3,8 +3,7 @@ import { follow, unfollow, ignore } from "../utils/actions";
 import Button from "@material-ui/core/Button";
 import { getUser } from "../utils/token";
 import Link from "next/link";
-import { Client } from "dsteem";
-const client = new Client("https://api.steemit.com");
+import { client } from "../helpers/client";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
 

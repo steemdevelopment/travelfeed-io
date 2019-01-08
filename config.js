@@ -1,6 +1,7 @@
 export const DEFAULT_IMAGE = "";
 export const APP_VERSION = "travelfeed/0.2.5";
 export const GMAPS_JS_APIKEY = "AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c";
+export const STEEM_API = "https://api.steemit.com";
 
 var url = "http://localhost:3000/login";
 var rooturl = "http://localhost:3000";

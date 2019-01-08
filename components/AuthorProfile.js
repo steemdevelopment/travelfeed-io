@@ -1,8 +1,7 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
-import { Client } from "dsteem";
+import { client } from "../helpers/client";
 import PropTypes from "prop-types";
-const client = new Client("https://api.steemit.com");
 import Typography from "@material-ui/core/Typography";
 import FollowButton from "./FollowButton";
 

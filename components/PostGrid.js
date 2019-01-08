@@ -106,20 +106,22 @@ class PostGrid extends Component {
     lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
     delete stream[stream.length - 1];
     try {
-      if (stream.length == 0) {
+      console.log(stream.length);
+      if (stream.length < 2) {
         this.setState({
           hasMore: false,
           isLoading: false
         });
+      } else {
+        const loadposts = this.state.stream.concat(stream);
+        this.setState({
+          lastpermlink: lastpermlink,
+          lastauthor: lastauthor,
+          stream: loadposts,
+          isLoading: false,
+          hasMore: true
+        });
       }
-      const loadposts = this.state.stream.concat(stream);
-      this.setState({
-        lastpermlink: lastpermlink,
-        lastauthor: lastauthor,
-        stream: loadposts,
-        isLoading: false,
-        hasMore: true
-      });
     } catch (err) {
       this.setState({
         error: err.message,
@@ -290,7 +292,11 @@ class PostGrid extends Component {
         >
           {selector}
           {this.state.stream.map(post => {
-            const json = JSON.parse(post.json_metadata);
+            try {
+              var json = JSON.parse(post.json_metadata);
+            } catch {
+              json = {};
+            }
             let htmlBody = parseBody(post.body, {});
             let sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
@@ -368,7 +374,13 @@ class PostGrid extends Component {
                 </Grid>
               </div>
             )}
-          {!hasMore && <Typography>That is all :)</Typography>}
+          {!hasMore &&
+            (this.props.poststyle == "list" ||
+              this.props.poststyle == "commentitem") && (
+              <Grid item lg={8} md={10} sm={11} xs={12}>
+                <hr />
+              </Grid>
+            )}
         </Grid>
       </Fragment>
     );

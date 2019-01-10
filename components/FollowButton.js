@@ -66,9 +66,9 @@ class followButton extends Component {
     }
   }
   render() {
-    var btnclass = "ml-2 p-0";
-    if (this.state.style == "default") {
-      btnclass = "m-1";
+    var btnclass = "m-1";
+    if (this.state.style == "whiteborder") {
+      btnclass = "m-1 border-light";
     }
     var btn = (
       <Link href={"/join"} passHref>
@@ -82,76 +82,79 @@ class followButton extends Component {
         </Button>
       </Link>
     );
+    if (this.state.style == "minimal") {
+      btn = (
+        <Link href={"/join"} passHref>
+          <span className="badge badge-secondary p-1 ml-2 rounded cpointer">
+            Follow
+          </span>
+        </Link>
+      );
+    }
     if (this.state.followed != false) {
       btn = (
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
-          onClick={() => this.unfollowAuthor(this.state.author)}
-          className={btnclass}
-        >
-          Unfollow
-        </Button>
+        <Fragment>
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            onClick={() => this.unfollowAuthor(this.state.author)}
+            className={btnclass}
+          >
+            Unfollow
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            onClick={() => this.ignoreAuthor(this.state.author)}
+            className={btnclass}
+          >
+            Ignore
+          </Button>
+        </Fragment>
       );
-      if (this.state.style == "default") {
+      if (this.state.style == "minimal") {
         btn = (
-          <Fragment>
-            <Button
-              variant="outlined"
-              size="small"
-              color="inherit"
-              onClick={() => this.unfollowAuthor(this.state.author)}
-              className={btnclass}
-            >
-              Unfollow
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              color="inherit"
-              onClick={() => this.ignoreAuthor(this.state.author)}
-              className={btnclass}
-            >
-              Ignore
-            </Button>
-          </Fragment>
+          <span
+            onClick={() => this.unfollowAuthor(this.state.author)}
+            className="badge badge-secondary p-1 ml-2 rounded cpointer"
+          >
+            Unfollow
+          </span>
         );
       }
     } else if (this.state.user != null) {
       btn = (
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
-          onClick={() => this.followAuthor(this.state.author)}
-          className={btnclass}
-        >
-          Follow
-        </Button>
+        <Fragment>
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            onClick={() => this.followAuthor(this.state.author)}
+            className={btnclass}
+          >
+            Follow
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="inherit"
+            onClick={() => this.ignoreAuthor(this.state.author)}
+            className={btnclass}
+          >
+            Ignore
+          </Button>
+        </Fragment>
       );
-      if (this.state.style == "default") {
+      if (this.state.style == "minimal") {
         btn = (
-          <Fragment>
-            <Button
-              variant="outlined"
-              size="small"
-              color="inherit"
-              onClick={() => this.followAuthor(this.state.author)}
-              className={btnclass}
-            >
-              Follow
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              color="inherit"
-              onClick={() => this.ignoreAuthor(this.state.author)}
-              className={btnclass}
-            >
-              Ignore
-            </Button>
-          </Fragment>
+          <span
+            onClick={() => this.followAuthor(this.state.author)}
+            className="badge badge-secondary p-1 ml-2 rounded cpointer"
+          >
+            Follow
+          </span>
         );
       }
     }

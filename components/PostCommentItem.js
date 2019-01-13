@@ -38,13 +38,14 @@ class PostpostItem extends Component {
     }
     var title = <Fragment />;
     if (this.props.title == true) {
+      console.log(this.props.post);
       title = (
         <Link
-          as={`/@${this.props.post.root_author}/${
-            this.props.post.root_permlink
+          as={`/@${this.props.post.parent_author}/${
+            this.props.post.parent_permlink
           }`}
-          href={`/post?author=${this.props.post.root_author}&permlink=${
-            this.props.post.root_permlink
+          href={`/post?author=${this.props.post.parent_author}&permlink=${
+            this.props.post.parent_permlink
           }`}
           passHref
         >

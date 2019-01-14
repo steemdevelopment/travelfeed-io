@@ -43,8 +43,8 @@ class PostCard extends Component {
     const json = JSON.parse(post.json_metadata);
     const posttag =
       typeof json.tags != "undefined" && json.tags.length > 0
-        ? json.tags[1]
-        : "";
+        ? json.tags[0]
+        : "travelfeed";
     let excerpt = regExcerpt(sanitized);
     const created = date_object.toDateString();
     const image = getImage(post.json_metadata, post.body, "400x0");

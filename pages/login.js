@@ -13,14 +13,16 @@ class Login extends Component {
   static async getInitialProps({ req }) {
     const access_token = req.query.access_token;
     const username = req.query.username;
-    return { access_token, username };
+    const expires_in = req.query.expires_in;
+    return { access_token, username, expires_in };
   }
   componentDidMount() {
     const access_token = this.props.access_token;
     const username = this.props.username;
+    const expires_in = this.props.expires_in;
     if (access_token != undefined) {
-      setToken(access_token);
-      setUser(username);
+      setToken(access_token, expires_in);
+      setUser(username, expires_in);
     }
     this.setState({ user: username });
   }
@@ -59,7 +61,8 @@ class Login extends Component {
 
 Login.propTypes = {
   access_token: PropTypes.string,
-  username: PropTypes.string
+  username: PropTypes.string,
+  expires_in: PropTypes.number
 };
 
 export default Login;

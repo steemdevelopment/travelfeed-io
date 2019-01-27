@@ -92,9 +92,15 @@ class Post extends Component {
     const created = date_object.toDateString();
     const image = getImage(post.json_metadata, post.body, "1000x0");
     const bodyText = { __html: htmlBody };
-    // todo: Implement canonical URL from condenser
+    // Set the canonical URL to steemit.com by default to avoid duplicate content SEO problems
     let canonicalUrl =
       "https://steemit.com/travelfeed/@" + post.author + "/" + post.permlink;
+    const app = json.app != "undefined" ? json.app.split("/")[0] : "";
+    // Set the caninical URL to travelfeed.io if the post was authored through the dApp
+    if (app == "travelfeed") {
+      canonicalUrl =
+        "https://travelfeed.io/@" + post.author + "/" + post.permlink;
+    }
     let excerpt = sanitized.substring(0, 143) + `[...] by ${post.author}`;
     const swm = extractSWM(post.body);
     var lat = 0.0;

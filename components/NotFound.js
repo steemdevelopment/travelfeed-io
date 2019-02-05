@@ -18,7 +18,7 @@ class NotFound extends Component {
       content = (
         <Fragment>
           <h1>Error: Logged Out</h1>
-          <p>You need to log in to view this page.</p>
+          <p>You need to log in to view this page. Use the "sign in" button on the top right to log in to your account.</p>
         </Fragment>
       );
     }

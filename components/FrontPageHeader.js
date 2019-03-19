@@ -20,7 +20,7 @@ const items = [
           <div className="col-md-6">
             <p>
               On TravelFeed, you can discover great travel content by hundreds
-              of independrend travellers like yourself!
+              of independent travellers like yourself!
             </p>
           </div>
         </div>

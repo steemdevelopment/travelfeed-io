@@ -65,11 +65,7 @@ class Blog extends Component {
           </Helmet>
           <Header />
           <AuthorProfile author={this.props.args.author} />
-          <PostGrid
-            stream={this.props.args.stream}
-            type="blog"
-            filter={this.props.args.author}
-          />
+          <PostGrid type="blog" filter={this.props.args.author} />
         </Fragment>
       );
     }

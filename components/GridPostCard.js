@@ -7,31 +7,17 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Avatar from "@material-ui/core/Avatar";
 import getImage from "../helpers/getImage";
 import dateFromJsonString from "../helpers/dateFromJsonString";
-import StarIcon from "@material-ui/icons/Star";
-import IconButton from "@material-ui/core/IconButton";
 import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
 import { regExcerpt, regTitle } from "../utils/regex";
 import VoteSlider from "./VoteSlider";
 import PropTypes from "prop-types";
 import AppIcon from "./AppIcon";
+import IsCurated from "./IsCurated";
 
 class PostCard extends Component {
   render() {
     const post = this.props.post;
-    var isCurated = <Fragment />;
-    for (let vote = 0; vote < post.active_votes.length; vote++) {
-      if (
-        post.active_votes[vote].voter == "travelfeed" &&
-        post.active_votes[vote].percent > 8000
-      ) {
-        isCurated = (
-          <IconButton>
-            <StarIcon />
-          </IconButton>
-        );
-      }
-    }
     let sanitized = this.props.sanitized;
     const readtime = this.props.readtime;
     let title = regTitle(post.title);
@@ -69,7 +55,11 @@ class PostCard extends Component {
           }
           action={
             <Fragment>
-              {isCurated}
+              <IsCurated
+                votes={post.active_votes}
+                author={post.author}
+                permlink={post.permlink}
+              />
               <AppIcon post={this.props.post} />
             </Fragment>
           }

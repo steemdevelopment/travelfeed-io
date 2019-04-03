@@ -29,6 +29,7 @@ import InvalidPost from "../components/InvalidPost";
 import { extractSWM } from "../utils/regex";
 import AppIcon from "../components/AppIcon";
 import Router from "next/router";
+import IsCurated from "../components/IsCurated";
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -171,6 +172,11 @@ class Post extends Component {
                         <BookmarkIconBorder />
                       </IconButton>
                       <AppIcon post={this.props.post} />
+                      <IsCurated
+                        votes={post.active_votes}
+                        author={post.author}
+                        permlink={post.permlink}
+                      />
                     </Fragment>
                   }
                   title={

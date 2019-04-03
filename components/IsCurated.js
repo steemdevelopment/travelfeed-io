@@ -200,7 +200,7 @@ class IsCurated extends Component {
       "for91days",
       "guchtere",
       "mrprofessor",
-      "jpphoto",
+      "jpphotography",
       "elsaenroute",
       "smeralda"
     ];

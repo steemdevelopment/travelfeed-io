@@ -89,3 +89,27 @@ export const ignore = async following => {
     }
   );
 };
+
+export const customJson = async payload => {
+  api.setAccessToken(getToken());
+  const author = getUser();
+  return await api.broadcast(
+    [
+      [
+        "custom_json",
+        {
+          id: "travelfeed",
+          required_auths: [],
+          required_posting_auths: [author],
+          json: JSON.stringify(payload)
+        }
+      ]
+    ],
+    await function(err) {
+      if (err != undefined) {
+        return ["Could not write custom_json to Blockchain: " + err, "error"];
+      }
+      return ["Custom Json was successfully submitted", "success"];
+    }
+  );
+};

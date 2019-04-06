@@ -12,6 +12,8 @@ if (process.env.NODE_ENV == "production") {
 export const STEEMCONNECT_CALLBACK_URL = url;
 export const ROOTURL = rooturl;
 
+export const GRAPHQL_URL = "http://localhost:4000/";
+
 export const DEFAULT_META_DESCRIPTION =
   "Find inspiration for your travels on TravelFeed. Join the TravelFeed community, write your own travel blog and start earning!";
 

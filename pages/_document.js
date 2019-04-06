@@ -3,7 +3,7 @@ import Document, { Head, Main, NextScript } from "next/document";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
-import getPageContext from "../src/getPageContext";
+import getPageContext from "../lib/getPageContext";
 const pageContext = getPageContext();
 export default class extends Document {
   static async getInitialProps(...args) {

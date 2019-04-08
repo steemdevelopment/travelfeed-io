@@ -223,28 +223,24 @@ class IsCurated extends Component {
         </div>
       );
     }
-    for (let vote = 0; vote < this.props.votes.length; vote++) {
-      if (this.props.votes[vote].voter == "travelfeed") {
-        if (this.props.votes[vote].percent > 8000) {
-          return (
-            <Fragment>
-              <IconButton>
-                <CurateIcon onClick={this.handleClickOpen} />
-              </IconButton>
-              {dialog}
-            </Fragment>
-          );
-        } else if (this.props.votes[vote].percent > 4000) {
-          return (
-            <Fragment>
-              <IconButton>
-                <HonourIcon onClick={this.handleClickOpen} />
-              </IconButton>
-              {dialog}
-            </Fragment>
-          );
-        }
-      }
+    if (this.props.curation_score > 8000) {
+      return (
+        <Fragment>
+          <IconButton>
+            <CurateIcon onClick={this.handleClickOpen} />
+          </IconButton>
+          {dialog}
+        </Fragment>
+      );
+    } else if (this.props.curation_score > 4000) {
+      return (
+        <Fragment>
+          <IconButton>
+            <HonourIcon onClick={this.handleClickOpen} />
+          </IconButton>
+          {dialog}
+        </Fragment>
+      );
     }
     if (isCurator) {
       return (

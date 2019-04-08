@@ -3,16 +3,7 @@ import PropTypes from "prop-types";
 
 class AppIcon extends Component {
   render() {
-    try {
-      const json = JSON.parse(this.props.post.json_metadata);
-      var app =
-        json.app != undefined && json.app.indexOf("/") > -1 === true
-          ? json.app.split("/")[0]
-          : "";
-    } catch {
-      app = "";
-    }
-    if (app == "travelfeed") {
+    if (this.props.is_travelfeed === true) {
       return (
         <Fragment>
           <img
@@ -29,7 +20,7 @@ class AppIcon extends Component {
 }
 
 AppIcon.propTypes = {
-  post: PropTypes.object.isRequired
+  is_travelfeed: PropTypes.bool
 };
 
 export default AppIcon;

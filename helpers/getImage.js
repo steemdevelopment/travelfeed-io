@@ -7,15 +7,10 @@ export const getImageList = body => {
   return image;
 };
 
-const getImage = (json_metadata, body, size) => {
-  const json = JSON.parse(json_metadata);
+const getImage = (img_url, body, size) => {
   let image = "";
-  if (
-    typeof json.image != "undefined" &&
-    json.image.length > 0 &&
-    json.image[0] !== ""
-  ) {
-    image = `https://steemitimages.com/${size}/` + json.image[0];
+  if (img_url !== "") {
+    image = `https://steemitimages.com/${size}/` + img_url;
   } else {
     const imatch = body.match(imageRegex);
     if (imatch !== null) {

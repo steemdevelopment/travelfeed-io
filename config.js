@@ -19,8 +19,10 @@ export const DEFAULT_META_DESCRIPTION =
 
 // This is in no way meant to judge accounts. It is simply an (incomplete) list of accounts with frequent automated comments and/or frequent spam comments. We want to save the comments for human interaction exclusively. If you believe that a specific account should not be in this list feel free to contact us.
 export const comment_author_blacklist = [
-  "steemitworldmap",
+  "spencercoffman",
+  "upmyvote",
   "curie",
+  "resteemable",
   "c-squared",
   "trips.teem",
   "steemitworldmap",

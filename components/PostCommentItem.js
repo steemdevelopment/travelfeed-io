@@ -18,27 +18,21 @@ class PostpostItem extends Component {
   render() {
     let htmlBody = parseBody(this.props.post.body, {});
     const bodyText = { __html: htmlBody };
-    const json_date = '{ "date": "' + this.props.post.created + 'Z" }';
+    const json_date = '{ "date": "' + this.props.post.created_at + 'Z" }';
     const date_object = new Date(
       JSON.parse(json_date, dateFromJsonString).date
     );
-    const created = date_object.toDateString();
-    var children = <Fragment />;
-    if (this.props.post.children > 0 && this.props.loadreplies == true) {
-      children = (
-        <PostComments
-          author={this.props.post.author}
-          permlink={this.props.post.permlink}
-        />
-      );
+    const created_at = date_object.toDateString();
+    let children = <Fragment />;
+    if (this.props.post.children !== 0 && this.props.loadreplies == true) {
+      children = <PostComments post_id={this.props.post.post_id} />;
     }
-    var debth = 0;
+    let debth = 0;
     if (this.props.post.depth > 1 && this.props.loadreplies == true) {
       debth = `${String(this.props.post.depth * 20)}px`;
     }
-    var title = <Fragment />;
+    let title = <Fragment />;
     if (this.props.title == true) {
-      console.log(this.props.post);
       title = (
         <Link
           as={`/@${this.props.post.parent_author}/${
@@ -50,7 +44,7 @@ class PostpostItem extends Component {
           passHref
         >
           <a>
-            <Typography gutterBottom variant="h5">
+            <Typography gutterBottom letiant="h5">
               Re: {this.props.post.root_title}
             </Typography>
           </a>
@@ -93,7 +87,7 @@ class PostpostItem extends Component {
                 </Link>
               </Fragment>
             }
-            subheader={created}
+            subheader={created_at}
           />
           <CardContent>
             {title}

@@ -1,11 +1,8 @@
 import gql from "graphql-tag";
 
 export const GET_POSTS = gql`
-  {
-    post(
-      author: "travelfeed"
-      permlink: "introducing-travelfeed-featuring-steemit-s-best-travel-content"
-    ) {
+  query post($author: String!, $permlink: String!) {
+    post(author: $author, permlink: $permlink) {
       post_id
       author
       permlink

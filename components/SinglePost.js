@@ -30,10 +30,24 @@ import IsCurated from "../components/IsCurated";
 
 export const SinglePost = React.forwardRef((props, ref) => (
   <Fragment ref={ref}>
-    <Query query={GET_POSTS}>
+    {console.log(props.props)}
+    <Query query={GET_POSTS} variables={props.props}>
       {({ data, loading, error }) => {
         if (loading) {
-          return "Loading...";
+          return (
+            <Fragment>
+              <Header />
+              <Grid
+                container
+                spacing={0}
+                alignItems="center"
+                justify="center"
+                className="pt-4 pb-4"
+              >
+                <Grid item lg={7} md={8} sm={11} xs={12} />
+              </Grid>
+            </Fragment>
+          );
         }
         if (error) {
           return (
@@ -228,10 +242,7 @@ export const SinglePost = React.forwardRef((props, ref) => (
                 </Card>
               </Grid>
               <Grid item lg={6} md={7} sm={10} xs={11} className="pb-2">
-                <PostComments
-                  author={data.post.author}
-                  permlink={data.post.permlink}
-                />
+                <PostComments id={data.post.id} />
               </Grid>
             </Grid>
           </Fragment>

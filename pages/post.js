@@ -13,7 +13,10 @@ class Post extends Component {
     const ref = React.createRef();
     return (
       <Fragment>
-        <SinglePost ref={ref} />
+        <SinglePost
+          ref={ref}
+          props={{ author: this.props.author, permlink: this.props.permlink }}
+        />
       </Fragment>
     );
   }

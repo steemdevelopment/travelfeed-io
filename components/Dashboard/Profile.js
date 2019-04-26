@@ -21,8 +21,10 @@ class Profile extends Component {
       location: "",
       website: "",
       facebook: "",
+      twitter: "",
       instagram: "",
       youtube: "",
+      couchsurfing: "",
       changed: []
     };
     this.handleEditorChange_profile_image = this.handleEditorChange_profile_image.bind(
@@ -42,10 +44,16 @@ class Profile extends Component {
     this.handleEditorChange_facebook = this.handleEditorChange_facebook.bind(
       this
     );
+    this.handleEditorChange_twitter = this.handleEditorChange_twitter.bind(
+      this
+    );
     this.handleEditorChange_instagram = this.handleEditorChange_instagram.bind(
       this
     );
     this.handleEditorChange_youtube = this.handleEditorChange_youtube.bind(
+      this
+    );
+    this.handleEditorChange_couchsurfing = this.handleEditorChange_couchsurfing.bind(
       this
     );
   }
@@ -119,6 +127,16 @@ class Profile extends Component {
       changed: changed
     });
   }
+  handleEditorChange_twitter(twitter) {
+    var changed = this.state.changed;
+    if (changed.indexOf("twitter") > -1 === false) {
+      changed = this.state.changed.concat("twitter");
+    }
+    this.setState({
+      twitter: twitter.target.value,
+      changed: changed
+    });
+  }
   handleEditorChange_instagram(instagram) {
     var changed = this.state.changed;
     if (changed.indexOf("instagram") > -1 === false) {
@@ -136,6 +154,16 @@ class Profile extends Component {
     }
     this.setState({
       youtube: youtube.target.value,
+      changed: changed
+    });
+  }
+  handleEditorChange_couchsurfing(couchsurfing) {
+    var changed = this.state.changed;
+    if (changed.indexOf("couchsurfing") > -1 === false) {
+      changed = this.state.changed.concat("couchsurfing");
+    }
+    this.setState({
+      couchsurfing: couchsurfing.target.value,
       changed: changed
     });
   }
@@ -160,12 +188,18 @@ class Profile extends Component {
       typeof json.profile.website != "undefined" ? json.profile.website : "";
     var facebook =
       typeof json.profile.facebook != "undefined" ? json.profile.facebook : "";
+    var twitter =
+      typeof json.profile.twitter != "undefined" ? json.profile.twitter : "";
     var instagram =
       typeof json.profile.instagram != "undefined"
         ? json.profile.instagram
         : "";
     var youtube =
       typeof json.profile.youtube != "undefined" ? json.profile.youtube : "";
+    var couchsurfing =
+      typeof json.profile.couchsurfing != "undefined"
+        ? json.profile.couchsurfing
+        : "";
     this.setState({
       profile_image: profile_image,
       cover_image: cover_image,
@@ -174,8 +208,10 @@ class Profile extends Component {
       location: location,
       website: website,
       facebook: facebook,
+      twitter: twitter,
       instagram: instagram,
-      youtube: youtube
+      youtube: youtube,
+      couchsurfing: couchsurfing
     });
   }
   linkBuilder() {
@@ -313,6 +349,18 @@ class Profile extends Component {
                   fullWidth
                 />
                 <TextField
+                  label="Twitter"
+                  inputProps={{
+                    maxLength: 50
+                  }}
+                  multiline={true}
+                  placeholder="Your Twitter username"
+                  margin="normal"
+                  value={this.state.twitter}
+                  onChange={this.handleEditorChange_twitter}
+                  fullWidth
+                />
+                <TextField
                   label="Instagram"
                   inputProps={{
                     maxLength: 30
@@ -334,6 +382,18 @@ class Profile extends Component {
                   margin="normal"
                   value={this.state.youtube}
                   onChange={this.handleEditorChange_youtube}
+                  fullWidth
+                />
+                <TextField
+                  label="Couchsurfing"
+                  inputProps={{
+                    maxLength: 50
+                  }}
+                  multiline={true}
+                  placeholder="Your Couchsurfing username or fanpage"
+                  margin="normal"
+                  value={this.state.couchsurfing}
+                  onChange={this.handleEditorChange_couchsurfing}
                   fullWidth
                 />
                 {updatebtn}

@@ -1,7 +1,6 @@
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";
 import PropTypes from "prop-types";
-import { client } from "../helpers/client";
 import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from "../components/BlogGridList";
 import PostGrid from "../components/PostGrid";
@@ -17,11 +16,6 @@ class Index extends Component {
   }
   componentDidMount() {
     this.getUser();
-  }
-  static async getInitialProps() {
-    const args = { tag: "travelfeed", limit: 24 };
-    const stream = await client.database.getDiscussions("blog", args);
-    return { stream };
   }
   render() {
     var slider = <Fragment />;
@@ -43,21 +37,13 @@ class Index extends Component {
         <Header />
         {slider}
         <div className="pt-5">
-          <BlogGridList stream={this.props.stream} />
+          <BlogGridList />
         </div>
         <div id="discover" />
-        <PostGrid
-          stream={this.props.stream}
-          type="curationfeed"
-          filter="travelfeed"
-        />
+        <PostGrid type="curationfeed" filter="travelfeed" />
       </Fragment>
     );
   }
 }
-
-Index.propTypes = {
-  stream: PropTypes.array
-};
 
 export default Index;

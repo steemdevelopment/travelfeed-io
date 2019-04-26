@@ -7,7 +7,12 @@ export const getImageList = body => {
   return image;
 };
 
-const getImage = (img_url, body, size) => {
+export const imageProxy = (img_url, size) => {
+  // Get the cropped steemitimages URL for an image
+  return `https://steemitimages.com/${size}/${img_url}`;
+};
+
+export const getImage = (img_url, body, size) => {
   let image = "";
   if (img_url !== "") {
     image = `https://steemitimages.com/${size}/` + img_url;
@@ -21,5 +26,3 @@ const getImage = (img_url, body, size) => {
   }
   return image;
 };
-
-export default getImage;

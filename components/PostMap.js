@@ -184,8 +184,8 @@ class PostMap extends Component {
   };
 
   render() {
-    if (this.state.center.lat == 0.0) {
-      return <div />;
+    if (this.state.center.lat === null || this.state.center.lng === null) {
+      return <Fragment />;
     }
     return (
       // Important! Always set the container height explicitly

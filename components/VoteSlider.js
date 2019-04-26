@@ -1,3 +1,5 @@
+// Todo: Tooltip with individual voters over total miles
+
 import React, { Fragment, Component } from "react";
 import CardActions from "@material-ui/core/CardActions";
 import FlightIcon from "@material-ui/icons/FlightTakeoff";
@@ -13,7 +15,6 @@ import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
 import PostEditor from "./PostEditor";
-import { client } from "../helpers/client";
 
 class VoteSlider extends Component {
   state = {
@@ -22,9 +23,8 @@ class VoteSlider extends Component {
     loading: 100,
     weight: 5,
     hasVoted: false,
-    totalmiles: 0,
     user: null,
-    activeVotes: null
+    totalmiles: 0
   };
   newNotification(notification) {
     if (notification != undefined) {
@@ -33,15 +33,6 @@ class VoteSlider extends Component {
       this.props.enqueueSnackbar(text, { variant });
     }
   }
-  getTotalMiles = async () => {
-    let totalmiles = 0;
-    if (this.state.activeVotes != null) {
-      for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
-        totalmiles += Math.round(this.state.activeVotes[vote].percent / 1000);
-      }
-    }
-    this.setState({ totalmiles: totalmiles });
-  };
   setWeight = (event, value) => {
     this.setState({ weight: value });
   };
@@ -82,36 +73,39 @@ class VoteSlider extends Component {
       this.collapseVoteBar();
     }
   };
-  async getActiveVotes() {
-    var active_votes = this.props.post.active_votes;
-    if (this.props.mode == "comment") {
-      active_votes = await client.database.call("get_active_votes", [
-        this.props.post.author,
-        this.props.post.permlink
-      ]);
-    }
-    this.setState({
-      activeVotes: active_votes
-    });
-  }
   async componentDidMount() {
     const user = getUser();
     this.setState({
-      user: user
+      user: user,
+      totalmiles: this.props.total_votes
     });
-    await this.getActiveVotes();
-    this.getTotalMiles();
-    if (this.state.activeVotes != null) {
-      for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
-        if (this.state.activeVotes[vote].voter == user) {
+    if (this.props.votes !== "" && this.props.votes !== undefined) {
+      const vl = this.props.votes.split("\n");
+      const votelist = [];
+      vl.forEach(el => {
+        const details = el.split(",");
+        votelist.push({
+          voter: details[0],
+          rshares: details[1],
+          weight: Math.round(details[2] / 1000)
+        });
+        if (details[0] === user) {
           this.setState({
-            weight: Math.round(this.state.activeVotes[vote].percent / 1000),
+            weight: Math.round(details[2] / 1000),
             hasVoted: true
           });
         }
-      }
+      });
     }
   }
+  // for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
+  //   if (this.state.activeVotes[vote].voter == user) {
+  // this.setState({
+  //   weight: Math.round(this.state.activeVotes[vote].percent / 1000),
+  //   hasVoted: true
+  // });
+  //   }
+  // }
   render() {
     var sliderstyle = {};
     var rowitem1 = "col-5 p-0";
@@ -121,7 +115,6 @@ class VoteSlider extends Component {
       rowitem1 = "col-6 p-0";
       rowitem2 = "col-6 pt-2 p-0 text-right";
     }
-    const post = this.props.post;
     var cardFooter = <Fragment />;
     var voteButton = (
       <Link href="/join" passHref>
@@ -224,7 +217,9 @@ class VoteSlider extends Component {
         <CardActions>
           <IconButton
             aria-label="Upvote"
-            onClick={() => this.votePost(post.author, post.permlink)}
+            onClick={() =>
+              this.votePost(this.props.author, this.props.permlink)
+            }
             color="primary"
           >
             <FlightIcon className="mr" />
@@ -251,8 +246,8 @@ class VoteSlider extends Component {
               type="comment"
               initialValue="Write a reply now!"
               edit={{
-                parent_author: post.author,
-                parent_permlink: post.permlink
+                parent_author: this.props.author,
+                parent_permlink: this.props.permlink
               }}
             />
           </div>
@@ -267,9 +262,12 @@ class VoteSlider extends Component {
 }
 
 VoteSlider.propTypes = {
-  post: PropTypes.object.isRequired,
-  mode: PropTypes.string,
+  author: PropTypes.string,
+  permlink: PropTypes.string,
+  votes: PropTypes.string,
+  total_votes: PropTypes.number,
   tags: PropTypes.array,
+  mode: PropTypes.string,
   enqueueSnackbar: PropTypes.function
 };
 

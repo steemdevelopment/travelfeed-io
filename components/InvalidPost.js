@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
+import Header from "./Header";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";

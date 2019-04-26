@@ -1,31 +1,32 @@
 import gql from "graphql-tag";
 
-export const GET_POSTS = gql`
+export const GET_POST = gql`
   query post($author: String!, $permlink: String!) {
     post(author: $author, permlink: $permlink) {
       post_id
       author
+      display_name
       permlink
       category
       total_votes
       title
-      preview
       img_url
       created_at
       is_travelfeed
+      is_declined
+      is_hidden
+      is_grayed
+      is_nsfw
+      is_blacklisted
       curation_score
       latitude
       longitude
       country_code
       subdivision
-      city
-      suburb
       body
-      raw_json
       app
+      votes
       tags
-      children
-      depth
     }
   }
 `;

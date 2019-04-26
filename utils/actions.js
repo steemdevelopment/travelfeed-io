@@ -1,8 +1,8 @@
 import api from "./SteemConnectAPI";
-import { getUser, getToken } from "./token";
+import { getUser, getScToken } from "./token";
 
 export const vote = async (author, permlink, weight) => {
-  api.setAccessToken(getToken());
+  api.setAccessToken(getScToken());
   const voter = getUser();
   return await api.vote(
     voter,
@@ -26,7 +26,7 @@ export const comment = async (
   body,
   jsonMetadata
 ) => {
-  api.setAccessToken(getToken());
+  api.setAccessToken(getScToken());
   const author = getUser();
   return await api.comment(
     parentAuthor,
@@ -46,7 +46,7 @@ export const comment = async (
 };
 
 export const follow = async following => {
-  api.setAccessToken(getToken());
+  api.setAccessToken(getScToken());
   const follower = getUser();
   return await api.follow(
     follower,
@@ -61,7 +61,7 @@ export const follow = async following => {
 };
 
 export const unfollow = async unfollowing => {
-  api.setAccessToken(getToken());
+  api.setAccessToken(getScToken());
   const unfollower = getUser();
   return await api.unfollow(
     unfollower,
@@ -76,7 +76,7 @@ export const unfollow = async unfollowing => {
 };
 
 export const ignore = async following => {
-  api.setAccessToken(getToken());
+  api.setAccessToken(getScToken());
   const follower = getUser();
   return await api.ignore(
     follower,
@@ -91,7 +91,7 @@ export const ignore = async following => {
 };
 
 export const customJson = async payload => {
-  api.setAccessToken(getToken());
+  api.setAccessToken(getScToken());
   const author = getUser();
   return await api.broadcast(
     [

@@ -1,3 +1,5 @@
+// Todo: Gernerate permlink with https://www.npmjs.com/package/speakingurl
+
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, Component } from "react";
 import "@babel/polyfill";

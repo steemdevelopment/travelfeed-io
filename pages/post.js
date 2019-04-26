@@ -1,5 +1,4 @@
-import React, { Fragment, Component } from "react";
-import "@babel/polyfill";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { SinglePost } from "../components/SinglePost";
 
@@ -10,19 +9,16 @@ class Post extends Component {
     return { author, permlink };
   }
   render() {
-    const ref = React.createRef();
     return (
-      <Fragment>
-        <SinglePost
-          ref={ref}
-          props={{ author: this.props.author, permlink: this.props.permlink }}
-        />
-      </Fragment>
+      <SinglePost
+        post={{ author: this.props.author, permlink: this.props.permlink }}
+      />
     );
   }
 }
 Post.propTypes = {
-  post: PropTypes.object
+  author: PropTypes.string,
+  permlink: PropTypes.string
 };
 
 export default Post;

@@ -7,7 +7,6 @@ import parseBody from "../helpers/parseBody";
 import "@babel/polyfill";
 import dateFromJsonString from "../helpers/dateFromJsonString";
 import Avatar from "@material-ui/core/Avatar";
-import AppIcon from "./AppIcon";
 import CardHeader from "@material-ui/core/CardHeader";
 import PropTypes from "prop-types";
 import VoteSlider from "./VoteSlider";
@@ -32,6 +31,20 @@ class PostpostItem extends Component {
       debth = `${String(this.props.post.depth * 20)}px`;
     }
     let title = <Fragment />;
+    let appIcon = <Fragment />;
+    // Set the caninical URL to travelfeed.io if the post was authored through the dApp
+    if (
+      this.props.post.app !== undefined &&
+      this.props.post.app.split("/")[0] === "travelfeed"
+    ) {
+      appIcon = (
+        <img
+          width="25"
+          className="mr-1"
+          src="https://travelfeed.io/favicon.ico"
+        />
+      );
+    }
     if (this.props.title == true) {
       title = (
         <Link
@@ -75,7 +88,7 @@ class PostpostItem extends Component {
                 </a>
               </Link>
             }
-            action={<AppIcon post={this.props.post} />}
+            action={appIcon}
             title={
               <Fragment>
                 <Link

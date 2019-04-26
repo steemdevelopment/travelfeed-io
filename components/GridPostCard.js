@@ -5,78 +5,69 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Avatar from "@material-ui/core/Avatar";
-import getImage from "../helpers/getImage";
-import dateFromJsonString from "../helpers/dateFromJsonString";
 import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
-import { regExcerpt, regTitle } from "../utils/regex";
 import VoteSlider from "./VoteSlider";
 import PropTypes from "prop-types";
-import AppIcon from "./AppIcon";
 import IsCurated from "./IsCurated";
+import SubHeader from "./Post/SubHeader";
 
 class PostCard extends Component {
   render() {
-    const post = this.props.post;
-    let sanitized = this.props.sanitized;
-    const readtime = this.props.readtime;
-    let title = regTitle(post.title);
-    title = title.length > 85 ? title.substring(0, 81) + "[...]" : title;
-    const json_date = '{ "date": "' + post.created + 'Z" }';
-    const date_object = new Date(
-      JSON.parse(json_date, dateFromJsonString).date
-    );
-    const json = JSON.parse(post.json_metadata);
-    const posttag =
-      typeof json.tags != "undefined" && json.tags.length > 0
-        ? json.tags[0]
-        : "travelfeed";
-    let excerpt = regExcerpt(sanitized);
-    const created = date_object.toDateString();
-    const image = getImage(post.json_metadata, post.body, "400x0");
+    let appIcon = <Fragment />;
+    if (this.props.app.split("/")[0] === "travelfeed") {
+      appIcon = (
+        <img
+          width="25"
+          className="mr-1"
+          src="https://travelfeed.io/favicon.ico"
+        />
+      );
+    }
     return (
-      <Card key={post.permlink} className="m-2">
+      <Card key={this.props.permlink} className="m-2">
         <CardHeader
           avatar={
             <Link
-              as={`/@${post.author}`}
-              href={`/blog?author=${post.author}`}
+              as={`/@${this.props.author}`}
+              href={`/blog?author=${this.props.author}`}
               passHref
             >
               <a>
                 <Avatar
                   style={{ cursor: "pointer" }}
                   src={`https://steemitimages.com/u/${
-                    post.author
+                    this.props.author
                   }/avatar/small`}
                 />
               </a>
             </Link>
           }
-          action={
-            <Fragment>
-              <IsCurated
-                votes={post.active_votes}
-                author={post.author}
-                permlink={post.permlink}
-              />
-              <AppIcon post={this.props.post} />
-            </Fragment>
-          }
+          action={<Fragment>{appIcon}</Fragment>}
           title={
             <Link
-              as={`/@${post.author}`}
-              href={`/blog?author=${post.author}`}
+              as={`/@${this.props.author}`}
+              href={`/blog?author=${this.props.author}`}
               passHref
             >
-              <a className="text-dark">{post.author}</a>
+              <a className="text-dark cpointer">
+                <strong>{this.props.display_name}</strong>
+                <span className="text-muted"> @{this.props.author}</span>
+              </a>
             </Link>
           }
-          subheader={created + " | " + readtime.text}
+          subheader={
+            <SubHeader
+              created_at={this.props.created_at}
+              readtime={this.props.readtime}
+            />
+          }
         />
         <Link
-          as={`/@${post.author}/${post.permlink}`}
-          href={`/post?author=${post.author}&permlink=${post.permlink}`}
+          as={`/@${this.props.author}/${this.props.permlink}`}
+          href={`/post?author=${this.props.author}&permlink=${
+            this.props.permlink
+          }`}
           passHref
         >
           <a>
@@ -84,27 +75,46 @@ class PostCard extends Component {
               <CardMedia
                 style={{ height: 140 }}
                 className="pt-2 text-right"
-                image={image}
+                image={this.props.img_url}
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {title}
+                  {this.props.title}
                 </Typography>
-                <Typography component="p">{excerpt} [...]</Typography>
+                <Typography component="p">
+                  {this.props.excerpt} [...]
+                </Typography>
               </CardContent>
             </CardActionArea>
           </a>
         </Link>
-        <VoteSlider post={post} tags={[posttag]} mode="gridcard" />
+        <VoteSlider
+          author={this.props.author}
+          permlink={this.props.permlink}
+          votes={this.props.votes}
+          total_votes={this.props.total_votes}
+          tags={this.props.tags}
+          mode="gridcard"
+        />{" "}
       </Card>
     );
   }
 }
 
 PostCard.propTypes = {
-  post: PropTypes.object,
-  readtime: PropTypes.object,
-  sanitized: PropTypes.string
+  author: PropTypes.string,
+  display_name: PropTypes.string,
+  permlink: PropTypes.string,
+  title: PropTypes.string,
+  img_url: PropTypes.string,
+  created_at: PropTypes.string,
+  readtime: PropTypes.string,
+  excerpt: PropTypes.string,
+  votes: PropTypes.string,
+  total_votes: PropTypes.number,
+  tags: PropTypes.array,
+  curation_score: PropTypes.number,
+  app: PropTypes.string
 };
 
 export default PostCard;

@@ -6,6 +6,7 @@ import FlightIcon from "@material-ui/icons/FlightTakeoff";
 import FlightVotedIcon from "@material-ui/icons/Flight";
 import CloseIcon from "@material-ui/icons/Close";
 import CommentIcon from "@material-ui/icons/AddComment";
+import LinkIcon from "@material-ui/icons/Link";
 import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getUser } from "../utils/token";
@@ -161,6 +162,22 @@ class VoteSlider extends Component {
         );
       }
     }
+    let linkButton = <Fragment />;
+    if (this.props.mode === "comment") {
+      linkButton = (
+        <Link
+          as={`/@${this.props.author}/${this.props.permlink}`}
+          href={`/post?author=${this.props.author}&permlink=${
+            this.props.permlink
+          }`}
+          passHref
+        >
+          <IconButton aria-label="Upvote">
+            <LinkIcon className="mr" />
+          </IconButton>
+        </Link>
+      );
+    }
     if (this.state.voteExpanded == false) {
       cardFooter = (
         <CardActions>
@@ -171,6 +188,7 @@ class VoteSlider extends Component {
                 <span className="text-muted font-weight-bold">
                   {this.state.totalmiles}
                   {commentButton}
+                  {linkButton}
                 </span>
               </div>
               <div className={rowitem2}>
@@ -178,7 +196,7 @@ class VoteSlider extends Component {
                   return (
                     <Link
                       as={`/created/${tag}`}
-                      href={`/tag?sortby=created&tag=${tag}`}
+                      href={`/tag?orderby=created&tags=${tag}`}
                       key={tag}
                       passHref
                     >

@@ -42,6 +42,25 @@ export const GET_POSTS = gql`
       limit: $limit
     ) {
       author
+      display_name
+      permlink
+      title
+      img_url
+      created_at
+      body
+      votes
+      tags
+      total_votes
+      curation_score
+      app
+    }
+  }
+`;
+
+export const GET_BLOG_POSTS = gql`
+  query posts($author: String, $limit: Int) {
+    posts(author: $author, limit: $limit) {
+      author
       permlink
       title
       img_url

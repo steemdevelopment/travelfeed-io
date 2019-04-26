@@ -10,7 +10,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
-import Tooltip from "@material-ui/core/Tooltip";
 import VoteSlider from "./VoteSlider";
 import Header from "./Header";
 import NotFound from "./NotFound";
@@ -23,7 +22,7 @@ import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import parseBody from "../helpers/parseBody";
 import IsCurated from "./IsCurated";
-import moment from "moment";
+import SubHeader from "./Post/SubHeader";
 
 export class SinglePost extends Component {
   render() {
@@ -175,23 +174,10 @@ export class SinglePost extends Component {
                           </Fragment>
                         }
                         subheader={
-                          <Fragment>
-                            <Tooltip
-                              title={moment(data.post.created_at).toString()}
-                              placement="bottom"
-                            >
-                              <span>
-                                {moment(data.post.created_at).fromNow()}
-                              </span>
-                            </Tooltip>
-                            <span> | </span>
-                            <Tooltip
-                              title={`${readtime.words} words`}
-                              placement="bottom"
-                            >
-                              <span>{readtime.text}</span>
-                            </Tooltip>
-                          </Fragment>
+                          <SubHeader
+                            created_at={data.post.created_at}
+                            readtime={readtime}
+                          />
                         }
                       />
                       <CardContent>

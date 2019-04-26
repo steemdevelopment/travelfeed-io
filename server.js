@@ -14,15 +14,6 @@ app
 
     server.use(express.static("public"));
 
-    server.get("/@:user/feed", (req, res) => {
-      const actualPage = "/tag";
-      const queryParams = {
-        sortby: "feed",
-        tag: req.params.user
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
     server.get("/@:author/:permlink", (req, res) => {
       const actualPage = "/post";
       const queryParams = {
@@ -41,8 +32,8 @@ app
     server.get("/created/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "created",
-        tag: req.params.tag
+        orderby: "created_at",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });
@@ -50,8 +41,8 @@ app
     server.get("/hot/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "hot",
-        tag: req.params.tag
+        orderby: "sc_hot",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });
@@ -59,17 +50,17 @@ app
     server.get("/trending/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "trending",
-        tag: req.params.tag
+        orderby: "sc_trending",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/featured/travelfeed", (req, res) => {
+    server.get("/featured/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "featured",
-        tag: "travelfeed"
+        orderby: "featured",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });

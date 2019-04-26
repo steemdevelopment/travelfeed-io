@@ -40,7 +40,7 @@ class Index extends Component {
           <BlogGridList />
         </div>
         <div id="discover" />
-        <PostGrid type="curationfeed" filter="travelfeed" />
+        <PostGrid query={{ tags: "travelfeed", limit: 12 }} />
       </Fragment>
     );
   }

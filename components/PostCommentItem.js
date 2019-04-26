@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import VoteSlider from "./VoteSlider";
 import PostComments from "./PostComments";
 import Typography from "@material-ui/core/Typography";
+import SubHeader from "./Post/SubHeader";
 
 class PostpostItem extends Component {
   render() {
@@ -90,23 +91,31 @@ class PostpostItem extends Component {
             }
             action={appIcon}
             title={
-              <Fragment>
-                <Link
-                  as={`/@${this.props.post.author}`}
-                  href={`/blog?author=${this.props.post.author}`}
-                  passHref
-                >
-                  <a className="text-dark cpointer">{this.props.post.author}</a>
-                </Link>
-              </Fragment>
+              <Link
+                as={`/@${this.props.post.author}`}
+                href={`/blog?author=${this.props.post.author}`}
+                passHref
+              >
+                <a className="text-dark cpointer">
+                  <strong>{this.props.post.display_name}</strong>
+                  <span className="text-muted"> @{this.props.post.author}</span>
+                </a>
+              </Link>
             }
-            subheader={created_at}
+            subheader={<SubHeader created_at={this.props.post.created_at} />}
           />
           <CardContent>
             {title}
             <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
           </CardContent>
-          <VoteSlider post={this.props.post} tags={[]} mode="comment" />
+          <VoteSlider
+            author={this.props.post.author}
+            permlink={this.props.post.permlink}
+            votes={this.props.post.votes}
+            total_votes={this.props.post.total_votes}
+            tags={[]}
+            mode="comment"
+          />
         </Card>
         {children}
       </Fragment>

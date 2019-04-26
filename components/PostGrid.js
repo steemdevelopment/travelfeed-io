@@ -1,401 +1,120 @@
-import React, { Fragment, Component } from "react";
-import "@babel/polyfill";
-import PropTypes from "prop-types";
+// https://medium.com/@alfianlosari/graphql-cursor-infinite-scroll-pagination-with-react-apollo-client-and-github-api-fafbc510b667
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import { GET_POSTS } from "../helpers/graphql/posts";
+import Grid from "@material-ui/core/Grid";
+import GridPostCard from "./GridPostCard";
+import { imageProxy } from "../helpers/getImage";
+import readingTime from "reading-time";
 import sanitize from "sanitize-html";
 import parseBody from "../helpers/parseBody";
-import { client } from "../helpers/client";
-import isBlacklisted from "../helpers/isBlacklisted";
-import Link from "next/link";
-import readingTime from "reading-time";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
+import IsCurated from "./IsCurated";
+import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import GridPostCard from "./GridPostCard";
-import PostListItem from "./PostListItem";
-import PostCommentItem from "./PostCommentItem";
+import { regExcerpt, regTitle } from "../utils/regex";
+import InfiniteScroll from "react-infinite-scroller";
 
 class PostGrid extends Component {
   state = {
-    type: this.props.type,
-    filter: this.props.filter,
-    sortby: this.props.sortby,
-    error: false,
-    hasMore: true,
-    isLoading: false,
-    position: this.props.position,
-    lastauthor: "",
-    lastpermlink: "",
-    selector: "",
-    stream: this.props.stream
+    hasMore: true
   };
-  streamBlog = async () => {
-    this.setState({
-      isLoading: true
-    });
-    let lastpermlink = this.state.lastpermlink;
-    let lastauthor = this.state.lastauthor;
-    var filtertype = "blog";
-    if (this.state.type == "tag") {
-      filtertype = this.state.sortby;
-    }
-    if (lastpermlink == "") {
-      try {
-        if (this.state.type == "comments") {
-          lastauthor = this.state.filter;
-          lastpermlink = "";
-        } else {
-          var tagargs = { tag: this.state.filter, limit: 25 };
-          var tagstream = await client.database.getDiscussions(
-            filtertype,
-            tagargs
-          );
-          lastpermlink =
-            tagstream.length > 0
-              ? tagstream[tagstream.length - 1].permlink
-              : "";
-          lastauthor =
-            tagstream.length > 0 ? tagstream[tagstream.length - 1].author : "";
-        }
-      } catch (err) {
-        this.setState({
-          error: err.message,
-          isLoading: false
-        });
-      }
-    }
-    var args = {
-      tag: this.state.filter,
-      limit: 100,
-      start_author: lastauthor,
-      start_permlink: lastpermlink
-    };
-    if (this.state.type == "curationfeed") {
-      args = {
-        tag: this.state.filter,
-        limit: 25,
-        start_author: lastauthor,
-        start_permlink: lastpermlink
-      };
-    } else if (this.state.type == "tag") {
-      args = {
-        tag: this.state.filter,
-        limit: 100,
-        start_author: lastauthor,
-        start_permlink: lastpermlink
-      };
-    } else if (this.state.type == "comments") {
-      filtertype = "comments";
-      args = {
-        limit: 10,
-        start_author: lastauthor,
-        start_permlink: lastpermlink
-      };
-    }
-    if (this.state.position == 0) {
-      args = {
-        tag: this.state.filter,
-        limit: 24
-      };
-      this.setState({ position: 1 });
-    }
-    const stream = await client.database.getDiscussions(filtertype, args);
-    lastpermlink = stream.length > 0 ? stream[stream.length - 1].permlink : "";
-    lastauthor = stream.length > 0 ? stream[stream.length - 1].author : "";
-    delete stream[stream.length - 1];
-    try {
-      if (stream.length < 2) {
-        this.setState({
-          hasMore: false,
-          isLoading: false
-        });
-      } else {
-        const loadposts = this.state.stream.concat(stream);
-        this.setState({
-          lastpermlink: lastpermlink,
-          lastauthor: lastauthor,
-          stream: loadposts,
-          isLoading: false,
-          hasMore: true
-        });
-      }
-    } catch (err) {
-      this.setState({
-        error: err.message,
-        isLoading: false
-      });
-    }
-  };
-  async setSort(sortby) {
-    if (sortby == "featured") {
-      await this.setState({
-        sortby: sortby,
-        position: 0,
-        stream: [],
-        type: "curationfeed"
-      });
-    } else {
-      await this.setState({
-        sortby: sortby,
-        position: 0,
-        stream: [],
-        type: "tag"
-      });
-    }
-    window.history.pushState("", "", `/${sortby}/${this.state.filter}/`);
-    this.streamBlog();
-  }
-  componentDidMount() {
-    if (this.state.type == "tag") {
-      this.setState({ selector: "tag" });
-    }
-    if (this.state.type == "curationfeed") {
-      this.setState({ selector: "curationfeed" });
-    }
-    this.streamBlog();
-    window.onscroll = () => {
-      const {
-        streamBlog,
-        state: { error, isLoading, hasMore }
-      } = this;
-      if (error || isLoading || !hasMore) return;
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.scrollHeight
-      ) {
-        streamBlog();
-      }
-    };
+  noMore() {
+    this.setState({ hasMore: false });
   }
   render() {
-    const { error, hasMore, isLoading } = this.state;
-    let processed = [];
-    var selector = "";
-    var featured_variant =
-      this.state.sortby != "featured" ? "outlined" : "contained";
-    var created_variant =
-      this.state.sortby != "created" ? "outlined" : "contained";
-    var hot_variant = this.state.sortby != "hot" ? "outlined" : "contained";
-    var trending_variant =
-      this.state.sortby != "trending" ? "outlined" : "contained";
-    if (this.state.selector == "curationfeed") {
-      let heading = "Feed";
-      if (this.state.sortby == "featured") {
-        heading = "Editor's Choice";
-      }
-      if (this.state.sortby == "created") {
-        heading = "New Posts";
-      }
-      if (this.state.sortby == "hot") {
-        heading = "Taking Off";
-      }
-      if (this.state.sortby == "trending") {
-        heading = "Above the Clouds";
-      }
-      selector = (
-        <Fragment>
-          <Typography
-            variant="h4"
-            align="center"
-            gutterBottom={true}
-            className="pt-5"
-          >
-            {heading}
-          </Typography>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
-            <div className="pb-4 text-center">
-              <Button
-                variant={featured_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("featured")}
-              >
-                Featured
-              </Button>
-              <Button
-                variant={created_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("created")}
-              >
-                New
-              </Button>
-              <Button
-                variant={hot_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("hot")}
-              >
-                Hot
-              </Button>
-              <Button
-                variant={trending_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("trending")}
-              >
-                Trending
-              </Button>
-            </div>
-          </Grid>
-        </Fragment>
-      );
-    } else if (this.state.selector == "tag") {
-      selector = (
-        <Grid item lg={12} md={12} sm={12} xs={12}>
-          <div className="pb-4 text-center">
-            <Link as={`/created/${this.state.filter}`}>
-              <Button
-                variant={created_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("created")}
-              >
-                Created
-              </Button>
-            </Link>
-            <Link as={`/hot/${this.state.filter}`}>
-              <Button
-                variant={hot_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("hot")}
-              >
-                Hot
-              </Button>
-            </Link>
-            <Link as={`/trending/${this.state.filter}`}>
-              <Button
-                variant={trending_variant}
-                color="primary"
-                className="m-2"
-                onClick={() => this.setSort("trending")}
-              >
-                Trending
-              </Button>
-            </Link>
-          </div>
-        </Grid>
-      );
-    }
     return (
       <Fragment>
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justify="center"
-          className="p-3"
-        >
-          {selector}
-          {this.state.stream.map(post => {
-            try {
-              var json = JSON.parse(post.json_metadata);
-            } catch {
-              json = {};
+        <Query query={GET_POSTS} variables={this.props.query}>
+          {({ data, loading, error, fetchMore }) => {
+            if (loading || error || data.post === null) {
+              return <Fragment />;
             }
-            let htmlBody = parseBody(post.body, {});
-            let sanitized = sanitize(htmlBody, { allowedTags: [] });
-            const readtime = readingTime(sanitized);
-            // Filter out:
-            // - Filter out duplicates. This does not work for some reason..
-            // - Limit initial fetch to 7 posts
-            // - Exclude resteems
-            if (
-              this.state.type == "comments" ||
-              ((this.state.type == "tag" ||
-                (this.state.type == "curationfeed" &&
-                  post.author != this.state.filter) ||
-                ((this.state.type == "blog" &&
-                  this.state.filter == "travelfeed" &&
-                  (post.author == "travelfeed" ||
-                    post.author == "jpphotography")) ||
-                  (this.state.type == "blog" &&
-                    post.author == this.state.filter))) &&
-                isBlacklisted(post.author, post.permlink, {}) === false &&
-                readtime.words > 250 &&
-                (post.category == "travelfeed" ||
-                  json.tags.indexOf("travelfeed") > -1 === true) &&
-                json.tags.indexOf("nsfw") > -1 === false)
-            ) {
-              processed.push(post.permlink);
-              if (this.props.poststyle == "list") {
-                return (
-                  <PostListItem
-                    post={post}
-                    sanitized={sanitized}
-                    readtime={readtime}
-                  />
-                );
-              } else if (this.props.poststyle == "commentitem") {
-                return (
-                  <Grid item lg={8} md={10} sm={11} xs={12}>
-                    <PostCommentItem
-                      post={post}
-                      loadreplies={false}
-                      title={true}
-                    />
+            return (
+              <InfiniteScroll
+                loadMore={() =>
+                  fetchMore({
+                    variables: {
+                      offset: data.posts.length
+                    },
+                    updateQuery: (prev, { fetchMoreResult }) => {
+                      if (fetchMoreResult.posts.length === 0) {
+                        this.noMore();
+                      }
+                      if (!fetchMoreResult) return prev;
+                      return Object.assign({}, prev, {
+                        posts: [...prev.posts, ...fetchMoreResult.posts]
+                      });
+                    }
+                  })
+                }
+                hasMore={this.state.hasMore}
+                threshold={1000}
+                loader={
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="p-5 text-center">
+                      <CircularProgress />
+                    </div>
                   </Grid>
-                );
-              } else {
-                return (
-                  <Grid item lg={3} md={4} sm={6} xs={12}>
-                    <GridPostCard
-                      post={post}
-                      sanitized={sanitized}
-                      readtime={readtime}
-                    />
-                  </Grid>
-                );
-              }
-            }
-          })}
-          {!error && <Typography>{error}</Typography>}
-          {isLoading &&
-            (this.props.poststyle == "list" ||
-              this.props.poststyle == "commentitem") && (
-              <Grid item lg={8} md={10} sm={11} xs={12}>
-                <div className="p-5 text-center">
-                  <CircularProgress />
-                </div>
-              </Grid>
-            )}
-          {isLoading &&
-            (this.props.poststyle != "list" &&
-              this.props.poststyle != "commentitem") && (
-              <div className="p-5">
-                <Grid item xs={1}>
-                  <div className="p-5">
-                    <CircularProgress />
-                  </div>
+                }
+              >
+                <Grid
+                  container
+                  spacing={0}
+                  alignItems="center"
+                  justify="center"
+                  className="p-3"
+                >
+                  {data.posts.map(post => {
+                    const htmlBody = parseBody(post.body, {});
+                    const sanitized = sanitize(htmlBody, { allowedTags: [] });
+                    const readtime = readingTime(sanitized);
+                    const image = imageProxy(post.img_url, "400x0");
+                    let title = regTitle(post.title);
+                    title =
+                      title.length > 85
+                        ? title.substring(0, 81) + "[...]"
+                        : title;
+                    const tags =
+                      post.tags.length > 1 ? [post.tags[1]] : ["travelfeed"];
+                    const excerpt = regExcerpt(sanitized);
+                    return (
+                      <Grid
+                        item
+                        lg={3}
+                        md={4}
+                        sm={6}
+                        xs={12}
+                        key={post.permlink}
+                      >
+                        <GridPostCard
+                          author={post.author}
+                          display_name={post.display_name}
+                          permlink={post.permlink}
+                          title={title}
+                          img_url={image}
+                          created_at={post.created_at}
+                          readtime={readtime}
+                          excerpt={excerpt}
+                          votes={post.votes}
+                          total_votes={post.total_votes}
+                          tags={tags}
+                          curation_score={post.curation_score}
+                          app={post.app}
+                        />
+                      </Grid>
+                    );
+                  })}
                 </Grid>
-              </div>
-            )}
-          {!hasMore &&
-            (this.props.poststyle == "list" ||
-              this.props.poststyle == "commentitem") && (
-              <Grid item lg={8} md={10} sm={11} xs={12}>
-                <hr />
-              </Grid>
-            )}
-        </Grid>
+              </InfiniteScroll>
+            );
+          }}
+        </Query>
       </Fragment>
     );
   }
 }
-PostGrid.defaultProps = {
-  stream: [],
-  sortby: "featured",
-  position: 25
-};
-
 PostGrid.propTypes = {
-  type: PropTypes.string.isRequired,
-  filter: PropTypes.string.isRequired,
-  sortby: PropTypes.string,
-  stream: PropTypes.array,
-  position: PropTypes.number,
-  poststyle: PropTypes.string
+  query: PropTypes.array.isRequired
 };
 
 export default PostGrid;

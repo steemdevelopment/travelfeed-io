@@ -6,13 +6,16 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
-import { GET_POSTS } from "../helpers/graphql/posts";
+import { GET_BLOG_POSTS } from "../helpers/graphql/posts";
 
 class BlogGridList extends Component {
   render() {
     return (
       <Fragment>
-        <Query query={GET_POSTS} variables={{ author: "travelfeed", limit: 5 }}>
+        <Query
+          query={GET_BLOG_POSTS}
+          variables={{ author: "travelfeed", limit: 5 }}
+        >
           {({ data, loading, error }) => {
             if (loading || error || data.post === null) {
               return <Fragment />;

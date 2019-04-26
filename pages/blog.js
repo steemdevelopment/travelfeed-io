@@ -65,7 +65,7 @@ class Blog extends Component {
           </Helmet>
           <Header />
           <AuthorProfile author={this.props.args.author} />
-          <PostGrid type="blog" filter={this.props.args.author} />
+          <PostGrid query={{ author: this.props.args.author, limit: 12 }} />
         </Fragment>
       );
     }

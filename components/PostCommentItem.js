@@ -25,7 +25,13 @@ class PostpostItem extends Component {
     const created_at = date_object.toDateString();
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies == true) {
-      children = <PostComments post_id={this.props.post.post_id} />;
+      children = (
+        <PostComments
+          post_id={this.props.post.post_id}
+          orderby={this.props.orderby}
+          orderdir={this.props.orderdir}
+        />
+      );
     }
     let debth = 0;
     if (this.props.post.depth > 1 && this.props.loadreplies == true) {

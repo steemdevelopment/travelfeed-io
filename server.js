@@ -47,10 +47,10 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/trending/:tag", (req, res) => {
+    server.get("/favourites/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        orderby: "sc_trending",
+        orderby: "total_votes",
         tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);

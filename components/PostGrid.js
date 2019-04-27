@@ -26,7 +26,16 @@ class PostGrid extends Component {
       <Fragment>
         <Query query={GET_POSTS} variables={this.props.query}>
           {({ data, loading, error, fetchMore }) => {
-            if (loading || error || data.post === null) {
+            if (loading) {
+              return (
+                <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <div className="p-5 text-center">
+                    <CircularProgress />
+                  </div>
+                </Grid>
+              );
+            }
+            if (error || data.post === null) {
               return <Fragment />;
             }
             return (

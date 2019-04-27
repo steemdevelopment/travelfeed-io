@@ -27,6 +27,13 @@ export const GET_POST = gql`
       app
       votes
       tags
+      depth
+      children
+      parent_author
+      parent_permlink
+      root_author
+      root_permlink
+      root_title
     }
   }
 `;

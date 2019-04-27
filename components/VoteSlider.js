@@ -196,7 +196,7 @@ class VoteSlider extends Component {
                   return (
                     <Link
                       as={`/created/${tag}`}
-                      href={`/tag?orderby=created&tags=${tag}`}
+                      href={`/tag?orderby=created_at&tags=${tag}`}
                       key={tag}
                       passHref
                     >

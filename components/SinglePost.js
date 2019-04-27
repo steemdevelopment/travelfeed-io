@@ -23,8 +23,20 @@ import readingTime from "reading-time";
 import parseBody from "../helpers/parseBody";
 import IsCurated from "./IsCurated";
 import SubHeader from "./Post/SubHeader";
+import OrderBySelect from "./Post/OrderBySelect";
 
 export class SinglePost extends Component {
+  state = {
+    title: "Most miles",
+    orderby: "total_votes",
+    orderdir: "DESC"
+  };
+  handleClick(op) {
+    this.setState(op);
+  }
+  componentDidMount() {
+    this.setState({ parent_id: this.props.post_id });
+  }
   render() {
     return (
       <Fragment>
@@ -66,7 +78,10 @@ export class SinglePost extends Component {
               );
             }
             // Don't render invalid posts but return Steemit link
-            if (!data.post.is_travelfeed || data.post.is_nsfw) {
+            if (
+              (!data.post.is_travelfeed && data.post.depth === 0) ||
+              data.post.is_nsfw
+            ) {
               const url =
                 "https://steemit.com/@" +
                 data.post.author +
@@ -75,10 +90,104 @@ export class SinglePost extends Component {
               return <InvalidPost url={url} />;
             }
             // Render post
+            let title = data.post.title;
+            let heading = data.post.title;
+            let tags = data.post.tags;
+            let footer = <Fragment />;
+            let header = <Fragment />;
+            let parent = <Fragment />;
+            if (data.post.depth > 1) {
+              parent = (
+                <div>
+                  <Link
+                    as={`/@${data.post.parent_author}/${
+                      data.post.parent_permlink
+                    }`}
+                    href={`/post?author=${data.post.parent_author}&permlink=${
+                      data.post.parent_permlink
+                    }`}
+                    passHref
+                  >
+                    <a>
+                      <strong>Go to parent comment</strong>
+                    </a>
+                  </Link>
+                </div>
+              );
+            }
+            // Main posts are rendered different than comments
+            if (data.post.depth === 0) {
+              footer = (
+                <Fragment>
+                  <hr />
+                  <div className="fullwidth">
+                    <PostMap
+                      location={{
+                        coordinates: {
+                          lat: data.post.latitude,
+                          lng: data.post.longitude
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="container">
+                    <div className="row justify-content-center">
+                      <div className="col-lg-6 col-md-9 col-sm12">
+                        <PostAuthorProfile author={data.post.author} />{" "}
+                      </div>
+                    </div>
+                  </div>
+                </Fragment>
+              );
+            } else {
+              title = `Re: ${data.post.root_title}`;
+              tags = [];
+              heading = "";
+              header = (
+                <div className="bg-light border p-3">
+                  <h4>{title}</h4>
+                  <div>
+                    <Link
+                      as={`/@${data.post.root_author}/${
+                        data.post.root_permlink
+                      }`}
+                      href={`/post?author=${data.post.root_author}&permlink=${
+                        data.post.root_permlink
+                      }`}
+                      passHref
+                    >
+                      <a>
+                        <strong>Go to original post</strong>
+                      </a>
+                    </Link>
+                  </div>
+                  {parent}
+                </div>
+              );
+            }
             const htmlBody = parseBody(data.post.body, {});
             const bodyText = { __html: htmlBody };
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
+            // Don't load comment area  if there are no comments
+            let comments = <Fragment />;
+            if (data.post.children !== 0) {
+              comments = (
+                <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <OrderBySelect
+                      handleClick={this.handleClick.bind(this)}
+                      selection={this.state.title}
+                    />
+                  </Grid>
+                  <PostComments
+                    post_id={data.post.post_id}
+                    orderby={this.state.orderby}
+                    orderdir={this.state.orderdir}
+                  />
+                </Grid>
+              );
+            }
             // Todo: New Date function
             // const json_date = '{ "date": "' + data.post.created_at + 'Z" }';
             // const date_object = new Date(
@@ -93,7 +202,7 @@ export class SinglePost extends Component {
               data.post.permlink;
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored through the dApp
-            if (data.post.app.split("/")[0] === "travelfeed") {
+            if (data.post.app && data.post.app.split("/")[0] === "travelfeed") {
               canonicalUrl =
                 "https://travelfeed.io/@" +
                 data.post.author +
@@ -112,7 +221,7 @@ export class SinglePost extends Component {
             return (
               <Fragment>
                 <Head
-                  title={data.post.title}
+                  title={title}
                   image={data.post.img_url}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}
@@ -181,49 +290,31 @@ export class SinglePost extends Component {
                         }
                       />
                       <CardContent>
+                        {header}
                         <Typography
                           variant="h4"
                           className="text-dark font-weight-bold"
                         >
-                          {data.post.title}
+                          {heading}
                         </Typography>
                         <hr />
                         <div
                           className="postcontent"
                           dangerouslySetInnerHTML={bodyText}
                         />
-                        <hr />
-                        <div className="fullwidth">
-                          <PostMap
-                            location={{
-                              coordinates: {
-                                lat: data.post.latitude,
-                                lng: data.post.longitude
-                              }
-                            }}
-                          />
-                        </div>
-                        <div className="container">
-                          <div className="row justify-content-center">
-                            <div className="col-lg-6 col-md-9 col-sm12">
-                              <PostAuthorProfile author={data.post.author} />
-                            </div>
-                          </div>
-                        </div>
+                        {footer}
                       </CardContent>
                       <VoteSlider
                         author={data.post.author}
                         permlink={data.post.permlink}
                         votes={data.post.votes}
                         total_votes={data.post.total_votes}
-                        tags={data.post.tags}
+                        tags={tags}
                         mode="post"
                       />
                     </Card>
                   </Grid>
-                  <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
-                    <PostComments post_id={data.post.post_id} />
-                  </Grid>
+                  {comments}
                 </Grid>
               </Fragment>
             );

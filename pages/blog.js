@@ -1,4 +1,3 @@
-import "@babel/polyfill";
 import React, { Component, Fragment } from "react";
 import isBlacklisted from "../helpers/isBlacklisted";
 import { client } from "../helpers/client";
@@ -65,7 +64,11 @@ class Blog extends Component {
           </Helmet>
           <Header />
           <AuthorProfile author={this.props.args.author} />
-          <PostGrid query={{ author: this.props.args.author, limit: 12 }} />
+          <PostGrid
+            query={{ author: this.props.args.author, limit: 12 }}
+            grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
+            cardHeight={140}
+          />
         </Fragment>
       );
     }

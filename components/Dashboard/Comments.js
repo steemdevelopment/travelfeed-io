@@ -25,9 +25,9 @@ class Comments extends Component {
           </Grid>
         </Grid>
         <PostGrid
-          type="comments"
-          filter={this.props.user}
-          poststyle="commentitem"
+          query={{ author: this.props.user, is_comment: true, limit: 8 }}
+          grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}
+          poststyle="comment"
         />
       </Fragment>
     );

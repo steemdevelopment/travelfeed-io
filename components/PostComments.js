@@ -92,9 +92,9 @@ class PostComments extends Component {
                           depth: depth,
                           total_votes: total_votes,
                           votes: votes,
-                          parent_author: "test",
-                          parent_permlink: "test",
-                          root_title: "testtitle"
+                          parent_author: "",
+                          parent_permlink: "",
+                          root_title: ""
                         }}
                         orderby={this.props.orderby}
                         orderdir={this.props.orderdir}

@@ -84,6 +84,8 @@ class Tag extends Component {
             min_curation_score: this.state.min_curation_score,
             limit: 12
           }}
+          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
+          cardHeight={140}
         />
       </Fragment>
     );

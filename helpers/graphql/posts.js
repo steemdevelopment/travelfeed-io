@@ -11,6 +11,7 @@ export const GET_POSTS = gql`
     $feed: String
     $tags: [String]
     $parent_id: Int
+    $parent_author: String
     $is_comment: Boolean
     $min_curation_score: Int
     $min_total_votes: Int
@@ -31,6 +32,7 @@ export const GET_POSTS = gql`
       feed: $feed
       tags: $tags
       parent_id: $parent_id
+      parent_author: $parent_author
       is_comment: $is_comment
       min_curation_score: $min_curation_score
       min_total_votes: $min_total_votes
@@ -53,6 +55,10 @@ export const GET_POSTS = gql`
       total_votes
       curation_score
       app
+      parent_author
+      parent_permlink
+      root_title
+      depth
     }
   }
 `;

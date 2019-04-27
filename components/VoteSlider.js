@@ -7,6 +7,7 @@ import FlightVotedIcon from "@material-ui/icons/Flight";
 import CloseIcon from "@material-ui/icons/Close";
 import CommentIcon from "@material-ui/icons/AddComment";
 import LinkIcon from "@material-ui/icons/Link";
+import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getUser } from "../utils/token";
@@ -165,18 +166,37 @@ class VoteSlider extends Component {
     let linkButton = <Fragment />;
     if (this.props.mode === "comment") {
       linkButton = (
-        <Link
-          as={`/@${this.props.author}/${this.props.permlink}`}
-          href={`/post?author=${this.props.author}&permlink=${
-            this.props.permlink
-          }`}
-          passHref
-        >
-          <IconButton aria-label="Upvote">
-            <LinkIcon className="mr" />
-          </IconButton>
-        </Link>
+        <Fragment>
+          <Link
+            as={`/@${this.props.author}/${this.props.permlink}`}
+            href={`/post?author=${this.props.author}&permlink=${
+              this.props.permlink
+            }`}
+            passHref
+          >
+            <IconButton aria-label="Upvote">
+              <LinkIcon className="mr" />
+            </IconButton>
+          </Link>
+        </Fragment>
       );
+    }
+    let editButton = <Fragment />;
+    if (this.props.handleClick !== undefined) {
+      if (this.props.isEdit === true) {
+        editButton = (
+          <Fragment>
+            <IconButton
+              aria-label="Upvote"
+              onClick={() => {
+                this.props.handleClick();
+              }}
+            >
+              <EditIcon className="mr" />
+            </IconButton>
+          </Fragment>
+        );
+      }
     }
     if (this.state.voteExpanded == false) {
       cardFooter = (
@@ -188,6 +208,7 @@ class VoteSlider extends Component {
                 <span className="text-muted font-weight-bold">
                   {this.state.totalmiles}
                   {commentButton}
+                  {editButton}
                   {linkButton}
                 </span>
               </div>
@@ -262,7 +283,6 @@ class VoteSlider extends Component {
           <div className="w-100">
             <PostEditor
               type="comment"
-              initialValue="Write a reply now!"
               edit={{
                 parent_author: this.props.author,
                 parent_permlink: this.props.permlink

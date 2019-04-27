@@ -1,10 +1,8 @@
 import React, { Fragment, Component } from "react";
-import "@babel/polyfill";
 import Link from "next/link";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import parseBody from "../helpers/parseBody";
-import "@babel/polyfill";
 import dateFromJsonString from "../helpers/dateFromJsonString";
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -13,16 +11,29 @@ import VoteSlider from "./VoteSlider";
 import PostComments from "./PostComments";
 import Typography from "@material-ui/core/Typography";
 import SubHeader from "./Post/SubHeader";
+import { getUser } from "../utils/token";
+import PostEditor from "./PostEditor";
 
 class PostpostItem extends Component {
+  state = {
+    isEdit: false,
+    showEditor: false
+  };
+  handleClick() {
+    console.log("clicked");
+    this.setState({
+      showEditor: true
+    });
+  }
+  componentDidMount() {
+    const user = getUser();
+    if (user === this.props.post.author) {
+      this.setState({ isEdit: true });
+    }
+  }
   render() {
     let htmlBody = parseBody(this.props.post.body, {});
     const bodyText = { __html: htmlBody };
-    const json_date = '{ "date": "' + this.props.post.created_at + 'Z" }';
-    const date_object = new Date(
-      JSON.parse(json_date, dateFromJsonString).date
-    );
-    const created_at = date_object.toDateString();
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies == true) {
       children = (
@@ -52,23 +63,67 @@ class PostpostItem extends Component {
         />
       );
     }
+    let parent = <Fragment />;
+    if (this.props.post.depth > 1) {
+      parent = (
+        <div>
+          <Link
+            as={`/@${this.props.post.parent_author}/${
+              this.props.post.parent_permlink
+            }`}
+            href={`/post?author=${this.props.post.parent_author}&permlink=${
+              this.props.post.parent_permlink
+            }`}
+            passHref
+          >
+            <a>
+              <strong>Go to parent comment</strong>
+            </a>
+          </Link>
+        </div>
+      );
+    }
     if (this.props.title == true) {
       title = (
-        <Link
-          as={`/@${this.props.post.parent_author}/${
-            this.props.post.parent_permlink
-          }`}
-          href={`/post?author=${this.props.post.parent_author}&permlink=${
-            this.props.post.parent_permlink
-          }`}
-          passHref
-        >
-          <a>
-            <Typography gutterBottom letiant="h5">
-              Re: {this.props.post.root_title}
-            </Typography>
-          </a>
-        </Link>
+        <div className="bg-light border p-3 mb-2">
+          <h4>{`Re: ${this.props.post.root_title}`}</h4>
+          <div>
+            <Link
+              as={`/@${this.props.post.root_author}/${
+                this.props.post.root_permlink
+              }`}
+              href={`/post?author=${this.props.post.root_author}&permlink=${
+                this.props.post.root_permlink
+              }`}
+              passHref
+            >
+              <a>
+                <strong>Go to original post</strong>
+              </a>
+            </Link>
+          </div>
+          {parent}
+        </div>
+      );
+    }
+    let cardcontent = (
+      <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
+    );
+    if (this.state.showEditor) {
+      cardcontent = (
+        <PostEditor
+          initialValue={htmlBody}
+          edit={{
+            parent_author: this.props.post.parent_author,
+            parent_permlink: this.props.post.parent_permlink,
+            author: this.props.post.author,
+            permlink: this.props.post.permlink,
+            title: "",
+            tags: ["travelfeed"]
+          }}
+          mode="edit"
+          type="comment"
+        />
       );
     }
     return (
@@ -112,7 +167,7 @@ class PostpostItem extends Component {
           />
           <CardContent>
             {title}
-            <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
+            {cardcontent}
           </CardContent>
           <VoteSlider
             author={this.props.post.author}
@@ -121,6 +176,8 @@ class PostpostItem extends Component {
             total_votes={this.props.post.total_votes}
             tags={[]}
             mode="comment"
+            handleClick={this.handleClick.bind(this)}
+            isEdit={this.state.isEdit}
           />
         </Card>
         {children}

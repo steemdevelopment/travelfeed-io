@@ -24,6 +24,7 @@ import parseBody from "../helpers/parseBody";
 import IsCurated from "./IsCurated";
 import SubHeader from "./Post/SubHeader";
 import OrderBySelect from "./Post/OrderBySelect";
+import PostCommentItem from "./PostCommentItem";
 
 export class SinglePost extends Component {
   state = {
@@ -77,94 +78,159 @@ export class SinglePost extends Component {
                 </Fragment>
               );
             }
-            // Don't render invalid posts but return Steemit link
+            // Don't render invalid posts but return Steempeak link
+            // Todo: Display NSFW posts for logged in users based on prefererences
             if (
               (!data.post.is_travelfeed && data.post.depth === 0) ||
               data.post.is_nsfw
             ) {
               const url =
-                "https://steemit.com/@" +
+                "https://steempeak.com/@" +
                 data.post.author +
                 "/" +
                 data.post.permlink;
               return <InvalidPost url={url} />;
             }
-            // Render post
-            let title = data.post.title;
-            let heading = data.post.title;
-            let tags = data.post.tags;
-            let footer = <Fragment />;
-            let header = <Fragment />;
-            let parent = <Fragment />;
-            if (data.post.depth > 1) {
-              parent = (
-                <div>
-                  <Link
-                    as={`/@${data.post.parent_author}/${
-                      data.post.parent_permlink
-                    }`}
-                    href={`/post?author=${data.post.parent_author}&permlink=${
-                      data.post.parent_permlink
-                    }`}
-                    passHref
-                  >
-                    <a>
-                      <strong>Go to parent comment</strong>
-                    </a>
-                  </Link>
-                </div>
+            // If comment, render comment component
+            let card = <Fragment />;
+            let head = <Fragment />;
+            if (data.post.depth > 0) {
+              head = (
+                <Head
+                  title={`Re: ${data.post.root_title} - TravelFeed`}
+                  description={excerpt}
+                  canonicalUrl={canonicalUrl}
+                />
               );
-            }
-            // Main posts are rendered different than comments
-            if (data.post.depth === 0) {
-              footer = (
-                <Fragment>
-                  <hr />
-                  <div className="fullwidth">
-                    <PostMap
-                      location={{
-                        coordinates: {
-                          lat: data.post.latitude,
-                          lng: data.post.longitude
-                        }
-                      }}
-                    />
-                  </div>
-                  <div className="container">
-                    <div className="row justify-content-center">
-                      <div className="col-lg-6 col-md-9 col-sm12">
-                        <PostAuthorProfile author={data.post.author} />{" "}
-                      </div>
-                    </div>
-                  </div>
-                </Fragment>
+              card = (
+                <PostCommentItem
+                  post={{
+                    post_id: data.post.post_id,
+                    body: data.post.body,
+                    created_at: data.post.created_at,
+                    children: data.post.children,
+                    author: data.post.author,
+                    display_name: data.post.display_name,
+                    permlink: data.post.permlink,
+                    depth: data.post.depth,
+                    total_votes: data.post.total_votes,
+                    votes: data.post.votes,
+                    parent_author: data.post.parent_author,
+                    parent_permlink: data.post.parent_permlink,
+                    root_author: data.post.parent_author,
+                    root_permlink: data.post.parent_permlink,
+                    root_title: data.post.root_title
+                  }}
+                  title={true}
+                />
               );
             } else {
-              title = `Re: ${data.post.root_title}`;
-              tags = [];
-              heading = "";
-              header = (
-                <div className="bg-light border p-3">
-                  <h4>{title}</h4>
-                  <div>
-                    <Link
-                      as={`/@${data.post.root_author}/${
-                        data.post.root_permlink
-                      }`}
-                      href={`/post?author=${data.post.root_author}&permlink=${
-                        data.post.root_permlink
-                      }`}
-                      passHref
+              head = (
+                <Head
+                  title={data.post.title}
+                  image={data.post.img_url}
+                  description={excerpt}
+                  canonicalUrl={canonicalUrl}
+                />
+              );
+              card = (
+                <Card>
+                  <CardHeader
+                    avatar={
+                      <Link
+                        as={`/@${data.post.author}`}
+                        href={`/blog?author=${data.post.author}`}
+                        passHref
+                        prefetch
+                      >
+                        <a>
+                          <Avatar
+                            className="cpointer"
+                            src={`https://steemitimages.com/u/${
+                              data.post.author
+                            }/avatar/small`}
+                          />
+                        </a>
+                      </Link>
+                    }
+                    action={
+                      <Fragment>
+                        <span>{appIcon}</span>
+                        <IsCurated
+                          votes={data.post.curation_score}
+                          author={data.post.author}
+                          permlink={data.post.permlink}
+                        />
+                        <BookmarkIcon />
+                      </Fragment>
+                    }
+                    title={
+                      <Fragment>
+                        <Link
+                          as={`/@${data.post.author}`}
+                          href={`/blog?author=${data.post.author}`}
+                          passHref
+                        >
+                          <a className="text-dark cpointer">
+                            <strong>{data.post.display_name}</strong>
+                            <span className="text-muted">
+                              {" "}
+                              @{data.post.author}
+                            </span>
+                          </a>
+                        </Link>
+                      </Fragment>
+                    }
+                    subheader={
+                      <SubHeader
+                        created_at={data.post.created_at}
+                        readtime={readtime}
+                      />
+                    }
+                  />
+                  <CardContent>
+                    <Typography
+                      variant="h4"
+                      className="text-dark font-weight-bold"
                     >
-                      <a>
-                        <strong>Go to original post</strong>
-                      </a>
-                    </Link>
-                  </div>
-                  {parent}
-                </div>
+                      {data.post.title}
+                    </Typography>
+                    <hr />
+                    <div
+                      className="postcontent"
+                      dangerouslySetInnerHTML={bodyText}
+                    />
+                    <hr />
+                    <div className="fullwidth">
+                      <PostMap
+                        location={{
+                          coordinates: {
+                            lat: data.post.latitude,
+                            lng: data.post.longitude
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="container">
+                      <div className="row justify-content-center">
+                        <div className="col-lg-6 col-md-9 col-sm12">
+                          <PostAuthorProfile author={data.post.author} />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <VoteSlider
+                    author={data.post.author}
+                    permlink={data.post.permlink}
+                    votes={data.post.votes}
+                    total_votes={data.post.total_votes}
+                    tags={data.post.tags}
+                    mode="post"
+                  />
+                </Card>
               );
             }
+            // Render post
             const htmlBody = parseBody(data.post.body, {});
             const bodyText = { __html: htmlBody };
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
@@ -188,12 +254,6 @@ export class SinglePost extends Component {
                 </Grid>
               );
             }
-            // Todo: New Date function
-            // const json_date = '{ "date": "' + data.post.created_at + 'Z" }';
-            // const date_object = new Date(
-            //   JSON.parse(json_date, dateFromJsonString).date
-            // );
-            // const created = date_object.toDateString();
             // Set the canonical URL to steemit.com by default to avoid duplicate content SEO problems
             let canonicalUrl =
               "https://steemit.com/travelfeed/@" +
@@ -202,7 +262,7 @@ export class SinglePost extends Component {
               data.post.permlink;
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored through the dApp
-            if (data.post.app && data.post.app.split("/")[0] === "travelfeed") {
+            if (data.post.app.split("/")[0] === "travelfeed") {
               canonicalUrl =
                 "https://travelfeed.io/@" +
                 data.post.author +
@@ -220,12 +280,7 @@ export class SinglePost extends Component {
               sanitized.substring(0, 180) + `[...] by ${data.post.author}`;
             return (
               <Fragment>
-                <Head
-                  title={title}
-                  image={data.post.img_url}
-                  description={excerpt}
-                  canonicalUrl={canonicalUrl}
-                />
+                {head}
                 <Header subheader={data.post.author} />
                 <Grid
                   container
@@ -235,84 +290,7 @@ export class SinglePost extends Component {
                   justify="center"
                 >
                   <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
-                    <Card>
-                      <CardHeader
-                        avatar={
-                          <Link
-                            as={`/@${data.post.author}`}
-                            href={`/blog?author=${data.post.author}`}
-                            passHref
-                            prefetch
-                          >
-                            <a>
-                              <Avatar
-                                className="cpointer"
-                                src={`https://steemitimages.com/u/${
-                                  data.post.author
-                                }/avatar/small`}
-                              />
-                            </a>
-                          </Link>
-                        }
-                        action={
-                          <Fragment>
-                            <span>{appIcon}</span>
-                            <IsCurated
-                              votes={data.post.curation_score}
-                              author={data.post.author}
-                              permlink={data.post.permlink}
-                            />
-                            <BookmarkIcon />
-                          </Fragment>
-                        }
-                        title={
-                          <Fragment>
-                            <Link
-                              as={`/@${data.post.author}`}
-                              href={`/blog?author=${data.post.author}`}
-                              passHref
-                            >
-                              <a className="text-dark cpointer">
-                                <strong>{data.post.display_name}</strong>
-                                <span className="text-muted">
-                                  {" "}
-                                  @{data.post.author}
-                                </span>
-                              </a>
-                            </Link>
-                          </Fragment>
-                        }
-                        subheader={
-                          <SubHeader
-                            created_at={data.post.created_at}
-                            readtime={readtime}
-                          />
-                        }
-                      />
-                      <CardContent>
-                        {header}
-                        <Typography
-                          variant="h4"
-                          className="text-dark font-weight-bold"
-                        >
-                          {heading}
-                        </Typography>
-                        <hr />
-                        <div
-                          className="postcontent"
-                          dangerouslySetInnerHTML={bodyText}
-                        />
-                        {footer}
-                      </CardContent>
-                      <VoteSlider
-                        author={data.post.author}
-                        permlink={data.post.permlink}
-                        votes={data.post.votes}
-                        total_votes={data.post.total_votes}
-                        tags={tags}
-                        mode="post"
-                      />
-                    </Card>
+                    {card}
                   </Grid>
                   {comments}
                 </Grid>

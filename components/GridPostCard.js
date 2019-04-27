@@ -73,7 +73,7 @@ class PostCard extends Component {
           <a>
             <CardActionArea>
               <CardMedia
-                style={{ height: 140 }}
+                style={{ height: this.props.cardHeight }}
                 className="pt-2 text-right"
                 image={this.props.img_url}
               />

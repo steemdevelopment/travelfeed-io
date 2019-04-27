@@ -4,6 +4,8 @@ import { Query } from "react-apollo";
 import { GET_POSTS } from "../helpers/graphql/posts";
 import Grid from "@material-ui/core/Grid";
 import GridPostCard from "./GridPostCard";
+import PostListItem from "./PostListItem";
+import PostCommentItem from "./PostCommentItem";
 import { imageProxy } from "../helpers/getImage";
 import readingTime from "reading-time";
 import sanitize from "sanitize-html";
@@ -73,46 +75,105 @@ class PostGrid extends Component {
                   justify="center"
                   className="p-3"
                 >
-                  {data.posts.map(post => {
-                    const htmlBody = parseBody(post.body, {});
-                    const sanitized = sanitize(htmlBody, { allowedTags: [] });
-                    const readtime = readingTime(sanitized);
-                    const image = imageProxy(post.img_url, "400x0");
-                    let title = regTitle(post.title);
-                    title =
-                      title.length > 85
-                        ? title.substring(0, 81) + "[...]"
-                        : title;
-                    const tags =
-                      post.tags.length > 1 ? [post.tags[1]] : ["travelfeed"];
-                    const excerpt = regExcerpt(sanitized);
-                    return (
-                      <Grid
-                        item
-                        lg={3}
-                        md={4}
-                        sm={6}
-                        xs={12}
-                        key={post.permlink}
-                      >
-                        <GridPostCard
-                          author={post.author}
-                          display_name={post.display_name}
-                          permlink={post.permlink}
-                          title={title}
-                          img_url={image}
-                          created_at={post.created_at}
-                          readtime={readtime}
-                          excerpt={excerpt}
-                          votes={post.votes}
-                          total_votes={post.total_votes}
-                          tags={tags}
-                          curation_score={post.curation_score}
-                          app={post.app}
-                        />
-                      </Grid>
-                    );
-                  })}
+                  {data.posts.length > 0 &&
+                    data.posts.map(post => {
+                      const imgHeight = this.props.cardHeight * 3;
+                      const htmlBody = parseBody(post.body, {});
+                      const sanitized = sanitize(htmlBody, { allowedTags: [] });
+                      const readtime = readingTime(sanitized);
+                      const image = imageProxy(post.img_url, "0x" + imgHeight);
+                      let title = regTitle(post.title);
+                      title =
+                        title.length > 85
+                          ? title.substring(0, 81) + "[...]"
+                          : title;
+                      const tags =
+                        post.tags && post.tags.length > 1
+                          ? [post.tags[1]]
+                          : ["travelfeed"];
+                      const excerpt = regExcerpt(sanitized);
+                      let card = <Fragment />;
+                      if (this.props.poststyle === "list") {
+                        card = (
+                          <PostListItem
+                            post={{
+                              author: post.author,
+                              body: post.body,
+                              display_name: post.display_name,
+                              permlink: post.permlink,
+                              title: post.title,
+                              img_url: post.img_url,
+                              created_at: post.created_at,
+                              readtime: post.readtime,
+                              excerpt: post.excerpt,
+                              votes: post.votes,
+                              total_votes: post.total_votes,
+                              tags: post.tags,
+                              curation_score: post.curation_score,
+                              app: post.app,
+                              parent_author: post.parent_author,
+                              parent_permlink: post.parent_permlink
+                            }}
+                          />
+                        );
+                      } else if (this.props.poststyle === "comment") {
+                        card = (
+                          <PostCommentItem
+                            post={{
+                              post_id: post.post_id,
+                              body: post.body,
+                              created_at: post.created_at,
+                              children: post.children,
+                              author: post.author,
+                              display_name: post.display_name,
+                              permlink: post.permlink,
+                              depth: post.depth,
+                              total_votes: post.total_votes,
+                              votes: post.votes,
+                              parent_author: post.parent_author,
+                              parent_permlink: post.parent_permlink,
+                              root_author: post.parent_author,
+                              root_permlink: post.parent_permlink,
+                              root_title: post.root_title,
+                              tags: "travelfeed"
+                            }}
+                            loadreplies={false}
+                            title={true}
+                          />
+                        );
+                      } else {
+                        card = (
+                          <GridPostCard
+                            author={post.author}
+                            display_name={post.display_name}
+                            permlink={post.permlink}
+                            title={title}
+                            img_url={image}
+                            created_at={post.created_at}
+                            readtime={readtime}
+                            excerpt={excerpt}
+                            votes={post.votes}
+                            total_votes={post.total_votes}
+                            tags={tags}
+                            curation_score={post.curation_score}
+                            app={post.app}
+                            cardHeight={this.props.cardHeight}
+                          />
+                        );
+                      }
+                      return (
+                        <Grid
+                          item
+                          lg={this.props.grid.lg}
+                          md={this.props.grid.md}
+                          sm={this.props.grid.sm}
+                          xs={this.props.grid.xs}
+                          key={post.permlink}
+                        >
+                          {card}
+                        </Grid>
+                      );
+                    })}
                 </Grid>
               </InfiniteScroll>
             );

@@ -21,6 +21,8 @@ export const regExcerpt = text => {
     .substring(0, 250);
 };
 
+export const allSpecialChars = /(?:[!-\/:-@[-`{-~]|[^\x00-\x7F]|\s)/g;
+
 export const regTitle = title => {
   return title.replace(allowedTitleChars, "");
 };

@@ -24,10 +24,10 @@ class Posts extends Component {
             </div>
           </Grid>
           <PostGrid
-            type="blog"
-            filter={this.props.user}
+            query={{ author: this.props.user, limit: 10 }}
+            grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}
+            cardHeight={140}
             poststyle="list"
-            position={0}
           />
         </Grid>
       </Fragment>

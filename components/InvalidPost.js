@@ -29,7 +29,8 @@ class Exit extends Component {
                 <h1>Not a TravelFeed Post</h1>
                 <p>
                   This is not a valid TravelFeed post, but it does exist on the
-                  Steem blockchain. Proceed to Steemit to view the post anyway?
+                  Steem blockchain. Proceed to Steempeak to view the post
+                  anyway?
                 </p>
                 <p>{this.props.url}</p>
                 <a onClick={() => Router.back()}>
@@ -43,7 +44,7 @@ class Exit extends Component {
                   href={this.props.url}
                 >
                   <Button color="primary" variant="contained" className="m-1">
-                    View on Steemit
+                    View on Steempeak
                   </Button>
                 </a>
               </CardContent>

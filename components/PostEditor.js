@@ -1,8 +1,7 @@
-// Todo: Gernerate permlink with https://www.npmjs.com/package/speakingurl
+// Todo: Image upload. https://github.com/cloudinary/cloudinary_tinymce
 
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, Component } from "react";
-import "@babel/polyfill";
 import { Editor } from "@tinymce/tinymce-react";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -12,13 +11,15 @@ import readingTime from "reading-time";
 import TextField from "@material-ui/core/TextField";
 import { comment } from "../utils/actions";
 import { APP_VERSION, ROOTURL } from "../config";
-import { extractSWM, permlinkFromTitle } from "../utils/regex";
+import { extractSWM } from "../utils/regex";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import PropTypes from "prop-types";
 import { getUser } from "../utils/token";
 import { getImageList } from "../helpers/getImage";
 import Router from "next/router";
 import { withSnackbar } from "notistack";
+import getSlug from "speakingurl";
+import TagPicker from "./Editor/TagPicker";
 
 class PostEditor extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class PostEditor extends Component {
     this.state = {
       title: "",
       content: this.props.initialValue,
-      tags: "travelfeed",
+      tags: ["travelfeed"],
       completed: 0
     };
     this.handleTitleEditorChange = this.handleTitleEditorChange.bind(this);
@@ -35,11 +36,18 @@ class PostEditor extends Component {
   }
   newNotification(notification) {
     if (notification != undefined) {
-      const text = notification[0];
-      const variant = notification[1];
-      this.props.enqueueSnackbar(text, { variant });
-      this.setState({ success: true });
+      let letiant = "success";
+      if (notification.success === false) {
+        letiant = "error";
+      }
+      this.props.enqueueSnackbar(notification.message, { letiant });
+      if (notification.success === true) {
+        this.setState({ success: true });
+      }
     }
+  }
+  handleTagClick(op) {
+    this.setState(op);
   }
   handleTitleEditorChange(title) {
     this.setState({ title: title.target.value });
@@ -52,12 +60,9 @@ class PostEditor extends Component {
   }
   componentDidMount() {
     if (this.props.mode == "edit") {
-      const json = JSON.parse(this.props.edit.json_metadata);
-      var tags = json.tags != "undefined" ? json.tags : [""];
-      tags = String(tags).replace(/,/g, " ");
       this.setState({
         title: this.props.edit.title,
-        tags: tags
+        tags: this.props.edit.tags
       });
     }
     require("tinymce/tinymce");
@@ -79,69 +84,70 @@ class PostEditor extends Component {
     const { completed } = this.state;
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
-  success() {
+  async success() {
+    const sleep = milliseconds => {
+      return new Promise(resolve => setTimeout(resolve, milliseconds));
+    };
+    await sleep(10000);
     clearInterval(this.timer);
     this.setState({ completed: 0 });
   }
   publishPost() {
-    var parentAuthor = "";
-    var parentPermlink = "travelfeed";
-    var title = this.state.title;
-    var permlink = permlinkFromTitle(title);
-    var body = this.state.content;
-    var location = this.getLocation(body);
-    var allTags = this.state.tags.split(" ");
-    var imageList = getImageList(body);
-    imageList = JSON.stringify(imageList);
-    var metadata = '{"tags":[';
-    for (var i = 0; i < allTags.length; i++) {
-      metadata += '"' + allTags[i] + '"';
-      if (i + 1 < allTags.length) {
-        metadata += ",";
-      }
-    }
-    metadata += '],"app":"' + APP_VERSION + '"';
-    metadata += ',"community":"travelfeed"';
-    if (imageList != "null") {
-      metadata += ',"image":' + imageList;
+    let parentAuthor = "";
+    let parentPermlink = "travelfeed";
+    let title = this.state.title;
+    let permlink = getSlug(title);
+    let body = this.state.content;
+    let location = this.getLocation(body);
+    let imageList = getImageList(body);
+    let metadata = {};
+    metadata.tags = this.state.tags;
+    metadata.app = APP_VERSION;
+    metadata.community = "travelfeed";
+    if (imageList != null) {
+      metadata.image = imageList;
     }
     if (location != "") {
-      metadata += ',"coordinates":"' + location + '"';
+      metadata.coordinates = location;
     }
-    metadata += "}";
     // todo: Parse body for images and links and include them in the json_metadata
-    var jsonMetadata = JSON.parse(metadata);
-    var username = getUser();
-    if (this.props.mode == "edit") {
-      const json = JSON.parse(this.props.edit.json_metadata);
-      parentPermlink = json.tags != "undefined" ? json.tags[0] : "travelfeed";
-      permlink = this.props.edit.permlink;
-    }
+    let username = getUser();
     if (this.props.type == "comment") {
-      permlink = `re-${
-        this.props.edit.parent_permlink
-      }-${Date.now().toString()}`;
+      let commenttime = getSlug(new Date().toJSON()).replace(/-/g, "");
+      permlink = `re-${this.props.edit.parent_permlink}-${commenttime}`;
       parentAuthor = this.props.edit.parent_author;
       parentPermlink = this.props.edit.parent_permlink;
+    }
+    if (this.props.mode == "edit") {
+      permlink = this.props.edit.permlink;
     }
     if (this.props.edit == false) {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
     }
     this.timer = setInterval(this.progress, 60);
     this.setState({ user: username, permlink: permlink });
+    console.log(
+      "prauthor" + parentAuthor,
+      "prnt" + parentPermlink,
+      "perml" + permlink,
+      "title" + title,
+      "jsonme" + JSON.stringify(metadata),
+      "auto" + this.props.type
+    );
     comment(
       parentAuthor,
       parentPermlink,
       permlink,
       title,
       body,
-      jsonMetadata
+      metadata,
+      this.props.type
     ).then(result => {
       this.newNotification(result);
     });
   }
   getLocation(bodyText) {
-    var coordinates = extractSWM(bodyText);
+    let coordinates = extractSWM(bodyText);
     if (coordinates != null && coordinates.length > 2) {
       const lat = coordinates[1];
       const long = coordinates[2];
@@ -151,7 +157,7 @@ class PostEditor extends Component {
     }
   }
   render() {
-    var submittext = "Publish";
+    let submittext = "Publish";
     if (this.props.mode == "edit") {
       submittext = "Edit";
     }
@@ -160,13 +166,17 @@ class PostEditor extends Component {
     const readingtime = readingTime(sanitized);
     const wordCount = readingtime.words;
     const readTime = readingtime.text;
-    var location = this.getLocation(bodyText);
-    var publishBtn = "";
-    var progress = <Fragment />;
+    let location = this.getLocation(bodyText);
+    let locationfield = location;
+    if (location === "") {
+      locationfield = "Add a map to the post to add a location!";
+    }
+    let publishBtn = "";
+    let progress = <Fragment />;
     if (this.state.completed != 0) {
       progress = (
         <CircularProgress
-          variant="determinate"
+          letiant="determinate"
           value={this.state.completed}
           className="p-1"
           size={35}
@@ -183,7 +193,7 @@ class PostEditor extends Component {
           {progress}
           <Button
             color="primary"
-            variant="outlined"
+            letiant="outlined"
             onClick={() => this.publishPost()}
           >
             {submittext}
@@ -194,17 +204,17 @@ class PostEditor extends Component {
       publishBtn = (
         <Tooltip title="You need to write at least 250 words and set a title and at least one tag before you can publish your post">
           <span>
-            <Button color="primary" variant="outlined" disabled>
+            <Button color="primary" letiant="outlined" disabled>
               {submittext}
             </Button>
           </span>
         </Tooltip>
       );
     }
-    var editor = <Fragment />;
+    let editor = <Fragment />;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
-      var url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
+      let url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
     } else if (this.state.mounted == true) {
       editor = (
@@ -279,30 +289,18 @@ class PostEditor extends Component {
         />
         <div className="postcontent posteditor">{editor}</div>
         <div />
+        <hr />
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
-              <TextField
-                label="Tags"
-                inputProps={{
-                  maxLength: 100
-                }}
-                multiline={true}
-                placeholder="Tags separated by spaces"
-                margin="normal"
-                value={this.state.tags}
-                onChange={this.handleTagsEditorChange}
-                fullWidth
+            <div className="col-md-12">
+              <TagPicker
+                initialValue={this.props.edit.tags}
+                onChange={this.handleTagClick.bind(this)}
               />
             </div>
-            <div className="col-md-6 text-right">
-              <TextField
-                label="Location"
-                placeholder="Add a map to the post to add a location"
-                value={location}
-                margin="normal"
-                fullWidth
-              />
+            <div className="col-md-12 pt-2">
+              <p>Location</p>
+              {locationfield}
             </div>
             <div className="col-6 p-0 pt-2">
               <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import { getLoginURL } from "../utils/token";
-import { getUser, logout } from "../utils/token";
+import { getUserActive, logout } from "../utils/token";
 import Grow from "@material-ui/core/Grow";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
@@ -24,7 +24,7 @@ class HeaderMenu extends Component {
     menuopen: false
   };
   getUser() {
-    this.setState({ user: getUser() });
+    this.setState({ user: getUserActive() });
   }
   componentDidMount() {
     this.getUser();

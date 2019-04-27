@@ -113,3 +113,19 @@ export const customJson = async payload => {
     }
   );
 };
+
+export const broadcastActiveUser = async () => {
+  api.setAccessToken(getScToken());
+  const author = getUser();
+  return await api.broadcast([
+    [
+      "custom_json",
+      {
+        id: "active_user",
+        required_auths: [],
+        required_posting_auths: [author],
+        json: JSON.stringify({ app: "travelfeed" })
+      }
+    ]
+  ]);
+};

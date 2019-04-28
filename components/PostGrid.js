@@ -10,7 +10,6 @@ import { imageProxy } from "../helpers/getImage";
 import readingTime from "reading-time";
 import sanitize from "sanitize-html";
 import parseBody from "../helpers/parseBody";
-import IsCurated from "./IsCurated";
 import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { regExcerpt, regTitle } from "../utils/regex";
@@ -114,6 +113,7 @@ class PostGrid extends Component {
                               parent_author: post.parent_author,
                               parent_permlink: post.parent_permlink
                             }}
+                            id={post.author + "-" + post.permlink}
                           />
                         );
                       } else if (this.props.poststyle === "comment") {
@@ -168,7 +168,7 @@ class PostGrid extends Component {
                           md={this.props.grid.md}
                           sm={this.props.grid.sm}
                           xs={this.props.grid.xs}
-                          key={post.permlink}
+                          key={`${post.author}_${post.permlink}`}
                         >
                           {card}
                         </Grid>
@@ -184,7 +184,10 @@ class PostGrid extends Component {
   }
 }
 PostGrid.propTypes = {
-  query: PropTypes.array.isRequired
+  query: PropTypes.object.isRequired,
+  cardHeight: PropTypes.number,
+  poststyle: PropTypes.string,
+  grid: PropTypes.object
 };
 
 export default PostGrid;

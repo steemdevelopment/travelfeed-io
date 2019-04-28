@@ -54,7 +54,7 @@ export class PostAuthorProfile extends Component {
                   href={data.profile.website}
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="text-light h1 p-1"
+                  className="text-light h1"
                 >
                   {" "}
                   <FontAwesomeIcon icon={faLink} />
@@ -68,7 +68,7 @@ export class PostAuthorProfile extends Component {
                   href={"https://facebook.com/" + data.profile.facebook}
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="text-light h1 p-1"
+                  className="text-light h1 p-2"
                 >
                   <FontAwesomeIcon icon={faFacebookF} />
                 </a>
@@ -76,17 +76,15 @@ export class PostAuthorProfile extends Component {
                 <Fragment />
               );
             const twitter =
-              (
+              data.profile.twitter !== "" ? (
                 <a
                   href={"https://twitter.com/" + data.profile.twitter}
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="text-light h1 p-1"
+                  className="text-light h1"
                 >
                   <FontAwesomeIcon icon={faTwitter} />
                 </a>
-              ) !== "" ? (
-                data.profile.twitter
               ) : (
                 <Fragment />
               );
@@ -96,7 +94,7 @@ export class PostAuthorProfile extends Component {
                   href={"https://instagram.com/" + data.profile.instagram}
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="text-light h1 p-1"
+                  className="text-light h1"
                 >
                   {" "}
                   <FontAwesomeIcon icon={faInstagram} />{" "}
@@ -107,10 +105,10 @@ export class PostAuthorProfile extends Component {
             const youtube =
               data.profile.youtube !== "" ? (
                 <a
-                  href={"https://youtube.com/" + data.profile.youtube}
+                  href={"https://youtube.com/user/" + data.profile.youtube}
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="text-light h1 p-1"
+                  className="text-light h1"
                 >
                   {" "}
                   <FontAwesomeIcon icon={faYoutube} />{" "}
@@ -121,10 +119,13 @@ export class PostAuthorProfile extends Component {
             const couchsurfing =
               data.profile.couchsurfing !== "" ? (
                 <a
-                  href={"https://couchsurfing.com/" + data.profile.couchsurfing}
+                  href={
+                    "https://couchsurfing.com/people/" +
+                    data.profile.couchsurfing
+                  }
                   target="_blank"
                   rel="nofollow noreferrer noopener"
-                  className="text-light h1 p-1"
+                  className="text-light h1"
                 >
                   {" "}
                   <FontAwesomeIcon icon={faCouch} />{" "}
@@ -142,9 +143,11 @@ export class PostAuthorProfile extends Component {
             return (
               <Fragment>
                 <Head
-                  title={`${data.profile.display_name}'s Blog`}
+                  title={`${
+                    data.profile.display_name
+                  }'s Blog on TravelFeed: The Travel Community`}
                   image={data.profile.img_url}
-                  description={about}
+                  description={`${data.profile.display_name}'s Blog: ${about}`}
                 />
                 <div className="text-center p-4 mb-3" style={divStyle}>
                   <div className="container">
@@ -185,7 +188,9 @@ export class PostAuthorProfile extends Component {
                         <div>
                           <FollowButton
                             author={data.profile.name}
-                            btnstyle="whiteborder"
+                            isFollowed={data.profile.isFollowed}
+                            isIgnored={data.profile.isIgnored}
+                            style="whiteborder"
                           />
                         </div>
                       </div>

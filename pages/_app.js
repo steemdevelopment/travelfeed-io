@@ -10,8 +10,7 @@ import Router from "next/router";
 import { ApolloProvider } from "react-apollo";
 import withApollo from "../lib/withApollo";
 
-Router.events.on("routeChangeStart", url => {
-  console.log(`Loading: ${url}`);
+Router.events.on("routeChangeStart", () => {
   NProgress.start();
 });
 Router.events.on("routeChangeComplete", () => NProgress.done());

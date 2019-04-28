@@ -96,7 +96,8 @@ Tag.propTypes = {
   tags: PropTypes.string,
   title: PropTypes.string,
   orderby: PropTypes.string,
-  min_curation_score: PropTypes.number
+  min_curation_score: PropTypes.number,
+  value: PropTypes.number
 };
 
 export default Tag;

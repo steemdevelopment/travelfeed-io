@@ -3,16 +3,16 @@ import Link from "next/link";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import parseBody from "../helpers/parseBody";
-import dateFromJsonString from "../helpers/dateFromJsonString";
 import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
 import PropTypes from "prop-types";
 import VoteSlider from "./VoteSlider";
 import PostComments from "./PostComments";
-import Typography from "@material-ui/core/Typography";
 import SubHeader from "./Post/SubHeader";
 import { getUser } from "../utils/token";
 import PostEditor from "./PostEditor";
+import BookmarkIcon from "./Post/BookmarkIcon";
+import CuratorMenu from "./Post/CuratorMenu";
 
 class PostpostItem extends Component {
   state = {
@@ -20,7 +20,6 @@ class PostpostItem extends Component {
     showEditor: false
   };
   handleClick() {
-    console.log("clicked");
     this.setState({
       showEditor: true
     });
@@ -150,7 +149,16 @@ class PostpostItem extends Component {
                 </a>
               </Link>
             }
-            action={appIcon}
+            action={
+              <Fragment>
+                {appIcon}
+                <BookmarkIcon
+                  author={this.props.post.author}
+                  permlink={this.props.post.permlink}
+                />
+                <CuratorMenu />
+              </Fragment>
+            }
             title={
               <Link
                 as={`/@${this.props.post.author}`}
@@ -194,7 +202,9 @@ PostpostItem.defaultProps = {
 PostpostItem.propTypes = {
   post: PropTypes.object.isRequired,
   loadreplies: PropTypes.bool,
-  title: PropTypes.bool
+  title: PropTypes.bool,
+  orderby: PropTypes.string,
+  orderdir: PropTypes.string
 };
 
 export default PostpostItem;

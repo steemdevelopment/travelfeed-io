@@ -31,6 +31,7 @@ class BookmarkIcon extends Component {
                 <IsBookmarked
                   author={this.props.author}
                   permlink={this.props.permlink}
+                  onBmChange={this.props.onBmChange}
                 />
               );
             }
@@ -38,6 +39,7 @@ class BookmarkIcon extends Component {
               <IsNotBookmarked
                 author={this.props.author}
                 permlink={this.props.permlink}
+                onBmChange={this.props.onBmChange}
               />
             );
           }}
@@ -59,10 +61,14 @@ class IsBookmarked extends Component {
       >
         {(deleteBookmark, data) => {
           if (data.data && data.data.deleteBookmark.success) {
+            if (this.props.onBmChange !== undefined) {
+              this.props.onBmChange();
+            }
             return (
               <IsNotBookmarked
                 author={this.props.author}
                 permlink={this.props.permlink}
+                onBmChange={this.props.onBmChange}
               />
             );
           }
@@ -91,10 +97,14 @@ class IsNotBookmarked extends Component {
       >
         {(addBookmark, data) => {
           if (data.data && data.data.addBookmark.success) {
+            if (this.props.onBmChange !== undefined) {
+              this.props.onBmChange();
+            }
             return (
               <IsBookmarked
                 author={this.props.author}
                 permlink={this.props.permlink}
+                onBmChange={this.props.onBmChange}
               />
             );
           }
@@ -113,17 +123,20 @@ class IsNotBookmarked extends Component {
 
 BookmarkIcon.propTypes = {
   author: PropTypes.string,
-  permlink: PropTypes.string
+  permlink: PropTypes.string,
+  onBmChange: PropTypes.func
 };
 
 IsNotBookmarked.propTypes = {
   author: PropTypes.string,
-  permlink: PropTypes.string
+  permlink: PropTypes.string,
+  onBmChange: PropTypes.func
 };
 
 IsBookmarked.propTypes = {
   author: PropTypes.string,
-  permlink: PropTypes.string
+  permlink: PropTypes.string,
+  onBmChange: PropTypes.func
 };
 
 export default BookmarkIcon;

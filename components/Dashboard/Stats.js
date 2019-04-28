@@ -91,7 +91,7 @@ class Stats extends Component {
 }
 
 Stats.propTypes = {
-  user: PropTypes.user
+  user: PropTypes.string
 };
 
 export default Stats;

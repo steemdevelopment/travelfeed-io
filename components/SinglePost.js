@@ -21,7 +21,7 @@ import PostComments from "./PostComments";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import parseBody from "../helpers/parseBody";
-import IsCurated from "./IsCurated";
+import CuratorMenu from "./Post/CuratorMenu";
 import SubHeader from "./Post/SubHeader";
 import OrderBySelect from "./Post/OrderBySelect";
 import PostCommentItem from "./PostCommentItem";
@@ -94,6 +94,11 @@ export class SinglePost extends Component {
             // If comment, render comment component
             let card = <Fragment />;
             let head = <Fragment />;
+            // Render post
+            const htmlBody = parseBody(data.post.body, {});
+            const bodyText = { __html: htmlBody };
+            const sanitized = sanitize(htmlBody, { allowedTags: [] });
+            const readtime = readingTime(sanitized);
             if (data.post.depth > 0) {
               head = (
                 <Head
@@ -156,12 +161,11 @@ export class SinglePost extends Component {
                     action={
                       <Fragment>
                         <span>{appIcon}</span>
-                        <IsCurated
-                          votes={data.post.curation_score}
+                        <BookmarkIcon
                           author={data.post.author}
                           permlink={data.post.permlink}
                         />
-                        <BookmarkIcon />
+                        <CuratorMenu />
                       </Fragment>
                     }
                     title={
@@ -230,11 +234,6 @@ export class SinglePost extends Component {
                 </Card>
               );
             }
-            // Render post
-            const htmlBody = parseBody(data.post.body, {});
-            const bodyText = { __html: htmlBody };
-            const sanitized = sanitize(htmlBody, { allowedTags: [] });
-            const readtime = readingTime(sanitized);
             // Don't load comment area  if there are no comments
             let comments = <Fragment />;
             if (data.post.children !== 0) {
@@ -304,5 +303,6 @@ export class SinglePost extends Component {
 }
 
 SinglePost.propTypes = {
-  post: PropTypes.object
+  post: PropTypes.object,
+  post_id: PropTypes.number
 };

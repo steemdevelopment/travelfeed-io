@@ -28,7 +28,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PostsIcon from "@material-ui/icons/ChromeReaderMode";
 import DraftIcon from "@material-ui/icons/Cloud";
-import BookmarkIcon from "@material-ui/icons/Star";
+import BookmarkIcon from "@material-ui/icons/Bookmarks";
 import WalletIcon from "@material-ui/icons/AttachMoney";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PublishIcon from "@material-ui/icons/Create";

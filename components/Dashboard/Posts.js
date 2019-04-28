@@ -36,7 +36,7 @@ class Posts extends Component {
 }
 
 Posts.propTypes = {
-  user: PropTypes.user
+  user: PropTypes.string
 };
 
 export default Posts;

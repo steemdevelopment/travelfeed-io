@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import Link from "next/link";
 import { Query } from "react-apollo";
 import { GET_PROFILE } from "../../helpers/graphql/profile";
+import SaveIcon from "@material-ui/icons/Save";
 
 class Profile extends Component {
   constructor(props) {
@@ -187,7 +188,8 @@ class Profile extends Component {
   render() {
     var updatebtn = (
       <Button color="primary" variant="outlined" disabled>
-        Update
+        <SaveIcon />
+        <span className="pl-2">Update Profile</span>
       </Button>
     );
     if (this.state.changed.length > 0) {
@@ -197,7 +199,8 @@ class Profile extends Component {
           variant="contained"
           onClick={() => this.linkBuilder()}
         >
-          Update
+          <SaveIcon />
+          <span className="pl-2">Update Profile</span>
         </Button>
       );
     }
@@ -377,7 +380,6 @@ class Profile extends Component {
                           <Button
                             color="primary"
                             variant="outlined"
-                            onClick={() => this.linkBuilder()}
                             className="ml-2"
                           >
                             View your public profile

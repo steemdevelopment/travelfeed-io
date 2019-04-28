@@ -17,6 +17,7 @@ import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
 import PostEditor from "./PostEditor";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class VoteSlider extends Component {
   state = {
@@ -30,9 +31,11 @@ class VoteSlider extends Component {
   };
   newNotification(notification) {
     if (notification != undefined) {
-      const text = notification[0];
-      const variant = notification[1];
-      this.props.enqueueSnackbar(text, { variant });
+      let variant = "success";
+      if (notification.success === false) {
+        variant = "error";
+      }
+      this.props.enqueueSnackbar(notification.message, { variant });
     }
   }
   setWeight = (event, value) => {
@@ -120,72 +123,82 @@ class VoteSlider extends Component {
     var cardFooter = <Fragment />;
     var voteButton = (
       <Link href="/join" passHref>
-        <IconButton aria-label="Upvote">
-          <FlightIcon className="mr" />
-        </IconButton>
+        <Tooltip title="Log in to vote" placement="bottom">
+          <IconButton aria-label="Upvote">
+            <FlightIcon className="mr" />
+          </IconButton>
+        </Tooltip>
       </Link>
     );
     if (this.state.user != null) {
       voteButton = (
-        <IconButton aria-label="Upvote" onClick={() => this.expandVoteBar()}>
-          <FlightIcon className="mr" />
-        </IconButton>
+        <Tooltip title="Upvote" placement="bottom">
+          <IconButton aria-label="Upvote" onClick={() => this.expandVoteBar()}>
+            <FlightIcon className="mr" />
+          </IconButton>
+        </Tooltip>
       );
     }
     if (this.state.hasVoted == true) {
       voteButton = (
-        <IconButton
-          aria-label="Upvote"
-          onClick={() => this.expandVoteBar()}
-          color="primary"
-        >
-          <FlightVotedIcon className="mr" />
-        </IconButton>
+        <Tooltip title="Upvote" placement="bottom">
+          <IconButton
+            aria-label="Upvote"
+            onClick={() => this.expandVoteBar()}
+            color="primary"
+          >
+            <FlightVotedIcon className="mr" />
+          </IconButton>
+        </Tooltip>
       );
     }
     var commentButton = <Fragment />;
     if (this.props.mode != "gridcard") {
       commentButton = (
         <Link href="/join" passHref>
-          <IconButton aria-label="Upvote">
-            <CommentIcon className="mr" />
-          </IconButton>
+          <Tooltip title="Login to reply" placement="bottom">
+            <IconButton aria-label="Upvote">
+              <CommentIcon className="mr" />
+            </IconButton>
+          </Tooltip>
         </Link>
       );
       if (this.state.user != null) {
         commentButton = (
-          <IconButton
-            aria-label="Comment"
-            onClick={() => this.expandCommentBar()}
-          >
-            <CommentIcon className="mr" />
-          </IconButton>
+          <Tooltip title="Reply" placement="bottom">
+            <IconButton
+              aria-label="Comment"
+              onClick={() => this.expandCommentBar()}
+            >
+              <CommentIcon className="mr" />
+            </IconButton>
+          </Tooltip>
         );
       }
     }
     let linkButton = <Fragment />;
     if (this.props.mode === "comment") {
       linkButton = (
-        <Fragment>
-          <Link
-            as={`/@${this.props.author}/${this.props.permlink}`}
-            href={`/post?author=${this.props.author}&permlink=${
-              this.props.permlink
-            }`}
-            passHref
-          >
-            <IconButton aria-label="Upvote">
+        <Link
+          as={`/@${this.props.author}/${this.props.permlink}`}
+          href={`/post?author=${this.props.author}&permlink=${
+            this.props.permlink
+          }`}
+          passHref
+        >
+          <Tooltip title="Link to comment" placement="bottom">
+            <IconButton aria-label="Link">
               <LinkIcon className="mr" />
             </IconButton>
-          </Link>
-        </Fragment>
+          </Tooltip>
+        </Link>
       );
     }
     let editButton = <Fragment />;
     if (this.props.handleClick !== undefined) {
       if (this.props.isEdit === true) {
         editButton = (
-          <Fragment>
+          <Tooltip title="Edit" placement="bottom">
             <IconButton
               aria-label="Upvote"
               onClick={() => {
@@ -194,7 +207,7 @@ class VoteSlider extends Component {
             >
               <EditIcon className="mr" />
             </IconButton>
-          </Fragment>
+          </Tooltip>
         );
       }
     }
@@ -254,15 +267,17 @@ class VoteSlider extends Component {
     if (this.state.voteExpanded == true) {
       cardFooter = (
         <CardActions>
-          <IconButton
-            aria-label="Upvote"
-            onClick={() =>
-              this.votePost(this.props.author, this.props.permlink)
-            }
-            color="primary"
-          >
-            <FlightIcon className="mr" />
-          </IconButton>
+          <Tooltip title="Upvote now" placement="bottom">
+            <IconButton
+              aria-label="Upvote"
+              onClick={() =>
+                this.votePost(this.props.author, this.props.permlink)
+              }
+              color="primary"
+            >
+              <FlightIcon className="mr" />
+            </IconButton>
+          </Tooltip>
           <div>{weightIndicator}</div>
           <Slider
             value={this.state.weight}
@@ -271,9 +286,11 @@ class VoteSlider extends Component {
             step={1}
             onChange={this.setWeight}
           />
-          <IconButton onClick={() => this.collapseVoteBar()}>
-            <CloseIcon />
-          </IconButton>
+          <Tooltip title="Close" placement="bottom">
+            <IconButton onClick={() => this.collapseVoteBar()}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         </CardActions>
       );
     }
@@ -289,9 +306,11 @@ class VoteSlider extends Component {
               }}
             />
           </div>
-          <IconButton onClick={() => this.collapseCommentBar()}>
-            <CloseIcon />
-          </IconButton>
+          <Tooltip title="Close" placement="bottom">
+            <IconButton onClick={() => this.collapseCommentBar()}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         </CardActions>
       );
     }
@@ -306,7 +325,9 @@ VoteSlider.propTypes = {
   total_votes: PropTypes.number,
   tags: PropTypes.array,
   mode: PropTypes.string,
-  enqueueSnackbar: PropTypes.function
+  enqueueSnackbar: PropTypes.func,
+  handleClick: PropTypes.func,
+  isEdit: PropTypes.bool
 };
 
 export default withSnackbar(VoteSlider);

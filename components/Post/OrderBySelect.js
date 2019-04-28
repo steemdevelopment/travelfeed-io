@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
@@ -113,5 +113,10 @@ class SimpleMenu extends React.Component {
     );
   }
 }
+
+SimpleMenu.propTypes = {
+  selection: PropTypes.string,
+  handleClick: PropTypes.func
+};
 
 export default SimpleMenu;

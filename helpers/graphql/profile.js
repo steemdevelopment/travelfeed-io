@@ -7,6 +7,8 @@ export const GET_SHORT_PROFILE = gql`
       display_name
       about
       isCurator
+      isFollowed
+      isIgnored
     }
   }
 `;
@@ -16,6 +18,7 @@ export const GET_PROFILE = gql`
     profile(username: $author) {
       name
       display_name
+      profile_image
       about
       isCurator
       location
@@ -29,6 +32,8 @@ export const GET_PROFILE = gql`
       followers
       following
       isBlacklisted
+      isFollowed
+      isIgnored
     }
   }
 `;

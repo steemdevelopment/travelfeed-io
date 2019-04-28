@@ -78,7 +78,7 @@ class PostComments extends Component {
                       sm={12}
                       xs={12}
                       className="pb-2"
-                      key={permlink}
+                      key={`${author}_${permlink}`}
                     >
                       <PostCommentItem
                         post={{
@@ -112,8 +112,9 @@ class PostComments extends Component {
 }
 
 PostComments.propTypes = {
-  post_id: PropTypes.string,
-  comments: PropTypes.number
+  post_id: PropTypes.number.isRequired,
+  orderby: PropTypes.string,
+  orderdir: PropTypes.string
 };
 
 export default PostComments;

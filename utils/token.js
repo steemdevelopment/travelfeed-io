@@ -11,6 +11,14 @@ export const setScToken = (token, expires_in) => {
   const expiry = new Date(new Date().getTime() + expires_in * 1000);
   Cookie.set("sc_token", token, { expires: expiry });
 };
+export const getRoles = () => {
+  const token = Cookie.get("access_token");
+  if (token === undefined) {
+    return undefined;
+  }
+  const jwt = jwt_decode(token);
+  return jwt.roles;
+};
 export const getUser = () => {
   const token = Cookie.get("access_token");
   if (token === undefined) {

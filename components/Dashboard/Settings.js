@@ -1,3 +1,5 @@
+// Todo: Add Settings Mutation/Query
+// Todo: Replace  helmet everywhere
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";

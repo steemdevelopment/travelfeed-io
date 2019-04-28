@@ -11,17 +11,50 @@ import VoteSlider from "./VoteSlider";
 import PropTypes from "prop-types";
 import IsCurated from "./IsCurated";
 import SubHeader from "./Post/SubHeader";
+import BookmarkIcon from "./Post/BookmarkIcon";
 
 class PostCard extends Component {
+  state = { show: true };
+  hide() {
+    this.setState({ show: false });
+  }
   render() {
-    let appIcon = <Fragment />;
-    if (this.props.app.split("/")[0] === "travelfeed") {
-      appIcon = (
-        <img
-          width="25"
-          className="mr-1"
-          src="https://travelfeed.io/favicon.ico"
+    // Hide if deleted (for bookmarks)
+    if (!this.state.show) {
+      return <Fragment />;
+    }
+    let action = <Fragment />;
+    if (this.props.showBookmark === true) {
+      action = (
+        <BookmarkIcon
+          author={this.props.author}
+          permlink={this.props.permlink}
         />
+      );
+    } else if (this.props.isBookmark === true) {
+      action = (
+        <BookmarkIcon
+          author={this.props.author}
+          permlink={this.props.permlink}
+          onBmChange={this.hide.bind(this)}
+        />
+      );
+    } else {
+      let appIcon = <Fragment />;
+      if (this.props.app.split("/")[0] === "travelfeed") {
+        appIcon = (
+          <img
+            width="25"
+            className="mr-1"
+            src="https://travelfeed.io/favicon.ico"
+          />
+        );
+      }
+      action = (
+        <Fragment>
+          {appIcon}
+          <IsCurated curation_score={this.props.curation_score} />
+        </Fragment>
       );
     }
     return (
@@ -43,7 +76,7 @@ class PostCard extends Component {
               </a>
             </Link>
           }
-          action={<Fragment>{appIcon}</Fragment>}
+          action={<Fragment>{action}</Fragment>}
           title={
             <Link
               as={`/@${this.props.author}`}
@@ -72,11 +105,13 @@ class PostCard extends Component {
         >
           <a>
             <CardActionArea>
-              <CardMedia
-                style={{ height: this.props.cardHeight }}
-                className="pt-2 text-right"
-                image={this.props.img_url}
-              />
+              {this.props.img_url !== undefined && (
+                <CardMedia
+                  style={{ height: this.props.cardHeight }}
+                  className="pt-2 text-right"
+                  image={this.props.img_url}
+                />
+              )}
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
                   {this.props.title}
@@ -101,6 +136,11 @@ class PostCard extends Component {
   }
 }
 
+PostCard.default = {
+  showBookmark: false,
+  isBookmark: false
+};
+
 PostCard.propTypes = {
   author: PropTypes.string,
   display_name: PropTypes.string,
@@ -108,13 +148,16 @@ PostCard.propTypes = {
   title: PropTypes.string,
   img_url: PropTypes.string,
   created_at: PropTypes.string,
-  readtime: PropTypes.string,
+  readtime: PropTypes.object,
   excerpt: PropTypes.string,
   votes: PropTypes.string,
   total_votes: PropTypes.number,
   tags: PropTypes.array,
   curation_score: PropTypes.number,
-  app: PropTypes.string
+  app: PropTypes.string,
+  showBookmark: PropTypes.bool,
+  isBookmark: PropTypes.bool,
+  cardHeight: PropTypes.number
 };
 
 export default PostCard;

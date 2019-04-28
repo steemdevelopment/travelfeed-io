@@ -1,3 +1,5 @@
+// Todo: Query if TOS acccepted, otherwise display mutation before redirecting
+
 import React, { Fragment, Component } from "react";
 import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";

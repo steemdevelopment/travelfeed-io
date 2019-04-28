@@ -8,7 +8,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import InputBase from "@material-ui/core/InputBase";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
-import TextField from "@material-ui/core/TextField";
 import { comment } from "../utils/actions";
 import { APP_VERSION, ROOTURL } from "../config";
 import { extractSWM } from "../utils/regex";
@@ -20,6 +19,8 @@ import Router from "next/router";
 import { withSnackbar } from "notistack";
 import getSlug from "speakingurl";
 import TagPicker from "./Editor/TagPicker";
+import { Mutation } from "react-apollo";
+import { SAVE_DRAFT } from "../helpers/graphql/drafts";
 
 class PostEditor extends Component {
   constructor(props) {
@@ -33,14 +34,15 @@ class PostEditor extends Component {
     this.handleTitleEditorChange = this.handleTitleEditorChange.bind(this);
     this.handleContentEditorChange = this.handleContentEditorChange.bind(this);
     this.handleTagsEditorChange = this.handleTagsEditorChange.bind(this);
+    this.handleIdChange = this.handleIdChange.bind(this);
   }
   newNotification(notification) {
     if (notification != undefined) {
-      let letiant = "success";
+      let variant = "success";
       if (notification.success === false) {
-        letiant = "error";
+        variant = "error";
       }
-      this.props.enqueueSnackbar(notification.message, { letiant });
+      this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
         this.setState({ success: true });
       }
@@ -55,6 +57,9 @@ class PostEditor extends Component {
   handleContentEditorChange(content) {
     this.setState({ content });
   }
+  handleIdChange(id) {
+    this.setState({ id: id });
+  }
   handleTagsEditorChange(tags) {
     this.setState({ tags: tags.target.value });
   }
@@ -65,6 +70,13 @@ class PostEditor extends Component {
         tags: this.props.edit.tags
       });
     }
+    let id = this.props.id;
+    if (this.props.id === undefined) {
+      id = getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
+    }
+    this.setState({
+      id: id
+    });
     require("tinymce/tinymce");
     require("tinymce/themes/mobile/theme");
     require("tinymce/themes/inlite/theme");
@@ -86,6 +98,7 @@ class PostEditor extends Component {
   };
   async success() {
     const sleep = milliseconds => {
+      // eslint-disable-next-line no-undef
       return new Promise(resolve => setTimeout(resolve, milliseconds));
     };
     await sleep(10000);
@@ -126,14 +139,6 @@ class PostEditor extends Component {
     }
     this.timer = setInterval(this.progress, 60);
     this.setState({ user: username, permlink: permlink });
-    console.log(
-      "prauthor" + parentAuthor,
-      "prnt" + parentPermlink,
-      "perml" + permlink,
-      "title" + title,
-      "jsonme" + JSON.stringify(metadata),
-      "auto" + this.props.type
-    );
     comment(
       parentAuthor,
       parentPermlink,
@@ -158,6 +163,9 @@ class PostEditor extends Component {
   }
   render() {
     let submittext = "Publish";
+    if (this.props.type == "comment") {
+      submittext = "Reply";
+    }
     if (this.props.mode == "edit") {
       submittext = "Edit";
     }
@@ -176,7 +184,7 @@ class PostEditor extends Component {
     if (this.state.completed != 0) {
       progress = (
         <CircularProgress
-          letiant="determinate"
+          variant="determinate"
           value={this.state.completed}
           className="p-1"
           size={35}
@@ -186,15 +194,16 @@ class PostEditor extends Component {
     }
     if (
       (wordCount > 250 && this.state.title != "" && this.state.tags != "") ||
-      this.props.type == "comment"
+      (this.props.type == "comment" && wordCount > 0)
     ) {
       publishBtn = (
         <Fragment>
           {progress}
           <Button
+            variant="contained"
             color="primary"
-            letiant="outlined"
             onClick={() => this.publishPost()}
+            // Todo: Call autosave every 20 seconds
           >
             {submittext}
           </Button>
@@ -202,9 +211,9 @@ class PostEditor extends Component {
       );
     } else {
       publishBtn = (
-        <Tooltip title="You need to write at least 250 words and set a title and at least one tag before you can publish your post">
+        <Tooltip title="You need to write at least 250 words and set a title before you can publish your post">
           <span>
-            <Button color="primary" letiant="outlined" disabled>
+            <Button variant="contained" color="primary" disabled>
               {submittext}
             </Button>
           </span>
@@ -217,50 +226,70 @@ class PostEditor extends Component {
       let url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
     } else if (this.state.mounted == true) {
+      const jsonMetadata = {};
+      jsonMetadata.tags = this.state.tags;
+      // Todo: If no id  is provided, make fresh id (constant!). Or work with own ID format (author-jsonstring) instead of mongo IDs?
       editor = (
-        <Editor
-          init={{
-            branding: false,
-            theme: "inlite",
-            inline: true,
-            external_plugins: {
-              map: "/tinymce/plugins/map/plugin.min.js"
-            },
-            skin_url: "/tinymce/skins/lightgray",
-            plugins:
-              "autolink link image textpattern hr map media table paste code autosave",
-            selection_toolbar:
-              "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote",
-            insert_toolbar:
-              "image media map quicktable hr | code | restoredraft",
-            browser_spellcheck: true,
-            extended_valid_elements:
-              "+iframe[src|width|height|name|align|class]",
-            mobile: {
-              theme: "mobile",
-              plugins:
-                "autolink link image textpattern hr map media table paste code autosave",
-              inline: false,
-              toolbar: [
-                "undo",
-                "bold",
-                "italic",
-                "styleselect",
-                "h2",
-                "quicklink",
-                "image"
-              ]
-            },
-            autosave_ask_before_unload: true,
-            autosave_interval: "20s",
-            autosave_retention: "120m",
-            relative_urls: false,
-            remove_script_host: false,
-            document_base_url: "https://travelfeed.io/"
+        <Mutation
+          mutation={SAVE_DRAFT}
+          variables={{
+            id: this.state.id,
+            title: this.state.title,
+            body: this.state.content,
+            json: JSON.stringify(jsonMetadata)
           }}
-          value={this.state.content}
-          onEditorChange={this.handleContentEditorChange}
-        />
+        >
+          {saveDraft => {
+            return (
+              <Fragment>
+                <Editor
+                  init={{
+                    branding: false,
+                    theme: "inlite",
+                    inline: true,
+                    external_plugins: {
+                      map: "/tinymce/plugins/map/plugin.min.js"
+                    },
+                    skin_url: "/tinymce/skins/lightgray",
+                    plugins:
+                      "autolink link image textpattern hr map media table paste code autosave",
+                    selection_toolbar:
+                      "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote",
+                    insert_toolbar:
+                      "image media map quicktable hr | code | restoredraft",
+                    browser_spellcheck: true,
+                    extended_valid_elements:
+                      "+iframe[src|width|height|name|align|class]",
+                    mobile: {
+                      theme: "mobile",
+                      plugins:
+                        "autolink link image textpattern hr map media table paste code autosave",
+                      inline: false,
+                      toolbar: [
+                        "undo",
+                        "bold",
+                        "italic",
+                        "styleselect",
+                        "h2",
+                        "quicklink",
+                        "image"
+                      ]
+                    },
+                    autosave_ask_before_unload: true,
+                    autosave_interval: "20s",
+                    autosave_retention: "120m",
+                    relative_urls: false,
+                    remove_script_host: false,
+                    document_base_url: "https://travelfeed.io/"
+                  }}
+                  value={this.state.content}
+                  onEditorChange={this.handleContentEditorChange}
+                  onClick={saveDraft}
+                />
+              </Fragment>
+            );
+          }}
+        </Mutation>
       );
     }
     if (this.props.type == "comment") {
@@ -324,12 +353,13 @@ PostEditor.defaultProps = {
 };
 
 PostEditor.propTypes = {
+  id: PropTypes.string,
   comment: PropTypes.object,
   initialValue: PropTypes.string,
   edit: PropTypes.object,
   mode: PropTypes.string,
   type: PropTypes.string,
-  enqueueSnackbar: PropTypes.function
+  enqueueSnackbar: PropTypes.func
 };
 
 export default withSnackbar(PostEditor);

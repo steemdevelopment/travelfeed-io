@@ -130,6 +130,7 @@ class PostCard extends Component {
           total_votes={this.props.total_votes}
           tags={this.props.tags}
           mode="gridcard"
+          depth={this.props.depth}
         />{" "}
       </Card>
     );
@@ -157,7 +158,8 @@ PostCard.propTypes = {
   app: PropTypes.string,
   showBookmark: PropTypes.bool,
   isBookmark: PropTypes.bool,
-  cardHeight: PropTypes.number
+  cardHeight: PropTypes.number,
+  depth: PropTypes.number
 };
 
 export default PostCard;

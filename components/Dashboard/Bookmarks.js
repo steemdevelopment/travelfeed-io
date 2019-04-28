@@ -116,6 +116,7 @@ class PostGrid extends Component {
                             tags={tags}
                             curation_score={post.curation_score}
                             app={post.app}
+                            depth={post.depth}
                             cardHeight={250}
                             isBookmark={true}
                           />

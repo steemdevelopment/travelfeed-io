@@ -158,6 +158,7 @@ class PostGrid extends Component {
                             curation_score={post.curation_score}
                             app={post.app}
                             cardHeight={this.props.cardHeight}
+                            depth={post.depth}
                           />
                         );
                       }

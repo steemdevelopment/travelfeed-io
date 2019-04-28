@@ -229,6 +229,7 @@ export class SinglePost extends Component {
                     votes={data.post.votes}
                     total_votes={data.post.total_votes}
                     tags={data.post.tags}
+                    depth={data.post.depth}
                     mode="post"
                   />
                 </Card>

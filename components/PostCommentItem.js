@@ -186,6 +186,7 @@ class PostpostItem extends Component {
             mode="comment"
             handleClick={this.handleClick.bind(this)}
             isEdit={this.state.isEdit}
+            depth={this.props.post.depth}
           />
         </Card>
         {children}

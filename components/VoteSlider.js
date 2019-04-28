@@ -18,9 +18,12 @@ import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
 import PostEditor from "./PostEditor";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Query } from "react-apollo";
+import { GET_VOTE_WEIGHTS } from "../helpers/graphql/settings";
 
 class VoteSlider extends Component {
   state = {
+    laoded: false,
     voteExpanded: false,
     commentExpanded: false,
     loading: 100,
@@ -266,32 +269,54 @@ class VoteSlider extends Component {
     }
     if (this.state.voteExpanded == true) {
       cardFooter = (
-        <CardActions>
-          <Tooltip title="Upvote now" placement="bottom">
-            <IconButton
-              aria-label="Upvote"
-              onClick={() =>
-                this.votePost(this.props.author, this.props.permlink)
-              }
-              color="primary"
-            >
-              <FlightIcon className="mr" />
-            </IconButton>
-          </Tooltip>
-          <div>{weightIndicator}</div>
-          <Slider
-            value={this.state.weight}
-            min={1}
-            max={10}
-            step={1}
-            onChange={this.setWeight}
-          />
-          <Tooltip title="Close" placement="bottom">
-            <IconButton onClick={() => this.collapseVoteBar()}>
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-        </CardActions>
+        <Query query={GET_VOTE_WEIGHTS}>
+          {({ data, loading, error }) => {
+            if (loading || error) {
+              return <Fragment />;
+            }
+            // set default vote weight based on preferences if not voted
+            if (data && !this.state.loaded && !this.state.hasVoted) {
+              this.props.depth === 0 &&
+                this.setState({
+                  loaded: true,
+                  weight: data.preferences.defaultVoteWeight
+                });
+              this.props.depth > 0 &&
+                this.setState({
+                  loaded: true,
+                  weight: data.preferences.defaultCommentsVoteWeight
+                });
+            }
+            return (
+              <CardActions>
+                <Tooltip title="Upvote now" placement="bottom">
+                  <IconButton
+                    aria-label="Upvote"
+                    onClick={() =>
+                      this.votePost(this.props.author, this.props.permlink)
+                    }
+                    color="primary"
+                  >
+                    <FlightIcon className="mr" />
+                  </IconButton>
+                </Tooltip>
+                <div>{weightIndicator}</div>
+                <Slider
+                  value={this.state.weight}
+                  min={1}
+                  max={10}
+                  step={1}
+                  onChange={this.setWeight}
+                />
+                <Tooltip title="Close" placement="bottom">
+                  <IconButton onClick={() => this.collapseVoteBar()}>
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+              </CardActions>
+            );
+          }}
+        </Query>
       );
     }
     if (this.state.commentExpanded == true) {
@@ -327,7 +352,8 @@ VoteSlider.propTypes = {
   mode: PropTypes.string,
   enqueueSnackbar: PropTypes.func,
   handleClick: PropTypes.func,
-  isEdit: PropTypes.bool
+  isEdit: PropTypes.bool,
+  depth: PropTypes.number.isRequired
 };
 
 export default withSnackbar(VoteSlider);

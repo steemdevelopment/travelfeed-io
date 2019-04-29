@@ -16,10 +16,11 @@ const styles = theme => ({
   },
   container: {
     flexGrow: 1,
-    position: "relative"
+    position: "relative",
+    zIndex: 2
   },
   paper: {
-    position: "absolute",
+    position: "relative",
     zIndex: 1,
     marginTop: theme.spacing.unit,
     left: 0,

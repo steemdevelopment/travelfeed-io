@@ -12,7 +12,7 @@ import SubHeader from "./Post/SubHeader";
 import { getUser } from "../utils/token";
 import PostEditor from "./PostEditor";
 import BookmarkIcon from "./Post/BookmarkIcon";
-import CuratorMenu from "./Post/CuratorMenu";
+import CuratorMenu from "./CuratorMenu/CommentMenu";
 
 class PostpostItem extends Component {
   state = {
@@ -156,7 +156,10 @@ class PostpostItem extends Component {
                   author={this.props.post.author}
                   permlink={this.props.post.permlink}
                 />
-                <CuratorMenu />
+                <CuratorMenu
+                  author={this.props.post.author}
+                  permlink={this.props.post.permlink}
+                />
               </Fragment>
             }
             title={

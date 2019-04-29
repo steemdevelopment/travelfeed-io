@@ -124,7 +124,7 @@ class PostCard extends Component {
               tags: this.props.post.tags,
               id: this.props.id
             }}
-            mode="edit"
+            mode={this.props.mode}
           />
           <span className="text-light pl-2">
             <Button

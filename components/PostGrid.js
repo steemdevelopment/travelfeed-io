@@ -114,6 +114,7 @@ class PostGrid extends Component {
                               parent_permlink: post.parent_permlink
                             }}
                             id={post.author + "-" + post.permlink}
+                            mode="edit"
                           />
                         );
                       } else if (this.props.poststyle === "comment") {

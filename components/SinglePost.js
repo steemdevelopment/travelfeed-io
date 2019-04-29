@@ -21,10 +21,11 @@ import PostComments from "./PostComments";
 import sanitize from "sanitize-html";
 import readingTime from "reading-time";
 import parseBody from "../helpers/parseBody";
-import CuratorMenu from "./Post/CuratorMenu";
+import CuratorMenu from "./CuratorMenu/PostMenu";
 import SubHeader from "./Post/SubHeader";
 import OrderBySelect from "./Post/OrderBySelect";
 import PostCommentItem from "./PostCommentItem";
+import { GET_SETTINGS } from "../helpers/graphql/settings";
 
 export class SinglePost extends Component {
   state = {
@@ -60,7 +61,7 @@ export class SinglePost extends Component {
               );
             }
             // 404 for error and if post does not exist
-            if (error || data.post === null || data.post.is_blacklisted) {
+            if (error || data.post === null) {
               return (
                 <Fragment>
                   <Header />
@@ -80,10 +81,7 @@ export class SinglePost extends Component {
             }
             // Don't render invalid posts but return Steempeak link
             // Todo: Display NSFW posts for logged in users based on prefererences
-            if (
-              (!data.post.is_travelfeed && data.post.depth === 0) ||
-              data.post.is_nsfw
-            ) {
+            if (!data.post.is_travelfeed && data.post.depth === 0) {
               const url =
                 "https://steempeak.com/@" +
                 data.post.author +
@@ -95,8 +93,39 @@ export class SinglePost extends Component {
             let card = <Fragment />;
             let head = <Fragment />;
             // Render post
-            const htmlBody = parseBody(data.post.body, {});
+            let htmlBody = parseBody(data.post.body, {});
+            if (data.post.is_blacklisted) {
+              htmlBody = "This post has been removed from TravelFeed.";
+            }
             const bodyText = { __html: htmlBody };
+            let bodycontent = (
+              <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
+            );
+            if (data.post.is_nsfw) {
+              bodycontent = (
+                <Query query={GET_SETTINGS}>
+                  {({ data, loading, error }) => {
+                    if (loading || error) {
+                      return <Fragment />;
+                    }
+                    if (data && !data.preferences.showNSFW) {
+                      return (
+                        <p>
+                          This post has been marked as NSFW. To view it, you
+                          need to adjust your preferences.
+                        </p>
+                      );
+                    }
+                    return (
+                      <div
+                        className="postcontent"
+                        dangerouslySetInnerHTML={bodyText}
+                      />
+                    );
+                  }}
+                </Query>
+              );
+            }
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
             if (data.post.depth > 0) {
@@ -165,7 +194,10 @@ export class SinglePost extends Component {
                           author={data.post.author}
                           permlink={data.post.permlink}
                         />
-                        <CuratorMenu />
+                        <CuratorMenu
+                          author={data.post.author}
+                          permlink={data.post.permlink}
+                        />
                       </Fragment>
                     }
                     title={
@@ -200,10 +232,7 @@ export class SinglePost extends Component {
                       {data.post.title}
                     </Typography>
                     <hr />
-                    <div
-                      className="postcontent"
-                      dangerouslySetInnerHTML={bodyText}
-                    />
+                    {bodycontent}
                     <hr />
                     <div className="fullwidth">
                       <PostMap
@@ -281,7 +310,7 @@ export class SinglePost extends Component {
             return (
               <Fragment>
                 {head}
-                <Header subheader={data.post.author} />
+                <Header subheader={data.post.display_name} />
                 <Grid
                   container
                   spacing={0}

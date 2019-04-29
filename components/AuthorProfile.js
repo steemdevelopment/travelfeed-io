@@ -14,6 +14,8 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faCouch } from "@fortawesome/free-solid-svg-icons";
+import CuratorMenu from "./CuratorMenu/BlogMenu";
+
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 export class PostAuthorProfile extends Component {
@@ -25,11 +27,7 @@ export class PostAuthorProfile extends Component {
             if (loading) {
               return <Fragment />;
             }
-            if (
-              error ||
-              data.profile === null ||
-              data.profile.isBlacklisted === true
-            ) {
+            if (error || data.profile === null) {
               return <NotFound statusCode={404} />;
             }
             const about =
@@ -173,6 +171,24 @@ export class PostAuthorProfile extends Component {
                               {data.profile.display_name}{" "}
                               <em>@{data.profile.name}</em>
                             </Typography>
+                            {data.profile.isBlacklisted && (
+                              <p className="h5 pt-1">
+                                <span className="badge badge-danger">
+                                  Blacklisted
+                                </span>
+                              </p>
+                            )}
+                            {data.profile.isCurator && (
+                              <p className="h5 pt-1">
+                                <span className="badge badge-success">
+                                  Curator
+                                </span>
+                              </p>
+                            )}
+                            <CuratorMenu
+                              author={data.profile.name}
+                              isCurator={data.profile.isCurator}
+                            />
                           </div>
                           <p className="p-2">{about}</p>
                           <p>{location}</p>

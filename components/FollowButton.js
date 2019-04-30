@@ -1,19 +1,24 @@
+// no ssr since current user is essential to determine follow status
+
 import React, { Fragment, Component } from "react";
-import { follow, unfollow, ignore } from "../utils/actions";
+import { follow, unfollow } from "../utils/actions";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
+import { Query } from "react-apollo";
+import { GET_IS_FOLLOWED } from "../helpers/graphql/profile";
 
 class followButton extends Component {
   state = {
-    isIgnored: false,
-    isFollowed: false
+    isFollowed: null,
+    isMounted: false,
+    isLoaded: false
   };
   componentDidMount() {
     this.setState({
-      isIgnored: this.props.isIgnored,
-      isFollowed: this.props.isFollowed
+      isFollowed: this.props.isFollowed,
+      isMounted: true
     });
   }
   newNotification(notification) {
@@ -38,97 +43,78 @@ class followButton extends Component {
       this.newNotification(result);
     });
     this.setState({
-      isFollowed: false,
-      isIgnored: false
-    });
-  };
-  ignoreAuthor = author => {
-    ignore(author).then(result => {
-      this.newNotification(result);
-    });
-    this.setState({
-      isIgnored: true
+      isFollowed: false
     });
   };
   render() {
+    if (this.state.isMounted === false) {
+      return <Fragment />;
+    }
     var btnclass = "m-1";
     if (this.props.style == "whiteborder") {
       btnclass = "m-1 border-light";
     }
-    var btn = (
-      <Link href={"/join"} passHref>
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
-          className={btnclass}
+    return (
+      <Fragment>
+        <Query
+          query={GET_IS_FOLLOWED}
+          variables={{ author: this.props.author }}
         >
-          Log in to follow
-        </Button>
-      </Link>
+          {({ data, loading, error }) => {
+            if (loading || error || data.profile === null) {
+              return <Fragment />;
+            }
+            if (data && data.profile && !this.state.isLoaded) {
+              this.setState({
+                isLoaded: true,
+                isFollowed: data.profile.isFollowed
+              });
+            }
+            if (this.state.isFollowed === true) {
+              return (
+                <Fragment>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    onClick={() => this.unfollowAuthor(this.props.author)}
+                    className={btnclass}
+                  >
+                    Unfollow
+                  </Button>
+                </Fragment>
+              );
+            } else if (this.state.isFollowed === false) {
+              return (
+                <Fragment>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    onClick={() => this.followAuthor(this.props.author)}
+                    className={btnclass}
+                  >
+                    Follow
+                  </Button>
+                </Fragment>
+              );
+            }
+            return (
+              <Link href={"/join"} passHref>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={btnclass}
+                >
+                  Log in to follow
+                </Button>
+              </Link>
+            );
+          }}
+        </Query>
+      </Fragment>
     );
-    if (this.state.isIgnored === true) {
-      btn = (
-        <Fragment>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.unfollowAuthor(this.props.author)}
-            className={btnclass}
-          >
-            Unblock
-          </Button>
-        </Fragment>
-      );
-    } else if (this.state.isFollowed === false) {
-      btn = (
-        <Fragment>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.unfollowAuthor(this.props.author)}
-            className={btnclass}
-          >
-            Unfollow
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.ignoreAuthor(this.props.author)}
-            className={btnclass}
-          >
-            Block
-          </Button>
-        </Fragment>
-      );
-    } else if (this.state.isFollowed === true) {
-      btn = (
-        <Fragment>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.followAuthor(this.props.author)}
-            className={btnclass}
-          >
-            Follow
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.ignoreAuthor(this.props.author)}
-            className={btnclass}
-          >
-            Block
-          </Button>
-        </Fragment>
-      );
-    }
-    return <Fragment>{btn}</Fragment>;
   }
 }
 

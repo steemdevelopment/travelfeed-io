@@ -25,7 +25,7 @@ class PostMenu extends Component {
     });
   }
   render() {
-    if (this.state.roles.indexOf("curator") !== -1) {
+    if (this.state.roles && this.state.roles.indexOf("curator") !== -1) {
       return (
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (

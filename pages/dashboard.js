@@ -50,7 +50,7 @@ const styles = theme => ({
     display: "flex"
   },
   appBar: {
-    zIndex: theme.zIndex.drawer + 1,
+    zIndex: 201,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -103,7 +103,7 @@ const styles = theme => ({
     ...theme.mixins.toolbar
   },
   content: {
-    flexGrow: 1,
+    flexGrow: 1
   }
 });
 class Dashboard extends Component {
@@ -415,7 +415,7 @@ class Dashboard extends Component {
         }
       }
     } else if (this.props.page == "notifications") {
-      content = <Notifications />;
+      content = <Notifications user={this.state.user} />;
       {
         if (this.state.active != "notifications") {
           this.setActive("notifications");

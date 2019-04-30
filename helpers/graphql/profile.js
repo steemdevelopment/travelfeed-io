@@ -7,8 +7,14 @@ export const GET_SHORT_PROFILE = gql`
       display_name
       about
       isCurator
+    }
+  }
+`;
+
+export const GET_IS_FOLLOWED = gql`
+  query profile($author: String!) {
+    profile(username: $author) {
       isFollowed
-      isIgnored
     }
   }
 `;
@@ -32,8 +38,6 @@ export const GET_PROFILE = gql`
       followers
       following
       isBlacklisted
-      isFollowed
-      isIgnored
     }
   }
 `;

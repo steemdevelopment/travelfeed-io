@@ -85,7 +85,6 @@ export default class extends Document {
             integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
             crossOrigin="anonymous"
           />
-          <link rel="stylesheet" href="/style.css" />
         </Head>
         <body {...this.helmetBodyAttrComponents}>
           <Main />

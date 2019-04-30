@@ -1,8 +1,5 @@
-// Todo: Image upload. https://github.com/cloudinary/cloudinary_tinymce
-
-/* eslint-disable react/no-unescaped-entities */
+// Todo: Image upload.
 import React, { Fragment, Component } from "react";
-import { Editor } from "@tinymce/tinymce-react";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import InputBase from "@material-ui/core/InputBase";
@@ -21,21 +18,20 @@ import getSlug from "speakingurl";
 import TagPicker from "./Editor/TagPicker";
 import { Mutation } from "react-apollo";
 import { SAVE_DRAFT } from "../helpers/graphql/drafts";
+import TextField from "@material-ui/core/TextField";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import Editor from "rich-markdown-editor";
+import { debounce } from "lodash";
 
 class PostEditor extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: "",
-      content: this.props.initialValue,
-      tags: ["travelfeed"],
-      completed: 0
-    };
-    this.handleTitleEditorChange = this.handleTitleEditorChange.bind(this);
-    this.handleContentEditorChange = this.handleContentEditorChange.bind(this);
-    this.handleTagsEditorChange = this.handleTagsEditorChange.bind(this);
-    this.handleIdChange = this.handleIdChange.bind(this);
-  }
+  state = {
+    title: "",
+    content: "",
+    tags: ["travelfeed"],
+    completed: 0
+  };
   newNotification(notification) {
     if (notification != undefined) {
       let variant = "success";
@@ -54,19 +50,27 @@ class PostEditor extends Component {
   handleTitleEditorChange(title) {
     this.setState({ title: title.target.value });
   }
-  handleContentEditorChange(content) {
-    this.setState({ content });
-  }
-  handleIdChange(id) {
-    this.setState({ id: id });
-  }
+  // onEditorChange = content => {
+  //   this.setState({ content });
+  //   console.log(content)
+  // };
+  handleEditorChange = debounce(value => {
+    console.log(value())
+    this.setState({ content: value() });
+  }, 250);
+
   handleTagsEditorChange(tags) {
     this.setState({ tags: tags.target.value });
+  }
+  componentWillUnmount() {
+    // Stop saving drafts
+    clearInterval(this.interval);
   }
   componentDidMount() {
     if (this.props.mode == "edit") {
       this.setState({
         title: this.props.edit.title,
+        content: this.props.edit.content,
         tags: this.props.edit.tags
       });
     }
@@ -75,24 +79,14 @@ class PostEditor extends Component {
       id = getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
     }
     this.setState({
-      id: id
+      id: id,
+      mounted: true
     });
-    require("tinymce/tinymce");
-    require("tinymce/themes/mobile/theme");
-    require("tinymce/themes/inlite/theme");
-    require("tinymce/plugins/autolink");
-    require("tinymce/plugins/link");
-    require("tinymce/plugins/image");
-    require("tinymce/plugins/textpattern");
-    require("tinymce/plugins/hr");
-    require("tinymce/plugins/media");
-    require("tinymce/plugins/table");
-    require("tinymce/plugins/paste");
-    require("tinymce/plugins/code");
-    require("tinymce/plugins/autosave");
-    this.setState({ mounted: true });
+    // Save draft every 20 seconds
+    this.interval = setInterval(() => this.saveDraft(), 20000);
   }
   progress = () => {
+    // Publish animation
     const { completed } = this.state;
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
@@ -104,6 +98,16 @@ class PostEditor extends Component {
     await sleep(10000);
     clearInterval(this.timer);
     this.setState({ completed: 0 });
+  }
+  getLocation(bodyText) {
+    let coordinates = extractSWM(bodyText);
+    if (coordinates != null && coordinates.length > 2) {
+      const lat = coordinates[1];
+      const long = coordinates[2];
+      return [lat, long];
+    } else {
+      return "";
+    }
   }
   publishPost() {
     let parentAuthor = "";
@@ -117,29 +121,29 @@ class PostEditor extends Component {
     metadata.tags = this.state.tags;
     metadata.app = APP_VERSION;
     metadata.community = "travelfeed";
-    if (imageList != null) {
+    if (imageList !== null) {
       metadata.image = imageList;
     }
-    if (location != "") {
+    if (location !== "") {
       metadata.coordinates = location;
     }
     // todo: Parse body for images and links and include them in the json_metadata
     let username = getUser();
     if (this.props.type == "comment") {
       let commenttime = getSlug(new Date().toJSON()).replace(/-/g, "");
-      permlink = `re-${this.props.edit.parent_permlink}-${commenttime}`;
-      parentAuthor = this.props.edit.parent_author;
-      parentPermlink = this.props.edit.parent_permlink;
+      permlink = `re-${this.props.parent_permlink}-${commenttime}`;
+      parentAuthor = this.props.parent_author;
+      parentPermlink = this.props.parent_permlink;
     }
     if (this.props.mode == "edit") {
       permlink = this.props.edit.permlink;
     }
-    if (this.props.edit == false) {
+    if (this.props.mode !== "edit" && this.props.type !== "comment") {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
     }
     this.timer = setInterval(this.progress, 60);
     this.setState({ user: username, permlink: permlink });
-    comment(
+    console.log(
       parentAuthor,
       parentPermlink,
       permlink,
@@ -147,19 +151,18 @@ class PostEditor extends Component {
       body,
       metadata,
       this.props.type
-    ).then(result => {
-      this.newNotification(result);
-    });
-  }
-  getLocation(bodyText) {
-    let coordinates = extractSWM(bodyText);
-    if (coordinates != null && coordinates.length > 2) {
-      const lat = coordinates[1];
-      const long = coordinates[2];
-      return [lat, long];
-    } else {
-      return "";
-    }
+    );
+    // comment(
+    // parentAuthor,
+    // parentPermlink,
+    // permlink,
+    // title,
+    // body,
+    // metadata,
+    // this.props.type
+    // ).then(result => {
+    //   this.newNotification(result);
+    // });
   }
   render() {
     let submittext = "Publish";
@@ -225,78 +228,18 @@ class PostEditor extends Component {
       this.success();
       let url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
-    } else if (this.state.mounted == true) {
-      const jsonMetadata = {};
-      jsonMetadata.tags = this.state.tags;
-      // Todo: If no id  is provided, make fresh id (constant!). Or work with own ID format (author-jsonstring) instead of mongo IDs?
-      editor = (
-        <Mutation
-          mutation={SAVE_DRAFT}
-          variables={{
-            id: this.state.id,
-            title: this.state.title,
-            body: this.state.content,
-            json: JSON.stringify(jsonMetadata)
-          }}
-        >
-          {saveDraft => {
-            return (
-              <Fragment>
-                <Editor
-                  init={{
-                    branding: false,
-                    theme: "inlite",
-                    inline: true,
-                    external_plugins: {
-                      map: "/tinymce/plugins/map/plugin.min.js"
-                    },
-                    skin_url: "/tinymce/skins/lightgray",
-                    plugins:
-                      "autolink link image textpattern hr map media table paste code autosave",
-                    selection_toolbar:
-                      "bold italic | alignleft aligncenter | quicklink h2 h3 blockquote",
-                    insert_toolbar:
-                      "image media map quicktable hr | code | restoredraft",
-                    browser_spellcheck: true,
-                    extended_valid_elements:
-                      "+iframe[src|width|height|name|align|class]",
-                    mobile: {
-                      theme: "mobile",
-                      plugins:
-                        "autolink link image textpattern hr map media table paste code autosave",
-                      inline: false,
-                      toolbar: [
-                        "undo",
-                        "bold",
-                        "italic",
-                        "styleselect",
-                        "h2",
-                        "quicklink",
-                        "image"
-                      ]
-                    },
-                    autosave_ask_before_unload: true,
-                    autosave_interval: "20s",
-                    autosave_retention: "120m",
-                    relative_urls: false,
-                    remove_script_host: false,
-                    document_base_url: "https://travelfeed.io/"
-                  }}
-                  value={this.state.content}
-                  onEditorChange={this.handleContentEditorChange}
-                  onClick={saveDraft}
-                />
-              </Fragment>
-            );
-          }}
-        </Mutation>
-      );
     }
+
+    // else if (this.state.mounted == true) {
+    //   // Todo: If no id  is provided, make fresh id (constant!). Or work with own ID format (author-jsonstring) instead of mongo IDs?
+    //   editor = (
+    //   );
+    // }
     if (this.props.type == "comment") {
       return (
         <Fragment>
           <div className="w-100">
-            <div className="postcontent border p-3">{editor}</div>
+            <div className="postcontent border p-3" />
           </div>
           <div className="text-right pt-1">{publishBtn}</div>
         </Fragment>
@@ -304,44 +247,108 @@ class PostEditor extends Component {
     }
     return (
       <Fragment>
-        <InputBase
-          autoFocus={true}
-          inputProps={{
-            maxLength: 100
-          }}
-          multiline={true}
-          className="font-weight-bold inputtitle"
-          placeholder="Title"
-          value={this.state.title}
-          onChange={this.handleTitleEditorChange}
-          fullWidth
-        />
-        <div className="postcontent posteditor">{editor}</div>
-        <div />
-        <hr />
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <TagPicker
-                initialValue={this.props.edit.tags}
-                onChange={this.handleTagClick.bind(this)}
-              />
+        <div className="row p-3">
+          <div className="col-12 p-1">
+            <Card>
+              <CardContent>
+                <InputBase
+                  autoFocus={true}
+                  inputProps={{
+                    maxLength: 100
+                  }}
+                  multiline={true}
+                  className="font-weight-bold inputtitle"
+                  placeholder="Title"
+                  value={this.state.title}
+                  onChange={this.handleTitleEditorChange.bind(this)}
+                  fullWidth
+                />
+              </CardContent>
+            </Card>
             </div>
-            <div className="col-md-12 pt-2">
-              <p>Location</p>
-              {locationfield}
-            </div>
-            <div className="col-6 p-0 pt-2">
-              <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                {wordCount + " words"}
-              </span>
-              <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                {readTime}
-              </span>
-            </div>
-            <div className="col-6 text-right p-0">{publishBtn}</div>
+            <div className="col-xl-9 col-md-12 p-1">
+            <Card>
+              <CardContent>
+                <CardHeader
+                  action={
+                    <Fragment>
+                      <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
+                        {wordCount + " words"}
+                      </span>
+                      <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
+                        {readTime}
+                      </span>
+                    </Fragment>
+                  }
+                />
+                <Mutation
+                  mutation={SAVE_DRAFT}
+                  variables={{
+                    id: this.state.id,
+                    title: this.state.title,
+                    body: JSON.stringify(this.state.content),
+                    json: JSON.stringify({ tags: this.state.tags })
+                  }}
+                >
+                  {saveDraft => {
+                    this.saveDraft = saveDraft;
+                    return (
+                        <Editor
+                        placeholder="Write something epic!"
+                        toc={true}
+                          // defaultValue={this.state.content}
+                          // onChange={this.onEditorChange.bind(this)}
+                          onSave={saveDraft}
+                          onChange={this.handleEditorChange}                         
+                          uploadImage={async file => {
+                            // const result = await s3.upload(file);
+                            // return result.url;
+                            console.log(file)
+                            return;
+                          }}
+                        />
+                    );
+                  }}
+                </Mutation>
+              </CardContent>
+            </Card>
           </div>
-        </div>
+          <div className="col-xl-3 col-md-12">
+          <div className="row">
+          <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+              <Card>
+                <CardContent>
+                  <TagPicker
+                    initialValue={this.props.edit.tags}
+                    onChange={this.handleTagClick.bind(this)}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+            <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+              <Card>
+                <CardContent>
+                  <TextField label="Featured image" margin="normal">
+                    ))}
+                  </TextField>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+              <Card>
+                <CardContent>
+                  <p>Location</p>
+                  {locationfield}
+                </CardContent>
+              </Card>
+            </div>
+            <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+              <Card>
+                <CardContent>{publishBtn}</CardContent>
+              </Card>
+            </div>
+          </div>
+        </div></div>
       </Fragment>
     );
   }
@@ -349,7 +356,7 @@ class PostEditor extends Component {
 
 PostEditor.defaultProps = {
   initialValue: "",
-  edit: false
+  edit: {}
 };
 
 PostEditor.propTypes = {

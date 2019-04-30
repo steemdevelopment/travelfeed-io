@@ -74,6 +74,7 @@ const styles = theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    zIndex: 200, //smaller zIndex than default in order to display editor tooltips over drawer
     whiteSpace: "nowrap"
   },
   drawerOpen: {
@@ -103,7 +104,6 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
   }
 });
 class Dashboard extends Component {

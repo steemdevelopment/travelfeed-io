@@ -4,42 +4,38 @@ import PostGrid from "../components/PostGrid";
 import Header from "../components/Header";
 import Head from "../components/Head";
 import Typography from "@material-ui/core/Typography";
-import PostOrderBySelect from "../components/Grid/PostOrderBySelect";
+import TagsOrderBySelect from "../components/Grid/TagsOrderBySelect";
 
 class Tag extends Component {
   static async getInitialProps(props) {
     let { orderby } = props.query;
     const { tags } = props.query;
     let min_curation_score = 0;
-    let title = tags;
-    let value = 0;
-    if (orderby === "created_at") {
-      value = 0;
-      min_curation_score = 0;
-    } else if (orderby === "sc_hot") {
-      value = 1;
-      min_curation_score = 0;
-    } else if (orderby === "featured") {
-      value = 2;
-      orderby = "created_at";
-      min_curation_score = 10000;
-    } else if (orderby === "total_votes") {
-      //favourites
-      title = "Favourites";
-      value = 3;
+    let selection = 0;
+    let title = "Taking Off";
+    if (orderby === "featured") {
+      selection = 1;
+      orderby = "created_at,curation_score";
       min_curation_score = 5000;
+      title = "Featured";
+    } else if (orderby === "total_votes") {
+      selection = 2;
+      min_curation_score = 5000;
+      title = "Taking Off";
     }
     return {
       orderby,
       tags,
       min_curation_score: min_curation_score,
-      title: title,
-      value: value
+      selection: selection,
+      title: title
     };
   }
   state = {
-    min_curation_score: 0,
-    orderby: "created_at"
+    selection: -1,
+    title: null,
+    orderby: null,
+    min_curation_score: null
   };
   handleClick(op) {
     this.setState(op);
@@ -47,12 +43,10 @@ class Tag extends Component {
   }
   componentDidMount() {
     this.setState({
-      min_curation_score: this.props.min_curation_score,
-      orderby: this.props.orderby
+      selection: this.props.selection
     });
   }
   render() {
-    // if (typeof this.props.args.stream.notfound !== "undefined") {
     return (
       <Fragment>
         <Head
@@ -72,20 +66,21 @@ class Tag extends Component {
         >
           {this.props.tags.charAt(0).toUpperCase() + this.props.tags.slice(1)}
         </Typography>
-        <PostOrderBySelect
+        <TagsOrderBySelect
           handleClick={this.handleClick.bind(this)}
-          selection={this.state}
-          value={this.props.value}
+          selection={this.state.selection}
         />
         <PostGrid
+          dir="x"
           query={{
             tags: this.props.tags,
-            orderby: this.state.orderby,
-            min_curation_score: this.state.min_curation_score,
-            limit: 12
+            orderby: this.state.orderby || this.props.orderby,
+            min_curation_score:
+              this.state.min_curation_score || this.props.min_curation_score,
+            limit: 8
           }}
           grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
-          cardHeight={140}
+          cardHeight={170}
         />
       </Fragment>
     );
@@ -97,7 +92,7 @@ Tag.propTypes = {
   title: PropTypes.string,
   orderby: PropTypes.string,
   min_curation_score: PropTypes.number,
-  value: PropTypes.number
+  selection: PropTypes.number
 };
 
 export default Tag;

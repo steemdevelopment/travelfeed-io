@@ -10,7 +10,7 @@ import VoteSlider from "./VoteSlider";
 import PostComments from "./PostComments";
 import SubHeader from "./Post/SubHeader";
 import { getUser } from "../utils/token";
-import PostEditor from "./PostEditor";
+import CommentEditor from "./Editor/CommentEditor";
 import BookmarkIcon from "./Post/BookmarkIcon";
 import CuratorMenu from "./CuratorMenu/CommentMenu";
 
@@ -110,7 +110,7 @@ class PostpostItem extends Component {
     );
     if (this.state.showEditor) {
       cardcontent = (
-        <PostEditor
+        <CommentEditor
           initialValue={htmlBody}
           edit={{
             parent_author: this.props.post.parent_author,
@@ -121,7 +121,6 @@ class PostpostItem extends Component {
             tags: ["travelfeed"]
           }}
           mode="edit"
-          type="comment"
         />
       );
     }

@@ -94,27 +94,29 @@ export class SinglePost extends Component {
             let head = <Fragment />;
             // Render post
             let htmlBody = parseBody(data.post.body, {});
-            if (data.post.is_blacklisted) {
-              htmlBody = "This post has been removed from TravelFeed.";
-            }
             const bodyText = { __html: htmlBody };
             let bodycontent = (
               <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
             );
-            if (data.post.is_nsfw) {
+            let isBacklisted = data.post.is_blacklisted;
+            let isNSFW = data.post.is_nsfw;
+            if (data.post.is_blacklisted || data.post.is_nsfw) {
               bodycontent = (
                 <Query query={GET_SETTINGS}>
                   {({ data, loading, error }) => {
                     if (loading || error) {
                       return <Fragment />;
                     }
-                    if (data && !data.preferences.showNSFW) {
+                    if (isNSFW && data && !data.preferences.showNSFW) {
                       return (
                         <p>
                           This post has been marked as NSFW. To view it, you
                           need to adjust your preferences.
                         </p>
                       );
+                    }
+                    if (isBacklisted && data.preferences.useTfBlacklist) {
+                      return <p>This post has been removed from TravelFeed.</p>;
                     }
                     return (
                       <div

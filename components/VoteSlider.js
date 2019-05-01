@@ -30,7 +30,7 @@ class VoteSlider extends Component {
     weight: 5,
     hasVoted: false,
     user: null,
-    totalmiles: 0
+    totalmiles: null
   };
   newNotification(notification) {
     if (notification != undefined) {
@@ -222,7 +222,7 @@ class VoteSlider extends Component {
               <div className={rowitem1}>
                 {voteButton}
                 <span className="text-muted font-weight-bold">
-                  {this.state.totalmiles}
+                  {this.state.totalmiles || this.props.total_votes}
                   {commentButton}
                   {editButton}
                   {linkButton}
@@ -232,8 +232,8 @@ class VoteSlider extends Component {
                 {this.props.tags.map(tag => {
                   return (
                     <Link
-                      as={`/created/${tag}`}
-                      href={`/tag?orderby=created_at&tags=${tag}`}
+                      as={`/favorites/${tag}`}
+                      href={`/tag?orderby=favorites&tags=${tag}`}
                       key={tag}
                       passHref
                     >

@@ -13,6 +13,7 @@ export const commentQuery = gql`
       orderby: $orderby
       orderdir: $orderdir
       offset: $offset
+      is_comment: true
     ) {
       post_id
       author

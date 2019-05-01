@@ -53,6 +53,11 @@ class PostAuthorProfile extends Component {
                         <span className="text-muted">@{data.profile.name}</span>
                       </a>
                     </Link>
+                    {data.profile.isCurator && (
+                      <p className="h5 pt-1">
+                        <span className="badge badge-success">Curator</span>
+                      </p>
+                    )}
                   </div>
                   <p className="p-2">{data.profile.about}</p>
                 </Fragment>

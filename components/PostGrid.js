@@ -44,7 +44,7 @@ class PostGrid extends Component {
                 loadMore={() =>
                   fetchMore({
                     variables: {
-                      offset: data.posts.length
+                      offset: data.posts ? data.posts.length : 0
                     },
                     updateQuery: (prev, { fetchMoreResult }) => {
                       if (fetchMoreResult.posts.length === 0) {
@@ -67,14 +67,15 @@ class PostGrid extends Component {
                   </Grid>
                 }
               >
+                {" "}
                 <Grid
                   container
                   spacing={0}
                   alignItems="center"
                   justify="center"
-                  className="p-3"
                 >
-                  {data.posts.length > 0 &&
+                  {data.posts &&
+                    data.posts.length > 0 &&
                     data.posts.map(post => {
                       const imgHeight = this.props.cardHeight * 3;
                       const htmlBody = parseBody(post.body, {});

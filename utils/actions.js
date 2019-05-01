@@ -121,7 +121,7 @@ export const customJson = async payload => {
       }
       return {
         success: true,
-        message: "Custom Json was successfully submitted"
+        message: "Curation action was broadcasted sucessfully"
       };
     }
   );

@@ -25,6 +25,9 @@ class PostGrid extends Component {
     return (
       <Fragment>
         <Head title="Drafts" />
+        <div className="text-center pt-4">
+          <h1>Drafts</h1>
+        </div>
         <Query query={GET_DRAFTS} variables={{ limit: 10 }}>
           {({ data, loading, error, fetchMore }) => {
             if (loading) {

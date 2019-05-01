@@ -5,6 +5,7 @@ export const GET_LOGIN_TOKEN = gql`
     login(sc_token: $sc_token) {
       name
       jwt
+      hasAcceptedTos
     }
   }
 `;

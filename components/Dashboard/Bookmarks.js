@@ -24,6 +24,9 @@ class PostGrid extends Component {
     return (
       <Fragment>
         <Head title="Bookmarks" />
+        <div className="text-center pt-4">
+          <h1>Bookmarks</h1>
+        </div>
         <Query query={GET_BOOKMARKS} variables={{ limit: 10 }}>
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
@@ -36,7 +39,11 @@ class PostGrid extends Component {
               );
             }
             if (error || data.bookmarks === null) {
-              return <Fragment />;
+              return (
+                <div className="text-center">
+                  You don't have any bookmarks yet.
+                </div>
+              );
             }
             return (
               <InfiniteScroll

@@ -55,7 +55,7 @@ class PostEditor extends Component {
   //   console.log(content)
   // };
   handleEditorChange = debounce(value => {
-    console.log(value())
+    console.log(value());
     this.setState({ content: value() });
   }, 250);
 
@@ -265,8 +265,8 @@ class PostEditor extends Component {
                 />
               </CardContent>
             </Card>
-            </div>
-            <div className="col-xl-9 col-md-12 p-1">
+          </div>
+          <div className="col-xl-9 col-md-12 p-1">
             <Card>
               <CardContent>
                 <CardHeader
@@ -293,20 +293,20 @@ class PostEditor extends Component {
                   {saveDraft => {
                     this.saveDraft = saveDraft;
                     return (
-                        <Editor
+                      <Editor
                         placeholder="Write something epic!"
                         toc={true}
-                          // defaultValue={this.state.content}
-                          // onChange={this.onEditorChange.bind(this)}
-                          onSave={saveDraft}
-                          onChange={this.handleEditorChange}                         
-                          uploadImage={async file => {
-                            // const result = await s3.upload(file);
-                            // return result.url;
-                            console.log(file)
-                            return;
-                          }}
-                        />
+                        // defaultValue={this.state.content}
+                        // onChange={this.onEditorChange.bind(this)}
+                        onSave={saveDraft}
+                        onChange={this.handleEditorChange}
+                        uploadImage={async file => {
+                          // const result = await s3.upload(file);
+                          // return result.url;
+                          console.log(file);
+                          return;
+                        }}
+                      />
                     );
                   }}
                 </Mutation>
@@ -314,41 +314,42 @@ class PostEditor extends Component {
             </Card>
           </div>
           <div className="col-xl-3 col-md-12">
-          <div className="row">
-          <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-              <Card>
-                <CardContent>
-                  <TagPicker
-                    initialValue={this.props.edit.tags}
-                    onChange={this.handleTagClick.bind(this)}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-              <Card>
-                <CardContent>
-                  <TextField label="Featured image" margin="normal">
-                    ))}
-                  </TextField>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-              <Card>
-                <CardContent>
-                  <p>Location</p>
-                  {locationfield}
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-              <Card>
-                <CardContent>{publishBtn}</CardContent>
-              </Card>
+            <div className="row">
+              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>
+                    <TagPicker
+                      initialValue={this.props.edit.tags}
+                      onChange={this.handleTagClick.bind(this)}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>
+                    <TextField label="Featured image" margin="normal">
+                      ))}
+                    </TextField>
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>
+                    <p>Location</p>
+                    {locationfield}
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>{publishBtn}</CardContent>
+                </Card>
+              </div>
             </div>
           </div>
-        </div></div>
+        </div>
       </Fragment>
     );
   }

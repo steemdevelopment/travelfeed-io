@@ -8,11 +8,11 @@ export const GET_POSTS = gql`
     $suburb: String
     $location_box: [Float]
     $author: String
+    $exclude_authors: [String]
     $feed: String
     $tags: [String]
     $parent_id: Int
     $parent_author: String
-    $is_comment: Boolean
     $min_curation_score: Int
     $min_total_votes: Int
     $include_nsfw: Boolean
@@ -29,11 +29,11 @@ export const GET_POSTS = gql`
       suburb: $suburb
       location_box: $location_box
       author: $author
+      exclude_authors: $exclude_authors
       feed: $feed
       tags: $tags
       parent_id: $parent_id
       parent_author: $parent_author
-      is_comment: $is_comment
       min_curation_score: $min_curation_score
       min_total_votes: $min_total_votes
       include_nsfw: $include_nsfw
@@ -59,6 +59,21 @@ export const GET_POSTS = gql`
       parent_permlink
       root_title
       depth
+    }
+  }
+`;
+
+export const GET_NOTIFICATIONS = gql`
+  query posts($author: String, $min_curation_score: Int, $limit: Int) {
+    posts(
+      author: $author
+      min_curation_score: $min_curation_score
+      limit: $limit
+    ) {
+      author
+      permlink
+      title
+      curation_score
     }
   }
 `;

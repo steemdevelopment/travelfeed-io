@@ -6,6 +6,7 @@ import Tab from "@material-ui/core/Tab";
 import FeaturedIcon from "@material-ui/icons/Star";
 import HotIcon from "@material-ui/icons/FlightTakeoff";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import Link from "next/link";
 
 class IconLabelTabs extends React.Component {
   render() {
@@ -19,48 +20,27 @@ class IconLabelTabs extends React.Component {
           textColor="secondary"
           centered
         >
-          <Tab
-            icon={<HotIcon />}
-            label="TAKING OFF"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "sc_hot",
-                min_curation_score: 0,
-                url: "hot",
-                selection: 0,
-                title: "Taking Off",
-                hasChanged: true
-              })
-            }
-          />
-          <Tab
-            icon={<FeaturedIcon />}
-            label="FEATURED"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "sc_trend",
-                min_curation_score: 5000,
-                url: "featured",
-                selection: 1,
-                title: "Featured",
-                hasChanged: true
-              })
-            }
-          />
-          <Tab
-            icon={<FavoriteIcon />}
-            label="FAVORITES"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "total_votes",
-                min_curation_score: 10000,
-                url: "favorites",
-                selection: 2,
-                title: "Favorites",
-                hasChanged: true
-              })
-            }
-          />
+          <Link
+            as={`/hot/${this.props.tags}`}
+            href={`/tag?tags=${this.props.tags}&orderby=sc_hot`}
+            passHref
+          >
+            <Tab icon={<HotIcon />} label="TAKING OFF" />
+          </Link>
+          <Link
+            as={`/featured/${this.props.tags}`}
+            href={`/tag?tags=${this.props.tags}&orderby=featured`}
+            passHref
+          >
+            <Tab icon={<FeaturedIcon />} label="FEATURED" />
+          </Link>
+          <Link
+            as={`/favorites/${this.props.tags}`}
+            href={`/tag?tags=${this.props.tags}&orderby=total_votes`}
+            passHref
+          >
+            <Tab icon={<FavoriteIcon />} label="FAVORITES" />
+          </Link>
         </Tabs>
       </Paper>
     );
@@ -69,7 +49,7 @@ class IconLabelTabs extends React.Component {
 
 IconLabelTabs.propTypes = {
   selection: PropTypes.number,
-  handleClick: PropTypes.func
+  tags: PropTypes.string
 };
 
 export default IconLabelTabs;

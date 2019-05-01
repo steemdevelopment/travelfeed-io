@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +8,7 @@ import FeaturedIcon from "@material-ui/icons/Star";
 import HotIcon from "@material-ui/icons/FlightTakeoff";
 import FeedIcon from "@material-ui/icons/Favorite";
 import DiscoverIcon from "@material-ui/icons/Explore";
+import Link from "next/link";
 
 class IconLabelTabs extends React.Component {
   render() {
@@ -21,77 +22,22 @@ class IconLabelTabs extends React.Component {
           textColor="secondary"
           centered
         >
-          <Tab
-            icon={<NewIcon />}
-            label="NEW"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "created_at",
-                min_curation_score: 0,
-                url: "created",
-                selection: 0,
-                isFeed: false,
-                hasChanged: true
-              })
-            }
-          />
-          <Tab
-            icon={<HotIcon />}
-            label="TAKING OFF"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "sc_hot",
-                min_curation_score: 0,
-                url: "hot",
-                selection: 1,
-                isFeed: false,
-                hasChanged: true
-              })
-            }
-          />
-          <Tab
-            icon={<DiscoverIcon />}
-            label="DISCOVER"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "random",
-                min_curation_score: 10000,
-                url: "discover",
-                selection: 2,
-                isFeed: false,
-                hasChanged: true
-              })
-            }
-          />
-          <Tab
-            icon={<FeaturedIcon />}
-            label="FEATURED"
-            onClick={() =>
-              this.props.handleClick({
-                orderby: "created_at",
-                min_curation_score: 10000,
-                url: "featured",
-                selection: 3,
-                isFeed: false,
-                hasChanged: true
-              })
-            }
-          />
+          <Link as={`/created`} href={`/?orderby=created_at`} passHref>
+            <Tab icon={<NewIcon />} label="NEW" />
+          </Link>
+          <Link as={`/hot`} href={`/?orderby=sc_hot`} passHref>
+            <Tab icon={<HotIcon />} label="TAKING OFF" />
+          </Link>
+          <Link as={`/discover`} href={`/?orderby=random`} passHref>
+            <Tab icon={<DiscoverIcon />} label="DISCOVER" />
+          </Link>
+          <Link as={`/featured`} href={`/?orderby=featured`} passHref>
+            <Tab icon={<FeaturedIcon />} label="FEATURED" />
+          </Link>
           {this.props.showFeed && (
-            <Tab
-              icon={<FeedIcon />}
-              label="FEED"
-              onClick={() =>
-                this.props.handleClick({
-                  orderby: "created_at",
-                  min_curation_score: 0,
-                  url: "feed",
-                  selection: 4,
-                  isFeed: true,
-                  hasChanged: true
-                })
-              }
-            />
+            <Link as={`/feed`} href={`/?orderby=feed`} passHref>
+              <Tab icon={<FeedIcon />} label="FEED" />
+            </Link>
           )}
         </Tabs>
       </Paper>
@@ -100,108 +46,8 @@ class IconLabelTabs extends React.Component {
 }
 
 IconLabelTabs.propTypes = {
-  showFeed: PropTypes.bool,
-  handleClick: PropTypes.func
+  showFeed: PropTypes.string,
+  selection: PropTypes.number
 };
 
 export default IconLabelTabs;
-
-// class IconLabelTabs extends React.Component {
-//   state = {
-//     value: 2
-//   };
-//   handleChange = (event, value) => {
-//     this.setState({ value });
-//   };
-//   //   componentDidMount() {
-//   //     //   set to feed if logged in
-//   //     this.setState({ value: 3 });
-//   //   }
-//   getInitialState() {}
-//   render() {
-//     let feed = <Fragment />;
-//     if (this.props.showFeed !== undefined) {
-//       feed = (
-//         <Tab
-//           icon={<FeedIcon />}
-//           label="FEED"
-//           onClick={() =>
-//             this.props.handleClick({
-//               min_curation_score: 0,
-//               tags: undefined,
-//               feed: "jpphotography",
-//               orderby: "created_at",
-//               url: "feed"
-//             })
-//           }
-//         />
-//       );
-//     }
-//     return (
-//       <Paper square>
-//         <Tabs
-//           value={this.state.value}
-//           onChange={this.handleChange}
-//           variant="fullWidth"
-//           indicatorColor="secondary"
-//           textColor="secondary"
-//           centered
-//         >
-//           <Tab
-//             icon={<RecentIcon />}
-//             label="NEW"
-//             onClick={() =>
-//               this.props.handleClick({
-//                 orderby: "created_at",
-//                 min_curation_score: 0,
-//                 url: "created",
-//                 feed: undefined,
-//                 tags: "travelfeed"
-//               })
-//             }
-//           />
-//           <Tab
-//             icon={<HotIcon />}
-//             label="TAKING OFF"
-//             onClick={() =>
-//               this.props.handleClick({
-//                 orderby: "sc_hot",
-//                 min_curation_score: 0,
-//                 url: "hot",
-//                 feed: undefined,
-//                 tags: "travelfeed"
-//               })
-//             }
-//           />
-//           <Tab
-//             icon={<DiscoverIcon />}
-//             label="Discover"
-//             onClick={() =>
-//               this.props.handleClick({
-//                 orderby: "random",
-//                 min_curation_score: 10000,
-//                 url: "random",
-//                 feed: undefined,
-//                 tags: "travelfeed"
-//               })
-//             }
-//           />
-//           <Tab
-//             icon={<FeaturedIcon />}
-//             label="FEATURED"
-//             onClick={() =>
-//               this.props.handleClick({
-//                 orderby: "created_at",
-//                 min_curation_score: 10000,
-//                 url: "featured",
-//                 feed: undefined,
-//                 tags: "travelfeed"
-//               })
-//             }
-//           />
-//           {feed}
-//         </Tabs>
-//       </Paper>
-//     );
-//   }
-// }

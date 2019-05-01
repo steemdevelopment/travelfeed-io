@@ -30,11 +30,19 @@ app
     });
 
     server.get("/featured", (req, res) => {
-      res.redirect(`/`);
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "featured"
+      };
+      app.render(req, res, actualPage, queryParams);
     });
 
     server.get("/feed", (req, res) => {
-      res.redirect(`/`);
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "feed"
+      };
+      app.render(req, res, actualPage, queryParams);
     });
 
     server.get("/discover", (req, res) => {

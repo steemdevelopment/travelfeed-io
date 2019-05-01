@@ -1,4 +1,4 @@
-// //https://www.npmjs.com/package/react-sticky
+// https://github.com/codecks-io/react-sticky-box#readme
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
@@ -7,8 +7,12 @@ import Head from "../components/Head";
 import HomeOrderBySelect from "../components/Grid/HomeOrderBySelect";
 import { getUser } from "../utils/token";
 import Grid from "@material-ui/core/Grid";
+import Link from "next/link";
 
 class Tag extends Component {
+  state = {
+    user: undefined
+  };
   static async getInitialProps(props) {
     let { orderby } = props.query;
     let min_curation_score = 0;
@@ -37,6 +41,8 @@ class Tag extends Component {
       title = "Feed";
       isFeed = true;
     } else {
+      //featured
+      orderby = "created_at";
       selection = 3;
       min_curation_score = 10000;
       title = "Featured";
@@ -50,50 +56,21 @@ class Tag extends Component {
       isFeed
     };
   }
-  state = {
-    selection: -1,
-    url: null,
-    orderby: null,
-    min_curation_score: null,
-    isFeed: null,
-    hasChanged: false
-  };
-  handleClick(op) {
-    this.setState(op);
-    op.url === "feed" || op.url === "featured"
-      ? window.history.pushState("", "", "/")
-      : window.history.pushState("", "", `/${op.url}`);
-  }
   componentDidMount() {
     this.setState({
-      selection: this.props.selection,
       user: getUser()
     });
   }
   render() {
-    if (this.state.hasChanged) {
-      // prevents getting stuck while switching ordering
-      this.setState({ hasChanged: false });
-    }
     return (
       <Fragment>
         <Head
-          title={
-            (this.state.url
-              ? `${this.state.url
-                  .charAt(0)
-                  .toUpperCase()}${this.state.url.slice(1)} -`
-              : `${this.props.title
-                  .charAt(0)
-                  .toUpperCase()}${this.props.title.slice(1)} -`) -
-            "TravelFeed: The Travel Community"
-          }
+          title={this.props.title + " - TravelFeed: The Travel Community"}
           description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
         />
         <Header />
         <HomeOrderBySelect
-          handleClick={this.handleClick.bind(this)}
-          selection={this.state.selection}
+          selection={this.props.selection}
           showFeed={this.state.user}
         />
         <Grid
@@ -107,23 +84,17 @@ class Tag extends Component {
             <div className="bg-dark">Sidebar Placeholder</div>
           </Grid>
           <Grid item lg={6} md={9} sm={12} xs={12}>
-            {!this.state.hasChanged && (
-              <PostGrid
-                query={{
-                  orderby: this.state.orderby || this.props.orderby,
-                  min_curation_score:
-                    this.state.min_curation_score ||
-                    this.state.min_curation_score === 0
-                      ? this.state.min_curation_score
-                      : this.props.min_curation_score,
-                  limit: 8,
-                  feed: this.state.isFeed ? this.state.user : undefined,
-                  exclude_authors: "travelfeed"
-                }}
-                grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
-                cardHeight={350}
-              />
-            )}
+            <PostGrid
+              query={{
+                orderby: this.props.orderby,
+                min_curation_score: this.props.min_curation_score,
+                limit: 8,
+                feed: this.props.isFeed ? this.state.user : undefined,
+                exclude_authors: "travelfeed"
+              }}
+              grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
+              cardHeight={350}
+            />
           </Grid>
           <Grid item lg={3} md={0} sm={0} xs={0}>
             <div className="bg-dark">Sidebar Placeholder</div>

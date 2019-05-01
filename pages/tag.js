@@ -10,7 +10,7 @@ class Tag extends Component {
   static async getInitialProps(props) {
     let { orderby } = props.query;
     const { tags } = props.query;
-    let min_curation_score = undefined;
+    let min_curation_score = 0;
     let selection = 0;
     let title = "Taking Off";
     if (orderby === "featured") {
@@ -31,42 +31,14 @@ class Tag extends Component {
       title
     };
   }
-  state = {
-    selection: -1,
-    title: null,
-    orderby: null,
-    min_curation_score: null,
-    hasChanged: false
-  };
-  handleClick(op) {
-    this.setState(op);
-    window.history.pushState("", "", `/${op.url}/${this.props.tags}`);
-  }
-  componentDidMount() {
-    this.setState({
-      selection: this.props.selection
-    });
-  }
   render() {
-    if (this.state.hasChanged) {
-      this.setState({ hasChanged: false });
-    }
     return (
       <Fragment>
         <Head
-          title={
-            this.state.title
-              ? `${this.state.title.charAt(0).toUpperCase() +
-                  this.state.title.slice(1)}: ${this.props.tags
-                  .charAt(0)
-                  .toUpperCase() +
-                  this.props.tags.slice(1)} - TravelFeed: The Travel Community`
-              : `${this.props.title.charAt(0).toUpperCase() +
-                  this.props.title.slice(1)}: ${this.props.tags
-                  .charAt(0)
-                  .toUpperCase() +
-                  this.props.tags.slice(1)} - TravelFeed: The Travel Community`
-          }
+          title={`${this.props.title}: ${this.props.tags
+            .charAt(0)
+            .toUpperCase() +
+            this.props.tags.slice(1)} - TravelFeed: The Travel Community`}
           description={`Explore posts about #${this.props.tags} on TravelFeed.`}
         />
         <Header />
@@ -79,25 +51,19 @@ class Tag extends Component {
           {this.props.tags.charAt(0).toUpperCase() + this.props.tags.slice(1)}
         </Typography>
         <TagsOrderBySelect
-          handleClick={this.handleClick.bind(this)}
-          selection={this.state.selection}
+          tags={this.props.tags}
+          selection={this.props.selection}
         />
-        {!this.state.hasChanged && (
-          <PostGrid
-            query={{
-              tags: this.props.tags,
-              orderby: this.state.orderby || this.props.orderby,
-              min_curation_score:
-                this.state.min_curation_score ||
-                this.state.min_curation_score === 0
-                  ? this.state.min_curation_score
-                  : this.props.min_curation_score,
-              limit: 8
-            }}
-            grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
-            cardHeight={170}
-          />
-        )}
+        <PostGrid
+          query={{
+            tags: this.props.tags,
+            orderby: this.props.orderby,
+            min_curation_score: this.props.min_curation_score,
+            limit: 8
+          }}
+          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
+          cardHeight={170}
+        />
       </Fragment>
     );
   }

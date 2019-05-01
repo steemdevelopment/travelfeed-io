@@ -69,6 +69,11 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
+    server.get("/created/:tag", (req, res) => {
+      const tag = req.params.tag;
+      res.redirect(`/hot/${tag}`);
+    });
+
     server.get("/hot/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
@@ -76,6 +81,11 @@ app
         tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/trending/:tag", (req, res) => {
+      const tag = req.params.tag;
+      res.redirect(`/favorites/${tag}`);
     });
 
     server.get("/favorites/:tag", (req, res) => {

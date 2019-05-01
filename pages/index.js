@@ -90,10 +90,11 @@ class Tag extends Component {
                 min_curation_score: this.props.min_curation_score,
                 limit: 8,
                 feed: this.props.isFeed ? this.state.user : undefined,
-                exclude_authors: "travelfeed"
+                exclude_authors: ["travelfeed", "steemitworldmap"]
               }}
               grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
               cardHeight={350}
+              poststyle="grid"
             />
           </Grid>
           <Grid item lg={3} md={0} sm={0} xs={0}>

@@ -63,6 +63,7 @@ class Tag extends Component {
           }}
           grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
           cardHeight={170}
+          poststyle="grid"
         />
       </Fragment>
     );

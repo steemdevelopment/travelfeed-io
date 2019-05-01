@@ -14,6 +14,8 @@ import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { regExcerpt, regTitle } from "../utils/regex";
 import InfiniteScroll from "react-infinite-scroller";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 class PostGrid extends Component {
   state = {
@@ -177,6 +179,13 @@ class PostGrid extends Component {
                         </Grid>
                       );
                     })}
+                  {data.posts &&
+                    data.posts.length === 0 &&
+                    this.props.poststyle === "grid" && (
+                      <Card className="mt-5">
+                        <CardContent>No posts found</CardContent>
+                      </Card>
+                    )}
                 </Grid>
               </InfiniteScroll>
             );

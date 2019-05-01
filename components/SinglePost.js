@@ -26,18 +26,38 @@ import SubHeader from "./Post/SubHeader";
 import OrderBySelect from "./Post/OrderBySelect";
 import PostCommentItem from "./PostCommentItem";
 import { GET_SETTINGS } from "../helpers/graphql/settings";
+import { isAbsolute } from "path";
 
 export class SinglePost extends Component {
   state = {
     title: "Most miles",
     orderby: "total_votes",
-    orderdir: "DESC"
+    orderdir: "DESC",
+    bgpos: "fixed",
+    bgheight: "100%",
+    bgmargin: "0px"
   };
   handleClick(op) {
     this.setState(op);
   }
+  listenScrollEvent = e => {
+    if (window.scrollY > 500) {
+      this.setState({
+        bgpos: "absolute",
+        bgheight: window.innerHeight,
+        bgmargin: "500px"
+      });
+    } else {
+      this.setState({
+        bgpos: "fixed",
+        bgheight: window.innerHeight,
+        bgmargin: "0px"
+      });
+    }
+  };
   componentDidMount() {
     this.setState({ parent_id: this.props.post_id });
+    window.addEventListener("scroll", this.listenScrollEvent);
   }
   render() {
     return (
@@ -227,13 +247,6 @@ export class SinglePost extends Component {
                     }
                   />
                   <CardContent>
-                    <Typography
-                      variant="h4"
-                      className="text-dark font-weight-bold"
-                    >
-                      {data.post.title}
-                    </Typography>
-                    <hr />
                     {bodycontent}
                     <hr />
                     <div className="fullwidth">
@@ -313,18 +326,65 @@ export class SinglePost extends Component {
               <Fragment>
                 {head}
                 <Header subheader={data.post.display_name} />
-                <Grid
-                  container
-                  spacing={0}
-                  className="pt-4"
-                  alignItems="center"
-                  justify="center"
-                >
-                  <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
-                    {card}
-                  </Grid>
-                  {comments}
-                </Grid>
+                <div style={{ position: "relative" }}>
+                  {data.post.depth === 0 && (
+                    <div
+                      className="w-100"
+                      style={{
+                        height: this.state.bgheight,
+                        position: this.state.bgpos,
+                        marginTop: this.state.bgmargin,
+                        backgroundImage: `url("https://steemitimages.com/2000x0/${
+                          data.post.img_url
+                        }")`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center center",
+                        backgroundSize: "cover"
+                      }}
+                    />
+                  )}
+                  <div className="w-100" style={{ position: "relative" }}>
+                    <Grid
+                      container
+                      spacing={0}
+                      alignItems="center"
+                      justify="center"
+                    >
+                      <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
+                        {data.post.depth === 0 && (
+                          <div
+                            className="row"
+                            style={{
+                              height: "500px"
+                            }}
+                          >
+                            <div className="text-center col my-auto">
+                              <Typography
+                                variant="h4"
+                                className="text-light font-weight-bold"
+                                style={{
+                                  textShadow: "1px 1px 20px #343A40"
+                                }}
+                              >
+                                {data.post.title}
+                              </Typography>
+                            </div>
+                          </div>
+                        )}
+                        {data.post.depth !== 0 && (
+                          <div
+                            className="row"
+                            style={{
+                              height: "50px"
+                            }}
+                          />
+                        )}
+                        {card}
+                      </Grid>
+                      {comments}
+                    </Grid>
+                  </div>
+                </div>
               </Fragment>
             );
           }}

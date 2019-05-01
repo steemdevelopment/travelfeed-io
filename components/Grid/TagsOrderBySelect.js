@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import RecentIcon from "@material-ui/icons/Restore";
 import FeaturedIcon from "@material-ui/icons/Star";
 import HotIcon from "@material-ui/icons/FlightTakeoff";
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -28,7 +27,9 @@ class IconLabelTabs extends React.Component {
                 orderby: "sc_hot",
                 min_curation_score: 0,
                 url: "hot",
-                selection: 0
+                selection: 0,
+                title: "Taking Off",
+                hasChanged: true
               })
             }
           />
@@ -37,10 +38,12 @@ class IconLabelTabs extends React.Component {
             label="FEATURED"
             onClick={() =>
               this.props.handleClick({
-                orderby: "created_at,curation_score",
+                orderby: "sc_trend",
                 min_curation_score: 5000,
                 url: "featured",
-                selection: 1
+                selection: 1,
+                title: "Featured",
+                hasChanged: true
               })
             }
           />
@@ -50,9 +53,11 @@ class IconLabelTabs extends React.Component {
             onClick={() =>
               this.props.handleClick({
                 orderby: "total_votes",
-                min_curation_score: 5000,
+                min_curation_score: 10000,
                 url: "favorites",
-                selection: 2
+                selection: 2,
+                title: "Favorites",
+                hasChanged: true
               })
             }
           />
@@ -63,7 +68,6 @@ class IconLabelTabs extends React.Component {
 }
 
 IconLabelTabs.propTypes = {
-  classes: PropTypes.object.isRequired,
   selection: PropTypes.number,
   handleClick: PropTypes.func
 };

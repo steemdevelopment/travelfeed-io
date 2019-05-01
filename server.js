@@ -29,11 +29,34 @@ app
       res.redirect(`/@${author}/${permlink}`);
     });
 
-    server.get("/created/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get("/featured", (req, res) => {
+      res.redirect(`/`);
+    });
+
+    server.get("/feed", (req, res) => {
+      res.redirect(`/`);
+    });
+
+    server.get("/discover", (req, res) => {
+      const actualPage = "/";
       const queryParams = {
-        orderby: "created_at",
-        tags: req.params.tag
+        orderby: "random"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/created", (req, res) => {
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "created_at"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/hot", (req, res) => {
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "sc_hot"
       };
       app.render(req, res, actualPage, queryParams);
     });
@@ -47,7 +70,7 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/favourites/:tag", (req, res) => {
+    server.get("/favorites/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
         orderby: "total_votes",

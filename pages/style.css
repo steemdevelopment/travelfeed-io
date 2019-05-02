@@ -1,3 +1,23 @@
+.content-section {
+  min-height: 2000px;
+}
+
+.sidebar-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.make-me-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding: 75px 15px;
+  margin-top: -65px;
+}
+
 body {
   word-wrap: break-word;
 }
@@ -83,7 +103,7 @@ a:hover {
   letter-spacing: -0.012em;
   color: #525252;
   padding: 0 50px 0 50px;
-  quotes: "\201C" "\201D" "\2018" "\2019";
+  quotes: "\201C""\201D""\2018""\2019";
 }
 .postcontent blockquote:before {
   content: open-quote;

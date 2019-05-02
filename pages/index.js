@@ -1,4 +1,4 @@
-// https://github.com/codecks-io/react-sticky-box#readme
+//https://codepen.io/ncerminara/pen/eKNROb
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
@@ -6,8 +6,11 @@ import Header from "../components/Header";
 import Head from "../components/Head";
 import HomeOrderBySelect from "../components/Grid/HomeOrderBySelect";
 import { getUser } from "../utils/token";
-import Grid from "@material-ui/core/Grid";
-import Link from "next/link";
+import FrontPageHeader from "../components/FrontPageHeader";
+import BlogGridList from "../components/Sidebar/BlogGridList";
+import LegalNotice from "../components/Sidebar/LegalNotice";
+import NavSide from "../components/Sidebar/NavSide";
+import JoinNow from "../components/Sidebar/JoinNow";
 
 class Tag extends Component {
   state = {
@@ -68,39 +71,53 @@ class Tag extends Component {
           title={this.props.title + " - TravelFeed: The Travel Community"}
           description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
         />
-        <Header />
+        {this.state.user == null && (
+          <div style={{ marginTop: "-10px" }}>
+            <FrontPageHeader />
+          </div>
+        )}
         <HomeOrderBySelect
           selection={this.props.selection}
           showFeed={this.state.user}
         />
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justify="center"
-          className="p-3"
-        >
-          <Grid item lg={3} md={0} sm={0} xs={0}>
-            <div className="bg-dark">Sidebar Placeholder</div>
-          </Grid>
-          <Grid item lg={6} md={9} sm={12} xs={12}>
-            <PostGrid
-              query={{
-                orderby: this.props.orderby,
-                min_curation_score: this.props.min_curation_score,
-                limit: 8,
-                feed: this.props.isFeed ? this.state.user : undefined,
-                exclude_authors: ["travelfeed", "steemitworldmap"]
-              }}
-              grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
-              cardHeight={350}
-              poststyle="grid"
-            />
-          </Grid>
-          <Grid item lg={3} md={0} sm={0} xs={0}>
-            <div className="bg-dark">Sidebar Placeholder</div>
-          </Grid>
-        </Grid>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xl-3 col-lg-1 d-xl-block d-lg-block d-none">
+              <div className="sidebar-item">
+                <div className="make-me-sticky">
+                  <div className="d-none d-xl-block">
+                    {this.state.user && <NavSide user={this.state.user} />}
+                    {!this.state.user && <JoinNow />}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-7 col-md-8 col-sm-12 p-0">
+              <PostGrid
+                className="content-section"
+                query={{
+                  orderby: this.props.orderby,
+                  min_curation_score: this.props.min_curation_score,
+                  limit: 8,
+                  feed: this.props.isFeed ? this.state.user : undefined,
+                  exclude_authors: ["travelfeed", "steemitworldmap"]
+                }}
+                grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
+                cardHeight={350}
+                poststyle="grid"
+              />
+            </div>
+            <div className="col-xl-3 col-lg-4 col-md-4 d-none d-xl-block d-lg-block d-md-block">
+              <div className="sidebar-item">
+                <div className="make-me-sticky">
+                  <BlogGridList />
+                  <LegalNotice />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Header />
       </Fragment>
     );
   }
@@ -111,7 +128,8 @@ Tag.propTypes = {
   title: PropTypes.string,
   orderby: PropTypes.string,
   min_curation_score: PropTypes.number,
-  selection: PropTypes.number
+  selection: PropTypes.number,
+  isFeed: PropTypes.bool
 };
 
 export default Tag;

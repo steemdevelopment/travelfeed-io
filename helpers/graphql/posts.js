@@ -13,6 +13,7 @@ export const GET_POSTS = gql`
     $tags: [String]
     $parent_id: Int
     $parent_author: String
+    $is_comment: Boolean
     $min_curation_score: Int
     $min_total_votes: Int
     $include_nsfw: Boolean
@@ -34,6 +35,7 @@ export const GET_POSTS = gql`
       tags: $tags
       parent_id: $parent_id
       parent_author: $parent_author
+      is_comment: $is_comment
       min_curation_score: $min_curation_score
       min_total_votes: $min_total_votes
       include_nsfw: $include_nsfw
@@ -59,6 +61,7 @@ export const GET_POSTS = gql`
       parent_permlink
       root_title
       depth
+      payout
     }
   }
 `;
@@ -86,6 +89,21 @@ export const GET_BLOG_POSTS = gql`
       title
       img_url
       votes
+    }
+  }
+`;
+
+export const GET_DASHBOARD_POSTS = gql`
+  query posts($author: String, $limit: Int) {
+    posts(author: $author, limit: $limit) {
+      post_id
+      author
+      permlink
+      title
+      created_at
+      total_votes
+      is_paidout
+      payout
     }
   }
 `;

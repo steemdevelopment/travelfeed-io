@@ -29,6 +29,7 @@ class PostGrid extends Component {
       <Fragment>
         <Query query={GET_POSTS} variables={this.props.query}>
           {({ data, loading, error, fetchMore }) => {
+            console.log(this.props.query);
             if (loading) {
               return (
                 <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -107,14 +108,15 @@ class PostGrid extends Component {
                               img_url: post.img_url,
                               created_at: post.created_at,
                               readtime: post.readtime,
-                              excerpt: post.excerpt,
+                              excerpt: excerpt,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,
                               curation_score: post.curation_score,
                               app: post.app,
                               parent_author: post.parent_author,
-                              parent_permlink: post.parent_permlink
+                              parent_permlink: post.parent_permlink,
+                              payout: post.payout
                             }}
                             id={post.author + "-" + post.permlink}
                             mode="edit"

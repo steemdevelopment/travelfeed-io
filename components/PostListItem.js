@@ -65,12 +65,12 @@ class PostCard extends Component {
     }
     let colsize = "";
     if (this.props.post.img_url !== undefined) {
-      colsize = "col-sm-8 pl-0";
+      colsize = "col-md-8 pl-0";
     }
     var content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
-          <div className="col-sm-4 p-0">
+          <div className="col-md-4 p-0">
             <CardMedia
               className="h-100"
               style={{ minHeight: "150px" }}
@@ -91,16 +91,43 @@ class PostCard extends Component {
             </div>
           </CardContent>
           <CardActions className="bg-dark">
-            <span className="text-light pl-2">
-              <Button
-                color="inherit"
-                className="p-0 pl-2 pr-2"
-                onClick={() => this.openEditor()}
-              >
-                <span className="pr-1">Edit</span> <EditIcon />
-              </Button>
-            </span>
-            {button2}
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-7">
+                  <span className="text-light pl-2">
+                    <Button
+                      color="inherit"
+                      className="p-0 pl-2 pr-2"
+                      onClick={() => this.openEditor()}
+                    >
+                      <span className="pr-1">Edit</span> <EditIcon />
+                    </Button>
+                  </span>
+                  {button2}
+                </div>
+                <div className="col-5 text-right pt-1">
+                  {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
+                  (new Date(this.props.post.created_at) <
+                    new Date(new Date().setDate(new Date().getDate() - 7)) && (
+                    <span className="text-light pl-2 font-weight-bold">
+                      ${(this.props.post.payout * 0.75).toFixed(2)}
+                    </span>
+                  )) || (
+                    <span className="text-light pl-2 font-weight-bold">
+                      Payout in{" "}
+                      {Math.ceil(
+                        Math.abs(
+                          new Date().getTime() -
+                            new Date(this.props.post.created_at).getTime()
+                        ) /
+                          (1000 * 60 * 60 * 24)
+                      )}{" "}
+                      days
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
           </CardActions>
         </div>
       </div>

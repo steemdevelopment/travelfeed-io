@@ -18,7 +18,7 @@ class Posts extends Component {
           justify="center"
           className="pt-4 pb-4"
         >
-          <Grid item lg={8} md={10} sm={11} xs={12}>
+          <Grid item lg={8} md={10} sm={11} xs={12} className="pb-4">
             <div className="text-center">
               <h1>Your Published Posts</h1>
             </div>

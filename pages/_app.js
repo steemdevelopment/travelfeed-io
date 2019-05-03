@@ -9,7 +9,8 @@ import NProgress from "nprogress";
 import Router from "next/router";
 import { ApolloProvider } from "react-apollo";
 import withApollo from "../lib/withApollo";
-import "./style.css"
+import "../styles/bootstrap.min.css";
+import "../styles/style.css";
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();

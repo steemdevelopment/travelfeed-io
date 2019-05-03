@@ -31,7 +31,7 @@ class Header extends Component {
                       </Typography>
                     </a>
                   </Link>
-                  <HeaderMenu />
+                  <HeaderMenu isDashboard={false} />
                 </Toolbar>
               </Grid>
             </Grid>

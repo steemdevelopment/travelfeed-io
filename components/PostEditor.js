@@ -247,105 +247,107 @@ class PostEditor extends Component {
     }
     return (
       <Fragment>
-        <div className="row p-3">
-          <div className="col-12 p-1">
-            <Card>
-              <CardContent>
-                <InputBase
-                  autoFocus={true}
-                  inputProps={{
-                    maxLength: 100
-                  }}
-                  multiline={true}
-                  className="font-weight-bold inputtitle"
-                  placeholder="Title"
-                  value={this.state.title}
-                  onChange={this.handleTitleEditorChange.bind(this)}
-                  fullWidth
-                />
-              </CardContent>
-            </Card>
-          </div>
-          <div className="col-xl-9 col-md-12 p-1">
-            <Card>
-              <CardContent>
-                <CardHeader
-                  action={
-                    <Fragment>
-                      <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                        {wordCount + " words"}
-                      </span>
-                      <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                        {readTime}
-                      </span>
-                    </Fragment>
-                  }
-                />
-                <Mutation
-                  mutation={SAVE_DRAFT}
-                  variables={{
-                    id: this.state.id,
-                    title: this.state.title,
-                    body: JSON.stringify(this.state.content),
-                    json: JSON.stringify({ tags: this.state.tags })
-                  }}
-                >
-                  {saveDraft => {
-                    this.saveDraft = saveDraft;
-                    return (
-                      <Editor
-                        placeholder="Write something epic!"
-                        toc={true}
-                        // defaultValue={this.state.content}
-                        // onChange={this.onEditorChange.bind(this)}
-                        onSave={saveDraft}
-                        onChange={this.handleEditorChange}
-                        uploadImage={async file => {
-                          // const result = await s3.upload(file);
-                          // return result.url;
-                          console.log(file);
-                          return;
-                        }}
+        <div className="container-fluid p-2">
+          <div className="row">
+            <div className="col-12">
+              <Card>
+                <CardContent>
+                  <InputBase
+                    autoFocus={true}
+                    inputProps={{
+                      maxLength: 100
+                    }}
+                    multiline={true}
+                    className="font-weight-bold inputtitle"
+                    placeholder="Title"
+                    value={this.state.title}
+                    onChange={this.handleTitleEditorChange.bind(this)}
+                    fullWidth
+                  />
+                </CardContent>
+              </Card>
+            </div>
+            <div className="col-xl-9 col-md-12 p-1">
+              <Card>
+                <CardContent>
+                  <CardHeader
+                    action={
+                      <Fragment>
+                        <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
+                          {wordCount + " words"}
+                        </span>
+                        <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
+                          {readTime}
+                        </span>
+                      </Fragment>
+                    }
+                  />
+                  <Mutation
+                    mutation={SAVE_DRAFT}
+                    variables={{
+                      id: this.state.id,
+                      title: this.state.title,
+                      body: JSON.stringify(this.state.content),
+                      json: JSON.stringify({ tags: this.state.tags })
+                    }}
+                  >
+                    {saveDraft => {
+                      this.saveDraft = saveDraft;
+                      return (
+                        <Editor
+                          placeholder="Write something epic!"
+                          toc={true}
+                          // defaultValue={this.state.content}
+                          // onChange={this.onEditorChange.bind(this)}
+                          onSave={saveDraft}
+                          onChange={this.handleEditorChange}
+                          uploadImage={async file => {
+                            // const result = await s3.upload(file);
+                            // return result.url;
+                            console.log(file);
+                            return;
+                          }}
+                        />
+                      );
+                    }}
+                  </Mutation>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="col-xl-3 col-md-12">
+              <div className="row">
+                <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                  <Card>
+                    <CardContent>
+                      <TagPicker
+                        initialValue={this.props.edit.tags}
+                        onChange={this.handleTagClick.bind(this)}
                       />
-                    );
-                  }}
-                </Mutation>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="col-xl-3 col-md-12">
-            <div className="row">
-              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>
-                    <TagPicker
-                      initialValue={this.props.edit.tags}
-                      onChange={this.handleTagClick.bind(this)}
-                    />
-                  </CardContent>
-                </Card>
-              </div>
-              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>
-                    <TextField label="Featured image" margin="normal">
-                      ))}
-                    </TextField>
-                  </CardContent>
-                </Card>
-              </div>
-              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>
-                    <p>Location</p>
-                    {locationfield}
-                  </CardContent>
-                </Card>
-              </div>
-              <div className="col-xl-12 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>{publishBtn}</CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                  <Card>
+                    <CardContent>
+                      <TextField label="Featured image" margin="normal">
+                        ))}
+                      </TextField>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                  <Card>
+                    <CardContent>
+                      <p>Location</p>
+                      {locationfield}
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="col-xl-12 col-md-6 col-sm-12 p-1">
+                  <Card>
+                    <CardContent>{publishBtn}</CardContent>
+                  </Card>
+                </div>
               </div>
             </div>
           </div>

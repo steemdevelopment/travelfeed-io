@@ -2,7 +2,6 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
 import AuthorProfile from "../components/AuthorProfile";
-import Header from "../components/Header";
 
 class Blog extends Component {
   static async getInitialProps(props) {
@@ -12,7 +11,6 @@ class Blog extends Component {
   render() {
     return (
       <Fragment>
-        <Header />
         <AuthorProfile author={this.props.author} />
         <PostGrid
           query={{ author: this.props.author, limit: 12 }}

@@ -126,6 +126,14 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
+    server.get("/dashboard", (req, res) => {
+      const actualPage = "/dashboard";
+      const queryParams = {
+        page: "dashboard"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
     server.get("/dashboard/publish", (req, res) => {
       const actualPage = "/dashboard";
       const queryParams = {
@@ -170,14 +178,6 @@ app
       const actualPage = "/dashboard";
       const queryParams = {
         page: "notifications"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/bookmarks", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "bookmarks"
       };
       app.render(req, res, actualPage, queryParams);
     });

@@ -9,18 +9,26 @@ class LegalNotice extends Component {
           <a className="text-muted">About</a>
         </Link>
         {"　"}
-        <Link as={`/terms`} passHref>
+        <Link as={`/about/terms`} passHref>
           <a className="text-muted">Terms</a>
         </Link>
         {"　"}
-        <Link as={`/privacy`} passHref>
+        <Link as={`/about/privacy`} passHref>
           <a className="text-muted">Privacy</a>
         </Link>
         {"　"}
-        <Link as={`/cookies`} passHref>
+        <Link as={`/about/cookies`} passHref>
           <a className="text-muted">Cookies</a>
         </Link>
-        <p className="text-muted">
+        {"　"}
+        <Link as={`/about/support-us`} passHref>
+          <a className="text-muted">Support Us</a>
+        </Link>
+        {"　"}
+        <Link as={`/about/faq`} passHref>
+          <a className="text-muted">FAQ</a>
+        </Link>
+        <p className="text-muted pt-1">
           &copy; {new Date().getFullYear()} TravelFeed
         </p>
       </div>

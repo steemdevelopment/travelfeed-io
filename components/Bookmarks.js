@@ -1,17 +1,17 @@
 import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
-import { GET_BOOKMARKS } from "../../helpers/graphql/bookmarks";
+import { GET_BOOKMARKS } from "../helpers/graphql/bookmarks";
 import Grid from "@material-ui/core/Grid";
-import GridPostCard from "../GridPostCard";
-import { imageProxy } from "../../helpers/getImage";
+import GridPostCard from "./GridPostCard";
+import { imageProxy } from "../helpers/getImage";
 import readingTime from "reading-time";
 import sanitize from "sanitize-html";
-import parseBody from "../../helpers/parseBody";
+import parseBody from "../helpers/parseBody";
 import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { regExcerpt, regTitle } from "../../utils/regex";
+import { regExcerpt, regTitle } from "../utils/regex";
 import InfiniteScroll from "react-infinite-scroller";
-import Head from "../Head";
+import Head from "./Head";
 
 class PostGrid extends Component {
   state = {

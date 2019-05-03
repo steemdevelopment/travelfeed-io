@@ -16,7 +16,10 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PublishIcon from "@material-ui/icons/Create";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
+import PrivacyIcon from "@material-ui/icons/Info";
 import DownIcon from "@material-ui/icons/ArrowDropDown";
+import FeedIcon from "@material-ui/icons/Home";
+import Divider from "@material-ui/core/Divider";
 
 class HeaderMenu extends Component {
   state = {
@@ -98,16 +101,33 @@ class HeaderMenu extends Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
-                      <Link href="/dashboard" passHref>
-                        <a>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <DashboardIcon />
-                              <ListItemText inset primary="Dashboard" />
-                            </ListItemIcon>
-                          </MenuItem>
-                        </a>
-                      </Link>
+                      {(this.props.isDashboard && (
+                        <Link href="/" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <FeedIcon />
+                                <ListItemText inset primary="TravelFeed" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                      )) || (
+                        <Link
+                          as="/dashboard/"
+                          href="/dashboard?page=dashboard"
+                          passHref
+                        >
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <DashboardIcon />
+                                <ListItemText inset primary="TravelBlog" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                      )}
                       <Link
                         as="/dashboard/publish"
                         href="/dashboard/?page=publish"
@@ -122,28 +142,33 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link
-                        as="/dashboard/posts"
-                        href="/dashboard/?page=posts"
-                        passHref
-                      >
+                      <Link href="/bookmarks" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <ProfileIcon />
-                              <ListItemText inset primary="My Posts" />
+                              <ListItemText inset primary="Bookmarks" />
                             </ListItemIcon>
                           </MenuItem>
                         </a>
                       </Link>
-                      <a>
-                        <MenuItem onClick={() => this.handleLogout()}>
-                          <ListItemIcon>
-                            <LogoutIcon />
-                            <ListItemText inset primary="Logout" />
-                          </ListItemIcon>
-                        </MenuItem>
-                      </a>
+                      <Divider />
+                      <Link href="/about/privacy" passHref>
+                        <a>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <PrivacyIcon />
+                              <ListItemText inset primary="Privacy" />
+                            </ListItemIcon>
+                          </MenuItem>
+                        </a>
+                      </Link>
+                      <MenuItem onClick={() => this.handleLogout()}>
+                        <ListItemIcon>
+                          <LogoutIcon />
+                          <ListItemText inset primary="Logout" />
+                        </ListItemIcon>
+                      </MenuItem>
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

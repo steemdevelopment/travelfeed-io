@@ -5,7 +5,6 @@ import NotFound from "../components/NotFound";
 import { getUser } from "../utils/token";
 import Link from "next/link";
 import Stats from "../components/Dashboard/Stats";
-import Bookmarks from "../components/Dashboard/Bookmarks";
 import Comments from "../components/Dashboard/Comments";
 import Drafts from "../components/Dashboard/Drafts";
 import Notifications from "../components/Dashboard/Notifications";
@@ -28,7 +27,6 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PostsIcon from "@material-ui/icons/ChromeReaderMode";
 import DraftIcon from "@material-ui/icons/FileCopy";
-import BookmarkIcon from "@material-ui/icons/Bookmarks";
 import WalletIcon from "@material-ui/icons/AttachMoney";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PublishIcon from "@material-ui/icons/Create";
@@ -42,12 +40,16 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
+import { blueGrey } from "@material-ui/core/colors";
 
 const drawerWidth = 200;
 
 const styles = theme => ({
   root: {
     display: "flex"
+  },
+  paper: {
+    background: blueGrey[50]
   },
   appBar: {
     zIndex: 201,
@@ -107,7 +109,7 @@ const styles = theme => ({
   }
 });
 class Dashboard extends Component {
-  state = { user: "", open: true, active: null };
+  state = { user: "", open: true, active: "" };
   static async getInitialProps(props) {
     const { page } = props.query;
     return { page };
@@ -184,11 +186,14 @@ class Dashboard extends Component {
                 className="font-weight-bold cpointer"
                 noWrap
               >
-                TravelFeed | Dashboard
+                TravelBlog |{" "}
+                {// capitalize
+                this.state.active.charAt(0).toUpperCase() +
+                  this.state.active.slice(1)}
               </Typography>
             </a>
           </Link>
-          <HeaderMenu />
+          <HeaderMenu isDashboard={true} />
         </Toolbar>
       </AppBar>
     );
@@ -200,7 +205,7 @@ class Dashboard extends Component {
           [classes.drawerClose]: !this.state.open
         })}
         classes={{
-          paper: classNames({
+          paper: classNames(classes.paper, {
             [classes.drawerOpen]: this.state.open,
             [classes.drawerClose]: !this.state.open
           })
@@ -214,13 +219,13 @@ class Dashboard extends Component {
         </div>
         <Divider />
         <List>
-          <Link as="/dashboard" href="/dashboard?page=stats" passHref>
+          <Link as="/dashboard" href="/dashboard?page=dashboard" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "stats" ? true : false}
+                selected={this.state.active == "dashboard" ? true : false}
                 button
               >
-                <ListItemIcon>
+                <ListItemIcon className={classNames(classes.listitem)}>
                   <DashboardIcon />
                 </ListItemIcon>
                 <ListItemText primary="Dashboard" />
@@ -316,23 +321,6 @@ class Dashboard extends Component {
         </List>
         <Divider />
         <List>
-          <Link
-            as="/dashboard/bookmarks"
-            href="/dashboard?page=bookmarks"
-            passHref
-          >
-            <a>
-              <ListItem
-                selected={this.state.active == "bookmarks" ? true : false}
-                button
-              >
-                <ListItemIcon>
-                  <BookmarkIcon />
-                </ListItemIcon>
-                <ListItemText primary="Bookmarks" />
-              </ListItem>
-            </a>
-          </Link>
           <Link as="/dashboard/profile" href="/dashboard?page=profile" passHref>
             <a>
               <ListItem
@@ -421,13 +409,6 @@ class Dashboard extends Component {
           this.setActive("notifications");
         }
       }
-    } else if (this.props.page == "bookmarks") {
-      content = <Bookmarks />;
-      {
-        if (this.state.active != "bookmarks") {
-          this.setActive("bookmarks");
-        }
-      }
     } else if (this.props.page == "profile") {
       content = <Profile user={this.state.user} />;
       {
@@ -452,8 +433,8 @@ class Dashboard extends Component {
     } else {
       content = <Stats user={this.state.user} />;
       {
-        if (this.state.active != "stats") {
-          this.setActive("stats");
+        if (this.state.active != "dashboard") {
+          this.setActive("dashboard");
         }
       }
     }

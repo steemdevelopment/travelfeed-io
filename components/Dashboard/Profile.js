@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
@@ -10,6 +11,8 @@ import Link from "next/link";
 import { Query } from "react-apollo";
 import { GET_PROFILE } from "../../helpers/graphql/profile";
 import SaveIcon from "@material-ui/icons/Save";
+import Typography from "@material-ui/core/Typography";
+import { indigo } from "@material-ui/core/colors";
 
 class Profile extends Component {
   constructor(props) {
@@ -237,8 +240,19 @@ class Profile extends Component {
               >
                 <Grid item lg={7} md={8} sm={11} xs={12}>
                   <Card>
+                    <CardHeader
+                      style={{ background: indigo[600] }}
+                      title={
+                        <Typography
+                          variant="h4"
+                          align="center"
+                          className="p-2 text-light"
+                        >
+                          Edit Your Profile
+                        </Typography>
+                      }
+                    />
                     <CardContent>
-                      <h1>Your Profile</h1>
                       {/* Todo: Find out what the blockchain imposed length limits are for each field */}
                       <TextField
                         label="Name"

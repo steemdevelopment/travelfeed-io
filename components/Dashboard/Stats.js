@@ -1,11 +1,9 @@
-//  Masonry css: https://github.com/jh3y/driveway
 // Todo: Show current mana, ressource credits, upvote worth
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
-import Link from "next/link";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import { GET_USER_STATS } from "../../helpers/graphql/stats";
@@ -20,9 +18,8 @@ import TotalFeaturedIcon from "@material-ui/icons/Star";
 import QualityIcon from "@material-ui/icons/CheckCircle";
 import CustomSnackbar from "../General/CustomSnackbar";
 import PostsTable from "./Stats/PostsTable";
-
 import {
-  green,
+  cyan,
   orange,
   indigo,
   teal,
@@ -31,6 +28,7 @@ import {
   lightGreen
 } from "@material-ui/core/colors";
 import CardHeader from "@material-ui/core/CardHeader";
+import WelcomeCard from "./Stats/WelcomeCard";
 
 class Stats extends Component {
   render() {
@@ -39,13 +37,7 @@ class Stats extends Component {
         <Helmet>
           <title>{"Dashboard | TravelFeed: The Travel Community"}</title>
         </Helmet>
-        <Grid
-          container
-          spacing={8}
-          alignItems="center"
-          justify="center"
-          className="p-2"
-        >
+        <Grid container spacing={0} justify="center" className="p-1">
           <Query query={GET_USER_STATS}>
             {({ data, loading, error }) => {
               if (loading || error || data.userstats === null) {
@@ -53,7 +45,7 @@ class Stats extends Component {
               }
               return (
                 <Fragment>
-                  <Grid item lg={3} md={3} sm={6} xs={6}>
+                  <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
                     <SmallBox
                       Icon={TotalPostsIcon}
                       title="Total Posts"
@@ -62,26 +54,26 @@ class Stats extends Component {
                       boxColor={purple[400]}
                     />
                   </Grid>
-                  <Grid item lg={3} md={3} sm={6} xs={6}>
+                  <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
                     <SmallBox
                       Icon={TotalPayoutIcon}
                       title="Total Earnings"
                       value={data.userstats.total_payout}
                       prefix="$"
-                      iconColor={orange[600]}
-                      boxColor={orange[400]}
+                      iconColor={cyan[800]}
+                      boxColor={cyan[600]}
                     />
                   </Grid>
-                  <Grid item lg={3} md={3} sm={6} xs={6}>
+                  <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
                     <SmallBox
                       Icon={TotalFeaturedIcon}
                       title="Featured Posts"
                       value={data.userstats.total_featured}
-                      iconColor={green[600]}
-                      boxColor={green[400]}
+                      iconColor={orange[600]}
+                      boxColor={orange[400]}
                     />
                   </Grid>
-                  <Grid item lg={3} md={3} sm={6} xs={6}>
+                  <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
                     <SmallBox
                       Icon={QualityIcon}
                       title="Quality Score"
@@ -95,78 +87,15 @@ class Stats extends Component {
                       boxColor={pink[400]}
                     />
                   </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <Card>
-                      <CardContent>
-                        <h1>Welcome {this.props.user}!</h1>
-                        <p>Welcome to your personal TravelFeed Dashboard!</p>
-                        <p>For now, you can:</p>
-                        <ul>
-                          <li>
-                            <Link
-                              as="/dashboard/publish"
-                              href="/dashboard?page=publish"
-                              passHref
-                            >
-                              <a>Write a new post</a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              as="/dashboard/posts"
-                              href="/dashboard?page=posts"
-                              passHref
-                            >
-                              <a>View and edit your published posts</a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              as="/dashboard/comments"
-                              href="/dashboard?page=comments"
-                              passHref
-                            >
-                              <a>View your comments</a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              as="/dashboard/replies"
-                              href="/dashboard?page=replies"
-                              passHref
-                            >
-                              <a>View replies to you</a>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              as="/dashboard/profile"
-                              href="/dashboard?page=profile"
-                              passHref
-                            >
-                              <a>Edit your profile</a>
-                            </Link>
-                          </li>
-                        </ul>
-                        <p>
-                          Or,{" "}
-                          <Link href="/" passHref>
-                            <a>return to the main app</a>
-                          </Link>{" "}
-                          to discover great travel content.
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  <Grid item lg={6} md={6} sm={12} xs={12}>
-                    <Card>
+                  <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
+                    <WelcomeCard user={this.props.user} />
+                    <Card className="mt-2">
                       <CardHeader
                         style={{ background: teal[600] }}
                         title={
                           <Typography
-                            variant="h5"
+                            variant="h4"
                             align="center"
-                            gutterBottom={true}
                             className="p-2 text-light"
                           >
                             Monthly Earnings
@@ -185,7 +114,7 @@ class Stats extends Component {
               );
             }}
           </Query>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
+          <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
             <Query
               query={GET_DASHBOARD_POSTS}
               variables={{ author: this.props.user, limit: 15 }}
@@ -200,9 +129,8 @@ class Stats extends Component {
                       style={{ background: indigo[600] }}
                       title={
                         <Typography
-                          variant="h5"
+                          variant="h4"
                           align="center"
-                          gutterBottom={true}
                           className="p-2 text-light"
                         >
                           Recent Posts
@@ -216,8 +144,6 @@ class Stats extends Component {
                 );
               }}
             </Query>
-          </Grid>
-          <Grid item lg={6} md={6} sm={12} xs={12}>
             <Query
               query={GET_NOTIFICATIONS}
               variables={{
@@ -231,14 +157,13 @@ class Stats extends Component {
                   return <Fragment />;
                 }
                 return (
-                  <Card>
+                  <Card className="mt-2">
                     <CardHeader
                       style={{ background: lightGreen[600] }}
                       title={
                         <Typography
-                          variant="h5"
+                          variant="h4"
                           align="center"
-                          gutterBottom={true}
                           className="p-2 text-light"
                         >
                           Notifications
@@ -269,6 +194,7 @@ class Stats extends Component {
                         })}
                     </CardContent>
                   </Card>
+                  // Todo: Card for recent drafts
                 );
               }}
             </Query>

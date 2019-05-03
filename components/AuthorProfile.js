@@ -15,7 +15,7 @@ import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faCouch } from "@fortawesome/free-solid-svg-icons";
 import CuratorMenu from "./CuratorMenu/BlogMenu";
-
+import Header from "../components/Header";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 
 export class PostAuthorProfile extends Component {
@@ -25,10 +25,15 @@ export class PostAuthorProfile extends Component {
         <Query query={GET_PROFILE} variables={this.props}>
           {({ data, loading, error }) => {
             if (loading) {
-              return <Fragment />;
+              return <Header />;
             }
             if (error || data.profile === null) {
-              return <NotFound statusCode={404} />;
+              return (
+                <Fragment>
+                  <Header />
+                  <NotFound statusCode={404} />
+                </Fragment>
+              );
             }
             const about =
               data.profile.about != "" ? data.profile.about : <Fragment />;
@@ -147,6 +152,7 @@ export class PostAuthorProfile extends Component {
                   image={data.profile.img_url}
                   description={`${data.profile.display_name}'s Blog: ${about}`}
                 />
+                <Header subheader={data.profile.display_name} />
                 <div className="text-center p-4 mb-3" style={divStyle}>
                   <div className="container">
                     <div className="row justify-content-center">

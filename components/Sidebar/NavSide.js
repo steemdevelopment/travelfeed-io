@@ -10,6 +10,7 @@ import RepliesIcon from "@material-ui/icons/Reply";
 import DraftIcon from "@material-ui/icons/FileCopy";
 import ProfileIcon from "@material-ui/icons/Person";
 import PropTypes from "prop-types";
+import Divider from "@material-ui/core/Divider";
 
 class NavSide extends Component {
   render() {
@@ -60,11 +61,8 @@ class NavSide extends Component {
                 </MenuItem>
               </a>
             </Link>
-            <Link
-              as="/dashboard/publish"
-              href="/dashboard?page=bookmarks"
-              passHref
-            >
+            <Divider />
+            <Link href="/bookmarks" passHref>
               <a>
                 <MenuItem>
                   <ListItemIcon>

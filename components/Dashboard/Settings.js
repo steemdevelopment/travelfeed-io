@@ -16,6 +16,9 @@ import { withSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
+import { deepOrange } from "@material-ui/core/colors";
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -69,8 +72,19 @@ class Settings extends Component {
         >
           <Grid item lg={7} md={8} sm={11} xs={12}>
             <Card>
+              <CardHeader
+                style={{ background: deepOrange[600] }}
+                title={
+                  <Typography
+                    variant="h4"
+                    align="center"
+                    className="p-2 text-light"
+                  >
+                    Settings
+                  </Typography>
+                }
+              />
               <CardContent>
-                <h1>Settings</h1>
                 <Query query={GET_SETTINGS}>
                   {({ data, loading, error }) => {
                     if (loading || error) {

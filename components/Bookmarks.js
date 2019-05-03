@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
 import { GET_BOOKMARKS } from "../helpers/graphql/bookmarks";

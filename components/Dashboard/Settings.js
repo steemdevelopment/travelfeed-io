@@ -1,9 +1,6 @@
-// Todo: Add Settings Mutation/Query
-// Todo: Replace  helmet everywhere
+// Todo: Add delete account to remove all of users data from our database
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import { Mutation, Query } from "react-apollo";
 import { GET_SETTINGS, CHANGE_SETTINGS } from "../../helpers/graphql/settings";
@@ -16,9 +13,8 @@ import { withSnackbar } from "notistack";
 import PropTypes from "prop-types";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
-import CardHeader from "@material-ui/core/CardHeader";
-import Typography from "@material-ui/core/Typography";
-import { deepOrange } from "@material-ui/core/colors";
+import { teal } from "@material-ui/core/colors";
+import HeaderCard from "../General/HeaderCard";
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -71,20 +67,10 @@ class Settings extends Component {
           className="pt-4 pb-4"
         >
           <Grid item lg={7} md={8} sm={11} xs={12}>
-            <Card>
-              <CardHeader
-                style={{ background: deepOrange[600] }}
-                title={
-                  <Typography
-                    variant="h4"
-                    align="center"
-                    className="p-2 text-light"
-                  >
-                    Settings
-                  </Typography>
-                }
-              />
-              <CardContent>
+            <HeaderCard
+              title="Settings"
+              background={teal[600]}
+              content={
                 <Query query={GET_SETTINGS}>
                   {({ data, loading, error }) => {
                     if (loading || error) {
@@ -220,8 +206,8 @@ class Settings extends Component {
                     }
                   }}
                 </Query>
-              </CardContent>
-            </Card>
+              }
+            />
           </Grid>
         </Grid>
       </Fragment>

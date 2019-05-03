@@ -1,8 +1,5 @@
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
@@ -11,8 +8,8 @@ import Link from "next/link";
 import { Query } from "react-apollo";
 import { GET_PROFILE } from "../../helpers/graphql/profile";
 import SaveIcon from "@material-ui/icons/Save";
-import Typography from "@material-ui/core/Typography";
 import { indigo } from "@material-ui/core/colors";
+import HeaderCard from "../General/HeaderCard";
 
 class Profile extends Component {
   constructor(props) {
@@ -239,169 +236,161 @@ class Profile extends Component {
                 className="pt-4 pb-4"
               >
                 <Grid item lg={7} md={8} sm={11} xs={12}>
-                  <Card>
-                    <CardHeader
-                      style={{ background: indigo[600] }}
-                      title={
-                        <Typography
-                          variant="h4"
-                          align="center"
-                          className="p-2 text-light"
+                  <HeaderCard
+                    title="Edit Your Profile"
+                    background={indigo[600]}
+                    content={
+                      <Fragment>
+                        {/* Todo: Find out what the blockchain imposed length limits are for each field */}
+                        <TextField
+                          label="Name"
+                          inputProps={{
+                            maxLength: 20
+                          }}
+                          multiline={true}
+                          placeholder="Your display name"
+                          margin="normal"
+                          value={this.state.name}
+                          onChange={this.handleEditorChange_name}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Profile description"
+                          inputProps={{
+                            maxLength: 160
+                          }}
+                          multiline={true}
+                          placeholder="Profile description"
+                          margin="normal"
+                          value={this.state.about}
+                          onChange={this.handleEditorChange_about}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Profile image"
+                          inputProps={{
+                            maxLength: 1000
+                          }}
+                          placeholder="Profile image"
+                          margin="normal"
+                          value={this.state.profile_image}
+                          onChange={this.handleEditorChange_profile_image}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Cover image"
+                          inputProps={{
+                            maxLength: 1000
+                          }}
+                          placeholder="Cover image for your blog"
+                          margin="normal"
+                          value={this.state.cover_image}
+                          onChange={this.handleEditorChange_cover_image}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Location"
+                          inputProps={{
+                            maxLength: 30
+                          }}
+                          multiline={true}
+                          placeholder="Your location"
+                          margin="normal"
+                          value={this.state.location}
+                          onChange={this.handleEditorChange_location}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Website"
+                          inputProps={{
+                            maxLength: 100
+                          }}
+                          multiline={true}
+                          placeholder="Your website"
+                          margin="normal"
+                          value={this.state.website}
+                          onChange={this.handleEditorChange_website}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Facebook"
+                          inputProps={{
+                            maxLength: 50
+                          }}
+                          multiline={true}
+                          placeholder="Your Facebook username or fanpage"
+                          margin="normal"
+                          value={this.state.facebook}
+                          onChange={this.handleEditorChange_facebook}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Twitter"
+                          inputProps={{
+                            maxLength: 50
+                          }}
+                          multiline={true}
+                          placeholder="Your Twitter username"
+                          margin="normal"
+                          value={this.state.twitter}
+                          onChange={this.handleEditorChange_twitter}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Instagram"
+                          inputProps={{
+                            maxLength: 30
+                          }}
+                          multiline={true}
+                          placeholder="Your Instagram username"
+                          margin="normal"
+                          value={this.state.instagram}
+                          onChange={this.handleEditorChange_instagram}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Youtube"
+                          inputProps={{
+                            maxLength: 20
+                          }}
+                          multiline={true}
+                          placeholder="Your Youtube username"
+                          margin="normal"
+                          value={this.state.youtube}
+                          onChange={this.handleEditorChange_youtube}
+                          fullWidth
+                        />
+                        <TextField
+                          label="Couchsurfing"
+                          inputProps={{
+                            maxLength: 50
+                          }}
+                          multiline={true}
+                          placeholder="Your Couchsurfing username or fanpage"
+                          margin="normal"
+                          value={this.state.couchsurfing}
+                          onChange={this.handleEditorChange_couchsurfing}
+                          fullWidth
+                        />
+                        {updatebtn}
+                        <Link
+                          as={`/@${this.props.user}`}
+                          href={`/blog?author=${this.props.user}`}
+                          passHref
                         >
-                          Edit Your Profile
-                        </Typography>
-                      }
-                    />
-                    <CardContent>
-                      {/* Todo: Find out what the blockchain imposed length limits are for each field */}
-                      <TextField
-                        label="Name"
-                        inputProps={{
-                          maxLength: 20
-                        }}
-                        multiline={true}
-                        placeholder="Your display name"
-                        margin="normal"
-                        value={this.state.name}
-                        onChange={this.handleEditorChange_name}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Profile description"
-                        inputProps={{
-                          maxLength: 160
-                        }}
-                        multiline={true}
-                        placeholder="Profile description"
-                        margin="normal"
-                        value={this.state.about}
-                        onChange={this.handleEditorChange_about}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Profile image"
-                        inputProps={{
-                          maxLength: 1000
-                        }}
-                        placeholder="Profile image"
-                        margin="normal"
-                        value={this.state.profile_image}
-                        onChange={this.handleEditorChange_profile_image}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Cover image"
-                        inputProps={{
-                          maxLength: 1000
-                        }}
-                        placeholder="Cover image for your blog"
-                        margin="normal"
-                        value={this.state.cover_image}
-                        onChange={this.handleEditorChange_cover_image}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Location"
-                        inputProps={{
-                          maxLength: 30
-                        }}
-                        multiline={true}
-                        placeholder="Your location"
-                        margin="normal"
-                        value={this.state.location}
-                        onChange={this.handleEditorChange_location}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Website"
-                        inputProps={{
-                          maxLength: 100
-                        }}
-                        multiline={true}
-                        placeholder="Your website"
-                        margin="normal"
-                        value={this.state.website}
-                        onChange={this.handleEditorChange_website}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Facebook"
-                        inputProps={{
-                          maxLength: 50
-                        }}
-                        multiline={true}
-                        placeholder="Your Facebook username or fanpage"
-                        margin="normal"
-                        value={this.state.facebook}
-                        onChange={this.handleEditorChange_facebook}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Twitter"
-                        inputProps={{
-                          maxLength: 50
-                        }}
-                        multiline={true}
-                        placeholder="Your Twitter username"
-                        margin="normal"
-                        value={this.state.twitter}
-                        onChange={this.handleEditorChange_twitter}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Instagram"
-                        inputProps={{
-                          maxLength: 30
-                        }}
-                        multiline={true}
-                        placeholder="Your Instagram username"
-                        margin="normal"
-                        value={this.state.instagram}
-                        onChange={this.handleEditorChange_instagram}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Youtube"
-                        inputProps={{
-                          maxLength: 20
-                        }}
-                        multiline={true}
-                        placeholder="Your Youtube username"
-                        margin="normal"
-                        value={this.state.youtube}
-                        onChange={this.handleEditorChange_youtube}
-                        fullWidth
-                      />
-                      <TextField
-                        label="Couchsurfing"
-                        inputProps={{
-                          maxLength: 50
-                        }}
-                        multiline={true}
-                        placeholder="Your Couchsurfing username or fanpage"
-                        margin="normal"
-                        value={this.state.couchsurfing}
-                        onChange={this.handleEditorChange_couchsurfing}
-                        fullWidth
-                      />
-                      {updatebtn}
-                      <Link
-                        as={`/@${this.props.user}`}
-                        href={`/blog?author=${this.props.user}`}
-                        passHref
-                      >
-                        <a>
-                          <Button
-                            color="primary"
-                            variant="outlined"
-                            className="ml-2"
-                          >
-                            View your public profile
-                          </Button>
-                        </a>
-                      </Link>
-                    </CardContent>
-                  </Card>
+                          <a>
+                            <Button
+                              color="primary"
+                              variant="outlined"
+                              className="ml-2"
+                            >
+                              View your public profile
+                            </Button>
+                          </a>
+                        </Link>
+                      </Fragment>
+                    }
+                  />
                 </Grid>
               </Grid>
             );

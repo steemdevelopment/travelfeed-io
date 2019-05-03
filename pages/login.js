@@ -10,11 +10,14 @@ import { Mutation, Query } from "react-apollo";
 import { GET_LOGIN_TOKEN } from "../helpers/graphql/token";
 import { CHANGE_SETTINGS } from "../helpers/graphql/settings";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
+import Terms from "../components/About/Texts/Terms";
+import Privacy from "../components/About/Texts/Privacy";
+import Cookies from "../components/About/Texts/Cookies";
+import Typography from "@material-ui/core/Typography";
 
 class Login extends Component {
   state = {
@@ -118,114 +121,21 @@ class Login extends Component {
                               id="customized-dialog-title"
                               onClose={this.handleClose}
                             >
-                              Terms of Service
+                              Terms and Privacy
                             </MuiDialogTitle>
                             <MuiDialogContent>
-                              <Typography gutterBottom>
-                                Cras mattis consectetur purus sit amet
-                                fermentum. Cras justo odio, dapibus ac facilisis
-                                in, egestas eget quam. Morbi leo risus, porta ac
-                                consectetur ac, vestibulum at eros.
+                              <Typography variant="h5" align="center">
+                                Terms of Service
                               </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
+                              <Terms />
+                              <Typography variant="h5" align="center">
+                                Privacy Policy
                               </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
+                              <Privacy />
+                              <Typography variant="h5" align="center">
+                                Cookies
                               </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Vivamus sagittis lacus vel
-                                augue laoreet rutrum faucibus dolor auctor.
-                              </Typography>
-                              <Typography gutterBottom>
-                                Aenean lacinia bibendum nulla sed consectetur.
-                                Praesent commodo cursus magna, vel scelerisque
-                                nisl consectetur et. Donec sed odio dui. Donec
-                                ullamcorper nulla non metus auctor fringilla.
-                              </Typography>
+                              <Cookies />
                             </MuiDialogContent>
                             <MuiDialogActions>
                               <Button onClick={changeSettings} color="primary">

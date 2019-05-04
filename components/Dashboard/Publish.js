@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from "react";
 import Helmet from "react-helmet";
-import PostEditor from "../PostEditor";
+import PostEditor from "../Editor/PostEditor";
 
 class Publish extends Component {
   render() {

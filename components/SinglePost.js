@@ -173,7 +173,7 @@ export class SinglePost extends Component {
                     parent_author: data.post.parent_author,
                     parent_permlink: data.post.parent_permlink,
                     root_author: data.post.parent_author,
-                    root_permlink: data.post.parent_permlink,
+                    root_permlink: data.post.root_permlink,
                     root_title: data.post.root_title
                   }}
                   title={true}
@@ -182,7 +182,7 @@ export class SinglePost extends Component {
             } else {
               head = (
                 <Head
-                  title={data.post.title}
+                  title={`${data.post.title} - TravelFeed`}
                   image={data.post.img_url}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}

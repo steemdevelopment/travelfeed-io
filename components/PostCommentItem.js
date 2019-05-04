@@ -17,12 +17,22 @@ import CuratorMenu from "./CuratorMenu/CommentMenu";
 class PostpostItem extends Component {
   state = {
     isEdit: false,
-    showEditor: false
+    showEditor: false,
+    userComment: undefined,
+    body: undefined
   };
   handleClick() {
     this.setState({
       showEditor: true
     });
+  }
+  onCommentAdd(userComment) {
+    console.log(userComment);
+    this.setState({ userComment });
+  }
+  onCommentEdit(userComment) {
+    console.log(userComment);
+    this.setState({ body: userComment.body, showEditor: false });
   }
   componentDidMount() {
     const user = getUser();
@@ -31,7 +41,7 @@ class PostpostItem extends Component {
     }
   }
   render() {
-    let htmlBody = parseBody(this.props.post.body, {});
+    let htmlBody = parseBody(this.state.body || this.props.post.body, {});
     const bodyText = { __html: htmlBody };
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies == true) {
@@ -111,16 +121,12 @@ class PostpostItem extends Component {
     if (this.state.showEditor) {
       cardcontent = (
         <CommentEditor
-          initialValue={htmlBody}
-          edit={{
-            parent_author: this.props.post.parent_author,
-            parent_permlink: this.props.post.parent_permlink,
-            author: this.props.post.author,
-            permlink: this.props.post.permlink,
-            title: "",
-            tags: ["travelfeed"]
-          }}
-          mode="edit"
+          editMode={true}
+          permlink={this.props.post.permlink}
+          parent_author={this.props.post.parent_author}
+          parent_permlink={this.props.post.parent_permlink}
+          defaultValue={this.props.post.body}
+          onCommentEdit={this.onCommentEdit.bind(this)}
         />
       );
     }
@@ -189,8 +195,28 @@ class PostpostItem extends Component {
             handleClick={this.handleClick.bind(this)}
             isEdit={this.state.isEdit}
             depth={this.props.post.depth}
+            onCommentAdd={this.onCommentAdd.bind(this)}
           />
         </Card>
+        {// "Fake" display new user comment after submitting comment without refreshing from the API
+        this.state.userComment && (
+          <PostpostItem
+            post={{
+              body: this.state.userComment.body,
+              created_at: new Date(),
+              children: 0,
+              author: getUser(),
+              display_name: "",
+              permlink: this.state.userComment.permlink,
+              depth: this.props.post.depth + 1,
+              total_votes: 0,
+              votes: "",
+              parent_author: "",
+              parent_permlink: "",
+              root_title: ""
+            }}
+          />
+        )}
         {children}
       </Fragment>
     );

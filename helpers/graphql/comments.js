@@ -25,6 +25,8 @@ export const commentQuery = gql`
       depth
       votes
       total_votes
+      parent_author
+      parent_permlink
     }
   }
 `;

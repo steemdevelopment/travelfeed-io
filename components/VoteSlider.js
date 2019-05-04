@@ -16,7 +16,7 @@ import { vote } from "../utils/actions";
 import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
-import PostEditor from "./PostEditor";
+import CommentEditor from "./Editor/CommentEditor";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Query } from "react-apollo";
 import { GET_VOTE_WEIGHTS } from "../helpers/graphql/settings";
@@ -203,7 +203,7 @@ class VoteSlider extends Component {
         editButton = (
           <Tooltip title="Edit" placement="bottom">
             <IconButton
-              aria-label="Upvote"
+              aria-label="Edit"
               onClick={() => {
                 this.props.handleClick();
               }}
@@ -323,12 +323,11 @@ class VoteSlider extends Component {
       cardFooter = (
         <CardActions>
           <div className="w-100">
-            <PostEditor
-              type="comment"
-              edit={{
-                parent_author: this.props.author,
-                parent_permlink: this.props.permlink
-              }}
+            <CommentEditor
+              parent_author={this.props.author}
+              parent_permlink={this.props.permlink}
+              onClose={() => this.collapseCommentBar()}
+              onCommentAdd={this.props.onCommentAdd}
             />
           </div>
           <Tooltip title="Close" placement="bottom">
@@ -344,6 +343,7 @@ class VoteSlider extends Component {
 }
 
 VoteSlider.propTypes = {
+  onCommentAdd: PropTypes.func,
   author: PropTypes.string,
   permlink: PropTypes.string,
   votes: PropTypes.string,

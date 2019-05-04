@@ -138,7 +138,7 @@ class PostGrid extends Component {
                               parent_author: post.parent_author,
                               parent_permlink: post.parent_permlink,
                               root_author: post.parent_author,
-                              root_permlink: post.parent_permlink,
+                              root_permlink: post.root_permlink,
                               root_title: post.root_title,
                               tags: "travelfeed"
                             }}

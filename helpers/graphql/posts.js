@@ -60,6 +60,7 @@ export const GET_POSTS = gql`
       parent_author
       parent_permlink
       root_title
+      root_permlink
       depth
       payout
     }

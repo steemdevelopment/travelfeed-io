@@ -16,10 +16,16 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import PublishIcon from "@material-ui/icons/Create";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
-import PrivacyIcon from "@material-ui/icons/Info";
 import DownIcon from "@material-ui/icons/ArrowDropDown";
 import FeedIcon from "@material-ui/icons/Home";
 import Divider from "@material-ui/core/Divider";
+import MoreVert from "@material-ui/icons/MoreVert";
+import MenuIcon from "@material-ui/icons/Menu";
+import TermsIcon from "@material-ui/icons/Toc";
+import PrivacyIcon from "@material-ui/icons/Lock";
+import CookieIcon from "@material-ui/icons/GroupWork";
+import LoginIcon from "@material-ui/icons/VpnKey";
+import SignUpIcon from "@material-ui/icons/PersonAdd";
 
 class HeaderMenu extends Component {
   state = {
@@ -51,16 +57,111 @@ class HeaderMenu extends Component {
     if (this.state.user == null) {
       me = (
         <Fragment>
-          <Link href="/join" passHref>
-            <a>
-              <Button color="primary" variant="outlined">
-                Join Now
-              </Button>
+          <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
+            <Link href="/join" passHref>
+              <a>
+                <Button color="primary" variant="outlined">
+                  Join Now
+                </Button>
+              </a>
+            </Link>
+            <a href={getLoginURL}>
+              <Button color="primary">Login</Button>
             </a>
-          </Link>
-          <a href={getLoginURL}>
-            <Button color="primary">Sign In</Button>
-          </a>
+          </div>
+          <div>
+            <Button
+              buttonRef={node => {
+                this.anchorEl = node;
+              }}
+              aria-owns={menuopen ? "menu-list-grow" : undefined}
+              aria-haspopup="true"
+              onClick={this.handleToggle}
+            >
+              {" "}
+              <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
+                <MoreVert />
+              </div>
+              <div className="d-xl-none d-lg-none d-md-none d-sm-none d-xs-block">
+                <MenuIcon />
+              </div>
+            </Button>
+            <Popper
+              open={menuopen}
+              anchorEl={this.anchorEl}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === "bottom" ? "center top" : "center bottom"
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={this.handleClose}>
+                      <MenuList>
+                        <div className="d-xl-none d-lg-none d-md-none d-sm-none d-xs-block">
+                          <a href={getLoginURL}>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <LoginIcon />
+                                <ListItemText inset primary="Login" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                          <Link href="/join" passHref>
+                            <a>
+                              <MenuItem>
+                                <ListItemIcon>
+                                  <SignUpIcon />
+                                  <ListItemText inset primary="Join Now" />
+                                </ListItemIcon>
+                              </MenuItem>
+                            </a>
+                          </Link>
+                          <Divider />
+                        </div>
+                        <Link href="/about/privacy" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <PrivacyIcon />
+                                <ListItemText inset primary="Privacy" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Link href="/about/terms" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <TermsIcon />
+                                <ListItemText inset primary="Terms" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Link href="/about/cookies" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <CookieIcon />
+                                <ListItemText inset primary="Cookies" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </div>
         </Fragment>
       );
     }

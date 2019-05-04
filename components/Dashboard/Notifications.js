@@ -39,9 +39,12 @@ class Notifications extends Component {
                   )}
                   {data.posts &&
                     data.posts.length > 0 &&
-                    data.posts.map(post => {
+                    data.posts.map((post, index) => {
                       return post.curation_score === 10000 ? (
-                        <div className="d-flex justify-content-center p-2">
+                        <div
+                          key={index}
+                          className="d-flex justify-content-center p-2"
+                        >
                           <CustomSnackbar
                             variant="success"
                             message={`Your post ${post.title}
@@ -50,11 +53,16 @@ class Notifications extends Component {
                           />
                         </div>
                       ) : (
-                        <CustomSnackbar
-                          variant="info"
-                          message={`Your post ${post.title}
+                        <div
+                          key={index}
+                          className="d-flex justify-content-center p-2"
+                        >
+                          <CustomSnackbar
+                            variant="info"
+                            message={`Your post ${post.title}
                             received a small vote by our curation team! Good job!`}
-                        />
+                          />
+                        </div>
                       );
                     })}
                 </div>

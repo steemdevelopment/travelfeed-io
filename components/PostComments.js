@@ -26,51 +26,40 @@ class PostComments extends Component {
             orderdir: this.props.orderdir
           }}
         >
-          {({ data, loading, error, fetchMore }) => {
-            if (loading || error || data.post === null) {
-              return <Fragment />;
-            }
-            return (
-              <InfiniteScroll
-                loadMore={() =>
-                  fetchMore({
-                    variables: {
-                      offset: data.posts.length
-                    },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      if (fetchMoreResult.posts.length === 0) {
-                        this.noMore();
+          {({ data, fetchMore }) => {
+            if (data.posts) {
+              return (
+                <InfiniteScroll
+                  loadMore={() =>
+                    fetchMore({
+                      variables: {
+                        offset: data.posts.length
+                      },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (fetchMoreResult.posts.length === 0) {
+                          this.noMore();
+                        }
+                        if (!fetchMoreResult) return prev;
+                        return Object.assign({}, prev, {
+                          posts: [...prev.posts, ...fetchMoreResult.posts]
+                        });
                       }
-                      if (!fetchMoreResult) return prev;
-                      return Object.assign({}, prev, {
-                        posts: [...prev.posts, ...fetchMoreResult.posts]
-                      });
-                    }
-                  })
-                }
-                hasMore={this.state.hasMore}
-                threshold={1000}
-                loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div className="p-5 text-center">
-                      <CircularProgress />
-                    </div>
-                  </Grid>
-                }
-              >
-                {data.posts.map(
-                  ({
-                    post_id,
-                    author,
-                    display_name,
-                    body,
-                    created_at,
-                    children,
-                    permlink,
-                    depth,
-                    total_votes,
-                    votes
-                  }) => (
+                    })
+                  }
+                  hasMore={this.state.hasMore}
+                  threshold={1000}
+                  loader={
+                    // don't show loadoing indicator for loading subcomments
+                    this.props.ismain && (
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="p-5 text-center">
+                          <CircularProgress />
+                        </div>
+                      </Grid>
+                    )
+                  }
+                >
+                  {data.posts.map((post, index) => (
                     <Grid
                       item
                       lg={12}
@@ -78,20 +67,20 @@ class PostComments extends Component {
                       sm={12}
                       xs={12}
                       className="pb-2"
-                      key={`${author}_${permlink}`}
+                      key={index}
                     >
                       <PostCommentItem
                         post={{
-                          post_id: post_id,
-                          body: body,
-                          created_at: created_at,
-                          children: children,
-                          author: author,
-                          display_name: display_name,
-                          permlink: permlink,
-                          depth: depth,
-                          total_votes: total_votes,
-                          votes: votes,
+                          post_id: post.post_id,
+                          body: post.body,
+                          created_at: post.created_at,
+                          children: post.children,
+                          author: post.author,
+                          display_name: post.display_name,
+                          permlink: post.permlink,
+                          depth: post.depth,
+                          total_votes: post.total_votes,
+                          votes: post.votes,
                           parent_author: "",
                           parent_permlink: "",
                           root_title: ""
@@ -100,10 +89,11 @@ class PostComments extends Component {
                         orderdir={this.props.orderdir}
                       />
                     </Grid>
-                  )
-                )}
-              </InfiniteScroll>
-            );
+                  ))}
+                </InfiniteScroll>
+              );
+            }
+            return <Fragment />;
           }}
         </Query>
       </Fragment>
@@ -111,10 +101,15 @@ class PostComments extends Component {
   }
 }
 
+PostComments.defaultProps = {
+  ismain: false
+};
+
 PostComments.propTypes = {
   post_id: PropTypes.number.isRequired,
   orderby: PropTypes.string,
-  orderdir: PropTypes.string
+  orderdir: PropTypes.string,
+  ismain: PropTypes.bool
 };
 
 export default PostComments;

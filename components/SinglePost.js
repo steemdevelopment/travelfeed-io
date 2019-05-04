@@ -26,7 +26,6 @@ import SubHeader from "./Post/SubHeader";
 import OrderBySelect from "./Post/OrderBySelect";
 import PostCommentItem from "./PostCommentItem";
 import { GET_SETTINGS } from "../helpers/graphql/settings";
-import { isAbsolute } from "path";
 
 export class SinglePost extends Component {
   state = {
@@ -40,7 +39,7 @@ export class SinglePost extends Component {
   handleClick(op) {
     this.setState(op);
   }
-  listenScrollEvent = e => {
+  listenScrollEvent = () => {
     if (window.scrollY > 500) {
       this.setState({
         bgpos: "absolute",
@@ -287,13 +286,14 @@ export class SinglePost extends Component {
                   <Grid item lg={12} md={12} sm={12} xs={12}>
                     <OrderBySelect
                       handleClick={this.handleClick.bind(this)}
-                      selection={this.state.title}
+                      selection={this.state.title || "Most miles"}
                     />
                   </Grid>
                   <PostComments
                     post_id={data.post.post_id}
-                    orderby={this.state.orderby}
-                    orderdir={this.state.orderdir}
+                    orderby={this.state.orderby || "total_votes"}
+                    orderdir={this.state.orderdir || "DESC"}
+                    ismain={true}
                   />
                 </Grid>
               );

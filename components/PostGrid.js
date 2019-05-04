@@ -29,7 +29,6 @@ class PostGrid extends Component {
       <Fragment>
         <Query query={GET_POSTS} variables={this.props.query}>
           {({ data, loading, error, fetchMore }) => {
-            console.log(this.props.query);
             if (loading) {
               return (
                 <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -79,7 +78,7 @@ class PostGrid extends Component {
                 >
                   {data.posts &&
                     data.posts.length > 0 &&
-                    data.posts.map(post => {
+                    data.posts.map((post, index) => {
                       const imgHeight = this.props.cardHeight * 3;
                       const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
@@ -175,7 +174,7 @@ class PostGrid extends Component {
                           md={this.props.grid.md}
                           sm={this.props.grid.sm}
                           xs={this.props.grid.xs}
-                          key={`${post.author}_${post.permlink}`}
+                          key={index}
                         >
                           {card}
                         </Grid>

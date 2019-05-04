@@ -5,27 +5,27 @@ class LegalNotice extends Component {
   render() {
     return (
       <div className="pt-4 p-2">
-        <Link as={`/about`} passHref>
+        <Link href={`/about`} passHref>
           <a className="text-muted">About</a>
         </Link>
         {"　"}
-        <Link as={`/about/terms`} passHref>
+        <Link href={`/about/terms`} passHref>
           <a className="text-muted">Terms</a>
         </Link>
         {"　"}
-        <Link as={`/about/privacy`} passHref>
+        <Link href={`/about/privacy`} passHref>
           <a className="text-muted">Privacy</a>
         </Link>
         {"　"}
-        <Link as={`/about/cookies`} passHref>
+        <Link href={`/about/cookies`} passHref>
           <a className="text-muted">Cookies</a>
         </Link>
         {"　"}
-        <Link as={`/about/support-us`} passHref>
+        <Link href={`/about/support-us`} passHref>
           <a className="text-muted">Support Us</a>
         </Link>
         {"　"}
-        <Link as={`/about/faq`} passHref>
+        <Link href={`/about/faq`} passHref>
           <a className="text-muted">FAQ</a>
         </Link>
         <p className="text-muted pt-1">

@@ -12,7 +12,11 @@ class HeaderCard extends Component {
         <CardHeader
           style={{ background: this.props.background }}
           title={
-            <Typography variant="h4" align="center" className="p-2 text-light">
+            <Typography
+              variant={this.props.titlesize}
+              align="center"
+              className="p-2 text-light"
+            >
               {this.props.title}
             </Typography>
           }
@@ -23,8 +27,13 @@ class HeaderCard extends Component {
   }
 }
 
+HeaderCard.defaultProps = {
+  titlesize: "h4"
+};
+
 HeaderCard.propTypes = {
   background: PropTypes.string,
+  titlesize: PropTypes.string,
   title: PropTypes.string,
   content: PropTypes.any
 };

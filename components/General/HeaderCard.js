@@ -21,21 +21,24 @@ class HeaderCard extends Component {
             </Typography>
           }
         />
-        <CardContent>{this.props.content}</CardContent>
+        {this.props.noborder && this.props.content}
+        <CardContent>{!this.props.noborder && this.props.content}</CardContent>
       </Card>
     );
   }
 }
 
 HeaderCard.defaultProps = {
-  titlesize: "h4"
+  titlesize: "h4",
+  noborder: false
 };
 
 HeaderCard.propTypes = {
   background: PropTypes.string,
   titlesize: PropTypes.string,
   title: PropTypes.string,
-  content: PropTypes.any
+  content: PropTypes.any,
+  noborder: PropTypes.bool
 };
 
 export default HeaderCard;

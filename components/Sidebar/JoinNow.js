@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 class LegalNotice extends Component {
   render() {
     return (
-      <div className="text-center">
+      <div className="text-center pt-3">
         <Card>
           <CardContent>
             <Typography

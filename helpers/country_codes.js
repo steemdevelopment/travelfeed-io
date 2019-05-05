@@ -22,6 +22,52 @@ export const nameFromSlug = cc => {
     : "";
 };
 
+const popular_countries = [
+  "ar",
+  "au",
+  "at",
+  "kh",
+  "cl",
+  "ca",
+  "cn",
+  "fr",
+  "de",
+  "jp",
+  "la",
+  "my",
+  "is",
+  "kr",
+  "mx",
+  "nl",
+  "ph",
+  "pl",
+  "za",
+  "ru",
+  "ro",
+  "ch",
+  "tw",
+  "tr",
+  "gb",
+  "us",
+  "vn",
+  "co",
+  "ma",
+  "nz",
+  "es",
+  "pt",
+  "th",
+  "in",
+  "lk",
+  "ec",
+  "br",
+  "bo",
+  "no",
+  "bg"
+];
+
+export const random_country =
+  popular_countries[Math.floor(Math.random() * popular_countries.length)];
+
 // https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
 const countries = [
   { alpha2: "af", name: "Afghanistan", slug: "afghanistan" },

@@ -1,10 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Link from "next/link";
-import Typography from "@material-ui/core/Typography";
 import { Query } from "react-apollo";
 import { GET_BLOG_POSTS } from "../../helpers/graphql/posts";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import HeaderCard from "../General/HeaderCard";

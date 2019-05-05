@@ -111,22 +111,24 @@ class PostGrid extends Component {
                           key={post.permlink}
                         >
                           <GridPostCard
-                            author={post.author}
-                            display_name={post.display_name}
-                            permlink={post.permlink}
-                            title={title}
-                            img_url={image}
-                            created_at={post.created_at}
-                            readtime={readtime}
-                            excerpt={excerpt}
-                            votes={post.votes}
-                            total_votes={post.total_votes}
-                            tags={tags}
-                            curation_score={post.curation_score}
-                            app={post.app}
-                            depth={post.depth}
-                            cardHeight={250}
                             isBookmark={true}
+                            cardHeight={250}
+                            post={{
+                              author: post.author,
+                              display_name: post.display_name,
+                              permlink: post.permlink,
+                              title: title,
+                              img_url: image,
+                              created_at: post.created_at,
+                              readtime: readtime,
+                              excerpt: excerpt,
+                              votes: post.votes,
+                              total_votes: post.total_votes,
+                              tags: tags,
+                              curation_score: post.curation_score,
+                              app: post.app,
+                              depth: post.depth
+                            }}
                           />
                         </Grid>
                       );

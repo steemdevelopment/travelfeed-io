@@ -74,6 +74,11 @@ app
       res.redirect(`/hot/${tag}`);
     });
 
+    server.get("/trending/:tag", (req, res) => {
+      const tag = req.params.tag;
+      res.redirect(`/favorites/${tag}`);
+    });
+
     server.get("/hot/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
@@ -81,11 +86,6 @@ app
         tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/trending/:tag", (req, res) => {
-      const tag = req.params.tag;
-      res.redirect(`/favorites/${tag}`);
     });
 
     server.get("/favorites/:tag", (req, res) => {
@@ -105,6 +105,47 @@ app
       };
       app.render(req, res, actualPage, queryParams);
     });
+
+    server.get("/destinations/:country", (req, res) => {
+      const actualPage = "/destinations";
+      const queryParams = {
+        country: req.params.country
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/destinations/:country/:subdivision", (req, res) => {
+      const actualPage = "/destinations";
+      const queryParams = {
+        country: req.params.country,
+        subdivision: req.params.subdivision
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/destinations/:country/:subdivision/:city", (req, res) => {
+      const actualPage = "/destinations";
+      const queryParams = {
+        country: req.params.country,
+        subdivision: req.params.subdivision,
+        city: req.params.city
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get(
+      "/destinations/:country/:subdivision/:city/:suburb",
+      (req, res) => {
+        const actualPage = "/destinations";
+        const queryParams = {
+          country: req.params.country,
+          subdivision: req.params.subdivision,
+          city: req.params.city,
+          suburb: req.params.suburb
+        };
+        app.render(req, res, actualPage, queryParams);
+      }
+    );
 
     server.get("/blog", (req, res) => {
       const actualPage = "/blog";

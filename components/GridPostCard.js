@@ -12,6 +12,10 @@ import PropTypes from "prop-types";
 import IsCurated from "./IsCurated";
 import SubHeader from "./Post/SubHeader";
 import BookmarkIcon from "./Post/BookmarkIcon";
+import LocationIcon from "@material-ui/icons//LocationOn";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import { nameFromCC, slugFromCC } from "../helpers/country_codes";
 
 class PostCard extends Component {
   state = { show: true };
@@ -27,21 +31,21 @@ class PostCard extends Component {
     if (this.props.showBookmark === true) {
       action = (
         <BookmarkIcon
-          author={this.props.author}
-          permlink={this.props.permlink}
+          author={this.props.post.author}
+          permlink={this.props.post.permlink}
         />
       );
     } else if (this.props.isBookmark === true) {
       action = (
         <BookmarkIcon
-          author={this.props.author}
-          permlink={this.props.permlink}
+          author={this.props.post.author}
+          permlink={this.props.post.permlink}
           onBmChange={this.hide.bind(this)}
         />
       );
     } else {
       let appIcon = <Fragment />;
-      if (this.props.app.split("/")[0] === "travelfeed") {
+      if (this.props.post.app.split("/")[0] === "travelfeed") {
         appIcon = (
           <img
             width="25"
@@ -50,27 +54,63 @@ class PostCard extends Component {
           />
         );
       }
+      const country =
+        this.props.post.country_code !== null
+          ? nameFromCC(this.props.post.country_code)
+          : undefined;
+      const countryslug =
+        this.props.post.country_code !== null
+          ? slugFromCC(this.props.post.country_code)
+          : undefined;
       action = (
         <Fragment>
           {appIcon}
-          <IsCurated curation_score={this.props.curation_score} />
+          {country && (
+            <Link
+              as={`/destinations/${countryslug}/${
+                this.props.post.subdivision !== null
+                  ? this.props.post.subdivision
+                  : ""
+              }/`}
+              href={`/destinations?country=${countryslug}${
+                this.props.post.subdivision !== null
+                  ? "&subdivision=" + this.props.post.subdivision
+                  : ""
+              }`}
+              passHref
+            >
+              <Tooltip
+                title={`${
+                  this.props.post.subdivision !== null
+                    ? this.props.post.subdivision + ", "
+                    : ""
+                } ${country}`}
+                placement="bottom"
+              >
+                <IconButton>
+                  <LocationIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+          )}
+          <IsCurated curation_score={this.props.post.curation_score} />
         </Fragment>
       );
     }
     return (
-      <Card key={this.props.permlink} className="m-2">
+      <Card key={this.props.post.permlink} className="m-2">
         <CardHeader
           avatar={
             <Link
-              as={`/@${this.props.author}`}
-              href={`/blog?author=${this.props.author}`}
+              as={`/@${this.props.post.author}`}
+              href={`/blog?author=${this.props.post.author}`}
               passHref
             >
               <a>
                 <Avatar
                   style={{ cursor: "pointer" }}
                   src={`https://steemitimages.com/u/${
-                    this.props.author
+                    this.props.post.author
                   }/avatar/small`}
                 />
               </a>
@@ -79,58 +119,58 @@ class PostCard extends Component {
           action={<Fragment>{action}</Fragment>}
           title={
             <Link
-              as={`/@${this.props.author}`}
-              href={`/blog?author=${this.props.author}`}
+              as={`/@${this.props.post.author}`}
+              href={`/blog?author=${this.props.post.author}`}
               passHref
             >
               <a className="text-dark cpointer">
-                <strong>{this.props.display_name}</strong>
-                <span className="text-muted"> @{this.props.author}</span>
+                <strong>{this.props.post.display_name}</strong>
+                <span className="text-muted"> @{this.props.post.author}</span>
               </a>
             </Link>
           }
           subheader={
             <SubHeader
-              created_at={this.props.created_at}
-              readtime={this.props.readtime}
+              created_at={this.props.post.created_at}
+              readtime={this.props.post.readtime}
             />
           }
         />
         <Link
-          as={`/@${this.props.author}/${this.props.permlink}`}
-          href={`/post?author=${this.props.author}&permlink=${
-            this.props.permlink
+          as={`/@${this.props.post.author}/${this.props.post.permlink}`}
+          href={`/post?author=${this.props.post.author}&permlink=${
+            this.props.post.permlink
           }`}
           passHref
         >
           <a>
             <CardActionArea>
-              {this.props.img_url !== undefined && (
+              {this.props.post.img_url !== undefined && (
                 <CardMedia
                   style={{ height: this.props.cardHeight }}
                   className="pt-2 text-right"
-                  image={this.props.img_url}
+                  image={this.props.post.img_url}
                 />
               )}
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {this.props.title}
+                <Typography gutterBottom variant="h5">
+                  {this.props.post.title}
                 </Typography>
                 <Typography component="p">
-                  {this.props.excerpt} [...]
+                  {this.props.post.excerpt} [...]
                 </Typography>
               </CardContent>
             </CardActionArea>
           </a>
         </Link>
         <VoteSlider
-          author={this.props.author}
-          permlink={this.props.permlink}
-          votes={this.props.votes}
-          total_votes={this.props.total_votes}
-          tags={this.props.tags}
+          author={this.props.post.author}
+          permlink={this.props.post.permlink}
+          votes={this.props.post.votes}
+          total_votes={this.props.post.total_votes}
+          tags={this.props.post.tags}
           mode="gridcard"
-          depth={this.props.depth}
+          depth={this.props.post.depth}
         />{" "}
       </Card>
     );
@@ -143,23 +183,10 @@ PostCard.default = {
 };
 
 PostCard.propTypes = {
-  author: PropTypes.string,
-  display_name: PropTypes.string,
-  permlink: PropTypes.string,
-  title: PropTypes.string,
-  img_url: PropTypes.string,
-  created_at: PropTypes.string,
-  readtime: PropTypes.object,
-  excerpt: PropTypes.string,
-  votes: PropTypes.string,
-  total_votes: PropTypes.number,
-  tags: PropTypes.array,
-  curation_score: PropTypes.number,
-  app: PropTypes.string,
-  showBookmark: PropTypes.bool,
-  isBookmark: PropTypes.bool,
+  post: PropTypes.object.isRequired,
   cardHeight: PropTypes.number,
-  depth: PropTypes.number
+  showBookmark: PropTypes.bool,
+  isBookmark: PropTypes.bool
 };
 
 export default PostCard;

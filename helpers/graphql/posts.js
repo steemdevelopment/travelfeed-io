@@ -63,6 +63,8 @@ export const GET_POSTS = gql`
       root_permlink
       depth
       payout
+      country_code
+      subdivision
     }
   }
 `;

@@ -1,13 +1,17 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import PropTypes from "prop-types";
 import dynamic from "next/dynamic";
+import AddLocationIcon from "@material-ui/icons/AddLocation";
+import EditLocationIcon from "@material-ui/icons/EditLocation";
 
 class AlertDialog extends React.Component {
   state = {
-    open: false
+    open: false,
+    latitude: 0,
+    longitude: 0
   };
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -15,8 +19,8 @@ class AlertDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
-  onPick = value => {
-    console.log(value);
+  onPick = ({ latitude, longitude }) => {
+    console.log({ latitude, longitude });
   };
   render() {
     //   https://medium.com/@timothyde/making-next-js-and-mapbox-gl-js-get-along-a99608667e67
@@ -32,7 +36,17 @@ class AlertDialog extends React.Component {
           color="primary"
           autoFocus
         >
-          Pick Location
+          {(this.props.isChange && (
+            <Fragment>
+              <span className="pr-2">Edit Location</span>
+              <EditLocationIcon />
+            </Fragment>
+          )) || (
+            <Fragment>
+              <span className="pr-2">Pick Location</span>
+              <AddLocationIcon />
+            </Fragment>
+          )}
         </Button>
         <Dialog
           fullWidth={true}
@@ -42,20 +56,10 @@ class AlertDialog extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DynamicMap onPick={this.onPick.bind(this)} />
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button
-              onClick={this.handleClose}
-              variant="contained"
-              color="primary"
-              autoFocus
-            >
-              Pick
-            </Button>
-          </DialogActions>
+          <DynamicMap
+            handleClose={this.handleClose.bind(this)}
+            onPick={this.props.onPick}
+          />
         </Dialog>
       </div>
     );

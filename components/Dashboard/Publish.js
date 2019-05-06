@@ -32,7 +32,8 @@ class PostEditor extends Component {
     title: "",
     content: "",
     tags: ["travelfeed"],
-    completed: 0
+    completed: 0,
+    location: undefined
   };
   newNotification(notification) {
     if (notification != undefined) {
@@ -62,12 +63,16 @@ class PostEditor extends Component {
   handleTagsEditorChange(tags) {
     this.setState({ tags: tags.target.value });
   }
+  onLocationPick = ({ latitude, longitude }) => {
+    console.log({ latitude, longitude });
+    this.setState({ location: { latitude, longitude } });
+  };
   componentWillUnmount() {
     // Stop saving drafts
     clearInterval(this.interval);
   }
   componentDidMount() {
-    if (this.props.mode == "edit") {
+    if (this.props.editMode) {
       this.setState({
         title: this.props.edit.title,
         content: this.props.edit.content,
@@ -115,7 +120,7 @@ class PostEditor extends Component {
     let title = this.state.title;
     let permlink = getSlug(title);
     let body = this.state.content;
-    let location = this.getLocation(body);
+    let location = this.state.location;
     let imageList = getImageList(body);
     let metadata = {};
     metadata.tags = this.state.tags;
@@ -124,8 +129,16 @@ class PostEditor extends Component {
     if (imageList !== null) {
       metadata.image = imageList;
     }
-    if (location !== "") {
-      metadata.coordinates = location;
+    if (!this.props.editMode) {
+      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
+    }
+    if (location !== undefined) {
+      metadata.coordinates = [location.latitude, location.longitude];
+      if (!this.props.editMode || location !== this.props.edit.location) {
+        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${
+          location.longitude
+        } long  d3scr)`;
+      }
     }
     // todo: Parse body for images and links and include them in the json_metadata
     let username = getUser();
@@ -135,11 +148,8 @@ class PostEditor extends Component {
       parentAuthor = this.props.parent_author;
       parentPermlink = this.props.parent_permlink;
     }
-    if (this.props.mode == "edit") {
+    if (this.props.editMode) {
       permlink = this.props.edit.permlink;
-    }
-    if (this.props.mode !== "edit" && this.props.type !== "comment") {
-      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
     }
     this.timer = setInterval(this.progress, 60);
     this.setState({ user: username, permlink: permlink });
@@ -149,8 +159,8 @@ class PostEditor extends Component {
       permlink,
       title,
       body,
-      metadata,
-      this.props.type
+      JSON.stringify(metadata),
+      "post"
     );
     // comment(
     // parentAuthor,
@@ -165,38 +175,12 @@ class PostEditor extends Component {
     // });
   }
   render() {
-    let submittext = "Publish";
-    if (this.props.mode == "edit") {
-      submittext = "Edit";
-    }
     const bodyText = this.state.content;
     let sanitized = sanitize(bodyText, { allowedTags: [] });
     const readingtime = readingTime(sanitized);
     const wordCount = readingtime.words;
     const readTime = readingtime.text;
-    let location = this.getLocation(bodyText);
-    let locationfield = location;
-    if (location === "") {
-      locationfield = (
-        <ul>
-          <li>
-            Go to{" "}
-            <a
-              target="_blank"
-              rel="nofollow noreferrer noopener"
-              href="https://www.steemitworldmap.com/"
-            >
-              Steemitworldmap
-            </a>
-          </li>
-          <li>Click the code slider at the bottom</li>
-          <li>
-            Click on the map where your post should be (zoom in if needed)
-          </li>
-          <li>Copy and paste the generated code in your post</li>
-        </ul>
-      );
-    }
+    let location = this.state.location;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
       let url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
@@ -279,7 +263,7 @@ class PostEditor extends Component {
                 </CardContent>
               </Card>
             </div>
-            <div className="col-xl-3 col-md-12 pl-2">
+            <div className="col-xl-3 col-md-12 pl-2 pb-2">
               <div className="row">
                 <div className="col-xl-12 col-md-6 col-sm-12 pt-2">
                   <Card>
@@ -301,17 +285,29 @@ class PostEditor extends Component {
                 <div className="col-xl-12 col-md-6 col-sm-12 pt-2">
                   <Card>
                     <CardContent>
-                      <p>Location</p>
-                      {(location === "" && <LocationPicker />) || (
+                      <h5 className="text-center">
+                        Location
+                        {this.state.location &&
+                          `: ${this.state.location.latitude}, ${
+                            this.state.location.longitude
+                          }`}
+                      </h5>
+                      {location && (
                         <PostMap
                           location={{
                             coordinates: {
-                              lat: location[0],
-                              lng: location[1]
+                              lat: this.state.location.latitude,
+                              lng: this.state.location.longitude
                             }
                           }}
                         />
                       )}
+                      <div className="text-center pt-2">
+                        <LocationPicker
+                          onPick={this.onLocationPick.bind(this)}
+                          isChange={this.state.location}
+                        />
+                      </div>
                     </CardContent>
                   </Card>
                 </div>

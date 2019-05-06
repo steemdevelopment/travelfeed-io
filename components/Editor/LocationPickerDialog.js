@@ -14,8 +14,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import HelpIcon from "@material-ui/icons/Help";
 import MapMarker from "../Maps/Marker";
-
-const MAPBOX_TOKEN = "inserthere";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import { MAPBOX_TOKEN } from "../../config";
 
 const navStyle = {
   position: "absolute",
@@ -66,10 +67,6 @@ class App extends Component {
         latitude: round(event.lngLat[1], 4)
       }
     });
-    this.props.onPick({
-      latitude: round(event.lngLat[0], 4),
-      longitude: round(event.lngLat[1], 4)
-    });
   };
 
   componentDidMount() {
@@ -98,10 +95,6 @@ class App extends Component {
           latitude: round(viewport.latitude, 4),
           longitude: round(viewport.longitude, 4)
         }
-      });
-      this.props.onPick({
-        latitude: round(viewport.latitude, 4),
-        longitude: round(viewport.longitude, 4)
       });
     }
     this.setState({
@@ -181,6 +174,25 @@ class App extends Component {
             </MapGL>
           </div>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={this.props.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              this.props.onPick({
+                latitude: this.state.marker.latitude,
+                longitude: this.state.marker.longitude
+              });
+              this.props.handleClose();
+            }}
+            variant="contained"
+            color="primary"
+            autoFocus
+          >
+            Pick
+          </Button>
+        </DialogActions>
       </Fragment>
     );
   }

@@ -15,17 +15,19 @@ const items = [
     src: "/img/header-1.jpg",
     caption: (
       <div className="carousel-caption text-light text-dark pb-5">
-        <h1>TravelFeed: The Travel Community.</h1>
+        <h1>
+          TravelFeed: <strong>The</strong> Travel Community.
+        </h1>
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <p>
-              On TravelFeed, you can discover great travel content by hundreds
-              of independent travellers like yourself!
+            <p className="lead">
+              On TravelFeed, you can discover great travel content created by
+              independent travellers like yourself!
             </p>
           </div>
         </div>
         <p>
-          <a href="#discover">
+          <a href="/discover">
             <Button color="secondary" variant="contained">
               Discover Now
             </Button>
@@ -39,13 +41,12 @@ const items = [
     src: "/img/header-2.jpg",
     caption: (
       <div className="carousel-caption text-dark pb-5">
-        <h1>Share your Story.</h1>
+        <h1>Share your Story!</h1>
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <p>
+            <p className="lead">
               We all have stories to share. This is why we offer you a free Blog
-              hosted on the uncensorable Steem Blockchain and accessible ad-free
-              through your own subdomain.
+              hosted on the uncensorable Steem Blockchain.
             </p>
           </div>
         </div>
@@ -70,7 +71,7 @@ const items = [
         <div className="row">
           <div className="col-md-6" />
           <div className="col-md-6 text-right">
-            <p>
+            <p className="lead">
               When readers like your post, they will hit the 'take off' button
               and assign miles to it. After seven days, you can claim the reward
               for your post in cryptocurrency.

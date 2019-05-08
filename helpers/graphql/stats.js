@@ -13,3 +13,13 @@ export const GET_USER_STATS = gql`
     }
   }
 `;
+
+export const GET_TF_STATS = gql`
+  query stats($days: Int!) {
+    stats(days: $days) {
+      payout
+      authors
+      posts
+    }
+  }
+`;

@@ -11,8 +11,8 @@ import PostComments from "./PostComments";
 import SubHeader from "./Post/SubHeader";
 import { getUser } from "../utils/token";
 import CommentEditor from "./Editor/CommentEditor";
-import BookmarkIcon from "./Post/BookmarkIcon";
 import CuratorMenu from "./CuratorMenu/CommentMenu";
+import dynamic from "next/dynamic";
 
 class PostpostItem extends Component {
   state = {
@@ -39,6 +39,10 @@ class PostpostItem extends Component {
     }
   }
   render() {
+    // Prevent SSR
+    const BookmarkIcon = dynamic(() => import("./Post/BookmarkIcon"), {
+      ssr: false
+    });
     let htmlBody = parseBody(this.state.body || this.props.post.body, {});
     const bodyText = { __html: htmlBody };
     let children = <Fragment />;

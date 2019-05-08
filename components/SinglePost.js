@@ -14,7 +14,6 @@ import VoteSlider from "./VoteSlider";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import InvalidPost from "../components/InvalidPost";
-import BookmarkIcon from "./Post/BookmarkIcon";
 import PostAuthorProfile from "./PostAuthorProfile";
 import PostMap from "../components/PostMap";
 import PostComments from "./PostComments";
@@ -27,6 +26,7 @@ import OrderBySelect from "./Post/OrderBySelect";
 import PostCommentItem from "./PostCommentItem";
 import { GET_SETTINGS } from "../helpers/graphql/settings";
 import { getUser } from "../utils/token";
+import dynamic from "next/dynamic";
 
 export class SinglePost extends Component {
   state = {
@@ -64,6 +64,10 @@ export class SinglePost extends Component {
     window.addEventListener("scroll", this.listenScrollEvent);
   }
   render() {
+    // Prevent SSR
+    const BookmarkIcon = dynamic(() => import("./Post/BookmarkIcon"), {
+      ssr: false
+    });
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>

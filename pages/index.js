@@ -76,7 +76,9 @@ class Tag extends Component {
           description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
         />
         <div className="mobilespacer" />
-        {this.state.user == null && <FrontPageHeader />}
+        {this.props.title === "Featured" && this.state.user == null && (
+          <FrontPageHeader />
+        )}
         <HomeOrderBySelect
           selection={this.props.selection}
           showFeed={this.state.user}

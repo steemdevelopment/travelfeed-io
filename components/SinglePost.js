@@ -257,22 +257,24 @@ export class SinglePost extends Component {
                   <CardContent>
                     {bodycontent}
                     <hr />
-                    <div className="fullwidth">
-                      <div className="text-center">
-                        <Typography variant="h5" className="p-2">
-                          Post Location:
-                        </Typography>
+                    {data.post.latitude && (
+                      <div className="fullwidth">
+                        <div className="text-center">
+                          <Typography variant="h5" className="p-2">
+                            Post Location:
+                          </Typography>
+                        </div>
+                        <PostMap
+                          location={{
+                            coordinates: {
+                              lat: data.post.latitude,
+                              lng: data.post.longitude
+                            }
+                          }}
+                        />
+                        <hr />
                       </div>
-                      <PostMap
-                        location={{
-                          coordinates: {
-                            lat: data.post.latitude,
-                            lng: data.post.longitude
-                          }
-                        }}
-                      />
-                      <hr />
-                    </div>
+                    )}
                     <div className="container">
                       <div className="row justify-content-center">
                         <div className="col-lg-6 col-md-9 col-sm12">

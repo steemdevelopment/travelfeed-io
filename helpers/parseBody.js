@@ -33,14 +33,7 @@ const parseBody = (body, options) => {
   //remove markdown comment
   parsedBody = parsedBody.replace(markdownComment, "");
   //Remove partiko ads
-  parsedBody = parsedBody.replace(
-    /Posted using \[Partiko Android]\(https:\/\/steemit\.com\/@partiko-android\)/g,
-    ""
-  );
-  parsedBody = parsedBody.replace(
-    /Posted using \[Partiko iOS]\(https:\/\/steemit\.com\/@partiko-ios\)/g,
-    ""
-  );
+  parsedBody = parsedBody.replace(/Posted using \[Partiko .*]\(.*\)/g, "");
   // Remove travelfeed ads
   parsedBody = parsedBody.replace(
     /<hr \/><center>View this post <a href="https:\/\/travelfeed\.io\/@.*">on the TravelFeed dApp<\/a> for the best experience\.<\/center>/g,
@@ -63,6 +56,11 @@ const parseBody = (body, options) => {
   );
   parsedBody = parsedBody.replace(
     /<a href='https:\/\/en\.tripsteem\.com\/'>!\[image]\(https:\/\/cdn\.steemitimages\.com\/DQmUjAKXsageaSrVo4CgqvDGePsw7CbVFRfNv91fQrW9kuL\/banner_en\.jpg\)<\/a>/g,
+    ""
+  );
+  // Remove SWM snippets with description
+  parsedBody = parsedBody.replace(
+    /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong.*d3scr/gi,
     ""
   );
   //remove remaining SWM snippets

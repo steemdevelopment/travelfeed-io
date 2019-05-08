@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Link from "next/link";
 import HeaderMenu from "./HeaderMenu";
 import PropTypes from "prop-types";
+import GeoCoder from "./Header/Geocoder";
 
 class Header extends Component {
   render() {
@@ -31,12 +32,15 @@ class Header extends Component {
                       </Typography>
                     </a>
                   </Link>
+                  Destinations Dropdown Map
+                  <GeoCoder />
                   <HeaderMenu isDashboard={false} />
                 </Toolbar>
               </Grid>
             </Grid>
           </AppBar>
         </div>
+        <div className="mobilespacer" />
       </Fragment>
     );
   }

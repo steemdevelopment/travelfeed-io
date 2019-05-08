@@ -66,7 +66,7 @@ const items = [
     src: "/img/header-3.jpg",
     caption: (
       <div className="carousel-caption text-right text-dark pb-5">
-        <h1>Get Rewarded.</h1>
+        <h1>Get paid for blogging.</h1>
         <div className="row">
           <div className="col-md-6" />
           <div className="col-md-6 text-right">

@@ -100,7 +100,7 @@ class CountryExplore extends Component {
                           passHref
                         >
                           <Button variant="contained" color="primary">
-                            Explore More
+                            <a className="text-light">Explore More</a>
                           </Button>
                         </Link>
                       </div>

@@ -49,21 +49,13 @@ class CommentEditor extends Component {
     metadata.tags = ["travelfeed"];
     metadata.app = APP_VERSION;
     metadata.community = "travelfeed";
-    // Get images. Todo: Parse links
+    // Parse comment for images. Todo: Parse links
     const imageList = getImageList(body);
     if (imageList !== null) {
       metadata.image = imageList;
     }
     this.timer = setInterval(this.progress, 60);
-    // console.log(
-    //   parentAuthor,
-    //   parentPermlink,
-    //   permlink,
-    //   title,
-    //   body,
-    //   metadata,
-    //   "comment"
-    // );
+    // Steemconnect broadcast
     comment(
       parentAuthor,
       parentPermlink,
@@ -78,27 +70,27 @@ class CommentEditor extends Component {
   }
   render() {
     if (this.state.success) {
+      this.props.editMode
+        ? this.props.onCommentEdit({
+            body: this.state.content
+          })
+        : this.props.onCommentAdd({
+            body: this.state.content,
+            permlink: this.state.permlink
+          });
+      !this.props.editMode && this.props.onClose();
       clearInterval(this.timer);
-      !this.props.editMode &&
-        this.props.onClose() &&
-        this.props.onCommentAdd({
-          body: this.state.content,
-          permlink: this.state.permlink
-        });
-      this.props.editMode &&
-        this.props.onCommentEdit({
-          body: this.state.content
-        });
       this.setState({ completed: 0, success: false });
     }
     return (
       <Fragment>
         <Editor
+          style={{ minHeight: "100px" }}
           defaultValue={this.props.defaultValue}
           autofocus={true}
           placeholder="Reply"
           onChange={this.handleEditorChange}
-          className="border"
+          className="border postcontent pl-2"
         />
         <Button
           className="mt-1"
@@ -122,6 +114,10 @@ class CommentEditor extends Component {
     );
   }
 }
+
+CommentEditor.defaultProps = {
+  editMode: false
+};
 
 CommentEditor.propTypes = {
   permlink: PropTypes.string,

@@ -68,7 +68,6 @@ class Destinations extends Component {
         <PostGrid
           query={{
             limit: 8,
-            min_curation_score: 10,
             orderby: "curation_score DESC, total_votes DESC",
             country_code,
             subdivision,

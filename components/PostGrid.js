@@ -115,7 +115,9 @@ class PostGrid extends Component {
                               app: post.app,
                               parent_author: post.parent_author,
                               parent_permlink: post.parent_permlink,
-                              payout: post.payout
+                              payout: post.payout,
+                              country_code: post.country_code,
+                              subdivision: post.subdivision
                             }}
                             id={post.author + "-" + post.permlink}
                             mode="edit"

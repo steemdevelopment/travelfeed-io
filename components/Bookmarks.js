@@ -10,7 +10,7 @@ import sanitize from "sanitize-html";
 import parseBody from "../helpers/parseBody";
 import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { regExcerpt, regTitle } from "../utils/regex";
+import { regExcerpt } from "../utils/regex";
 import InfiniteScroll from "react-infinite-scroller";
 import Head from "./Head";
 
@@ -91,7 +91,7 @@ class PostGrid extends Component {
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
                       const image = imageProxy(post.img_url, "0x" + imgHeight);
-                      let title = regTitle(post.title);
+                      let title = post.title;
                       title =
                         title.length > 85
                           ? title.substring(0, 81) + "[...]"

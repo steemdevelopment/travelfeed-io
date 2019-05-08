@@ -21,7 +21,11 @@ class LegalNotice extends Component {
             </Typography>
             <div>
               <Link as={`/join`} passHref>
-                <Button variant="contained" color="primary">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="text-light"
+                >
                   Join TravelFeed
                 </Button>
               </Link>

@@ -27,11 +27,9 @@ class PostpostItem extends Component {
     });
   }
   onCommentAdd(userComment) {
-    console.log(userComment);
     this.setState({ userComment });
   }
   onCommentEdit(userComment) {
-    console.log(userComment);
     this.setState({ body: userComment.body, showEditor: false });
   }
   componentDidMount() {

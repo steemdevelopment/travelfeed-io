@@ -26,6 +26,7 @@ import SubHeader from "./Post/SubHeader";
 import OrderBySelect from "./Post/OrderBySelect";
 import PostCommentItem from "./PostCommentItem";
 import { GET_SETTINGS } from "../helpers/graphql/settings";
+import { getUser } from "../utils/token";
 
 export class SinglePost extends Component {
   state = {
@@ -34,8 +35,12 @@ export class SinglePost extends Component {
     orderdir: "DESC",
     bgpos: "fixed",
     bgheight: "100%",
-    bgmargin: "0px"
+    bgmargin: "0px",
+    userComment: undefined
   };
+  onCommentAdd(userComment) {
+    this.setState({ userComment });
+  }
   handleClick(op) {
     this.setState(op);
   }
@@ -159,6 +164,7 @@ export class SinglePost extends Component {
               );
               card = (
                 <PostCommentItem
+                  loadreplies={false}
                   post={{
                     post_id: data.post.post_id,
                     body: data.post.body,
@@ -196,7 +202,6 @@ export class SinglePost extends Component {
                         as={`/@${data.post.author}`}
                         href={`/blog?author=${data.post.author}`}
                         passHref
-                        prefetch
                       >
                         <a>
                           <Avatar
@@ -249,6 +254,11 @@ export class SinglePost extends Component {
                     {bodycontent}
                     <hr />
                     <div className="fullwidth">
+                      <div className="text-center">
+                        <Typography variant="h5" className="p-2">
+                          Post Location:
+                        </Typography>
+                      </div>
                       <PostMap
                         location={{
                           coordinates: {
@@ -257,6 +267,7 @@ export class SinglePost extends Component {
                           }
                         }}
                       />
+                      <hr />
                     </div>
                     <div className="container">
                       <div className="row justify-content-center">
@@ -274,6 +285,7 @@ export class SinglePost extends Component {
                     tags={data.post.tags}
                     depth={data.post.depth}
                     mode="post"
+                    onCommentAdd={this.onCommentAdd.bind(this)}
                   />
                 </Card>
               );
@@ -282,7 +294,7 @@ export class SinglePost extends Component {
             let comments = <Fragment />;
             if (data.post.children !== 0) {
               comments = (
-                <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
+                <Fragment>
                   <Grid item lg={12} md={12} sm={12} xs={12}>
                     <OrderBySelect
                       handleClick={this.handleClick.bind(this)}
@@ -295,7 +307,7 @@ export class SinglePost extends Component {
                     orderdir={this.state.orderdir || "DESC"}
                     ismain={true}
                   />
-                </Grid>
+                </Fragment>
               );
             }
             // Set the canonical URL to steemit.com by default to avoid duplicate content SEO problems
@@ -381,7 +393,37 @@ export class SinglePost extends Component {
                         )}
                         {card}
                       </Grid>
-                      {comments}
+                      <Grid item lg={6} md={7} sm={11} xs={12} className="pb-2">
+                        {// "Fake" display new user comment after submitting comment without refreshing from the API
+                        this.state.userComment && (
+                          <Grid
+                            item
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            xs={12}
+                            className="pb-2"
+                          >
+                            <PostCommentItem
+                              post={{
+                                body: this.state.userComment.body,
+                                created_at: new Date(),
+                                children: 0,
+                                author: getUser(),
+                                display_name: "",
+                                permlink: this.state.userComment.permlink,
+                                depth: this.props.post.depth + 1,
+                                total_votes: 0,
+                                votes: "",
+                                parent_author: "",
+                                parent_permlink: "",
+                                root_title: ""
+                              }}
+                            />
+                          </Grid>
+                        )}
+                        {comments}
+                      </Grid>
                     </Grid>
                   </div>
                 </div>

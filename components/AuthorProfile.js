@@ -140,8 +140,7 @@ export class PostAuthorProfile extends Component {
               backgroundImage: "url(" + cover_image + ")",
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center center",
-              backgroundSize: "cover",
-              marginTop: "-10px"
+              backgroundSize: "cover"
             };
             return (
               <Fragment>

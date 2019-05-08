@@ -5,23 +5,17 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
-import { extractSWM } from "../utils/regex";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Create";
 import ViewIcon from "@material-ui/icons/OpenInBrowser";
-import PostEditor from "./PostEditor";
-import parseBody from "../helpers/parseBody";
 import DeleteDraftButton from "./Post/DeleteDraftButton";
+import { nameFromCC, slugFromCC } from "../helpers/country_codes";
+import LocationIcon from "@material-ui/icons/LocationOn";
+import Tooltip from "@material-ui/core/Tooltip";
 
 class PostCard extends Component {
-  state = { editor: false, show: true };
-  openEditor() {
-    this.setState({ editor: true });
-  }
-  closeEditor() {
-    this.setState({ editor: false });
-  }
+  state = { show: true };
   hide() {
     this.setState({ show: false });
   }
@@ -36,11 +30,13 @@ class PostCard extends Component {
       this.props.post.app.split("/")[0] === "travelfeed"
     ) {
       appIcon = (
-        <img
-          width="25"
-          className="mr-1"
-          src="https://travelfeed.io/favicon.ico"
-        />
+        <Tooltip title="Published with TravelFeed" placement="bottom">
+          <img
+            width="25"
+            className="mr-1"
+            src="https://travelfeed.io/favicon.ico"
+          />
+        </Tooltip>
       );
     }
     let button2 = (
@@ -67,6 +63,14 @@ class PostCard extends Component {
     if (this.props.post.img_url !== undefined) {
       colsize = "col-md-8 pl-0";
     }
+    const country =
+      this.props.post.country_code !== null
+        ? nameFromCC(this.props.post.country_code)
+        : undefined;
+    const countryslug =
+      this.props.post.country_code !== null
+        ? slugFromCC(this.props.post.country_code)
+        : undefined;
     var content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
@@ -82,7 +86,6 @@ class PostCard extends Component {
           <CardContent>
             <div className="pr-2 pl-2 pb-2">
               <Typography gutterBottom variant="h5" component="h2">
-                {appIcon}
                 {this.props.post.title || "Untitled"}
               </Typography>
               <Typography component="p">
@@ -98,7 +101,13 @@ class PostCard extends Component {
                     <Button
                       color="inherit"
                       className="p-0 pl-2 pr-2"
-                      onClick={() => this.openEditor()}
+                      onClick={() =>
+                        this.props.onEditorOpen({
+                          title: this.props.post.title,
+                          body: this.props.post.body,
+                          json: this.props.post.json
+                        })
+                      }
                     >
                       <span className="pr-1">Edit</span> <EditIcon />
                     </Button>
@@ -106,6 +115,21 @@ class PostCard extends Component {
                   {button2}
                 </div>
                 <div className="col-5 text-right pt-1">
+                  {country && (
+                    <Tooltip
+                      title={`${
+                        this.props.post.subdivision !== null
+                          ? this.props.post.subdivision + ", "
+                          : ""
+                      } ${country}`}
+                      placement="bottom"
+                    >
+                      <span className="text-light">
+                        <LocationIcon />
+                      </span>
+                    </Tooltip>
+                  )}
+                  {appIcon}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
                   (new Date(this.props.post.created_at) <
                     new Date(new Date().setDate(new Date().getDate() - 7)) && (
@@ -132,40 +156,6 @@ class PostCard extends Component {
         </div>
       </div>
     );
-    if (this.state.editor == true) {
-      const extractswm = extractSWM(this.props.post.body);
-      var swmextract = "";
-      if (extractswm != null) {
-        swmextract = " \n [//]:# (" + extractswm[0] + " d3scr)";
-      }
-      content = (
-        <CardContent>
-          <PostEditor
-            initialValue={
-              parseBody(this.props.post.body, { editor: true }) + swmextract
-            }
-            edit={{
-              author: this.props.post.author,
-              permlink: this.props.post.permlink,
-              title: this.props.post.title,
-              tags: this.props.post.tags,
-              id: this.props.id
-            }}
-            mode={this.props.mode}
-          />
-          <span className="text-light pl-2">
-            <Button
-              color="primary"
-              variant="outlined"
-              className="p-0 pl-2 pr-2"
-              onClick={() => this.closeEditor()}
-            >
-              <span className="pr-1">Close Editor</span>
-            </Button>
-          </span>
-        </CardContent>
-      );
-    }
     return (
       <Fragment>
         <Card key={this.props.post.permlink} className="m-2">
@@ -177,6 +167,7 @@ class PostCard extends Component {
 }
 
 PostCard.propTypes = {
+  onEditorOpen: PropTypes.func,
   post: PropTypes.object.isRequired,
   sanitized: PropTypes.string,
   mode: PropTypes.string,

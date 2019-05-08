@@ -114,7 +114,6 @@ class About extends Component {
                       as="/@travelfeed/tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
                       href={`/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto`}
                       passHref
-                      prefetch
                     >
                       <a>a simple tutorial</a>
                     </Link>{" "}

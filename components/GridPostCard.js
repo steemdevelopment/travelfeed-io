@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 import IsCurated from "./IsCurated";
 import SubHeader from "./Post/SubHeader";
 import BookmarkIcon from "./Post/BookmarkIcon";
-import LocationIcon from "@material-ui/icons//LocationOn";
+import LocationIcon from "@material-ui/icons/LocationOn";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { nameFromCC, slugFromCC } from "../helpers/country_codes";

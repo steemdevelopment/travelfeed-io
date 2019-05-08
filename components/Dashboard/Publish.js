@@ -17,6 +17,7 @@ import { withSnackbar } from "notistack";
 import getSlug from "speakingurl";
 import TagPicker from "../Editor/TagPicker";
 import LocationPicker from "../Editor/LocationPicker";
+import PostPreview from "../Editor/PostPreview";
 import { Mutation } from "react-apollo";
 import { SAVE_DRAFT } from "../../helpers/graphql/drafts";
 import TextField from "@material-ui/core/TextField";
@@ -278,6 +279,22 @@ class PostEditor extends Component {
                 <div className="col-xl-12 col-md-6 col-sm-12 pt-2">
                   <Card>
                     <CardContent>
+                      <input
+                        accept="image/*"
+                        style={{ display: "none" }}
+                        id="raised-button-file"
+                        multiple
+                        type="file"
+                      />
+                      <label htmlFor="raised-button-file">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          component="span"
+                        >
+                          Upload
+                        </Button>
+                      </label>
                       <TextField label="Featured image" margin="normal" />
                     </CardContent>
                   </Card>
@@ -314,13 +331,7 @@ class PostEditor extends Component {
                 <div className="col-xl-12 col-md-6 col-sm-12 text-center pt-2">
                   <Card>
                     <CardContent>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        className="mr-2"
-                      >
-                        Preview
-                      </Button>
+                      <PostPreview />
                       <Tooltip
                         title={
                           wordCount < 250 ||

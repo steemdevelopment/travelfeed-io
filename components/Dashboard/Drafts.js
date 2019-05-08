@@ -91,10 +91,10 @@ class PostGrid extends Component {
                               body: draft.body,
                               display_name: user,
                               title: draft.title,
+                              json: draft.json,
                               created_at: draft.savedate,
                               readtime: readtime,
-                              excerpt: excerpt,
-                              tags: ["travelfeed"]
+                              excerpt: excerpt
                             }}
                             id={draft.id}
                             mode="draft"

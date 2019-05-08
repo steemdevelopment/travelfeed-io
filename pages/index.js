@@ -11,10 +11,14 @@ import BlogGridList from "../components/Sidebar/BlogGridList";
 import LegalNotice from "../components/Sidebar/LegalNotice";
 import NavSide from "../components/Sidebar/NavSide";
 import JoinNow from "../components/Sidebar/JoinNow";
+import DiscoverCountry from "../components/Sidebar/DiscoverCountry";
+import StickyBox from "react-sticky-box";
 
 class Tag extends Component {
   state = {
-    user: undefined
+    user: undefined,
+    position: "absolute",
+    marginTop: "-500px"
   };
   static async getInitialProps(props) {
     let { orderby } = props.query;
@@ -71,11 +75,8 @@ class Tag extends Component {
           title={this.props.title + " - TravelFeed: The Travel Community"}
           description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
         />
-        {this.state.user == null && (
-          <div style={{ marginTop: "-10px" }}>
-            <FrontPageHeader />
-          </div>
-        )}
+        <div className="mobilespacer" />
+        {this.state.user == null && <FrontPageHeader />}
         <HomeOrderBySelect
           selection={this.props.selection}
           showFeed={this.state.user}
@@ -83,18 +84,15 @@ class Tag extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-xl-3 col-lg-1 d-xl-block d-lg-block d-none">
-              <div className="sidebar-item">
-                <div className="make-me-sticky">
-                  <div className="d-none d-xl-block">
-                    {this.state.user && <NavSide user={this.state.user} />}
-                    {!this.state.user && <JoinNow />}
-                  </div>
+              <StickyBox offsetTop={65} offsetBottom={10}>
+                <div className="d-none d-xl-block">
+                  {this.state.user && <NavSide user={this.state.user} />}
+                  {!this.state.user && <JoinNow />}
                 </div>
-              </div>
+              </StickyBox>
             </div>
             <div className="col-xl-6 col-lg-7 col-md-8 col-sm-12 p-0">
               <PostGrid
-                className="content-section"
                 query={{
                   orderby: this.props.orderby,
                   min_curation_score: this.props.min_curation_score,
@@ -108,15 +106,20 @@ class Tag extends Component {
               />
             </div>
             <div className="col-xl-3 col-lg-4 col-md-4 d-none d-xl-block d-lg-block d-md-block">
-              <div className="sidebar-item">
-                <div className="make-me-sticky">
-                  <BlogGridList />
-                  <LegalNotice />
-                </div>
-              </div>
+              <StickyBox offsetTop={65} offsetBottom={10}>
+                <div className="pt-3" />
+                <BlogGridList />
+                <div className="pt-3" />
+                <DiscoverCountry />
+                <div className="pt-2" />
+                <LegalNotice />
+              </StickyBox>
             </div>
           </div>
         </div>
+        {
+          //Moved header to bottom so it does not collide with fixed sidebars
+        }
         <Header />
       </Fragment>
     );
@@ -133,127 +136,3 @@ Tag.propTypes = {
 };
 
 export default Tag;
-
-// import React, { Fragment, Component } from "react";
-// import FrontPageHeader from "../components/FrontPageHeader";
-// import PostGrid from "../components/PostGrid";
-// import Helmet from "react-helmet";
-// import Header from "../components/Header";
-// import { getUser } from "../utils/token";
-// import { DEFAULT_META_DESCRIPTION } from "../config";
-// import HomeOrderBySelect from "../components/Grid/HomeOrderBySelect";
-// import Grid from "@material-ui/core/Grid";
-
-// class Index extends Component {
-//   state = { user: null };
-//   static async getInitialProps(props) {
-//     let { orderby } = props.query;
-//     const { tags } = props.query;
-//     let min_curation_score = 0;
-//     let title = tags;
-//     let value = 0;
-//     if (orderby === "created_at") {
-//       value = 0;
-//       min_curation_score = 0;
-//     } else if (orderby === "sc_hot") {
-//       value = 1;
-//       min_curation_score = 0;
-//     } else if (orderby === "featured") {
-//       value = 2;
-//       orderby = "created_at";
-//       min_curation_score = 10000;
-//     } else if (orderby === "total_votes") {
-//       //favourites
-//       title = "Favourites";
-//       value = 3;
-//       min_curation_score = 5000;
-//     }
-//     return {
-//       orderby,
-//       tags,
-//       min_curation_score: min_curation_score,
-//       title: title,
-//       value: value
-//     };
-//   }
-// setUser() {
-//   this.setState({ user: getUser() });
-// }
-//   async componentDidMount() {
-//     await this.setUser();
-//     if (this.state.user !== undefined) {
-//       this.setState({
-//         min_curation_score: 0,
-//         tags: undefined,
-//         feed: this.state.user,
-//         orderby: "created_at",
-//         value: 3
-//       });
-//     }
-//   }
-//   state = {
-//     value: 2,
-//     min_curation_score: 0,
-//     orderby: "created_at",
-//     limit: 12
-//   };
-//   handleClick(op) {
-//     this.setState(op);
-//     if (op.url === "feed") {
-//       window.history.pushState("", "", `/`);
-//     } else {
-//       window.history.pushState("", "", `/${op.url}`);
-//     }
-//   }
-//   render() {
-//     var slider = <Fragment />;
-//     if (this.state.user == null) {
-//       slider = (
-//         <div style={{ marginTop: "-10px" }}>
-//           <FrontPageHeader />
-//         </div>
-//       );
-//     }
-
-//     return (
-//       <Fragment>
-//         <Helmet>
-//           <title>{"TravelFeed: The Travel Community"}</title>
-//           <meta property="description" content={DEFAULT_META_DESCRIPTION} />
-//           <meta property="og:description" content={DEFAULT_META_DESCRIPTION} />
-//         </Helmet>
-//         <Header />
-//         {slider}
-//         <HomeOrderBySelect
-//           handleClick={this.handleClick.bind(this)}
-//           selection={this.state}
-//           value={this.state.value}
-//           showFeed={this.state.user}
-//         />
-// <Grid
-//   container
-//   spacing={0}
-//   alignItems="center"
-//   justify="center"
-//   className="p-3"
-// >
-//           <Grid item lg={3} md={2} sm={0} xs={0}>
-//             <div className="bg-dark">adsdasd </div>
-//           </Grid>
-//           <Grid item lg={6} md={8} sm={12} xs={12}>
-//             <PostGrid
-//               query={this.state}
-//               grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
-//               cardHeight={350}
-//             />{" "}
-//           </Grid>
-// <Grid item lg={3} md={2} sm={0} xs={0}>
-//   <div className="bg-dark">adsdasd </div>
-// </Grid>
-//         </Grid>
-//       </Fragment>
-//     );
-//   }
-// }
-
-// export default Index;

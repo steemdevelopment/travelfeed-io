@@ -60,7 +60,6 @@ const popular_countries = [
   "lk",
   "ec",
   "br",
-  "bo",
   "no",
   "bg"
 ];

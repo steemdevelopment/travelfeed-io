@@ -25,6 +25,9 @@ class Header extends Component {
   state = {
     user: undefined
   };
+  handleLogout() {
+    this.setState({ user: undefined });
+  }
   getUser() {
     this.setState({ user: getUserActive() });
   }
@@ -95,7 +98,10 @@ class Header extends Component {
                     "col-xl-2 col-lg-2 col-md-2") ||
                     "col-xl-1 col-lg-1 col-md-2"} col-3 text-right`}
                 >
-                  <HeaderMenu isDashboard={false} />
+                  <HeaderMenu
+                    isDashboard={false}
+                    handleLogout={this.handleLogout.bind(this)}
+                  />
                 </div>
               </div>
             </div>

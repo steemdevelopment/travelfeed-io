@@ -19,3 +19,12 @@ export const GET_LOGIN_TOKEN = gql`
     }
   }
 `;
+
+export const REVOKE_TOKEN = gql`
+  mutation revokeToken($token: String!, $expires: String) {
+    revokeToken(token: $token, expires: $expires) {
+      success
+      message
+    }
+  }
+`;

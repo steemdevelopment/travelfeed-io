@@ -14,7 +14,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PublishIcon from "@material-ui/icons/Create";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import DownIcon from "@material-ui/icons/ArrowDropDown";
 import FeedIcon from "@material-ui/icons/Home";
@@ -30,6 +29,7 @@ import DestinationsIcon from "@material-ui/icons/Explore";
 import MapIcon from "@material-ui/icons/Map";
 import { grey } from "@material-ui/core/colors";
 import PropTypes from "prop-types";
+import Logout from "./Login/Logout";
 
 class HeaderMenu extends Component {
   state = {
@@ -48,6 +48,7 @@ class HeaderMenu extends Component {
   handleLogout = () => {
     logout();
     this.setState({ user: null });
+    this.props.handleLogout();
   };
   handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
@@ -306,12 +307,7 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <MenuItem onClick={() => this.handleLogout()}>
-                        <ListItemIcon>
-                          <LogoutIcon />
-                          <ListItemText inset primary="Logout" />
-                        </ListItemIcon>
-                      </MenuItem>
+                      <Logout handleLogout={this.handleLogout.bind(this)} />
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

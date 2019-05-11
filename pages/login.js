@@ -77,8 +77,6 @@ class Login extends Component {
                     }}
                   >
                     {(acceptTos, data) => {
-                      console.log("aaaa");
-                      console.log(data);
                       // If successful
                       if (data && data.data && data.data.login.hasAcceptedTos) {
                         setAccessToken(

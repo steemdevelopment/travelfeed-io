@@ -114,6 +114,9 @@ class Dashboard extends Component {
     const { page } = props.query;
     return { page };
   }
+  handleLogout() {
+    this.setState({ user: "" });
+  }
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
@@ -193,7 +196,10 @@ class Dashboard extends Component {
               </Typography>
             </a>
           </Link>
-          <HeaderMenu isDashboard={true} />
+          <HeaderMenu
+            isDashboard={true}
+            handleLogout={this.handleLogout.bind(this)}
+          />
         </Toolbar>
       </AppBar>
     );

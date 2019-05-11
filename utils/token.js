@@ -45,6 +45,12 @@ export const getUserActive = () => {
   return jwt.name;
 };
 export const getScToken = () => Cookie.get("sc_token");
+export const getAccessToken = () => {
+  const token = Cookie.get("access_token");
+  const decoded = jwt_decode(token);
+  const expires = new Date(decoded.exp * 1000);
+  return { token, expires };
+};
 export const logout = () => {
   Cookie.remove("access_token");
   Cookie.remove("sc_token");

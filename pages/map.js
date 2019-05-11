@@ -17,7 +17,10 @@ class About extends Component {
         }
         <Query query={GET_PLACES}>
           {({ data }) => {
-            return <Map data={data && data.places} />;
+            if (data && data.places) {
+              return <Map data={data && data.places} />;
+            }
+            return <Fragment />;
           }}
         </Query>
       </Fragment>

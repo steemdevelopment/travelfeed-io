@@ -10,7 +10,7 @@ class Sublocations extends Component {
       <Fragment>
         <Query query={GET_SUBLOCATIONS} variables={this.props.query}>
           {({ data }) => {
-            if (data.location && data.location.length > 1) {
+            if (data && data.location && data.location.length > 1) {
               return (
                 <Fragment>
                   <div className="container">

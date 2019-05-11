@@ -75,6 +75,7 @@ class Tag extends Component {
           title={this.props.title + " - TravelFeed: The Travel Community"}
           description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
         />
+        <Header />
         <div className="mobilespacer" />
         {this.props.title === "Featured" && this.state.user == null && (
           <FrontPageHeader />
@@ -119,10 +120,6 @@ class Tag extends Component {
             </div>
           </div>
         </div>
-        {
-          //Moved header to bottom so it does not collide with fixed sidebars
-        }
-        <Header />
       </Fragment>
     );
   }

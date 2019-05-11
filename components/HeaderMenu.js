@@ -26,6 +26,9 @@ import PrivacyIcon from "@material-ui/icons/Lock";
 import CookieIcon from "@material-ui/icons/GroupWork";
 import LoginIcon from "@material-ui/icons/VpnKey";
 import SignUpIcon from "@material-ui/icons/PersonAdd";
+import DestinationsIcon from "@material-ui/icons/Explore";
+import MapIcon from "@material-ui/icons/Map";
+import { grey } from "@material-ui/core/colors";
 
 class HeaderMenu extends Component {
   state = {
@@ -57,117 +60,6 @@ class HeaderMenu extends Component {
     if (this.state.user == null) {
       me = (
         <Fragment>
-          <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
-            <Link href="/join" passHref>
-              <a>
-                <Button color="primary" variant="outlined">
-                  Join Now
-                </Button>
-              </a>
-            </Link>
-            <a href={getLoginURL}>
-              <Button color="primary">Login</Button>
-            </a>
-          </div>
-          <div>
-            <Button
-              buttonRef={node => {
-                this.anchorEl = node;
-              }}
-              aria-owns={menuopen ? "menu-list-grow" : undefined}
-              aria-haspopup="true"
-              onClick={this.handleToggle}
-            >
-              {" "}
-              <div className="d-none d-xl-block d-lg-block d-md-block d-sm-block">
-                <MoreVert />
-              </div>
-              <div className="d-xl-none d-lg-none d-md-none d-sm-none d-xs-block">
-                <MenuIcon />
-              </div>
-            </Button>
-            <Popper
-              open={menuopen}
-              anchorEl={this.anchorEl}
-              transition
-              disablePortal
-            >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  id="menu-list-grow"
-                  style={{
-                    transformOrigin:
-                      placement === "bottom" ? "center top" : "center bottom"
-                  }}
-                >
-                  <Paper>
-                    <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList>
-                        <div className="d-xl-none d-lg-none d-md-none d-sm-none d-xs-block">
-                          <a href={getLoginURL}>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <LoginIcon />
-                                <ListItemText inset primary="Login" />
-                              </ListItemIcon>
-                            </MenuItem>
-                          </a>
-                          <Link href="/join" passHref>
-                            <a>
-                              <MenuItem>
-                                <ListItemIcon>
-                                  <SignUpIcon />
-                                  <ListItemText inset primary="Join Now" />
-                                </ListItemIcon>
-                              </MenuItem>
-                            </a>
-                          </Link>
-                          <Divider />
-                        </div>
-                        <Link href="/about/privacy" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <PrivacyIcon />
-                                <ListItemText inset primary="Privacy" />
-                              </ListItemIcon>
-                            </MenuItem>
-                          </a>
-                        </Link>
-                        <Link href="/about/terms" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <TermsIcon />
-                                <ListItemText inset primary="Terms" />
-                              </ListItemIcon>
-                            </MenuItem>
-                          </a>
-                        </Link>
-                        <Link href="/about/cookies" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <CookieIcon />
-                                <ListItemText inset primary="Cookies" />
-                              </ListItemIcon>
-                            </MenuItem>
-                          </a>
-                        </Link>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Paper>
-                </Grow>
-              )}
-            </Popper>
-          </div>
-        </Fragment>
-      );
-    }
-    if (this.state.user != null && this.state.user != "") {
-      me = (
-        <Fragment>
           <Button
             buttonRef={node => {
               this.anchorEl = node;
@@ -176,13 +68,18 @@ class HeaderMenu extends Component {
             aria-haspopup="true"
             onClick={this.handleToggle}
           >
-            <Avatar
-              className="cpointer"
-              src={`https://steemitimages.com/u/${
-                this.state.user
-              }/avatar/small`}
-            />
-            <DownIcon />
+            <div
+              className="d-none d-xl-block d-lg-block"
+              style={{ color: grey[200] }}
+            >
+              <MoreVert />
+            </div>
+            <div
+              className="d-block d-xl-none d-lg-none"
+              style={{ color: grey[200] }}
+            >
+              <MenuIcon />
+            </div>
           </Button>
           <Popper
             open={menuopen}
@@ -202,6 +99,150 @@ class HeaderMenu extends Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
+                      <div className="d-xl-none d-lg-none d-md-none d-block">
+                        <Link href="/destinations" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <DestinationsIcon />
+                                <ListItemText inset primary="Destinations" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Link href="/map" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <MapIcon />
+                                <ListItemText inset primary="Map" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Divider />
+                      </div>
+                      <div className="d-block d-xl-none d-lg-none">
+                        <a href={getLoginURL}>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <LoginIcon />
+                              <ListItemText inset primary="Login" />
+                            </ListItemIcon>
+                          </MenuItem>
+                        </a>
+                        <Link href="/join" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <SignUpIcon />
+                                <ListItemText inset primary="Join Now" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Divider />
+                      </div>
+                      <Link href="/about/privacy" passHref>
+                        <a>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <PrivacyIcon />
+                              <ListItemText inset primary="Privacy" />
+                            </ListItemIcon>
+                          </MenuItem>
+                        </a>
+                      </Link>
+                      <Link href="/about/terms" passHref>
+                        <a>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <TermsIcon />
+                              <ListItemText inset primary="Terms" />
+                            </ListItemIcon>
+                          </MenuItem>
+                        </a>
+                      </Link>
+                      <Link href="/about/cookies" passHref>
+                        <a>
+                          <MenuItem>
+                            <ListItemIcon>
+                              <CookieIcon />
+                              <ListItemText inset primary="Cookies" />
+                            </ListItemIcon>
+                          </MenuItem>
+                        </a>
+                      </Link>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
+        </Fragment>
+      );
+    }
+    if (this.state.user != null && this.state.user != "") {
+      me = (
+        <Fragment>
+          <Button
+            buttonRef={node => {
+              this.anchorEl = node;
+            }}
+            aria-owns={menuopen ? "menu-list-grow" : undefined}
+            aria-haspopup="true"
+            onClick={this.handleToggle}
+            className="p-0s"
+          >
+            <Avatar
+              className="cpointer"
+              src={`https://steemitimages.com/u/${
+                this.state.user
+              }/avatar/small`}
+            />
+            <DownIcon className="text-light" />
+          </Button>
+          <Popper
+            open={menuopen}
+            anchorEl={this.anchorEl}
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                id="menu-list-grow"
+                style={{
+                  transformOrigin:
+                    placement === "bottom" ? "center top" : "center bottom"
+                }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={this.handleClose}>
+                    <MenuList>
+                      <div className="d-xl-none d-lg-none d-md-none d-block">
+                        <Link href="/destinations" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <DestinationsIcon />
+                                <ListItemText inset primary="Destinations" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Link href="/map" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <MapIcon />
+                                <ListItemText inset primary="Map" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Divider />
+                      </div>
                       {(this.props.isDashboard && (
                         <Link href="/" passHref>
                           <a>

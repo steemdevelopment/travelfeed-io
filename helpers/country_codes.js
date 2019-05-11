@@ -22,7 +22,7 @@ export const nameFromSlug = cc => {
     : "";
 };
 
-const popular_countries = [
+export const popular_countries = [
   "ar",
   "au",
   "at",

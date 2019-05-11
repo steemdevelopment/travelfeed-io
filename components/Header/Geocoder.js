@@ -9,6 +9,32 @@ import MUIPlacesAutocomplete, {
 } from "mui-places-autocomplete";
 import Head from "next/head";
 import Router from "next/router";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { fade } from "@material-ui/core/styles/colorManipulator";
+import { grey, teal } from "@material-ui/core/colors";
+import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+
+// https://stackoverflow.com/questions/49040092/material-ui-v1-input-focus-style-override
+const styles = theme => ({
+  input: {
+    borderRadius: theme.shape.borderRadius,
+    width: "100%",
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25)
+    },
+    color: "white",
+    padding: "5px",
+    transition: "width 0.3s"
+  },
+  // Separate this part into it's own CSS class
+  inputFocused: {
+    width: "120%",
+    backgroundColor: fade(theme.palette.common.white, 0.25),
+    transition: "width 0.3s"
+  }
+});
 
 class Geocoder extends Component {
   onSuggestionSelected(suggestion) {
@@ -46,6 +72,7 @@ class Geocoder extends Component {
       });
   }
   render() {
+    const { classes } = this.props;
     return (
       <Fragment>
         <Head>
@@ -55,12 +82,29 @@ class Geocoder extends Component {
           />
         </Head>
         <MUIPlacesAutocomplete
+          textFieldProps={{
+            InputProps: {
+              placeholder: "Search for a place",
+              className: classes.input,
+              classes: { focused: classes.inputFocused },
+              disableUnderline: true,
+              startAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon className="text-light ml-1 mr-3" />
+                </InputAdornment>
+              )
+            }
+          }}
           onSuggestionSelected={this.onSuggestionSelected}
-          renderTarget={() => <SearchIcon />}
+          renderTarget={() => <div />}
         />
       </Fragment>
     );
   }
 }
 
-export default Geocoder;
+Geocoder.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(Geocoder);

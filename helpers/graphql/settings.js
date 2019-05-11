@@ -2,14 +2,12 @@ import gql from "graphql-tag";
 
 export const CHANGE_SETTINGS = gql`
   mutation updatePreferences(
-    $acceptTos: Boolean
     $defaultVoteWeight: Int
     $defaultCommentsVoteWeight: Int
     $showNSFW: Boolean
     $useTfBlacklist: Boolean
   ) {
     updatePreferences(
-      acceptTos: $acceptTos
       defaultVoteWeight: $defaultVoteWeight
       defaultCommentsVoteWeight: $defaultCommentsVoteWeight
       showNSFW: $showNSFW

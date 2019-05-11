@@ -440,7 +440,7 @@ class DestinationsNav extends Component {
 
 DestinationsNav.propTypes = {
   closeDest: PropTypes.func,
-  showDest: PropTypes.func
+  showDest: PropTypes.bool
 };
 
 export default DestinationsNav;

@@ -13,9 +13,6 @@
     height: -webkit-calc(100% - 55px); /* Chrome, Safari */
     height: calc(100% - 55px); /* IE9+ and future browsers */
   }
-  .mobilespacer {
-    margin-bottom: -10px;
-  }
 }
 /* Fix Editor toolbar */
 .hUYGJp {

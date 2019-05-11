@@ -42,7 +42,7 @@ class Destinations extends Component {
             (city && `${city}, ${country_name}`) ||
             (subdivision && `${subdivision}, ${country_name}`) ||
             country_name} - TravelFeed: The Travel Community`}
-          description={`Discover posts about ${suburb ||
+          description={`Discover the best travel blog posts about ${suburb ||
             city ||
             subdivision ||
             country_name} on TravelFeed.`}

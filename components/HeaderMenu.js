@@ -29,6 +29,7 @@ import SignUpIcon from "@material-ui/icons/PersonAdd";
 import DestinationsIcon from "@material-ui/icons/Explore";
 import MapIcon from "@material-ui/icons/Map";
 import { grey } from "@material-ui/core/colors";
+import PropTypes from "prop-types";
 
 class HeaderMenu extends Component {
   state = {
@@ -323,5 +324,9 @@ class HeaderMenu extends Component {
     return <Fragment>{me}</Fragment>;
   }
 }
+
+HeaderMenu.propTypes = {
+  isDashboard: PropTypes.bool
+};
 
 export default HeaderMenu;

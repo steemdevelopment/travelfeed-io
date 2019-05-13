@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
 import getPageContext from "../lib/getPageContext";
 const pageContext = getPageContext();
+import * as Sentry from "@sentry/node";
+
 export default class extends Document {
   static async getInitialProps(...args) {
     const documentProps = await super.getInitialProps(...args);
@@ -48,8 +50,10 @@ export default class extends Document {
       />
     );
   }
-
   render() {
+    Sentry.init({
+      dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
+    });
     return (
       <html {...this.helmetHtmlAttrComponents}>
         <Head>

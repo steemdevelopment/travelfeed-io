@@ -11,6 +11,7 @@ import { ApolloProvider } from "react-apollo";
 import withApollo from "../lib/withApollo";
 import "../styles/bootstrap.min.css";
 import "../styles/style.css";
+import * as Sentry from "@sentry/browser";
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
@@ -30,6 +31,9 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+    Sentry.init({
+      dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
+    });
   }
 
   render() {

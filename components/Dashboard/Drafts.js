@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import Head from "../Head";
 import PostListItem from "../PostListItem";
 import { getUser } from "../../utils/token";
+import json2Html from "../Editor/json2Html";
 
 class PostGrid extends Component {
   state = {
@@ -79,7 +80,9 @@ class PostGrid extends Component {
                 >
                   {data.drafts.length > 0 &&
                     data.drafts.map(draft => {
-                      const htmlBody = parseBody(draft.body, {});
+                      const htmlBody = draft.isCodeEditor
+                        ? parseBody(draft.body, {})
+                        : json2Html(JSON.parse(draft.body));
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
                       const excerpt = regExcerpt(sanitized);

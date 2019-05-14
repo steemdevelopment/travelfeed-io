@@ -20,21 +20,30 @@ import LocationPicker from "../Editor/LocationPicker";
 import PostPreview from "../Editor/PostPreview";
 import { Mutation } from "react-apollo";
 import { SAVE_DRAFT } from "../../helpers/graphql/drafts";
+// import { UPLOAD_IMAGE } from "../../helpers/graphql/upload";
 import TextField from "@material-ui/core/TextField";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import Editor from "rich-markdown-editor";
-import { debounce } from "lodash";
+import Editor from "../Editor/Editor";
+// import { debounce } from "lodash";
 import PostMap from "../PostMap";
+// import dynamic from "next/dynamic";
+import HtmlEditor from "../Editor/HTMLEditor";
+import HtmlEditorPreview from "../Editor/HTMLEditorPreview";
+import json2Html from "../Editor/json2Html";
 
 class PostEditor extends Component {
   state = {
     title: "",
-    content: "",
+    content: undefined,
+    htmlContent: undefined,
     tags: ["travelfeed"],
     completed: 0,
-    location: undefined
+    location: undefined,
+    codeEditor: false,
+    saved: true
+    // codeEditor: true
   };
   newNotification(notification) {
     if (notification != undefined) {
@@ -48,6 +57,15 @@ class PostEditor extends Component {
       }
     }
   }
+  changeToHtmlEditor() {
+    let htmlContent = "";
+    if (this.state.content) {
+      htmlContent = json2Html(this.state.content);
+    }
+    // Generate new ID to not overwrite the current draft
+    const id = getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
+    this.setState({ htmlContent, codeEditor: true, id });
+  }
   handleTagClick(op) {
     this.setState(op);
   }
@@ -58,9 +76,14 @@ class PostEditor extends Component {
   //   this.setState({ content });
   //   console.log(content)
   // };
-  handleEditorChange = debounce(value => {
-    this.setState({ content: value() });
-  }, 250);
+  handleEditorChange = content => {
+    console.log(content);
+    this.setState({ content });
+  };
+  handleHtmlEditorChange = htmlContent => {
+    console.log(htmlContent);
+    this.setState({ htmlContent });
+  };
   handleTagsEditorChange(tags) {
     this.setState({ tags: tags.target.value });
   }
@@ -89,7 +112,7 @@ class PostEditor extends Component {
       mounted: true
     });
     // Save draft every 20 seconds
-    this.interval = setInterval(() => this.saveDraft(), 20000);
+    this.interval = setInterval(() => this.setState({ saved: false }), 20000);
   }
   progress = () => {
     // Publish animation
@@ -141,7 +164,7 @@ class PostEditor extends Component {
         } long  d3scr)`;
       }
     }
-    // todo: Parse body for images and links and include them in the json_metadata
+    // Todo: Parse body for images and links and include them in the json_metadata
     let username = getUser();
     if (this.props.type == "comment") {
       let commenttime = getSlug(new Date().toJSON()).replace(/-/g, "");
@@ -176,11 +199,26 @@ class PostEditor extends Component {
     // });
   }
   render() {
-    const bodyText = this.state.content;
+    const bodyText = "aaaa";
     let sanitized = sanitize(bodyText, { allowedTags: [] });
-    const readingtime = readingTime(sanitized);
-    const wordCount = readingtime.words;
-    const readTime = readingtime.text;
+    let wordCount = "";
+    let readTime = "";
+    if (this.state.codeEditor) {
+      const readingtime = readingTime(this.state.htmlContent);
+      wordCount = readingtime.words;
+      readTime = readingtime.text;
+    } else {
+      let html = "";
+      this.state.content &&
+        this.state.content.blocks.forEach(b => {
+          if (b.type === "paragraph" || b.type === "header") {
+            html += `${b.data.text} `;
+          }
+        });
+      const readingtime = readingTime(html);
+      wordCount = readingtime.words;
+      readTime = readingtime.text;
+    }
     let location = this.state.location;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
@@ -195,9 +233,9 @@ class PostEditor extends Component {
     // }
     return (
       <Fragment>
-        <div className="container-fluid">
+        <div className="container">
           <div className="row">
-            <div className="col-12 pt-3">
+            <div className="col-12 p-1 pt-3">
               <Card>
                 <CardContent>
                   <InputBase
@@ -215,7 +253,7 @@ class PostEditor extends Component {
                 </CardContent>
               </Card>
             </div>
-            <div className="col-xl-9 col-md-12 pt-2 pr-0">
+            <div className="col-xl-12 col-md-12 p-1">
               <Card>
                 <CardContent>
                   <CardHeader
@@ -235,38 +273,86 @@ class PostEditor extends Component {
                     variables={{
                       id: this.state.id,
                       title: this.state.title,
-                      body: JSON.stringify(this.state.content),
-                      json: JSON.stringify({ tags: this.state.tags })
+                      body:
+                        (this.state.codeEditor && this.state.htmlContent) ||
+                        JSON.stringify(this.state.content),
+                      json: JSON.stringify({ tags: this.state.tags }),
+                      isCodeEditor: this.state.codeEditor
                     }}
                   >
                     {saveDraft => {
-                      this.saveDraft = saveDraft;
+                      if (!this.state.saved) {
+                        if (wordCount > 1) saveDraft();
+                        console.log("saving");
+                        this.setState({ saved: true });
+                      }
                       return (
-                        <Editor
-                          className="border postcontent pl-2 pr-2 m-1"
-                          style={{ minHeight: "370px" }}
-                          placeholder="Write something epic!"
-                          toc={true}
-                          // defaultValue={this.state.content}
-                          // onChange={this.onEditorChange.bind(this)}
-                          onSave={saveDraft}
-                          onChange={this.handleEditorChange}
-                          uploadImage={async file => {
-                            // const result = await s3.upload(file);
-                            // return result.url;
-                            console.log(file);
-                            return;
-                          }}
-                        />
+                        <div>
+                          {(this.state.codeEditor && (
+                            <Fragment>
+                              <HtmlEditor
+                                data={this.state.htmlContent}
+                                onChange={this.handleHtmlEditorChange.bind(
+                                  this
+                                )}
+                              />
+                              {(this.state.htmlContent && (
+                                <Tooltip title="Once you start typing, the only way to switch back for this post is to restore a previous draft">
+                                  <span className="font-weight-bold font-size-8 cpointer text-muted">
+                                    Switch to TravelFeed editor
+                                  </span>
+                                </Tooltip>
+                              )) || (
+                                <span
+                                  className="font-weight-bold font-size-8 cpointer"
+                                  onClick={() =>
+                                    this.setState({ codeEditor: false })
+                                  }
+                                >
+                                  Switch to TravelFeed editor
+                                </span>
+                              )}
+                              <HtmlEditorPreview
+                                preview={this.state.htmlContent}
+                              />
+                            </Fragment>
+                          )) || (
+                            <div>
+                              <Editor
+                                holder="editorjs-container"
+                                onChange={this.handleEditorChange.bind(this)}
+                                // data={{
+                                //   time: 1554920381017,
+                                //   blocks: [
+                                //     {
+                                //       type: "header",
+                                //       data: {
+                                //         text: "Hello Editor.js",
+                                //         level: 2
+                                //       }
+                                //     }
+                                //   ],
+                                //   version: "2.12.4"
+                                // }}
+                              />
+                              <span
+                                className="font-weight-bold font-size-8 cpointer"
+                                onClick={() => this.changeToHtmlEditor()}
+                              >
+                                Switch to HTML+Markdown editor
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       );
                     }}
                   </Mutation>
                 </CardContent>
               </Card>
             </div>
-            <div className="col-xl-3 col-md-12 pl-2 pb-2">
+            <div className="col-12">
               <div className="row">
-                <div className="col-xl-12 col-md-6 col-sm-12 pt-2">
+                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
                       <TagPicker
@@ -276,16 +362,9 @@ class PostEditor extends Component {
                     </CardContent>
                   </Card>
                 </div>
-                <div className="col-xl-12 col-md-6 col-sm-12 pt-2">
+                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
-                      <input
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        id="raised-button-file"
-                        multiple
-                        type="file"
-                      />
                       <label htmlFor="raised-button-file">
                         <Button
                           variant="contained"
@@ -299,7 +378,7 @@ class PostEditor extends Component {
                     </CardContent>
                   </Card>
                 </div>
-                <div className="col-xl-12 col-md-6 col-sm-12 pt-2">
+                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
                       <h5 className="text-center">
@@ -319,7 +398,7 @@ class PostEditor extends Component {
                           }}
                         />
                       )}
-                      <div className="text-center pt-2">
+                      <div className="text-center p-1">
                         <LocationPicker
                           onPick={this.onLocationPick.bind(this)}
                           isChange={this.state.location}
@@ -328,7 +407,7 @@ class PostEditor extends Component {
                     </CardContent>
                   </Card>
                 </div>
-                <div className="col-xl-12 col-md-6 col-sm-12 text-center pt-2">
+                <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
                   <Card>
                     <CardContent>
                       <PostPreview />

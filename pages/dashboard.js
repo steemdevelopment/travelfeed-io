@@ -10,7 +10,7 @@ import Drafts from "../components/Dashboard/Drafts";
 import Notifications from "../components/Dashboard/Notifications";
 import Posts from "../components/Dashboard/Posts";
 import Profile from "../components/Dashboard/Profile";
-import Publish from "../components/Dashboard/Publish";
+// import Publish from "../components/Dashboard/Publish";
 import Replies from "../components/Dashboard/Replies";
 import Settings from "../components/Dashboard/Settings";
 import Wallet from "../components/Dashboard/Wallet";
@@ -41,6 +41,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import { blueGrey } from "@material-ui/core/colors";
+import dynamic from "next/dynamic";
 
 const drawerWidth = 200;
 
@@ -374,6 +375,10 @@ class Dashboard extends Component {
       </Drawer>
     );
     if (this.props.page == "publish") {
+      const Publish = dynamic(() => import("../components/Dashboard/Publish"), {
+        loading: () => <p>Loading...</p>,
+        ssr: false
+      });
       var content = <Publish />;
       {
         if (this.state.active != "publish") {

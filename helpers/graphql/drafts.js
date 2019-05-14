@@ -1,8 +1,20 @@
 import gql from "graphql-tag";
 
 export const SAVE_DRAFT = gql`
-  mutation addDraft($id: String, $title: String, $body: String, $json: String) {
-    addDraft(id: $id, title: $title, body: $body, json: $json) {
+  mutation addDraft(
+    $id: String
+    $title: String
+    $body: String
+    $json: String
+    $isCodeEditor: Boolean
+  ) {
+    addDraft(
+      id: $id
+      title: $title
+      body: $body
+      json: $json
+      isCodeEditor: $isCodeEditor
+    ) {
       success
       message
     }
@@ -26,6 +38,7 @@ export const GET_DRAFTS = gql`
       title
       body
       json
+      isCodeEditor
     }
   }
 `;

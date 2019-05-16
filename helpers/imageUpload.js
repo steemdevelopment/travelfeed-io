@@ -3,14 +3,14 @@ const unsignedUploadPreset = "ml_default";
 
 // *********** Upload file to Cloudinary ******************** //
 // https://codepen.io/team/Cloudinary/pen/QgpyOK
-const uploadFile = file => {
+const uploadFile = (file, user) => {
   var url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`;
   var xhr = new XMLHttpRequest();
   var fd = new FormData();
   xhr.open("POST", url, true);
   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
   fd.append("upload_preset", unsignedUploadPreset);
-  fd.append("tags", "browser_upload"); // Optional - add tag for image admin in Cloudinary
+  fd.append("tags", user); // Optional - add tag for image admin in Cloudinary
   fd.append("file", file);
   xhr.send(fd);
 

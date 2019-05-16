@@ -7,6 +7,7 @@ import Delimiter from "@editorjs/delimiter";
 import Table from "@editorjs/table";
 import Paragraph from "@editorjs/paragraph";
 import uploadFile from "../../helpers/imageUpload";
+import { getUser } from "../../utils/token";
 
 export default {
   header: Header,
@@ -18,7 +19,7 @@ export default {
       // https://github.com/editor-js/image
       uploader: {
         uploadByFile(file) {
-          return uploadFile(file).then(res => {
+          return uploadFile(file, getUser()).then(res => {
             return res;
           });
         },

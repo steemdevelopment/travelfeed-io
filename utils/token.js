@@ -32,16 +32,16 @@ export const getUserActive = () => {
   if (token === undefined) {
     return undefined;
   }
+  const jwt = jwt_decode(token);
   // Submit custom_json for steemapps.com tracking once a day
   const active = Cookie.get("last_active_broadcast");
-  if (active === undefined) {
+  if (active === undefined || active !== jwt.name) {
     broadcastActiveUser();
     const expiry = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
-    Cookie.set("last_active_broadcast", new Date().toISOString(), {
+    Cookie.set("last_active_broadcast", jwt.name, {
       expires: expiry
     });
   }
-  const jwt = jwt_decode(token);
   return jwt.name;
 };
 export const getScToken = () => Cookie.get("sc_token");

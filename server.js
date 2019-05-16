@@ -1,5 +1,6 @@
 const express = require("express");
 const next = require("next");
+const compression = require("compression");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -11,6 +12,8 @@ app
   .prepare()
   .then(() => {
     const server = express();
+    // https://github.com/zeit/next.js/wiki/Getting-ready-for-production
+    server.use(compression());
 
     server.use(express.static("public"));
 
@@ -155,94 +158,10 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/@travelfeed", (req, res) => {
-      res.redirect("/blog");
-    });
-
     server.get("/@:author", (req, res) => {
       const actualPage = "/blog";
       const queryParams = {
         author: req.params.author
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "dashboard"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/publish", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "publish"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/drafts", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "drafts"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/posts", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "posts"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/comments", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "comments"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/replies", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "replies"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/notifications", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "notifications"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/profile", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "profile"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/wallet", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "stats"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/settings", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "settings"
       };
       app.render(req, res, actualPage, queryParams);
     });

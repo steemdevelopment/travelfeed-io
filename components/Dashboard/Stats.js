@@ -27,6 +27,7 @@ import {
 } from "@material-ui/core/colors";
 import HeaderCard from "../../components/General/HeaderCard";
 import Link from "next/link";
+import { getUser } from "../../utils/token";
 
 class Stats extends Component {
   render() {
@@ -87,7 +88,7 @@ class Stats extends Component {
                   </Grid>
                   <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
                     <HeaderCard
-                      title={`Welcome, ${this.props.user}!`}
+                      title={`Welcome, ${getUser()}!`}
                       background={green[600]}
                       content={
                         <Fragment>
@@ -101,20 +102,12 @@ class Stats extends Component {
                           </p>
                           <ul>
                             <li>
-                              <Link
-                                as="/dashboard/publish"
-                                href="/dashboard?page=publish"
-                                passHref
-                              >
+                              <Link href="/dashboard/publish" passHref>
                                 <a>Write your next awesome travel post</a>
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                as="/dashboard/drafts"
-                                href="/dashboard?page=drafts"
-                                passHref
-                              >
+                              <Link href="/dashboard/drafts" passHref>
                                 <a>
                                   Access your drafts and continue where you left
                                   off
@@ -122,31 +115,19 @@ class Stats extends Component {
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                as="/dashboard/posts"
-                                href="/dashboard?page=posts"
-                                passHref
-                              >
+                              <Link href="/dashboard/posts" passHref>
                                 <a>View and edit your published posts</a>
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                as="/dashboard/replies"
-                                href="/dashboard?page=replies"
-                                passHref
-                              >
+                              <Link href="/dashboard/replies" passHref>
                                 <a>
                                   View and answer replies from your followers
                                 </a>
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                as="/dashboard/profile"
-                                href="/dashboard?page=profile"
-                                passHref
-                              >
+                              <Link href="/dashboard/profile" passHref>
                                 <a>Edit your profile</a>
                               </Link>
                             </li>
@@ -182,7 +163,7 @@ class Stats extends Component {
           <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
             <Query
               query={GET_DASHBOARD_POSTS}
-              variables={{ author: this.props.user, limit: 15 }}
+              variables={{ author: getUser(), limit: 15 }}
             >
               {({ data, loading, error }) => {
                 if (loading || error || data.post === null) {
@@ -200,7 +181,7 @@ class Stats extends Component {
             <Query
               query={GET_NOTIFICATIONS}
               variables={{
-                author: this.props.user,
+                author: getUser(),
                 min_curation_score: 5000,
                 limit: 3
               }}

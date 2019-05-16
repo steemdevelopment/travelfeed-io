@@ -1,20 +1,10 @@
 import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
+import Header from "../Header";
 import Grid from "@material-ui/core/Grid";
-import NotFound from "../components/NotFound";
-import { getUser } from "../utils/token";
+import NotFound from "../NotFound";
+import { getUser } from "../../utils/token";
 import Link from "next/link";
-import Stats from "../components/Dashboard/Stats";
-import Comments from "../components/Dashboard/Comments";
-import Drafts from "../components/Dashboard/Drafts";
-import Notifications from "../components/Dashboard/Notifications";
-import Posts from "../components/Dashboard/Posts";
-import Profile from "../components/Dashboard/Profile";
-// import Publish from "../components/Dashboard/Publish";
-import Replies from "../components/Dashboard/Replies";
-import Settings from "../components/Dashboard/Settings";
-import Wallet from "../components/Dashboard/Wallet";
-import HeaderMenu from "../components/HeaderMenu";
+import HeaderMenu from "../HeaderMenu";
 import { withStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -41,7 +31,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import { blueGrey } from "@material-ui/core/colors";
-import dynamic from "next/dynamic";
 
 const drawerWidth = 200;
 
@@ -138,32 +127,6 @@ class Dashboard extends Component {
   }
   render() {
     const { classes } = this.props;
-    if (this.state.user == "") {
-      return (
-        <Fragment>
-          <Header />
-        </Fragment>
-      );
-    }
-    if (this.state.user == null) {
-      return (
-        <Fragment>
-          <Header />
-          <Grid
-            container
-            spacing={0}
-            alignItems="center"
-            justify="center"
-            className="pt-4 pb-4"
-            style={{ paddingLeft: "75px" }}
-          >
-            <Grid item lg={7} md={8} sm={11} xs={12}>
-              <NotFound statusCode="logged_out" />
-            </Grid>
-          </Grid>
-        </Fragment>
-      );
-    }
     const appbar = (
       <AppBar
         color="inherit"
@@ -192,8 +155,8 @@ class Dashboard extends Component {
               >
                 TravelBlog |{" "}
                 {// capitalize
-                this.state.active.charAt(0).toUpperCase() +
-                  this.state.active.slice(1)}
+                this.props.active.charAt(0).toUpperCase() +
+                  this.props.active.slice(1)}
               </Typography>
             </a>
           </Link>
@@ -226,10 +189,10 @@ class Dashboard extends Component {
         </div>
         <Divider />
         <List>
-          <Link as="/dashboard" href="/dashboard?page=dashboard" passHref>
+          <Link href="/dashboard" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "dashboard" ? true : false}
+                selected={this.props.active == "stats" ? true : false}
                 button
               >
                 <ListItemIcon className={classNames(classes.listitem)}>
@@ -239,10 +202,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link as="/dashboard/publish" href="/dashboard?page=publish" passHref>
+          <Link href="/dashboard/publish" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "publish" ? true : false}
+                selected={this.props.active == "publish" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -252,10 +215,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link as="/dashboard/drafts" href="/dashboard?page=drafts" passHref>
+          <Link href="/dashboard/drafts" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "drafts" ? true : false}
+                selected={this.props.active == "drafts" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -265,10 +228,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link as="/dashboard/posts" href="/dashboard?page=posts" passHref>
+          <Link href="/dashboard/posts" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "posts" ? true : false}
+                selected={this.props.active == "posts" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -278,14 +241,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link
-            as="/dashboard/comments"
-            href="/dashboard?page=comments"
-            passHref
-          >
+          <Link href="/dashboard/comments" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "comments" ? true : false}
+                selected={this.props.active == "comments" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -295,10 +254,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link as="/dashboard/replies" href="/dashboard?page=replies" passHref>
+          <Link href="/dashboard/replies" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "replies" ? true : false}
+                selected={this.props.active == "replies" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -308,14 +267,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link
-            as="/dashboard/notifications"
-            href="/dashboard?page=notifications"
-            passHref
-          >
+          <Link href="/dashboard/notifications" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "notifications" ? true : false}
+                selected={this.props.active == "notifications" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -328,10 +283,10 @@ class Dashboard extends Component {
         </List>
         <Divider />
         <List>
-          <Link as="/dashboard/profile" href="/dashboard?page=profile" passHref>
+          <Link href="/dashboard/profile" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "profile" ? true : false}
+                selected={this.props.active == "profile" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -341,10 +296,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link as="/dashboard/wallet" href="/dashboard?page=wallet" passHref>
+          <Link href="/dashboard/wallet" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "wallet" ? true : false}
+                selected={this.props.active == "wallet" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -354,14 +309,10 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link
-            as="/dashboard/settings"
-            href="/dashboard?page=settings"
-            passHref
-          >
+          <Link href="/dashboard/settings" passHref>
             <a>
               <ListItem
-                selected={this.state.active == "settings" ? true : false}
+                selected={this.props.active == "settings" ? true : false}
                 button
               >
                 <ListItemIcon>
@@ -374,87 +325,12 @@ class Dashboard extends Component {
         </List>
       </Drawer>
     );
-    if (this.props.page == "publish") {
-      const Publish = dynamic(() => import("../components/Dashboard/Publish"), {
-        loading: () => <p>Loading...</p>,
-        ssr: false
-      });
-      var content = <Publish />;
-      {
-        if (this.state.active != "publish") {
-          this.setActive("publish");
-        }
-      }
-    } else if (this.props.page == "drafts") {
-      content = <Drafts />;
-      {
-        if (this.state.active != "drafts") {
-          this.setActive("drafts");
-        }
-      }
-    } else if (this.props.page == "posts") {
-      content = <Posts user={this.state.user} />;
-      {
-        if (this.state.active != "posts") {
-          this.setActive("posts");
-        }
-      }
-    } else if (this.props.page == "comments") {
-      content = <Comments user={this.state.user} />;
-      {
-        if (this.state.active != "comments") {
-          this.setActive("comments");
-        }
-      }
-    } else if (this.props.page == "replies") {
-      content = <Replies user={this.state.user} />;
-      {
-        if (this.state.active != "replies") {
-          this.setActive("replies");
-        }
-      }
-    } else if (this.props.page == "notifications") {
-      content = <Notifications user={this.state.user} />;
-      {
-        if (this.state.active != "notifications") {
-          this.setActive("notifications");
-        }
-      }
-    } else if (this.props.page == "profile") {
-      content = <Profile user={this.state.user} />;
-      {
-        if (this.state.active != "profile") {
-          this.setActive("profile");
-        }
-      }
-    } else if (this.props.page == "wallet") {
-      content = <Wallet />;
-      {
-        if (this.state.active != "wallet") {
-          this.setActive("wallet");
-        }
-      }
-    } else if (this.props.page == "settings") {
-      content = <Settings />;
-      {
-        if (this.state.active != "settings") {
-          this.setActive("settings");
-        }
-      }
-    } else {
-      content = <Stats user={this.state.user} />;
-      {
-        if (this.state.active != "dashboard") {
-          this.setActive("dashboard");
-        }
-      }
-    }
+
     return (
-      <div className={classes.root}>
+      <Fragment>
         {appbar}
         {drawer}
-        <main className={classes.content}>{content}</main>
-      </div>
+      </Fragment>
     );
   }
 }

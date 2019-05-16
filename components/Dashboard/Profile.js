@@ -10,13 +10,14 @@ import { GET_PROFILE } from "../../helpers/graphql/profile";
 import SaveIcon from "@material-ui/icons/Save";
 import { indigo } from "@material-ui/core/colors";
 import HeaderCard from "../General/HeaderCard";
+import { getUser } from "../../utils/token";
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
-      author: this.props.user,
+      author: getUser(),
       profile_image: "",
       cover_image: "",
       name: "",
@@ -209,7 +210,7 @@ class Profile extends Component {
         <Helmet>
           <title>{"Profile | TravelFeed: The Travel Community"}</title>
         </Helmet>
-        <Query query={GET_PROFILE} variables={{ author: this.props.user }}>
+        <Query query={GET_PROFILE} variables={{ author: getUser() }}>
           {({ data }) => {
             if (data && data.profile && this.state.loaded === false) {
               this.setState({
@@ -374,8 +375,8 @@ class Profile extends Component {
                         />
                         {updatebtn}
                         <Link
-                          as={`/@${this.props.user}`}
-                          href={`/blog?author=${this.props.user}`}
+                          as={`/@${getUser()}`}
+                          href={`/blog?author=${getUser()}`}
                           passHref
                         >
                           <a>

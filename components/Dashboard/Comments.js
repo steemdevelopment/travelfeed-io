@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import PostGrid from "../PostGrid";
+import { getUser } from "../../utils/token";
 
 class Comments extends Component {
   render() {
@@ -25,7 +26,7 @@ class Comments extends Component {
           </Grid>
         </Grid>
         <PostGrid
-          query={{ author: this.props.user, is_comment: true, limit: 8 }}
+          query={{ author: getUser(), is_comment: true, limit: 8 }}
           grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}
           poststyle="comment"
         />

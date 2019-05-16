@@ -19,11 +19,7 @@ class NavSide extends Component {
         <div className="col-4" />
         <div className="col-8">
           <MenuList>
-            <Link
-              as="/dashboard/publish"
-              href="/dashboard?page=publish"
-              passHref
-            >
+            <Link href="/dashboard/publish" passHref>
               <a>
                 <MenuItem>
                   <ListItemIcon>
@@ -33,11 +29,7 @@ class NavSide extends Component {
                 </MenuItem>
               </a>
             </Link>
-            <Link
-              as="/dashboard/publish"
-              href="/dashboard?page=replies"
-              passHref
-            >
+            <Link href="/dashboard/publish" passHref>
               <a>
                 <MenuItem>
                   <ListItemIcon>
@@ -47,11 +39,7 @@ class NavSide extends Component {
                 </MenuItem>
               </a>
             </Link>
-            <Link
-              as="/dashboard/publish"
-              href="/dashboard?page=drafts"
-              passHref
-            >
+            <Link href="/dashboard/publish" passHref>
               <a>
                 <MenuItem>
                   <ListItemIcon>

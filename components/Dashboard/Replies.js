@@ -3,6 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import PostGrid from "../PostGrid";
+import { getUser } from "../../utils/token";
 
 class Replies extends Component {
   render() {
@@ -26,7 +27,7 @@ class Replies extends Component {
         </Grid>
         <PostGrid
           query={{
-            parent_author: this.props.user,
+            parent_author: getUser(),
             is_comment: true,
             limit: 8
           }}

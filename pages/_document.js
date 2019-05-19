@@ -1,64 +1,17 @@
 import React from "react";
 import Document, { Head, Main, NextScript } from "next/document";
-import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
-import getPageContext from "../lib/getPageContext";
-const pageContext = getPageContext();
 import * as Sentry from "@sentry/node";
 
 export default class extends Document {
-  static async getInitialProps(...args) {
-    const documentProps = await super.getInitialProps(...args);
-    // see https://github.com/nfl/react-helmet#server-usage for more information
-    // 'head' was occupied by 'renderPage().head', we cannot use it
-    return { ...documentProps, helmet: Helmet.renderStatic() };
-  }
-
-  // should render on <html>
-  get helmetHtmlAttrComponents() {
-    return this.props.helmet.htmlAttributes.toComponent();
-  }
-
-  // should render on <body>
-  get helmetBodyAttrComponents() {
-    return this.props.helmet.bodyAttributes.toComponent();
-  }
-
-  // should render on <head>
-  get helmetHeadComponents() {
-    return Object.keys(this.props.helmet)
-      .filter(el => el !== "htmlAttributes" && el !== "bodyAttributes")
-      .map(el => this.props.helmet[el].toComponent());
-  }
-
-  get helmetJsx() {
-    return (
-      <Helmet
-        htmlAttributes={{ lang: "en" }}
-        title="TravelFeed"
-        meta={[
-          {
-            name: "viewport",
-            content:
-              "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          },
-          { property: "og:site_name", content: "TravelFeed" },
-          { property: "article:tag", content: "travel" },
-          { themeColor: pageContext.theme.palette.primary.main }
-        ]}
-      />
-    );
-  }
   render() {
     Sentry.init({
       dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
     });
     return (
-      <html {...this.helmetHtmlAttrComponents}>
+      <html>
         <Head>
-          {this.helmetJsx}
-          {this.helmetHeadComponents}
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -80,7 +33,7 @@ export default class extends Document {
           <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
           <meta name="msapplication-TileColor" content="#2d89ef" />
         </Head>
-        <body {...this.helmetBodyAttrComponents}>
+        <body>
           <Main />
           <NextScript />
         </body>

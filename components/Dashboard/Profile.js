@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Helmet from "react-helmet";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -207,9 +206,6 @@ class Profile extends Component {
     }
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Profile | TravelFeed: The Travel Community"}</title>
-        </Helmet>
         <Query query={GET_PROFILE} variables={{ author: getUser() }}>
           {({ data }) => {
             if (data && data.profile && this.state.loaded === false) {

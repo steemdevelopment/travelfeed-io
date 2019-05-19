@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { regExcerpt } from "../../utils/regex";
 import InfiniteScroll from "react-infinite-scroller";
-import Head from "../Head";
 import PostListItem from "../PostListItem";
 import { getUser } from "../../utils/token";
 import json2Html from "../Editor/json2Html";
@@ -25,7 +24,6 @@ class PostGrid extends Component {
     const user = getUser();
     return (
       <Fragment>
-        <Head title="Drafts" />
         <div className="text-center pt-4">
           <h1>Drafts</h1>
         </div>

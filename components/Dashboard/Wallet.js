@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Helmet from "react-helmet";
 import { Query } from "react-apollo";
 import { GET_USER_STATS } from "../../helpers/graphql/stats";
 import RecentEarnings from "./Stats/RecentEarningsChart";
@@ -12,9 +11,6 @@ class Wallet extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Wallet | TravelFeed: The Travel Community"}</title>
-        </Helmet>
         <Grid container spacing={0} justify="center" className="p-1">
           <Query query={GET_USER_STATS}>
             {({ data, loading, error }) => {

@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Helmet from "react-helmet";
 import PostGrid from "../PostGrid";
 import PropTypes from "prop-types";
 import { getUser } from "../../utils/token";
@@ -9,9 +8,6 @@ class Posts extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"My Posts | TravelFeed: The Travel Community"}</title>
-        </Helmet>
         <Grid
           container
           spacing={0}

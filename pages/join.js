@@ -1,21 +1,20 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, Component } from "react";
 import Header from "../components/Header";
-import Helmet from "react-helmet";
 import { DEFAULT_META_DESCRIPTION } from "../config";
 import { Query } from "react-apollo";
 import { GET_TF_STATS } from "../helpers/graphql/stats";
 import { indigo, teal } from "@material-ui/core/colors";
+import Head from "../components/Head";
 
 class Join extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Join TravelFeed: The Travel Community"}</title>
-          <meta property="description" content={DEFAULT_META_DESCRIPTION} />
-          <meta property="og:description" content={DEFAULT_META_DESCRIPTION} />
-        </Helmet>
+        <Head
+          title="Join TravelFeed: The Travel Community"
+          description={DEFAULT_META_DESCRIPTION}
+        />
         <Header />
         <Query query={GET_TF_STATS} variables={{ days: 1000 }}>
           {({ data, loading, error }) => {

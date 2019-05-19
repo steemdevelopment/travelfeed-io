@@ -1,7 +1,6 @@
 // Todo: Add delete account to remove all of users data from our database
 import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import Helmet from "react-helmet";
 import { Mutation, Query } from "react-apollo";
 import { GET_SETTINGS, CHANGE_SETTINGS } from "../../helpers/graphql/settings";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -56,9 +55,6 @@ class Settings extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Settings | TravelFeed: The Travel Community"}</title>
-        </Helmet>
         <Grid
           container
           spacing={0}

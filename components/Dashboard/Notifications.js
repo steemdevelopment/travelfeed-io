@@ -1,5 +1,4 @@
 import React, { Fragment, Component } from "react";
-import Helmet from "react-helmet";
 import { Query } from "react-apollo";
 import { GET_NOTIFICATIONS } from "../../helpers/graphql/posts";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -11,9 +10,6 @@ class Notifications extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Notifications | TravelFeed: The Travel Community"}</title>
-        </Helmet>
         <Query
           query={GET_NOTIFICATIONS}
           variables={{

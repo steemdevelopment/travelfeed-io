@@ -352,7 +352,7 @@ export class SinglePost extends Component {
                         height: this.state.bgheight,
                         position: this.state.bgpos,
                         marginTop: this.state.bgmargin,
-                        backgroundImage: `url("https://steemitimages.com/2000x0/${
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("https://steemitimages.com/2000x0/${
                           data.post.img_url
                         }")`,
                         backgroundRepeat: "no-repeat",
@@ -378,7 +378,7 @@ export class SinglePost extends Component {
                           >
                             <div className="text-center col my-auto">
                               <Typography
-                                variant="h4"
+                                variant="h3"
                                 className="text-light font-weight-bold"
                                 style={{
                                   textShadow: "1px 1px 20px #343A40"

@@ -39,7 +39,7 @@ class NavSide extends Component {
                 </MenuItem>
               </a>
             </Link>
-            <Link href="/dashboard/publish" passHref>
+            <Link href="/dashboard/drafts" passHref>
               <a>
                 <MenuItem>
                   <ListItemIcon>

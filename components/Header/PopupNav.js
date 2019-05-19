@@ -111,8 +111,7 @@ class DestinationsNav extends Component {
                                     {
                                       country_slug: "spain",
                                       subdivision: "Community of Madrid",
-                                      city: "Madrid",
-                                      nocity: true
+                                      city: "Madrid"
                                     },
                                     {
                                       country_slug: "spain",
@@ -122,21 +121,18 @@ class DestinationsNav extends Component {
                                     {
                                       country_slug: "spain",
                                       subdivision: "Valencian Community",
-                                      city: "Valencia",
-                                      nocity: true
+                                      city: "Valencia"
                                     },
                                     {
                                       country_slug: "portugal",
                                       subdivision:
                                         "Área Metropolitana de Lisboa",
-                                      city: "Lisbon",
-                                      nocity: true
+                                      city: "Lisbon"
                                     },
                                     {
                                       country_slug: "italy",
                                       subdivision: "Lazio",
-                                      city: "Rome",
-                                      nocity: true
+                                      city: "Rome"
                                     },
                                     {
                                       country_slug: "germany",
@@ -151,8 +147,7 @@ class DestinationsNav extends Component {
                                     {
                                       country_slug: "ireland",
                                       subdivision: "Leinster",
-                                      city: "Dublin",
-                                      nocity: true
+                                      city: "Dublin"
                                     },
                                     {
                                       country_slug: "poland",
@@ -162,8 +157,7 @@ class DestinationsNav extends Component {
                                     {
                                       country_slug: "france",
                                       subdivision: "Ile-de-France",
-                                      city: "Paris",
-                                      nocity: true
+                                      city: "Paris"
                                     },
                                     {
                                       country_slug: "austria",
@@ -221,7 +215,7 @@ class DestinationsNav extends Component {
                                     },
                                     {
                                       country_slug: "taiwan",
-                                      subdivision: "New Taipei",
+                                      subdivision: "Taipei",
                                       city: "Taipei",
                                       nocity: true
                                     },
@@ -237,9 +231,9 @@ class DestinationsNav extends Component {
                                       city: "Istanbul"
                                     },
                                     {
-                                      country_slug: "russia",
-                                      subdivision: "Saint Petersburg",
-                                      city: "St. Petersburg",
+                                      country_slug: "philippines",
+                                      subdivision: "Cebu",
+                                      city: "Cebu",
                                       nocity: true
                                     },
 
@@ -253,8 +247,7 @@ class DestinationsNav extends Component {
                                     {
                                       country_slug: "japan",
                                       subdivision: "Kinki Region",
-                                      city: "Kyoto",
-                                      nocity: true
+                                      city: "Kyoto"
                                     },
 
                                     {
@@ -283,13 +276,18 @@ class DestinationsNav extends Component {
                                     {
                                       country_slug: "united-states",
                                       subdivision: "Illinois",
-                                      city: "Chicago",
-                                      nocity: true
+                                      city: "Chicago"
+                                    },
+                                    {
+                                      country_slug: "morocco",
+                                      subdivision: "Marrakech-Safi",
+                                      city: "Marrakesh"
                                     },
                                     {
                                       country_slug: "united-states",
                                       subdivision: "California",
-                                      city: "Los Angeles"
+                                      city: "California",
+                                      nocity: true
                                     },
                                     {
                                       country_slug: "united-states",
@@ -313,7 +311,6 @@ class DestinationsNav extends Component {
                                       city: "Yucatan",
                                       nocity: true
                                     },
-
                                     {
                                       country_slug: "ecuador",
                                       subdivision: "Galápagos",
@@ -336,11 +333,6 @@ class DestinationsNav extends Component {
                                       country_slug: "australia",
                                       subdivision: "New South Wales",
                                       city: "Sydney"
-                                    },
-                                    {
-                                      country_slug: "australia",
-                                      subdivision: "Victoria",
-                                      city: "Melbourne"
                                     }
                                   ]}
                                 />
@@ -365,7 +357,7 @@ class DestinationsNav extends Component {
                                     "de",
                                     "is",
                                     "pl",
-                                    "pt",
+                                    "ru",
                                     "nl",
                                     "no",
                                     "ro",
@@ -388,7 +380,7 @@ class DestinationsNav extends Component {
                                     "jp",
                                     "my",
                                     "ph",
-                                    "ru",
+                                    "np",
                                     "lk",
                                     "kr",
                                     "th",

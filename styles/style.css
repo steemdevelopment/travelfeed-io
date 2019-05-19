@@ -6,6 +6,13 @@
   height: calc(100% - 65px); /* IE9+ and future browsers */
 }
 
+.text-decoration-underline {
+  text-decoration: underline;
+}
+.text-mutedlight {
+  color: #9e9e9e;
+}
+
 @media only screen and (max-width: 767px) {
   .fullheight {
     position: absolute;

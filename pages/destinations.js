@@ -6,7 +6,7 @@ import Head from "../components/Head";
 import Typography from "@material-ui/core/Typography";
 import { ccFromSlug, nameFromSlug } from "../helpers/country_codes";
 import NotFound from "../components/NotFound";
-import Sublocations from "../components/Destinations/Sublocations";
+import DestinationHeader from "../components/Destinations/DestinationHeader";
 
 class Destinations extends Component {
   static async getInitialProps(props) {
@@ -35,36 +35,28 @@ class Destinations extends Component {
         </Fragment>
       );
     }
+    const title = `${(suburb && `${suburb}, ${city}`) ||
+      (city && `${city}, ${country_name}`) ||
+      (subdivision && `${subdivision}, ${country_name}`) ||
+      country_name}`;
     return (
       <Fragment>
         <Head
-          title={`${(suburb && `${suburb}, ${city}`) ||
-            (city && `${city}, ${country_name}`) ||
-            (subdivision && `${subdivision}, ${country_name}`) ||
-            country_name} - TravelFeed: The Travel Community`}
+          title={`${title} - TravelFeed: The Travel Community`}
           description={`Discover the best travel blog posts about ${suburb ||
             city ||
             subdivision ||
             country_name} on TravelFeed.`}
         />
         <Header />
-        <Typography
-          variant="h4"
-          align="center"
-          gutterBottom={true}
-          className="pt-5 pb-3"
-        >
-          {`${(suburb && `${suburb}, ${city}`) ||
-            (city && `${city}, ${country_name}`) ||
-            (subdivision && `${subdivision}, ${country_name}`) ||
+        <DestinationHeader
+          country_slug={this.props.country}
+          query={{ country_code, subdivision, city }}
+          title={`${(suburb && `${suburb}, ${city}`) ||
+            (city && `${city}`) ||
+            (subdivision && `${subdivision}`) ||
             country_name}`}
-        </Typography>
-        {!city && !suburb && (
-          <Sublocations
-            country_slug={this.props.country}
-            query={{ country_code, subdivision, city }}
-          />
-        )}
+        />
         <PostGrid
           query={{
             limit: 8,

@@ -257,7 +257,7 @@ class HeaderMenu extends Component {
                           </a>
                         </Link>
                       )) || (
-                        <Link href="/dashboard/" passHref>
+                        <Link href="/dashboard" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>

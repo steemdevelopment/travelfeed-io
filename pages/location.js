@@ -4,38 +4,48 @@ import PostGrid from "../components/PostGrid";
 import Header from "../components/Header";
 import Head from "../components/Head";
 import Typography from "@material-ui/core/Typography";
+import DestinationHeader from "../components/Destinations/DestinationHeader";
+import { slugFromCC } from "../helpers/country_codes";
 
 class Location extends Component {
   static async getInitialProps(props) {
-    const { formatted_address } = props.query;
-    const { country_code } = props.query;
+    const { formatted_address, country_code, showlocations } = props.query;
     const locations = props.query.location_box.split(",");
     let location_box = [];
     locations.forEach(el => {
       location_box.push(parseFloat(el));
     });
+
     return {
       location_box,
       formatted_address,
-      country_code
+      country_code,
+      showlocations
     };
   }
   render() {
+    const showLocations =
+      this.props.showlocations === "true" ? this.props.country_code : undefined;
+    console.log(showLocations);
     return (
       <Fragment>
         <Head
-          title={`Name - TravelFeed: The Travel Community`}
-          description={`Explore posts about Location name on TravelFeed.`}
+          title={`${
+            this.props.formatted_address
+          } - TravelFeed: The Travel Community`}
+          description={`Explore posts about ${
+            this.props.formatted_address
+          } on TravelFeed.`}
         />
         <Header />
-        <Typography
-          variant="h4"
-          align="center"
-          gutterBottom={true}
-          className="pt-5 pb-3"
-        >
-          {this.props.formatted_address}
-        </Typography>
+        <DestinationHeader
+          query={{
+            search: this.props.formatted_address,
+            country_code: showLocations
+          }}
+          title={this.props.formatted_address}
+          country_slug={slugFromCC(this.props.country_code)}
+        />
         <PostGrid
           query={{
             location_box: this.props.location_box,

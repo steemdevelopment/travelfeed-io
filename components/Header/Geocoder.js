@@ -51,9 +51,10 @@ class Geocoder extends Component {
         let args = "";
         const components =
           result.address_components[result.address_components.length - 1];
+        const showlocations = result.address_components.length === 1;
         components.types.forEach(t => {
           if (t === "country") {
-            args = `&country_code=${components.short_name.toLowerCase()}`;
+            args = `&country_code=${components.short_name.toLowerCase()}&showlocations=${showlocations}`;
           }
         });
         let bounds = result.geometry.bounds;

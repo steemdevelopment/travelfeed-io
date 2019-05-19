@@ -54,14 +54,14 @@ class PostCard extends Component {
         </a>
       </Link>
     );
-    if (this.props.mode === "draft") {
+    if (this.props.isDraftMode) {
       button2 = (
         <DeleteDraftButton id={this.props.id} onDelete={this.hide.bind(this)} />
       );
     }
-    let colsize = "";
+    let colsize = "col-12";
     if (this.props.post.img_url !== undefined) {
-      colsize = "col-md-8 pl-0";
+      colsize = "col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 pl-0";
     }
     const country =
       this.props.post.country_code !== null
@@ -95,22 +95,24 @@ class PostCard extends Component {
           </CardContent>
           <CardActions className="bg-dark">
             <div className="container-fluid">
-              <div className="row">
+              <div className="row w-100">
                 <div className="col-7">
                   <span className="text-light pl-2">
-                    <Button
-                      color="inherit"
-                      className="p-0 pl-2 pr-2"
-                      onClick={() =>
-                        this.props.onEditorOpen({
-                          title: this.props.post.title,
-                          body: this.props.post.body,
-                          json: this.props.post.json
-                        })
-                      }
+                    <Link
+                      href={`/dashboard/publish?id=${
+                        this.props.post.id
+                      }&title=${this.props.post.title}&body=${
+                        this.props.post.body
+                      }&json=${this.props.post.json}&isCodeEditor=${
+                        this.props.post.isCodeEditor
+                      }`}
+                      as={`/dashboard/publish`}
+                      passHref
                     >
-                      <span className="pr-1">Edit</span> <EditIcon />
-                    </Button>
+                      <Button color="inherit" className="p-0 pl-2 pr-2">
+                        <span className="pr-1">Edit</span> <EditIcon />
+                      </Button>
+                    </Link>
                   </span>
                   {button2}
                 </div>
@@ -131,24 +133,27 @@ class PostCard extends Component {
                   )}
                   {appIcon}
                   {// if post is paid out (= older than 7 days), display payout, otherwise display time until payour
-                  (new Date(this.props.post.created_at) <
-                    new Date(new Date().setDate(new Date().getDate() - 7)) && (
-                    <span className="text-light pl-2 font-weight-bold">
-                      ${(this.props.post.payout * 0.75).toFixed(2)}
-                    </span>
-                  )) || (
-                    <span className="text-light pl-2 font-weight-bold">
-                      Payout in{" "}
-                      {Math.ceil(
-                        Math.abs(
-                          new Date().getTime() -
-                            new Date(this.props.post.created_at).getTime()
-                        ) /
-                          (1000 * 60 * 60 * 24)
-                      )}{" "}
-                      days
-                    </span>
-                  )}
+                  !this.props.isDraftMode &&
+                    ((new Date(this.props.post.created_at) <
+                      new Date(
+                        new Date().setDate(new Date().getDate() - 7)
+                      ) && (
+                      <span className="text-light pl-2 font-weight-bold">
+                        ${(this.props.post.payout * 0.75).toFixed(2)}
+                      </span>
+                    )) || (
+                      <span className="text-light pl-2 font-weight-bold">
+                        Payout in{" "}
+                        {Math.ceil(
+                          Math.abs(
+                            new Date().getTime() -
+                              new Date(this.props.post.created_at).getTime()
+                          ) /
+                            (1000 * 60 * 60 * 24)
+                        )}{" "}
+                        days
+                      </span>
+                    ))}
                 </div>
               </div>
             </div>
@@ -170,7 +175,7 @@ PostCard.propTypes = {
   onEditorOpen: PropTypes.func,
   post: PropTypes.object.isRequired,
   sanitized: PropTypes.string,
-  mode: PropTypes.string,
+  isDraftMode: PropTypes.bool,
   id: PropTypes.string
 };
 

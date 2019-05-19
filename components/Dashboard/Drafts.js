@@ -33,11 +33,9 @@ class PostGrid extends Component {
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <div className="p-5 text-center">
-                    <CircularProgress />
-                  </div>
-                </Grid>
+                <div className="col-12 p-5 text-center">
+                  <CircularProgress />
+                </div>
               );
             }
             if (error || data.drafts === null) {
@@ -64,48 +62,49 @@ class PostGrid extends Component {
                 hasMore={this.state.hasMore}
                 threshold={1000}
                 loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div className="p-5 text-center">
-                      <CircularProgress />
-                    </div>
-                  </Grid>
+                  <div className="col-12 p-5 text-center">
+                    <CircularProgress />
+                  </div>
                 }
               >
-                <Grid
-                  container
-                  spacing={0}
-                  alignItems="center"
-                  justify="center"
-                  className="p-3"
-                >
-                  {data.drafts.length > 0 &&
-                    data.drafts.map(draft => {
-                      const htmlBody = draft.isCodeEditor
-                        ? parseBody(draft.body, {})
-                        : json2Html(JSON.parse(draft.body));
-                      const sanitized = sanitize(htmlBody, { allowedTags: [] });
-                      const readtime = readingTime(sanitized);
-                      const excerpt = regExcerpt(sanitized);
-                      return (
-                        <Grid item lg={6} md={9} sm={12} xs={12} key={draft.id}>
-                          <PostListItem
-                            post={{
-                              author: user,
-                              body: draft.body,
-                              display_name: user,
-                              title: draft.title,
-                              json: draft.json,
-                              created_at: draft.savedate,
-                              readtime: readtime,
-                              excerpt: excerpt
-                            }}
-                            id={draft.id}
-                            mode="draft"
-                          />
-                        </Grid>
-                      );
-                    })}
-                </Grid>
+                <div className="container">
+                  <div className="row justify-content-center">
+                    {data.drafts.length > 0 &&
+                      data.drafts.map(draft => {
+                        const htmlBody = draft.isCodeEditor
+                          ? parseBody(draft.body, {})
+                          : json2Html(JSON.parse(draft.body));
+                        const sanitized = sanitize(htmlBody, {
+                          allowedTags: []
+                        });
+                        const readtime = readingTime(sanitized);
+                        const excerpt = regExcerpt(sanitized);
+                        return (
+                          <div
+                            className="col-xl-6 col-lg-6 col-md-9 col-12"
+                            key={draft.id}
+                          >
+                            <PostListItem
+                              post={{
+                                author: user,
+                                body: draft.body,
+                                display_name: user,
+                                title: draft.title,
+                                json: draft.json,
+                                created_at: draft.savedate,
+                                readtime: readtime,
+                                excerpt: excerpt,
+                                id: draft.id,
+                                isCodeEditor: draft.isCodeEditor
+                              }}
+                              id={draft.id}
+                              isDraftMode={true}
+                            />
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
               </InfiniteScroll>
             );
           }}

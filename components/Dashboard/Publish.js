@@ -38,7 +38,7 @@ class PostEditor extends Component {
     title: "",
     content: undefined,
     htmlContent: undefined,
-    tags: ["travelfeed"],
+    tags: undefined,
     completed: 0,
     location: undefined,
     codeEditor: false,
@@ -77,18 +77,18 @@ class PostEditor extends Component {
   //   console.log(content)
   // };
   handleEditorChange = content => {
-    console.log(content);
+    // console.log(content);
     this.setState({ content });
   };
   handleHtmlEditorChange = htmlContent => {
-    console.log(htmlContent);
+    // console.log(htmlContent);
     this.setState({ htmlContent });
   };
   handleTagsEditorChange(tags) {
     this.setState({ tags: tags.target.value });
   }
   onLocationPick = ({ latitude, longitude }) => {
-    console.log({ latitude, longitude });
+    // console.log({ latitude, longitude });
     this.setState({ location: { latitude, longitude } });
   };
   componentWillUnmount() {
@@ -96,20 +96,48 @@ class PostEditor extends Component {
     clearInterval(this.interval);
   }
   componentDidMount() {
-    if (this.props.editMode) {
-      this.setState({
-        title: this.props.edit.title,
-        content: this.props.edit.content,
-        tags: this.props.edit.tags
-      });
-    }
-    let id = this.props.id;
-    if (this.props.id === undefined) {
-      id = getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
-    }
+    const json = this.props.edit.json
+      ? JSON.parse(this.props.edit.json)
+      : undefined;
+    const title = this.props.edit.title ? this.props.edit.title : "";
+    const content =
+      this.props.edit.body && this.props.edit.isCodeEditor === false
+        ? this.props.edit.body
+        : {
+            time: 1554920381017,
+            blocks: [
+              {
+                type: "header",
+                data: {
+                  text: "Hello Editor.js",
+                  level: 2
+                }
+              }
+            ],
+            version: "2.12.4"
+          };
+    const htmlContent =
+      this.props.edit.body && this.props.edit.isCodeEditor === true
+        ? this.props.edit.body
+        : undefined;
+    const tags = json && json.tags ? json.tags : ["travelfeed"];
+    const location = json && json.location ? json.location : undefined;
+    const id = this.props.edit.id
+      ? this.props.edit.id
+      : getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
+    const mounted = true;
+    const codeEditor = this.props.edit.isCodeEditor
+      ? this.props.edit.isCodeEditor
+      : false;
     this.setState({
-      id: id,
-      mounted: true
+      title,
+      content,
+      htmlContent,
+      tags,
+      location,
+      id,
+      mounted,
+      codeEditor
     });
     // Save draft every 20 seconds
     this.interval = setInterval(() => this.setState({ saved: false }), 20000);
@@ -204,12 +232,15 @@ class PostEditor extends Component {
     let wordCount = "";
     let readTime = "";
     if (this.state.codeEditor) {
-      const readingtime = readingTime(this.state.htmlContent);
+      const readingtime = this.state.htmlContent
+        ? readingTime(this.state.htmlContent)
+        : { words: 0, text: "0 min" };
       wordCount = readingtime.words;
       readTime = readingtime.text;
     } else {
       let html = "";
       this.state.content &&
+        this.state.content.blocks &&
         this.state.content.blocks.forEach(b => {
           if (b.type === "paragraph" || b.type === "header") {
             html += `${b.data.text} `;
@@ -231,6 +262,10 @@ class PostEditor extends Component {
     //   editor = (
     //   );
     // }
+    const publishTooltip =
+      wordCount < 250 || this.state.title === ""
+        ? "You need to write at least 250 words and set a title before you can publish your post"
+        : "Once published, your post cannot be deleted";
     return (
       <Fragment>
         <div className="container">
@@ -276,7 +311,10 @@ class PostEditor extends Component {
                       body:
                         (this.state.codeEditor && this.state.htmlContent) ||
                         JSON.stringify(this.state.content),
-                      json: JSON.stringify({ tags: this.state.tags }),
+                      json: JSON.stringify({
+                        tags: this.state.tags,
+                        location: this.state.location
+                      }),
                       isCodeEditor: this.state.codeEditor
                     }}
                   >
@@ -297,7 +335,11 @@ class PostEditor extends Component {
                                 )}
                               />
                               {(this.state.htmlContent && (
-                                <Tooltip title="Once you start typing, the only way to switch back for this post is to restore a previous draft">
+                                <Tooltip
+                                  title={
+                                    "Once you start typing, the only way to switch back for this post is to restore a previous draft"
+                                  }
+                                >
                                   <span className="font-weight-bold font-size-8 cpointer text-muted">
                                     Switch to TravelFeed editor
                                   </span>
@@ -321,19 +363,7 @@ class PostEditor extends Component {
                               <Editor
                                 holder="editorjs-container"
                                 onChange={this.handleEditorChange.bind(this)}
-                                // data={{
-                                //   time: 1554920381017,
-                                //   blocks: [
-                                //     {
-                                //       type: "header",
-                                //       data: {
-                                //         text: "Hello Editor.js",
-                                //         level: 2
-                                //       }
-                                //     }
-                                //   ],
-                                //   version: "2.12.4"
-                                // }}
+                                data={this.state.content}
                               />
                               <span
                                 className="font-weight-bold font-size-8 cpointer"
@@ -355,10 +385,12 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
-                      <TagPicker
-                        initialValue={this.props.edit.tags}
-                        onChange={this.handleTagClick.bind(this)}
-                      />
+                      {this.state.tags && (
+                        <TagPicker
+                          initialValue={this.state.tags}
+                          onChange={this.handleTagClick.bind(this)}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </div>
@@ -411,22 +443,19 @@ class PostEditor extends Component {
                   <Card>
                     <CardContent>
                       <PostPreview />
-                      <Tooltip
-                        title={
-                          wordCount < 250 ||
-                          (this.state.title === "" &&
-                            "You need to write at least 250 words and set a title before you can publish your post") ||
-                          "Once published, your post cannot be deleted"
-                        }
-                      >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => this.publishPost()}
-                          disabled={wordCount < 250 || this.state.title === ""}
-                        >
-                          {(this.props.editMode && "Edit") || "Publish"}
-                        </Button>
+                      <Tooltip title={publishTooltip}>
+                        <div>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => this.publishPost()}
+                            disabled={
+                              wordCount < 250 || this.state.title === ""
+                            }
+                          >
+                            {(this.props.editMode && "Edit") || "Publish"}
+                          </Button>
+                        </div>
                       </Tooltip>
                       {this.state.completed !== 0 && (
                         <CircularProgress

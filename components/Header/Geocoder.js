@@ -3,7 +3,7 @@
 // Todo: Look into OSM alternative to google places (issues with privacy, at some point cost). Mapbox restricts their Geocoder to map queries (tos), nominatim forbids autocomplete. Komoot photon, osmnames or pelias (probably the best option, but complicated) could be considered.
 import React, { Component, Fragment } from "react";
 import SearchIcon from "@material-ui/icons/Search";
-import { GMAPS_PLACES_TOKEN } from "../../config";
+import { GMAPS_API_KEY } from "../../config";
 import MUIPlacesAutocomplete, {
   geocodeBySuggestion
 } from "mui-places-autocomplete";
@@ -79,7 +79,7 @@ class Geocoder extends Component {
         <Head>
           <script
             type="text/javascript"
-            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_PLACES_TOKEN}&libraries=places`}
+            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
           />
         </Head>
         <MUIPlacesAutocomplete

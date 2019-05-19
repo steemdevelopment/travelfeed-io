@@ -97,7 +97,7 @@ class Editor extends Component {
     const { holder } = this.props;
     return React.createElement("div", {
       id: holder,
-      class: "border",
+      className: "border",
       ref: this._el
     });
   }

@@ -1,22 +1,9 @@
-import {
-  LOCALHOST_GMAPS_API_KEY,
-  LOCALHOST_MAPBOX_TOKEN
-} from "./config.local";
-
 // The API keys in this file are used client-side and restricted to travelfeed.io, so don't bother trying to steal them ;)
-export const GMAPS_API_KEY =
-  process.env.NODE_ENV == "production"
-    ? "AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c"
-    : LOCALHOST_GMAPS_API_KEY;
-export const MAPBOX_TOKEN =
-  process.env.NODE_ENV == "production"
-    ? "pk.eyJ1IjoidGlvdGRldiIsImEiOiJjanZ2NjVzdjQxZ3Q2M3ptczN5NTIwY3k4In0.ZIhYhbkfSAfbX11XDwI57w"
-    : LOCALHOST_MAPBOX_TOKEN;
 
-export const GRAPHQL_URL =
-  process.env.NODE_ENV == "production"
-    ? "https://api.travelfeed.io/graphql"
-    : "http://localhost:4000/graphql";
+// Prduction settings. TODO: Add next.js equivalent of dotenv for localhost keys (local development)
+export const GMAPS_API_KEY = "AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c";
+export const MAPBOX_TOKEN =
+  "pk.eyJ1IjoidGlvdGRldiIsImEiOiJjanZ2NjVzdjQxZ3Q2M3ptczN5NTIwY3k4In0.ZIhYhbkfSAfbX11XDwI57w";
 
 export const DEFAULT_IMAGE = "";
 export const APP_VERSION = "travelfeed/0.2.5";
@@ -27,6 +14,12 @@ if (process.env.NODE_ENV == "production") {
   url = "https://travelfeed.io/login";
   rooturl = "https://travelfeed.io";
 }
+
+export const GRAPHQL_URL =
+  process.env.NODE_ENV == "production"
+    ? "https://api.travelfeed.io/graphql"
+    : "http://localhost:4000/graphql";
+
 export const STEEMCONNECT_CALLBACK_URL = url;
 export const ROOTURL = rooturl;
 

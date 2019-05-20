@@ -23,7 +23,11 @@ class IconLabelTabs extends React.Component {
           centered
         >
           <Link as={`/created`} href={`/?orderby=created_at`} passHref>
-            <Tab icon={<NewIcon />} label="NEW" />
+            <Tab
+              icon={<NewIcon />}
+              label="NEW"
+              className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
+            />
           </Link>
           <Link as={`/hot`} href={`/?orderby=sc_hot`} passHref>
             <Tab icon={<HotIcon />} label="TAKING OFF" />

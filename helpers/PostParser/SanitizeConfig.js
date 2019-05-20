@@ -16,6 +16,9 @@ const ownDomains = ["localhost", "travelfeed.io", "www.travelfeed.io"];
 
 const knownDomains = [
   "localhost",
+  "staging.travelfeed.io",
+  "beta.travelfeed.io",
+  "travelfeed.io",
   "busy.org",
   "steempeak.com",
   "steemit.com",

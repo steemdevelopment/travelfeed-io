@@ -21,9 +21,7 @@ export const regExcerpt = text => {
     .substring(0, 250);
 };
 
-export const regTitle = title => {
-  return title.replace(allowedTitleChars, "");
-};
+export const allSpecialChars = /(?:[!-\/:-@[-`{-~]|[^\x00-\x7F]|\s)/g;
 
 export const permlinkFromTitle = title => {
   return title.replace(nospecialchars, "-").toLowerCase();

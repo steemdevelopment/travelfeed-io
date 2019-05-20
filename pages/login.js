@@ -1,68 +1,113 @@
 import React, { Fragment, Component } from "react";
 import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";
-import Helmet from "react-helmet";
 import NotFound from "../components/NotFound";
-import { setToken, setUser } from "../utils/token";
-import Dashboard from "./dashboard";
+import { setAccessToken, setScToken } from "../utils/token";
 import Router from "next/router";
 import PropTypes from "prop-types";
+import { Mutation, Query } from "react-apollo";
+import { GET_LOGIN_TOKEN, ACCEPT_TOS } from "../helpers/graphql/token";
+import LoginDialog from "../components/Login/LoginDialog";
 
 class Login extends Component {
-  state = { user: "" };
+  state = {
+    loaded: false
+  };
   static async getInitialProps({ req }) {
-    const access_token = req.query.access_token;
-    const username = req.query.username;
-    const expires_in = req.query.expires_in;
-    return { access_token, username, expires_in };
+    return {
+      sc: {
+        sc_token: req.query.access_token,
+        expires_in: req.query.expires_in
+      }
+    };
   }
   componentDidMount() {
-    const access_token = this.props.access_token;
-    const username = this.props.username;
-    const expires_in = this.props.expires_in;
-    if (access_token != undefined) {
-      setToken(access_token, expires_in);
-      setUser(username, expires_in);
-    }
-    this.setState({ user: username });
+    this.setState({ loaded: true });
   }
   render() {
-    var content = <Fragment />;
-    if (this.state.user == undefined) {
-      content = (
-        <Grid item lg={7} md={8} sm={11} xs={12}>
-          <NotFound statusCode={404} />
-        </Grid>
-      );
-    } else if (this.state.user != undefined && this.state.user != "") {
-      Router.replace("/dashboard");
-      content = <Dashboard />;
-    }
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Login | TravelFeed: The Travel Community"}</title>
-        </Helmet>
-        <Header />
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justify="center"
-          className="pt-4 pb-4"
-          style={{ paddingLeft: "75px" }}
-        >
-          {content}
-        </Grid>
+        <Query query={GET_LOGIN_TOKEN} variables={this.props.sc}>
+          {({ data, loading, error }) => {
+            if (loading || !this.state.loaded) {
+              return (
+                <Fragment>
+                  <Header />
+                  <Grid
+                    container
+                    spacing={0}
+                    alignItems="center"
+                    justify="center"
+                    className="pt-4 pb-4"
+                    style={{ paddingLeft: "75px" }}
+                  >
+                    <Grid item lg={7} md={8} sm={11} xs={12} />
+                  </Grid>
+                </Fragment>
+              );
+            }
+            if (error || data.login === null) {
+              return (
+                <Fragment>
+                  <Header />
+                  <Grid
+                    container
+                    spacing={0}
+                    alignItems="center"
+                    justify="center"
+                    className="pt-4 pb-4"
+                    style={{ paddingLeft: "75px" }}
+                  >
+                    <Grid item lg={7} md={8} sm={11} xs={12}>
+                      <NotFound statusCode={404} />
+                    </Grid>
+                  </Grid>
+                </Fragment>
+              );
+            }
+            if (data) {
+              // If tos are not accepted, display tos dialogue
+              if (data && data.login && data.login.hasAcceptedTos === false) {
+                return (
+                  <Mutation
+                    mutation={ACCEPT_TOS}
+                    variables={{
+                      sc_token: this.props.sc.sc_token,
+                      acceptTos: true
+                    }}
+                  >
+                    {(acceptTos, data) => {
+                      // If successful
+                      if (data && data.data && data.data.login.hasAcceptedTos) {
+                        setAccessToken(
+                          data.data.login.jwt,
+                          this.props.sc.expires_in
+                        );
+                        setScToken(
+                          this.props.sc.sc_token,
+                          this.props.sc.expires_in
+                        );
+                        Router.replace("/dashboard");
+                      }
+                      return <LoginDialog acceptTos={acceptTos} />;
+                    }}
+                  </Mutation>
+                );
+              }
+              setScToken(this.props.sc.sc_token, this.props.sc.expires_in);
+              setAccessToken(data.login.jwt, this.props.sc.expires_in);
+              Router.replace("/dashboard");
+              return "";
+            }
+          }}
+        </Query>
       </Fragment>
     );
   }
 }
 
 Login.propTypes = {
-  access_token: PropTypes.string,
-  username: PropTypes.string,
-  expires_in: PropTypes.number
+  sc: PropTypes.object
 };
 
 export default Login;

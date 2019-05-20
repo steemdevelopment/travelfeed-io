@@ -1,5 +1,6 @@
 const express = require("express");
 const next = require("next");
+const compression = require("compression");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -11,17 +12,10 @@ app
   .prepare()
   .then(() => {
     const server = express();
+    // https://github.com/zeit/next.js/wiki/Getting-ready-for-production
+    server.use(compression());
 
     server.use(express.static("public"));
-
-    server.get("/@:user/feed", (req, res) => {
-      const actualPage = "/tag";
-      const queryParams = {
-        sortby: "feed",
-        tag: req.params.user
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
 
     server.get("/@:author/:permlink", (req, res) => {
       const actualPage = "/post";
@@ -38,41 +32,123 @@ app
       res.redirect(`/@${author}/${permlink}`);
     });
 
-    server.get("/created/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get("/featured", (req, res) => {
+      const actualPage = "/";
       const queryParams = {
-        sortby: "created",
-        tag: req.params.tag
+        orderby: "featured"
       };
       app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/feed", (req, res) => {
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "feed"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/discover", (req, res) => {
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "random"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/created", (req, res) => {
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "created_at"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/hot", (req, res) => {
+      const actualPage = "/";
+      const queryParams = {
+        orderby: "sc_hot"
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/created/:tag", (req, res) => {
+      const tag = req.params.tag;
+      res.redirect(`/hot/${tag}`);
+    });
+
+    server.get("/trending/:tag", (req, res) => {
+      const tag = req.params.tag;
+      res.redirect(`/favorites/${tag}`);
     });
 
     server.get("/hot/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "hot",
-        tag: req.params.tag
+        orderby: "sc_hot",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/trending/:tag", (req, res) => {
+    server.get("/favorites/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "trending",
-        tag: req.params.tag
+        orderby: "total_votes",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/featured/travelfeed", (req, res) => {
+    server.get("/featured/:tag", (req, res) => {
       const actualPage = "/tag";
       const queryParams = {
-        sortby: "featured",
-        tag: "travelfeed"
+        orderby: "featured",
+        tags: req.params.tag
       };
       app.render(req, res, actualPage, queryParams);
     });
+
+    server.get("/destinations/:country", (req, res) => {
+      const actualPage = "/destinations";
+      const queryParams = {
+        country: req.params.country
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/destinations/:country/:subdivision", (req, res) => {
+      const actualPage = "/destinations";
+      const queryParams = {
+        country: req.params.country,
+        subdivision: req.params.subdivision
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get("/destinations/:country/:subdivision/:city", (req, res) => {
+      const actualPage = "/destinations";
+      const queryParams = {
+        country: req.params.country,
+        subdivision: req.params.subdivision,
+        city: req.params.city
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
+
+    server.get(
+      "/destinations/:country/:subdivision/:city/:suburb",
+      (req, res) => {
+        const actualPage = "/destinations";
+        const queryParams = {
+          country: req.params.country,
+          subdivision: req.params.subdivision,
+          city: req.params.city,
+          suburb: req.params.suburb
+        };
+        app.render(req, res, actualPage, queryParams);
+      }
+    );
 
     server.get("/blog", (req, res) => {
       const actualPage = "/blog";
@@ -82,94 +158,10 @@ app
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/@travelfeed", (req, res) => {
-      res.redirect("/blog");
-    });
-
     server.get("/@:author", (req, res) => {
       const actualPage = "/blog";
       const queryParams = {
         author: req.params.author
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/publish", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "publish"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/drafts", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "drafts"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/posts", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "posts"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/comments", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "comments"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/replies", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "replies"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/notifications", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "notifications"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/bookmarks", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "bookmarks"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/profile", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "profile"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/wallet", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "stats"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/settings", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "settings"
       };
       app.render(req, res, actualPage, queryParams);
     });

@@ -1,9 +1,9 @@
 import React, { Fragment, Component } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Helmet from "react-helmet";
 import Error from "next/error";
 import PropTypes from "prop-types";
+import Head from "./Head";
 
 class NotFound extends Component {
   render() {
@@ -18,13 +18,16 @@ class NotFound extends Component {
       content = (
         <Fragment>
           <h1>Error: Logged Out</h1>
-          <p>You need to log in to view this page. Use the "sign in" button on the top right to log in to your account.</p>
+          <p>
+            You need to log in to view this page. Use the sign in button on the
+            top right to log in to your account.
+          </p>
         </Fragment>
       );
     }
     return (
       <Fragment>
-        <Helmet>{helmet}</Helmet>
+        <Head title={helmet} />
         <Card>
           <CardContent>{content}</CardContent>
         </Card>
@@ -34,7 +37,7 @@ class NotFound extends Component {
 }
 
 NotFound.propTypes = {
-  statusCode: PropTypes.number | PropTypes.string
+  statusCode: PropTypes.number
 };
 
 export default NotFound;

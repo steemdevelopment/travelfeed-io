@@ -1,84 +1,114 @@
-import React, { Fragment, Component } from "react";
-import "@babel/polyfill";
-import PropTypes from "prop-types";
-import { client } from "../helpers/client";
-import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import "@babel/polyfill";
-import isBlacklisted from "../helpers/isBlacklisted";
+// https://sysgears.com/articles/how-to-implement-infinite-scroll-with-graphql-and-react/
+import React, { Component, Fragment } from "react";
 import PostCommentItem from "./PostCommentItem";
+import { commentQuery } from "../helpers/graphql/comments";
+import { Query } from "react-apollo";
+import InfiniteScroll from "react-infinite-scroller";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
 
 class PostComments extends Component {
   state = {
-    author: this.props.author,
-    permlink: this.props.permlink,
-    error: false,
-    hasMore: true,
-    isLoading: false,
-    stream: []
+    hasMore: true
   };
-  streamComments = async () => {
-    this.setState({
-      isLoading: true
-    });
-    try {
-      const stream = await client.database.call("get_content_replies", [
-        this.state.author,
-        this.state.permlink
-      ]);
-      this.setState({
-        stream: stream,
-        isLoading: false,
-        hasMore: false
-      });
-    } catch (err) {
-      this.setState({
-        error: err.message,
-        isLoading: false
-      });
-    }
-  };
-  componentDidMount() {
-    window.onscroll = () => {
-      const {
-        streamComments,
-        state: { error, isLoading, hasMore }
-      } = this;
-      if (error || isLoading || !hasMore) return;
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.scrollHeight
-      ) {
-        streamComments();
-      }
-    };
+  noMore() {
+    this.setState({ hasMore: false });
   }
   render() {
-    const { error, isLoading } = this.state;
-    // todo: Add support for comments with children
     return (
       <Fragment>
-        {this.state.stream.map(comment => {
-          if (
-            isBlacklisted(comment.author, "none", { commentblacklist: true }) !=
-            true
-          ) {
-            return <PostCommentItem post={comment} />;
-          }
-        })}
-        {!error && <Typography>{error}</Typography>}
-        {isLoading && (
-          <div className="text-center">
-            <CircularProgress />
-          </div>
-        )}
+        <Query
+          query={commentQuery}
+          variables={{
+            parent_id: this.props.post_id,
+            orderby: this.props.orderby,
+            orderdir: this.props.orderdir
+          }}
+        >
+          {({ data, fetchMore }) => {
+            if (data.posts) {
+              return (
+                <InfiniteScroll
+                  loadMore={() =>
+                    fetchMore({
+                      variables: {
+                        offset: data.posts.length
+                      },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (fetchMoreResult.posts.length === 0) {
+                          this.noMore();
+                        }
+                        if (!fetchMoreResult) return prev;
+                        return Object.assign({}, prev, {
+                          posts: [...prev.posts, ...fetchMoreResult.posts]
+                        });
+                      }
+                    })
+                  }
+                  hasMore={this.state.hasMore}
+                  threshold={1000}
+                  loader={
+                    // don't show loadoing indicator for loading subcomments
+                    this.props.ismain && (
+                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <div className="p-5 text-center">
+                          <CircularProgress />
+                        </div>
+                      </Grid>
+                    )
+                  }
+                >
+                  {data.posts.map((post, index) => (
+                    <Grid
+                      item
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className="pb-2"
+                      key={index}
+                    >
+                      <PostCommentItem
+                        post={{
+                          post_id: post.post_id,
+                          body: post.body,
+                          created_at: post.created_at,
+                          children: post.children,
+                          author: post.author,
+                          display_name: post.display_name,
+                          permlink: post.permlink,
+                          depth: post.depth,
+                          total_votes: post.total_votes,
+                          votes: post.votes,
+                          parent_author: post.parent_author,
+                          parent_permlink: post.parent_permlink
+                        }}
+                        orderby={this.props.orderby}
+                        orderdir={this.props.orderdir}
+                      />
+                    </Grid>
+                  ))}
+                </InfiniteScroll>
+              );
+            }
+            return <Fragment />;
+          }}
+        </Query>
       </Fragment>
     );
   }
 }
+
+PostComments.defaultProps = {
+  ismain: false
+};
+
 PostComments.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string
+  post_id: PropTypes.number.isRequired,
+  orderby: PropTypes.string,
+  orderdir: PropTypes.string,
+  ismain: PropTypes.bool
 };
 
 export default PostComments;

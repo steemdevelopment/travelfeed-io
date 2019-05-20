@@ -3,13 +3,17 @@ import App, { Container } from "next/app";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import JssProvider from "react-jss/lib/JssProvider";
-import getPageContext from "../src/getPageContext";
+import getPageContext from "../lib/getPageContext";
 import { SnackbarProvider } from "notistack";
 import NProgress from "nprogress";
 import Router from "next/router";
+import { ApolloProvider } from "react-apollo";
+import withApollo from "../lib/withApollo";
+import "../styles/bootstrap.min.css";
+import "../styles/style.css";
+import * as Sentry from "@sentry/browser";
 
-Router.events.on("routeChangeStart", url => {
-  console.log(`Loading: ${url}`);
+Router.events.on("routeChangeStart", () => {
   NProgress.start();
 });
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -27,10 +31,13 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+    Sentry.init({
+      dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
+    });
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, apollo } = this.props;
     return (
       <Container>
         {/* Wrap every page in Jss and Theme providers */}
@@ -51,7 +58,9 @@ class MyApp extends App {
             {/* <Header /> */}
             <div style={{ paddingTop: "65px" }} />
             <SnackbarProvider maxSnack={3}>
-              <Component pageContext={this.pageContext} {...pageProps} />
+              <ApolloProvider client={apollo}>
+                <Component pageContext={this.pageContext} {...pageProps} />
+              </ApolloProvider>
             </SnackbarProvider>
           </MuiThemeProvider>
         </JssProvider>
@@ -60,4 +69,4 @@ class MyApp extends App {
   }
 }
 
-export default MyApp;
+export default withApollo(MyApp);

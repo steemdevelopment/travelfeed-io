@@ -1,20 +1,18 @@
 import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
+import Header from "./Header";
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Router from "next/router";
-import Helmet from "react-helmet";
+import Head from "./Head";
 
 class Exit extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"External Link | TravelFeed"}</title>
-        </Helmet>
+        <Head title="External Link | TravelFeed" />
         <Header />
         <Grid
           container
@@ -29,7 +27,8 @@ class Exit extends Component {
                 <h1>Not a TravelFeed Post</h1>
                 <p>
                   This is not a valid TravelFeed post, but it does exist on the
-                  Steem blockchain. Proceed to Steemit to view the post anyway?
+                  Steem blockchain. Proceed to Steempeak to view the post
+                  anyway?
                 </p>
                 <p>{this.props.url}</p>
                 <a onClick={() => Router.back()}>
@@ -43,7 +42,7 @@ class Exit extends Component {
                   href={this.props.url}
                 >
                   <Button color="primary" variant="contained" className="m-1">
-                    View on Steemit
+                    View on Steempeak
                   </Button>
                 </a>
               </CardContent>

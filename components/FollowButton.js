@@ -1,37 +1,33 @@
+// no ssr since current user is essential to determine follow status
+
 import React, { Fragment, Component } from "react";
-import { follow, unfollow, ignore } from "../utils/actions";
+import { follow, unfollow } from "../utils/actions";
 import Button from "@material-ui/core/Button";
-import { getUser } from "../utils/token";
 import Link from "next/link";
-import { client } from "../helpers/client";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
+import { Query } from "react-apollo";
+import { GET_IS_FOLLOWED } from "../helpers/graphql/profile";
 
 class followButton extends Component {
   state = {
-    author: this.props.author,
-    style: this.props.btnstyle,
-    followed: false,
-    user: null
+    isFollowed: null,
+    isMounted: false,
+    isLoaded: false
   };
+  componentDidMount() {
+    this.setState({
+      isFollowed: this.props.isFollowed,
+      isMounted: true
+    });
+  }
   newNotification(notification) {
     if (notification != undefined) {
-      const text = notification[0];
-      const variant = notification[1];
-      this.props.enqueueSnackbar(text, { variant });
-    }
-  }
-  async isInFollowList(user) {
-    const followlist = await client.call("follow_api", "get_following", [
-      user,
-      this.state.author,
-      "blog",
-      1
-    ]);
-    for (var f of followlist) {
-      if (f.following == this.state.author) {
-        this.setState({ followed: true });
+      let variant = "success";
+      if (notification.success === false) {
+        variant = "error";
       }
+      this.props.enqueueSnackbar(notification.message, { variant });
     }
   }
   followAuthor = author => {
@@ -39,7 +35,7 @@ class followButton extends Component {
       this.newNotification(result);
     });
     this.setState({
-      followed: true
+      isFollowed: true
     });
   };
   unfollowAuthor = author => {
@@ -47,118 +43,78 @@ class followButton extends Component {
       this.newNotification(result);
     });
     this.setState({
-      followed: false
+      isFollowed: false
     });
   };
-  ignoreAuthor = author => {
-    ignore(author).then(result => {
-      this.newNotification(result);
-    });
-    this.setState({
-      followed: false
-    });
-  };
-  componentDidMount() {
-    const user = getUser();
-    this.setState({ user: user });
-    if (user != null) {
-      this.isInFollowList(user);
-    }
-  }
   render() {
+    if (this.state.isMounted === false) {
+      return <Fragment />;
+    }
     var btnclass = "m-1";
-    if (this.state.style == "whiteborder") {
+    if (this.props.style == "whiteborder") {
       btnclass = "m-1 border-light";
     }
-    var btn = (
-      <Link href={"/join"} passHref>
-        <Button
-          variant="outlined"
-          size="small"
-          color="inherit"
-          className={btnclass}
+    return (
+      <Fragment>
+        <Query
+          query={GET_IS_FOLLOWED}
+          variables={{ author: this.props.author }}
         >
-          Follow
-        </Button>
-      </Link>
+          {({ data, loading, error }) => {
+            if (loading || error || data.profile === null) {
+              return <Fragment />;
+            }
+            if (data && data.profile && !this.state.isLoaded) {
+              this.setState({
+                isLoaded: true,
+                isFollowed: data.profile.isFollowed
+              });
+            }
+            if (this.state.isFollowed === true) {
+              return (
+                <Fragment>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    onClick={() => this.unfollowAuthor(this.props.author)}
+                    className={btnclass}
+                  >
+                    Unfollow
+                  </Button>
+                </Fragment>
+              );
+            } else if (this.state.isFollowed === false) {
+              return (
+                <Fragment>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    color="inherit"
+                    onClick={() => this.followAuthor(this.props.author)}
+                    className={btnclass}
+                  >
+                    Follow
+                  </Button>
+                </Fragment>
+              );
+            }
+            return (
+              <Link href={"/join"} passHref>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  className={btnclass}
+                >
+                  Log in to follow
+                </Button>
+              </Link>
+            );
+          }}
+        </Query>
+      </Fragment>
     );
-    if (this.state.style == "minimal") {
-      btn = (
-        <Link href={"/join"} passHref>
-          <span className="badge badge-secondary p-1 ml-2 rounded cpointer">
-            Follow
-          </span>
-        </Link>
-      );
-    }
-    if (this.state.followed != false) {
-      btn = (
-        <Fragment>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.unfollowAuthor(this.state.author)}
-            className={btnclass}
-          >
-            Unfollow
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.ignoreAuthor(this.state.author)}
-            className={btnclass}
-          >
-            Ignore
-          </Button>
-        </Fragment>
-      );
-      if (this.state.style == "minimal") {
-        btn = (
-          <span
-            onClick={() => this.unfollowAuthor(this.state.author)}
-            className="badge badge-secondary p-1 ml-2 rounded cpointer"
-          >
-            Unfollow
-          </span>
-        );
-      }
-    } else if (this.state.user != null) {
-      btn = (
-        <Fragment>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.followAuthor(this.state.author)}
-            className={btnclass}
-          >
-            Follow
-          </Button>
-          <Button
-            variant="outlined"
-            size="small"
-            color="inherit"
-            onClick={() => this.ignoreAuthor(this.state.author)}
-            className={btnclass}
-          >
-            Ignore
-          </Button>
-        </Fragment>
-      );
-      if (this.state.style == "minimal") {
-        btn = (
-          <span
-            onClick={() => this.followAuthor(this.state.author)}
-            className="badge badge-secondary p-1 ml-2 rounded cpointer"
-          >
-            Follow
-          </span>
-        );
-      }
-    }
-    return <Fragment>{btn}</Fragment>;
   }
 }
 
@@ -168,8 +124,10 @@ followButton.defaultProps = {
 
 followButton.propTypes = {
   author: PropTypes.string.isRequired,
-  btnstyle: PropTypes.string,
-  enqueueSnackbar: PropTypes.function
+  style: PropTypes.string,
+  enqueueSnackbar: PropTypes.func,
+  isFollowed: PropTypes.bool,
+  isIgnored: PropTypes.bool
 };
 
 export default withSnackbar(followButton);

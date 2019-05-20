@@ -1,116 +1,162 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { Fragment, Component } from "react";
 import Header from "../components/Header";
-import Helmet from "react-helmet";
 import { DEFAULT_META_DESCRIPTION } from "../config";
+import { Query } from "react-apollo";
+import { GET_TF_STATS } from "../helpers/graphql/stats";
+import { indigo, teal } from "@material-ui/core/colors";
+import Head from "../components/Head";
 
 class Join extends Component {
   render() {
     return (
       <Fragment>
-        <Helmet>
-          <title>{"Join TravelFeed: The Travel Community"}</title>
-          <meta property="description" content={DEFAULT_META_DESCRIPTION} />
-          <meta property="og:description" content={DEFAULT_META_DESCRIPTION} />
-        </Helmet>
+        <Head
+          title="Join TravelFeed: The Travel Community"
+          description={DEFAULT_META_DESCRIPTION}
+        />
         <Header />
-        <div
-          style={{
-            backgroundImage: `url(/img/header-1.jpg)`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-            backgroundSize: "cover",
-            width: "100%",
-            height: "500px"
-          }}
-        >
-          <div className="container text-center h-100">
-            <div className="row justify-content-center align-items-center h-100">
-              <div className="col-6">
-                <h1 className="display-4">Join TravelFeed</h1>
-                <p className="lead">
-                  On TravelFeed, you can discover great travel content by
-                  hundreds of likeminded travellers! If you want to start
-                  blogging yourself, we also offer you a free Blog hosted on the
-                  uncensorable Steem Blockchain.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="jumbotron mb-0">
-          <div className="container text-center">
-            <h1 className="display-4">The Travel Community</h1>
-            <p className="lead">
-              With almost 700 members, TravelFeed is the largest travel
-              community on Steem.
-            </p>
-          </div>
-        </div>
-        <div
-          style={{
-            backgroundImage: `url(/img/header-2.jpg)`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-            backgroundSize: "cover",
-            width: "100%",
-            height: "500px"
-          }}
-        >
-          <div className="container text-center h-100">
-            <div className="row justify-content-center align-items-center h-100">
-              <div className="col-6">
-                <h1 className="display-4">Get Rewarded</h1>
-                <p className="lead">
-                  When readers like your post, they will hit the 'take off'
-                  button and assign miles to it. After seven days, you can claim
-                  the reward for your post in cryptocurrency.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="jumbotron mb-0 text-center">
-          <div className="container">
-            <h1 className="display-4">Get Paid for Travelling</h1>
-            <p className="lead">
-              With TravelFeed, the dream of earning an online income becomes
-              reality!
-            </p>
-          </div>
-        </div>
-        <div
-          style={{
-            backgroundImage: `url(/img/header-3.jpg)`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center right",
-            backgroundSize: "cover",
-            width: "100%",
-            height: "500px"
-          }}
-        >
-          <div className="container text-center h-100">
-            <div className="row justify-content-center align-items-center h-100">
-              <div className="col-6">
-                <h1 className="display-4">Join the Community!</h1>
-                <p className="lead">
-                  Join our TravelFeed Discord server to become part of the
-                  TravelFeed community! We will set you up with a free Steem
-                  account so you can start using TravelFeed!
-                </p>
-                <a
-                  href="https://discord.gg/jWWu73H"
-                  target="_blank"
-                  rel="nofollow noopener noreferrer"
+        <Query query={GET_TF_STATS} variables={{ days: 1000 }}>
+          {({ data, loading, error }) => {
+            if (loading || error || data.stats === null) {
+              return <Fragment />;
+            }
+            return (
+              <Fragment>
+                {" "}
+                <div
+                  style={{
+                    backgroundImage: `url(/img/header-1.jpg)`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                    backgroundSize: "cover",
+                    width: "100%",
+                    height: "500px"
+                  }}
                 >
-                  <button type="button" className="btn btn-dark p-0">
-                    <img src="https://steemitimages.com/p/W5LtFUPm6g7111bbdcuxu3bfUg5qaCq8seb5paCtrrT7zRPoGe552cdWYfHncQ1zPiqJPpjCfugUd3kWR9WUPoKBapvwoByQRAMtpbeAP3NuYCEVhYZ7KCHoyq2a3DW2WePCNz1BWJYpJYFVje28C6FyBYUmk?format=match&mode=fit&width=130" />
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+                  <div className="container text-center h-100">
+                    <div className="row justify-content-center align-items-center h-100">
+                      <div className="col-xl-6 col-md-8 col-sm-11 col-xs-12">
+                        <h1 className="display-4">Join TravelFeed!</h1>
+                        <p className="lead">
+                          On TravelFeed, you can discover travel content created
+                          by a large community of likeminded travellers! With{" "}
+                          <strong>{data.stats.posts} blog posts</strong>, you
+                          will almost certainly discover insiders' tips about
+                          your travel destination and find other travellers to
+                          connect with.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="jumbotron mb-0 text-light"
+                  style={{ background: indigo[900] }}
+                >
+                  <div className="container text-center">
+                    <div className="row justify-content-center align-items-center h-100">
+                      <div className="col-xl-6 col-md-8 col-sm-11 col-xs-12">
+                        <h1 className="display-4">
+                          <strong>The</strong> Travel Community.
+                        </h1>
+                        <p className="lead">
+                          With <strong>{data.stats.authors} authors</strong> and
+                          many more readers, TravelFeed is one of the largest
+                          international communities of independent travellers
+                          and the largest travel community on Steem.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    backgroundImage: `url(/img/header-2.jpg)`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center center",
+                    backgroundSize: "cover",
+                    width: "100%",
+                    height: "500px"
+                  }}
+                >
+                  <div className="container text-center h-100">
+                    <div className="row justify-content-center align-items-center h-100">
+                      <div className="col-xl-6 col-md-8 col-sm-11 col-xs-12">
+                        <h1 className="display-4">Start Blogging!</h1>
+                        <p className="lead">
+                          Ready to start your own travel blog? We offer you a
+                          free blog hosted on the uncensorable Steem Blockchain.
+                          When readers like your post, they will hit the 'take
+                          off' button and assign miles to it.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="jumbotron mb-0 text-center text-light"
+                  style={{ background: teal[900] }}
+                >
+                  <div className="container">
+                    <div className="row justify-content-center align-items-center h-100">
+                      <div className="col-xl-8 col-md-9 col-sm-11 col-xs-12">
+                        <h1 className="display-4">
+                          Get Paid for Your Travel Blog
+                        </h1>
+                        <p className="lead">
+                          With TravelFeed, earning an online income becomes
+                          reality! Seven days after publishing your post, you
+                          can claim the reward for your post in cryptocurrency.
+                        </p>
+                        <p className="lead">
+                          So far, <strong>${data.stats.payout}</strong> have
+                          been paid out to TravelFeed authors.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    backgroundImage: `url(/img/header-3.jpg)`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center right",
+                    backgroundSize: "cover",
+                    width: "100%",
+                    height: "500px"
+                  }}
+                >
+                  <div className="container text-center h-100">
+                    <div className="row justify-content-center align-items-center h-100">
+                      <div className="col-xl-6 col-md-8 col-sm-11 col-xs-12">
+                        {" "}
+                        <h1 className="display-4">Join the Community!</h1>
+                        <p className="lead">
+                          Join the TravelFeed Discord to become part of the
+                          TravelFeed community! To use TravelFeed, you need an
+                          account for the Steem Blockchain. Just ask us on
+                          Discord and we will set you up with a free Steem
+                          account! If you already have a Steem account, you can
+                          log in by pressing the button on the top right.
+                        </p>
+                        <a
+                          href="https://discord.gg/jWWu73H"
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                        >
+                          <button type="button" className="btn btn-dark p-0">
+                            <img src="https://steemitimages.com/p/W5LtFUPm6g7111bbdcuxu3bfUg5qaCq8seb5paCtrrT7zRPoGe552cdWYfHncQ1zPiqJPpjCfugUd3kWR9WUPoKBapvwoByQRAMtpbeAP3NuYCEVhYZ7KCHoyq2a3DW2WePCNz1BWJYpJYFVje28C6FyBYUmk?format=match&mode=fit&width=130" />
+                          </button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Fragment>
+            );
+          }}
+        </Query>
       </Fragment>
     );
   }

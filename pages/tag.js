@@ -1,91 +1,81 @@
-import "@babel/polyfill";
 import React, { Component, Fragment } from "react";
-import { client } from "../helpers/client";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";
-import Helmet from "react-helmet";
 import Header from "../components/Header";
+import Head from "../components/Head";
+import Typography from "@material-ui/core/Typography";
+import TagsOrderBySelect from "../components/Grid/TagsOrderBySelect";
 
 class Tag extends Component {
   static async getInitialProps(props) {
-    var { sortby } = props.query;
-    let { tag } = props.query;
-    const args = { tag: tag, limit: 24 };
-    var type = "tag";
-    if (sortby == "featured") {
-      type = "blog";
-      sortby = "blog";
+    let { orderby } = props.query;
+    const { tags } = props.query;
+    let min_curation_score = 0;
+    let selection = 0;
+    let title = "Taking Off";
+    if (orderby === "featured") {
+      selection = 1;
+      orderby = "sc_trend";
+      min_curation_score = 5000;
+      title = "Featured";
+    } else if (orderby === "total_votes") {
+      selection = 2;
+      min_curation_score = 10000;
+      title = "Favorites";
     }
-    if (sortby == "feed") {
-      return { args: { sortby: sortby, tag: tag, type: "feed", stream: [] } };
-    }
-    try {
-      const stream = await client.database.getDiscussions(sortby, args);
-      if (sortby == "blog") {
-        type = "curationfeed";
-        sortby = "featured";
-      }
-      return { args: { sortby: sortby, tag: tag, type: type, stream: stream } };
-    } catch {
-      const stream = { args: { stream: { notfound: true } } };
-      return stream;
-    }
+    return {
+      orderby,
+      tags,
+      min_curation_score,
+      selection,
+      title
+    };
   }
   render() {
-    if (typeof this.props.args.stream.notfound !== "undefined") {
-      return (
-        <Fragment>
-          <Helmet>
-            <title>{"404 - Not Found"}</title>
-          </Helmet>
-          <Header />
-          <Grid container spacing={0} alignItems="center" justify="center">
-            <Grid item lg={7} md={8} sm={11} xs={12}>
-              <Card>
-                <CardContent>
-                  <Typography>This is not a valid tag.</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          </Grid>
-        </Fragment>
-      );
-    } else {
-      const description =
-        "Explore posts about #" + this.props.args.tag + " on TravelFeed.";
-      return (
-        <Fragment>
-          <Helmet>
-            <title>
-              {"#" +
-                this.props.args.tag +
-                " - TravelFeed: The Travel Community"}
-            </title>
-            <meta property="description" content={description} />
-            <meta property="og:description" content={description} />
-          </Helmet>
-          <Header />
-          <div className="text-center pt-4 pb-2">
-            <Typography variant="display3">#{this.props.args.tag}</Typography>
-          </div>
-          <PostGrid
-            stream={this.props.args.stream}
-            type={this.props.args.type}
-            sortby={this.props.args.sortby}
-            filter={this.props.args.tag}
-          />
-        </Fragment>
-      );
-    }
+    return (
+      <Fragment>
+        <Head
+          title={`${this.props.title}: ${this.props.tags
+            .charAt(0)
+            .toUpperCase() +
+            this.props.tags.slice(1)} - TravelFeed: The Travel Community`}
+          description={`Explore posts about #${this.props.tags} on TravelFeed.`}
+        />
+        <Header />
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom={true}
+          className="pt-5 pb-3"
+        >
+          {this.props.tags.charAt(0).toUpperCase() + this.props.tags.slice(1)}
+        </Typography>
+        <TagsOrderBySelect
+          tags={this.props.tags}
+          selection={this.props.selection}
+        />
+        <PostGrid
+          query={{
+            tags: this.props.tags,
+            orderby: this.props.orderby,
+            min_curation_score: this.props.min_curation_score,
+            limit: 8
+          }}
+          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
+          cardHeight={170}
+          poststyle="grid"
+        />
+      </Fragment>
+    );
   }
 }
 
 Tag.propTypes = {
-  args: PropTypes.object
+  tags: PropTypes.string,
+  title: PropTypes.string,
+  orderby: PropTypes.string,
+  min_curation_score: PropTypes.number,
+  selection: PropTypes.number
 };
 
 export default Tag;

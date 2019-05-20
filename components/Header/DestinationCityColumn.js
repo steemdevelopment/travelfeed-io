@@ -25,12 +25,12 @@ class DestinationCityColumn extends Component {
       return (
         <Link
           key={c.city}
-          href={`/destinations?country=${c.country_slug}&subdivision=${
-            c.subdivision
+          href={`/destinations?country=${c.country_slug}${
+            c.nosubdivision ? "" : `&subdivision=${c.subdivision}`
           }${c.nocity ? "" : `&city=${c.city}`}`}
-          as={`/destinations/${c.country_slug}/${c.subdivision}${
-            c.nocity ? "" : `/${c.city}`
-          }`}
+          as={`/destinations/${c.country_slug}${
+            c.nosubdivision ? "" : `/${c.subdivision}`
+          }${c.nocity ? "" : `/${c.city}`}`}
           passHref
         >
           <a>

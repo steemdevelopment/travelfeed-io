@@ -184,9 +184,9 @@ class DestinationsNav extends Component {
                                   cities={[
                                     {
                                       country_slug: "singapore",
-                                      subdivision: "Singapore",
                                       city: "Singapore",
-                                      nocity: true
+                                      nocity: true,
+                                      nosubdivision: true
                                     },
                                     {
                                       country_slug: "malaysia",

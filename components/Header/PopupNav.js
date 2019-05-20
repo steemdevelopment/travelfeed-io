@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
 import Link from "next/link";
-import CountryIcon from "@material-ui/icons/LandScape";
+import CountryIcon from "@material-ui/icons/Landscape";
 import CityIcon from "@material-ui/icons/LocationCity";
 import MapIcon from "@material-ui/icons/Map";
 import RandomIcon from "@material-ui/icons/Explore";

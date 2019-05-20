@@ -17,6 +17,7 @@ import {
   markdownComment,
   swmregex
 } from "../utils/regex";
+import { ROOTURL } from "../config";
 
 // Initialise Markdown parser
 const remarkable = new Remarkable({
@@ -66,18 +67,9 @@ const parseBody = (body, options) => {
   //remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, "");
   //Replace Steemit links with Travelfeed
-  parsedBody = parsedBody.replace(
-    /https:\/\/steemit\.com/g,
-    "https://travelfeed.io"
-  );
-  parsedBody = parsedBody.replace(
-    /https:\/\/busy\.org/g,
-    "https://travelfeed.io"
-  );
-  parsedBody = parsedBody.replace(
-    /https:\/\/steempeak\.com/g,
-    "https://travelfeed.io"
-  );
+  parsedBody = parsedBody.replace(/https:\/\/steemit\.com/g, ROOTURL);
+  parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
+  parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
   // Proxify Image urls
   if (options.editor != true) {
     parsedBody = parsedBody.replace(
@@ -100,7 +92,7 @@ const parseBody = (body, options) => {
       })
     );
   } else {
-    parsedBody = parsedBody.replace(/"\.\.\//g, '"https://travelfeed.io/');
+    parsedBody = parsedBody.replace(/"\.\.\//g, `"${ROOTURL}`);
   }
   return parsedBody;
 };

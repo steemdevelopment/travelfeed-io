@@ -10,15 +10,18 @@ export const APP_VERSION = "travelfeed/0.2.5";
 
 var url = "http://localhost:3000/login";
 var rooturl = "http://localhost:3000";
+// TODO: When merging to master remove beta from URL
 if (process.env.NODE_ENV == "production") {
-  url = "https://travelfeed.io/login";
-  rooturl = "https://travelfeed.io";
+  url = "https://beta.travelfeed.io/login";
+  rooturl = "https://beta.travelfeed.io";
 }
 
 export const GRAPHQL_URL =
   process.env.NODE_ENV == "production"
     ? "https://api.travelfeed.io/graphql"
-    : "http://localhost:4000/graphql";
+    : "https://api.travelfeed.io/graphql";
+// Enable for local API development
+// : "http://localhost:4000/graphql";
 
 export const STEEMCONNECT_CALLBACK_URL = url;
 export const ROOTURL = rooturl;

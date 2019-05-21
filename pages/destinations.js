@@ -1,3 +1,4 @@
+// TODO: Create content for /destinations, especially for mobile view
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import PostGrid from "../components/PostGrid";

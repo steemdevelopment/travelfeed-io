@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export const SAVE_DRAFT = gql`
   mutation addDraft(
-    $id: String
+    $id: String!
     $title: String
     $body: String
     $json: String

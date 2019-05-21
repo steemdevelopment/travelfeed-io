@@ -65,6 +65,7 @@ export const GET_POSTS = gql`
       payout
       country_code
       subdivision
+      is_blacklisted
     }
   }
 `;

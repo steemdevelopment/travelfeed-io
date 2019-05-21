@@ -19,7 +19,7 @@ class CookiePopup extends Component {
           zIndex: 99999999999
         }}
       >
-        <div className="container" id="cookieconsent">
+        <div className="container" id={this.props.containerid}>
           <div className="row">
             <div
               style={{ width: "20px" }}
@@ -70,8 +70,13 @@ class CookiePopup extends Component {
   }
 }
 
+CookiePopup.defaultProps = {
+  id: ""
+};
+
 CookiePopup.propTypes = {
   open: PropTypes.bool,
+  id: PropTypes.string,
   allowtext: PropTypes.string,
   content: PropTypes.string,
   accept: PropTypes.func,

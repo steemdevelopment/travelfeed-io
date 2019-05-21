@@ -53,6 +53,8 @@ class CookieConsent extends Component {
         accept={this.accept.bind(this)}
         decline={this.decline.bind(this)}
         allowtext="Allow cookies"
+        // Set containerid only for this consent since some browser plugins block this
+        containerid="cookieconsent"
         content={
           <Typography variant="p" className="text-light">
             We and our partners use cookies to improve your experience and to

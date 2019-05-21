@@ -175,6 +175,10 @@ export class PostAuthorProfile extends Component {
                             <Typography variant="h6" className="text-light">
                               {data.profile.display_name}{" "}
                               <em>@{data.profile.name}</em>
+                              <CuratorMenu
+                                author={data.profile.name}
+                                isCurator={data.profile.isCurator}
+                              />
                             </Typography>
                             {data.profile.isBlacklisted && (
                               <p className="h5 pt-1">
@@ -190,10 +194,6 @@ export class PostAuthorProfile extends Component {
                                 </span>
                               </p>
                             )}
-                            <CuratorMenu
-                              author={data.profile.name}
-                              isCurator={data.profile.isCurator}
-                            />
                           </div>
                           <p className="p-2">{about}</p>
                           <p>{location}</p>

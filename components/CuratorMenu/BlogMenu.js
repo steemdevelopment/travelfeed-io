@@ -29,7 +29,7 @@ class PostMenu extends Component {
           {popupState => (
             <React.Fragment>
               <IconButton {...bindTrigger(popupState)}>
-                <CuratorIcon />
+                <CuratorIcon className="text-light" />
               </IconButton>
               <Menu {...bindMenu(popupState)}>
                 <AuthorBlacklist author={this.props.author} />

@@ -12,6 +12,7 @@ import withApollo from "../lib/withApollo";
 import "../styles/bootstrap.min.css";
 import "../styles/style.css";
 import * as Sentry from "@sentry/browser";
+import CookieConsent from "../components/CookieConsent/CookieConsent";
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
@@ -59,6 +60,7 @@ class MyApp extends App {
             <div style={{ paddingTop: "65px" }} />
             <SnackbarProvider maxSnack={3}>
               <ApolloProvider client={apollo}>
+                <CookieConsent />
                 <Component pageContext={this.pageContext} {...pageProps} />
               </ApolloProvider>
             </SnackbarProvider>

@@ -4,11 +4,18 @@ import api from "./SteemConnectAPI";
 import { broadcastActiveUser } from "./actions";
 
 export const setAccessToken = (token, expires_in) => {
-  const expiry = new Date(new Date().getTime() + expires_in * 1000);
+  // If cookies are not accepted, set only session cookie (allowed by gdpr)
+  const expiry =
+    Cookie.get("cookie_consent") !== "true"
+      ? ""
+      : new Date(new Date().getTime() + expires_in * 1000);
   Cookie.set("access_token", token, { expires: expiry });
 };
 export const setScToken = (token, expires_in) => {
-  const expiry = new Date(new Date().getTime() + expires_in * 1000);
+  const expiry =
+    Cookie.get("cookie_consent") !== "true"
+      ? ""
+      : new Date(new Date().getTime() + expires_in * 1000);
   Cookie.set("sc_token", token, { expires: expiry });
 };
 export const getRoles = () => {
@@ -37,7 +44,10 @@ export const getUserActive = () => {
   const active = Cookie.get("last_active_broadcast");
   if (active === undefined || active !== jwt.name) {
     broadcastActiveUser();
-    const expiry = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
+    const expiry =
+      Cookie.get("cookie_consent") !== "true"
+        ? ""
+        : new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
     Cookie.set("last_active_broadcast", jwt.name, {
       expires: expiry
     });
@@ -55,5 +65,16 @@ export const logout = () => {
   Cookie.remove("access_token");
   Cookie.remove("sc_token");
   api.revokeToken();
+};
+export const hasCookieConsent = () => {
+  return Cookie.get("cookie_consent");
+};
+export const setCookieConsent = consent => {
+  // Set cookie with one year expiry
+  const expires = new Date(new Date().getTime() + 3600 * 1000 * 24 * 365);
+  Cookie.set("cookie_consent", consent, { expires });
+};
+export const deleteCookieConsent = () => {
+  Cookie.remove("cookie_consent");
 };
 export const getLoginURL = api.getLoginURL();

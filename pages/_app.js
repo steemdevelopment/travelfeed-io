@@ -12,7 +12,7 @@ import withApollo from "../lib/withApollo";
 import "../styles/bootstrap.min.css";
 import "../styles/style.css";
 import * as Sentry from "@sentry/browser";
-import CookieConsent from "../components/CookieConsent";
+import CookieConsent from "../components/CookieConsent/CookieConsent";
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();

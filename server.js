@@ -82,7 +82,7 @@ const handle = (req, res) => {
   // Check country code of user IP as supplied by Cloudflare
   const country_code = req.header("CF-IPCountry");
   // Set session cookie for cookie consent for non-EU users to not annoy them with a cookie consent popup that is nor legally required for their country
-  if (!(country_code in euCountries)) res.cookie("cookie_consent", true);
+  if (!euCountries.includes(country_code)) res.cookie("cookie_consent", true);
   handleNextRequests(req, res);
 };
 

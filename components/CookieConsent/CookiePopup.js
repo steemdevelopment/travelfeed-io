@@ -1,55 +1,15 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { hasCookieConsent, setCookieConsent } from "../utils/token";
 import { teal, indigo } from "@material-ui/core/colors";
 import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
 
-class NavSide extends Component {
+class CookiePopup extends Component {
   state = {
-    open: false,
-    optin: false,
     acceptColor: 600,
     declineColor: 600
   };
-  componentDidMount() {
-    const cookie = hasCookieConsent() !== "true";
-    this.setState({ open: cookie, optin: !cookie });
-  }
-  decline() {
-    this.setState({ open: false });
-    const _paq = window._paq || [];
-    _paq.push(["forgetConsentGiven"]);
-  }
-  accept() {
-    setCookieConsent("true");
-    this.setState({ open: false, optin: true });
-  }
   render() {
-    if (this.state.optin) {
-      // Matomo tracking
-      const _paq = window._paq || [];
-      _paq.push(["setConsentGiven"]);
-      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-      _paq.push(["setCookieDomain", ".travelfeed.io"]);
-      _paq.push(["setDomains", ["*.travelfeed.io"]]);
-      _paq.push(["trackPageView"]);
-      _paq.push(["enableLinkTracking"]);
-      (function() {
-        var u = "//for91days.com/piwik/";
-        _paq.push(["setTrackerUrl", u + "matomo.php"]);
-        _paq.push(["setSiteId", "2"]);
-        var d = document,
-          g = d.createElement("script"),
-          s = d.getElementsByTagName("script")[0];
-        g.type = "text/javascript";
-        g.async = true;
-        g.defer = true;
-        g.src = u + "matomo.js";
-        s.parentNode.insertBefore(g, s);
-      })();
-    }
-    if (this.state.open === false) return <Fragment />;
+    if (this.props.open === false) return <Fragment />;
     return (
       <div
         style={{
@@ -69,16 +29,7 @@ class NavSide extends Component {
               className="col-xl-6 col-lg-6 col-md-6 col-sm-8 col-12 text-light p-3"
               style={{ background: indigo[600] }}
             >
-              <Typography variant="p" className="text-light">
-                We and our partners use cookies to improve your experience and
-                to analyse how our site is used.
-                <br />
-                <Link href={`/about/cookies`} passHref>
-                  <a className="text-light text-decoration-underline">
-                    Learn more
-                  </a>
-                </Link>
-              </Typography>
+              {this.props.content}
             </div>
           </div>
           <div className="row">
@@ -87,7 +38,7 @@ class NavSide extends Component {
               className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
             />
             <div
-              onClick={() => this.decline()}
+              onClick={() => this.props.decline()}
               className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 cpointer text-light text-center font-weight-bold p-2"
               style={{ background: indigo[this.state.declineColor] }}
               onMouseEnter={() => this.setState({ declineColor: 800 })}
@@ -98,14 +49,14 @@ class NavSide extends Component {
               </Typography>
             </div>
             <div
-              onClick={() => this.accept()}
+              onClick={() => this.props.accept()}
               className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 cpointer text-light text-center font-weight-bold p-2"
               onMouseEnter={() => this.setState({ acceptColor: 800 })}
               onMouseLeave={() => this.setState({ acceptColor: 600 })}
               style={{ background: teal[this.state.acceptColor] }}
             >
               <Typography variant="p" className="text-light">
-                Allow cookies
+                {this.props.allowtext}
               </Typography>
             </div>
             <div
@@ -119,8 +70,12 @@ class NavSide extends Component {
   }
 }
 
-NavSide.propTypes = {
-  user: PropTypes.string
+CookiePopup.propTypes = {
+  open: PropTypes.bool,
+  allowtext: PropTypes.string,
+  content: PropTypes.string,
+  accept: PropTypes.func,
+  decline: PropTypes.func
 };
 
-export default NavSide;
+export default CookiePopup;

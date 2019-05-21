@@ -5,10 +5,16 @@ import PropTypes from "prop-types";
 import dynamic from "next/dynamic";
 import AddLocationIcon from "@material-ui/icons/AddLocation";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
+import { hasCookieConsent } from "../../utils/token";
+import Typography from "@material-ui/core/Typography";
+import Link from "next/link";
+import CookiePopup from "../CookieConsent/CookiePopup";
 
 class LocationPicker extends React.Component {
   state = {
-    open: false
+    open: false,
+    optopen: false,
+    optin: false
   };
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -16,6 +22,16 @@ class LocationPicker extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+  componentDidMount() {
+    const cookie = hasCookieConsent() !== "true";
+    this.setState({ optopen: cookie, optin: !cookie });
+  }
+  decline() {
+    this.setState({ optopen: false });
+  }
+  accept() {
+    this.setState({ optopen: false, optin: true });
+  }
   render() {
     //   https://medium.com/@timothyde/making-next-js-and-mapbox-gl-js-get-along-a99608667e67
     const DynamicMap = dynamic(() => import("./LocationPickerDialog"), {
@@ -50,10 +66,34 @@ class LocationPicker extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DynamicMap
-            handleClose={this.handleClose.bind(this)}
-            onPick={this.props.onPick}
-          />
+          {(this.state.optin && (
+            <DynamicMap
+              handleClose={this.handleClose.bind(this)}
+              onPick={this.props.onPick}
+            />
+          )) || (
+            <CookiePopup
+              open={this.state.optopen}
+              accept={this.accept.bind(this)}
+              decline={this.decline.bind(this)}
+              allowtext="Allow cookies once"
+              content={
+                <Typography variant="p" className="text-light">
+                  The location picker requires cookies to load. You have not
+                  accepted cookies yet, but you can allow cookies for loading
+                  the map. <br />
+                  We and our partners use cookies to improve your experience and
+                  to analyze how our site is used.
+                  <br />
+                  <Link href={`/about/cookies`} passHref>
+                    <a className="text-light text-decoration-underline">
+                      Learn more
+                    </a>
+                  </Link>
+                </Typography>
+              }
+            />
+          )}
         </Dialog>
       </div>
     );

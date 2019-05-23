@@ -1,6 +1,5 @@
 const express = require("express");
 const next = require("next");
-const compression = require("compression");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -88,12 +87,14 @@ const handle = (req, res) => {
 
 const port = process.env.PORT || 3000;
 
+// Don't use compression: "Node is awfully bad at doing CPU intensive tasks like gzipping, SSL termination, etc. Instead, use a ‘real’ middleware services like nginx"
+// https://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
+
 app
   .prepare()
   .then(() => {
     const server = express();
     // https://github.com/zeit/next.js/wiki/Getting-ready-for-production
-    server.use(compression());
 
     server.use(express.static("public"));
 

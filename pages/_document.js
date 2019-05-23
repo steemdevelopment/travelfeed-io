@@ -3,6 +3,7 @@ import Document, { Head, Main, NextScript } from "next/document";
 import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
 import * as Sentry from "@sentry/node";
+import { Html } from "next/document";
 
 export default class extends Document {
   render() {
@@ -10,7 +11,7 @@ export default class extends Document {
       dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
     });
     return (
-      <html>
+      <Html>
         <Head>
           <link
             rel="apple-touch-icon"
@@ -37,7 +38,7 @@ export default class extends Document {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }

@@ -14,6 +14,9 @@ module.exports = withCSS(
         analyzerMode: "static",
         reportFilename: "../bundles/client.html"
       }
+    },
+    experimental: {
+      amp: false
     }
   })
 );

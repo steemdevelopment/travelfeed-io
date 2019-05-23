@@ -15,8 +15,6 @@ class CookieConsent extends Component {
   }
   decline() {
     this.setState({ open: false });
-    const _paq = window._paq || [];
-    _paq.push(["forgetConsentGiven"]);
   }
   accept() {
     setCookieConsent("true");
@@ -24,18 +22,14 @@ class CookieConsent extends Component {
   }
   render() {
     if (this.state.optin) {
-      // Matomo tracking
-      const _paq = window._paq || [];
-      _paq.push(["setConsentGiven"]);
-      _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-      _paq.push(["setCookieDomain", ".travelfeed.io"]);
-      _paq.push(["setDomains", ["*.travelfeed.io"]]);
+      var _paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
       _paq.push(["trackPageView"]);
       _paq.push(["enableLinkTracking"]);
       (function() {
-        var u = "//for91days.com/piwik/";
+        var u = "//matomo.travelfeed.io/";
         _paq.push(["setTrackerUrl", u + "matomo.php"]);
-        _paq.push(["setSiteId", "2"]);
+        _paq.push(["setSiteId", "1"]);
         var d = document,
           g = d.createElement("script"),
           s = d.getElementsByTagName("script")[0];

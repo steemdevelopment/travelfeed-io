@@ -11,11 +11,11 @@ import VoteSlider from "./VoteSlider";
 import PropTypes from "prop-types";
 import IsCurated from "./IsCurated";
 import SubHeader from "./Post/SubHeader";
-import BookmarkIcon from "./Post/BookmarkIcon";
 import LocationIcon from "@material-ui/icons/LocationOn";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { nameFromCC, slugFromCC } from "../helpers/country_codes";
+import dynamic from "next/dynamic";
 
 class PostCard extends Component {
   state = { show: true };
@@ -23,6 +23,10 @@ class PostCard extends Component {
     this.setState({ show: false });
   }
   render() {
+    // Prevent SSR
+    const BookmarkIcon = dynamic(() => import("./Post/BookmarkIcon"), {
+      ssr: false
+    });
     // Hide if deleted (for bookmarks)
     if (!this.state.show) {
       return <Fragment />;

@@ -37,6 +37,9 @@ export default class extends Document {
           <Main />
           <NextScript />
         </body>
+        <noscript>
+          <img src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1" />
+        </noscript>
       </html>
     );
   }

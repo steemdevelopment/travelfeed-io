@@ -19,15 +19,11 @@ class About extends Component {
   };
   decline() {
     this.setState({ optin: false });
-    const _paq = window._paq || [];
-    _paq.push(["forgetConsentGiven"]);
     deleteCookieConsent();
   }
   accept() {
     setCookieConsent("true");
     this.setState({ optin: true });
-    const _paq = window._paq || [];
-    _paq.push(["setConsentGiven"]);
   }
   componentDidMount() {
     const cookie = hasCookieConsent() === "true";

@@ -13,6 +13,7 @@ import "../styles/bootstrap.min.css";
 import "../styles/style.css";
 import * as Sentry from "@sentry/browser";
 import CookieConsent from "../components/CookieConsent/CookieConsent";
+import { register, unregister } from "next-offline/runtime";
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
@@ -35,6 +36,10 @@ class MyApp extends App {
     Sentry.init({
       dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
     });
+    register();
+  }
+  componentWillUnmount() {
+    unregister();
   }
 
   render() {

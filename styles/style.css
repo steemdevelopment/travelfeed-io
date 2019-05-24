@@ -1,3 +1,7 @@
+.lazyImage img {
+  object-fit: cover;
+}
+
 .fullheight {
   position: absolute;
   /* https://stackoverflow.com/questions/15021573/get-div-to-take-up-100-body-height-minus-fixed-height-header-and-footer */

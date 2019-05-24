@@ -13,6 +13,7 @@ import DeleteDraftButton from "./Post/DeleteDraftButton";
 import { nameFromCC, slugFromCC } from "../helpers/country_codes";
 import LocationIcon from "@material-ui/icons/LocationOn";
 import Tooltip from "@material-ui/core/Tooltip";
+import { imageProxy } from "../helpers/getImage";
 
 class PostCard extends Component {
   state = { show: true };
@@ -67,10 +68,6 @@ class PostCard extends Component {
       this.props.post.country_code !== null
         ? nameFromCC(this.props.post.country_code)
         : undefined;
-    const countryslug =
-      this.props.post.country_code !== null
-        ? slugFromCC(this.props.post.country_code)
-        : undefined;
     var content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
@@ -78,7 +75,7 @@ class PostCard extends Component {
             <CardMedia
               className="h-100"
               style={{ minHeight: "150px" }}
-              image={this.props.post.img_url}
+              image={imageProxy(this.props.post.img_url, "0x" + 300)}
             />
           </div>
         )}

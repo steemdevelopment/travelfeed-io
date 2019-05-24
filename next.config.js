@@ -17,7 +17,8 @@ module.exports = withOffline(
           analyzerMode: "static",
           reportFilename: "../bundles/client.html"
         }
-      }
+      },
+      dontAutoRegisterSw: true
     })
   )
 );

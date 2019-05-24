@@ -20,25 +20,26 @@ class PostAuthorProfile extends Component {
                 <Typography variant="h5" className="p-2">
                   Written by:
                 </Typography>
-                <Link
-                  as={`/@${data.profile.name}`}
-                  href={`/blog?author=${data.profile.name}`}
-                  passHref
-                >
-                  <a>
-                    <div className="pb-2">
+                <div className="pb-2">
+                  <Link
+                    as={`/@${data.profile.name}`}
+                    href={`/blog?author=${data.profile.name}`}
+                    passHref
+                  >
+                    <a>
                       <img
                         style={{ cursor: "pointer" }}
                         src={`https://steemitimages.com/u/${
                           data.profile.name
                         }/avatar`}
+                        alt={data.profile.name}
                         width="80"
                         height="80"
                         className="rounded-circle"
                       />
-                    </div>
-                  </a>
-                </Link>
+                    </a>
+                  </Link>
+                </div>
                 <Fragment>
                   <div>
                     <Link

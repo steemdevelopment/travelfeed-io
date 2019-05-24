@@ -4,12 +4,14 @@ import Typography from "@material-ui/core/Typography";
 import Link from "next/link";
 import HeaderMenu from "./HeaderMenu";
 import PropTypes from "prop-types";
-import GeoCoder from "./Header/Geocoder";
 import { withStyles } from "@material-ui/core/styles";
 import { grey, teal } from "@material-ui/core/colors";
 import LoginButtons from "./Header/LoginButtons";
-import DestinationsNav from "./Header/DestinationsNav";
 import { getUserActive } from "../utils/token";
+import dynamic from "next/dynamic";
+import Button from "@material-ui/core/Button";
+import GeoCoder from "./Header/Geocoder";
+import DownIcon from "@material-ui/icons/ArrowDropDown";
 
 const styles = () => ({
   root: {
@@ -17,6 +19,9 @@ const styles = () => ({
   },
   heading: {
     fontWeight: "bold",
+    color: grey[200]
+  },
+  whitebutton: {
     color: grey[200]
   }
 });
@@ -36,6 +41,18 @@ class Header extends Component {
   }
   render() {
     const { classes } = this.props;
+    const DestinationsNav = dynamic(() => import("./Header/DestinationsNav"), {
+      loading: () => (
+        <Link href="/destinations" passHref>
+          <a>
+            <Button color="default" className={classes.whitebutton}>
+              Destinations <DownIcon />
+            </Button>
+          </a>
+        </Link>
+      ),
+      ssr: false
+    });
     return (
       <Fragment>
         <div style={{ flexGrow: 1 }}>

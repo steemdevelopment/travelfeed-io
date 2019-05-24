@@ -51,8 +51,8 @@ class CookieConsent extends Component {
         containerid="cookieconsent"
         content={
           <Typography variant="p" className="text-light">
-            We and our partners use cookies to improve your experience and to
-            analyze how our site is used.
+            We use cookies to improve your experience and to analyze how our
+            site is used.
             <br />
             <Link href={`/about/cookies`} passHref>
               <a className="text-light text-decoration-underline">Learn more</a>

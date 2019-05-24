@@ -87,7 +87,7 @@ class LocationPicker extends React.Component {
                   <br />
                   <Link href={`/about/cookies`} passHref>
                     <a className="text-light text-decoration-underline">
-                      Learn more
+                      Learn about our Cookie Policy
                     </a>
                   </Link>
                 </Typography>

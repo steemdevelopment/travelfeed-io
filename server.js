@@ -139,7 +139,8 @@ app
       const queryParams = {
         orderby: "feed"
       };
-      renderAndCache(req, res, actualPage, queryParams);
+      // Personal, so no caching
+      app.render(req, res, actualPage, queryParams);
     });
 
     server.get("/discover", (req, res) => {

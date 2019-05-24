@@ -3,7 +3,6 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
@@ -16,6 +15,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { nameFromCC, slugFromCC } from "../helpers/country_codes";
 import dynamic from "next/dynamic";
+import { imageProxy } from "../helpers/getImage";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 class PostCard extends Component {
   state = { show: true };
@@ -151,10 +152,21 @@ class PostCard extends Component {
           <a>
             <CardActionArea>
               {this.props.post.img_url !== undefined && (
-                <CardMedia
-                  style={{ height: this.props.cardHeight }}
-                  className="pt-2 text-right"
-                  image={this.props.post.img_url}
+                <LazyLoadImage
+                  effect="blur"
+                  alt={this.props.post.title}
+                  src={imageProxy(
+                    this.props.post.img_url,
+                    "0x" + this.props.cardHeight * 2
+                  )}
+                  threshold="500"
+                  width="100%"
+                  height={this.props.cardHeight}
+                  placeholderSrc={imageProxy(
+                    this.props.post.img_url,
+                    "0x" + 10
+                  )}
+                  wrapperClassName="lazyImage"
                 />
               )}
               <CardContent>

@@ -5,8 +5,8 @@ import Typography from "@material-ui/core/Typography";
 
 class CookiePopup extends Component {
   state = {
-    acceptColor: 600,
-    declineColor: 600
+    acceptColor: 700,
+    declineColor: 700
   };
   render() {
     if (this.props.open === false) return <Fragment />;

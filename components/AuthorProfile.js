@@ -166,6 +166,7 @@ export class PostAuthorProfile extends Component {
                               src={`https://steemitimages.com/u/${
                                 data.profile.name
                               }/avatar`}
+                              alt={data.profile.name}
                               width="80"
                               height="80"
                               className="rounded-circle"

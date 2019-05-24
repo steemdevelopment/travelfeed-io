@@ -9,7 +9,7 @@ import Drafts from "../../components/Dashboard/Drafts";
 
 class DraftsPage extends Component {
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />
@@ -27,9 +27,6 @@ class DraftsPage extends Component {
           </Grid>
         </Fragment>
       );
-    }
-    if (!getUser()) {
-      return <Fragment />;
     }
     return (
       <Fragment>

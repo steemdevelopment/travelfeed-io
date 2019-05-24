@@ -9,7 +9,7 @@ import Posts from "../../components/Dashboard/Posts";
 
 class PostsPage extends Component {
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />
@@ -27,9 +27,6 @@ class PostsPage extends Component {
           </Grid>
         </Fragment>
       );
-    }
-    if (!getUser()) {
-      return <Fragment />;
     }
     return (
       <Fragment>

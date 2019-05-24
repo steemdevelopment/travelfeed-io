@@ -9,7 +9,7 @@ import Replies from "../../components/Dashboard/Replies";
 
 class RepliesPage extends Component {
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />
@@ -27,9 +27,6 @@ class RepliesPage extends Component {
           </Grid>
         </Fragment>
       );
-    }
-    if (!getUser()) {
-      return <Fragment />;
     }
     return (
       <Fragment>

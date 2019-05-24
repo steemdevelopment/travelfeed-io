@@ -9,7 +9,7 @@ import Settings from "../../components/Dashboard/Settings";
 
 class SettingsPage extends Component {
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />
@@ -27,9 +27,6 @@ class SettingsPage extends Component {
           </Grid>
         </Fragment>
       );
-    }
-    if (!getUser()) {
-      return <Fragment />;
     }
     return (
       <Fragment>

@@ -9,7 +9,7 @@ import Notifications from "../../components/Dashboard/Notifications";
 
 class NotificationsPage extends Component {
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />
@@ -27,9 +27,6 @@ class NotificationsPage extends Component {
           </Grid>
         </Fragment>
       );
-    }
-    if (!getUser()) {
-      return <Fragment />;
     }
     return (
       <Fragment>

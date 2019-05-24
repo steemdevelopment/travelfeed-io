@@ -27,7 +27,7 @@ class CookiePopup extends Component {
             />
             <div
               className="col-xl-6 col-lg-6 col-md-6 col-sm-8 col-12 text-light p-3"
-              style={{ background: indigo[600] }}
+              style={{ background: indigo[700] }}
             >
               {this.props.content}
             </div>
@@ -42,7 +42,7 @@ class CookiePopup extends Component {
               className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 cpointer text-light text-center font-weight-bold p-2"
               style={{ background: indigo[this.state.declineColor] }}
               onMouseEnter={() => this.setState({ declineColor: 800 })}
-              onMouseLeave={() => this.setState({ declineColor: 600 })}
+              onMouseLeave={() => this.setState({ declineColor: 700 })}
             >
               <Typography variant="p" className="text-light">
                 Decline
@@ -52,7 +52,7 @@ class CookiePopup extends Component {
               onClick={() => this.props.accept()}
               className="col-xl-3 col-lg-3 col-md-3 col-sm-4 col-6 cpointer text-light text-center font-weight-bold p-2"
               onMouseEnter={() => this.setState({ acceptColor: 800 })}
-              onMouseLeave={() => this.setState({ acceptColor: 600 })}
+              onMouseLeave={() => this.setState({ acceptColor: 700 })}
               style={{ background: teal[this.state.acceptColor] }}
             >
               <Typography variant="p" className="text-light">

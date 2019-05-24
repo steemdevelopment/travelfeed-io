@@ -9,7 +9,7 @@ import Stats from "../../components/Dashboard/Stats";
 
 class StatsPage extends Component {
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />

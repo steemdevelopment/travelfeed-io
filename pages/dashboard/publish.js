@@ -22,7 +22,7 @@ class PublishPage extends Component {
     };
   }
   render() {
-    if (getUser() === null) {
+    if (getUser() === null || !getUser()) {
       return (
         <Fragment>
           <Header />
@@ -40,9 +40,6 @@ class PublishPage extends Component {
           </Grid>
         </Fragment>
       );
-    }
-    if (!getUser()) {
-      return <Fragment />;
     }
     const Publish = dynamic(
       () => import("../../components/Dashboard/Publish"),

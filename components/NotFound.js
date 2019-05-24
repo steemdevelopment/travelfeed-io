@@ -7,11 +7,11 @@ import Head from "./Head";
 
 class NotFound extends Component {
   render() {
-    var helmet = <title>{"Error | TravelFeed"}</title>;
+    var helmet = "Error | TravelFeed";
     if (this.props.statusCode == 404) {
-      helmet = <title>{"404 - Not Found | TravelFeed"}</title>;
+      helmet = "404 - Not Found | TravelFeed";
     } else if (this.props.statusCode == "logged_out") {
-      helmet = <title>{"Logged Out | TravelFeed"}</title>;
+      helmet = "Logged Out | TravelFeed";
     }
     var content = <Error statusCode={404} />;
     if (this.props.statusCode == "logged_out") {

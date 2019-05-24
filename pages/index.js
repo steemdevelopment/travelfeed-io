@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import Head from "../components/Head";
 import HomeOrderBySelect from "../components/Grid/HomeOrderBySelect";
 import { getUser } from "../utils/token";
-import FrontPageHeader from "../components/FrontPageHeader";
+// import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from "../components/Sidebar/BlogGridList";
 import LegalNotice from "../components/Sidebar/LegalNotice";
 import NavSide from "../components/Sidebar/NavSide";
@@ -76,9 +76,11 @@ class Tag extends Component {
           description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
         />
         <Header />
-        {this.props.title === "Featured" && this.state.user == null && (
-          <FrontPageHeader />
-        )}
+        {
+          //   this.props.title === "Featured" && this.state.user == null && (
+          //   <FrontPageHeader />
+          // )
+        }
         <HomeOrderBySelect
           selection={this.props.selection}
           showFeed={this.state.user}

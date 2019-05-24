@@ -81,7 +81,7 @@ class PostGrid extends Component {
                     data.posts.map((post, index) => {
                       if (post.is_blacklisted) return;
                       const imgHeight = this.props.cardHeight * 2;
-                      const htmlBody = parseBody(post.body, {});
+                      const htmlBody = parseBody(post.preview, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
                       const image = imageProxy(post.img_url, "0x" + imgHeight);

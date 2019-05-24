@@ -69,6 +69,7 @@ class About extends Component {
                         >
                           Opt out
                         </Button>{" "}
+                        <br />
                         <em>
                           Cookies that are already set will not be revoked by
                           this.

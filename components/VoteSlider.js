@@ -16,10 +16,10 @@ import { vote } from "../utils/actions";
 import Slider from "@material-ui/lab/Slider";
 import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
-import CommentEditor from "./Editor/CommentEditor";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Query } from "react-apollo";
 import { GET_VOTE_WEIGHTS } from "../helpers/graphql/settings";
+import dynamic from "next/dynamic";
 
 class VoteSlider extends Component {
   state = {
@@ -319,24 +319,28 @@ class VoteSlider extends Component {
         </Query>
       );
     }
-    if (this.state.commentExpanded == true) {
-      cardFooter = (
-        <CardActions>
-          <div className="w-100">
-            <CommentEditor
-              parent_author={this.props.author}
-              parent_permlink={this.props.permlink}
-              onClose={() => this.collapseCommentBar()}
-              onCommentAdd={this.props.onCommentAdd}
-            />
-          </div>
-          <Tooltip title="Close" placement="bottom">
-            <IconButton onClick={() => this.collapseCommentBar()}>
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-        </CardActions>
-      );
+    if (this.props.mode != "gridcard" && this.state.commentExpanded == true) {
+      // const CommentEditor = dynamic(() => import("./Editor/CommentEditor"), {
+      //   loading: () => <p>Loading...</p>,
+      //   ssr: false
+      // });
+      // cardFooter = (
+      //   <CardActions>
+      //     <div className="w-100">
+      //       <CommentEditor
+      //         parent_author={this.props.author}
+      //         parent_permlink={this.props.permlink}
+      //         onClose={() => this.collapseCommentBar()}
+      //         onCommentAdd={this.props.onCommentAdd}
+      //       />
+      //     </div>
+      //     <Tooltip title="Close" placement="bottom">
+      //       <IconButton onClick={() => this.collapseCommentBar()}>
+      //         <CloseIcon />
+      //       </IconButton>
+      //     </Tooltip>
+      //   </CardActions>
+      // );
     }
     return <Fragment>{cardFooter}</Fragment>;
   }

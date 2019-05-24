@@ -3,6 +3,7 @@ import Document, { Head, Main, NextScript } from "next/document";
 import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
 import * as Sentry from "@sentry/node";
+import { teal } from "@material-ui/core/colors";
 
 export default class extends Document {
   render() {
@@ -10,7 +11,7 @@ export default class extends Document {
       dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
     });
     return (
-      <html>
+      <html lang="en">
         <Head>
           <link
             rel="apple-touch-icon"
@@ -30,8 +31,13 @@ export default class extends Document {
             href="/favicon-16x16.png"
           />
           <link rel="manifest" href="/site.webmanifest" />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-          <meta name="msapplication-TileColor" content="#2d89ef" />
+          <link
+            rel="mask-icon"
+            href="/safari-pinned-tab.svg"
+            color={teal[800]}
+          />
+          <meta name="msapplication-TileColor" content={teal[800]} />
+          <meta name="theme-color" content={teal[800]} />
         </Head>
         <body>
           <Main />

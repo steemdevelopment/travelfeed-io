@@ -29,6 +29,20 @@ class About extends Component {
               content={<Privacy />}
             />
           </Grid>
+          <Grid item lg={7} md={8} sm={11} xs={12} className="pt-3">
+            <HeaderCard
+              title="Opt Out of Matomo Analytics"
+              background={teal[600]}
+              content={
+                <div>
+                  <iframe
+                    style={{ border: 0, height: "100%", width: "100%" }}
+                    src="https://matomo.travelfeed.io/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=ffffff&fontColor=212121&fontSize=1.2rem&fontFamily=Roboto"
+                  />
+                </div>
+              }
+            />
+          </Grid>
         </Grid>
       </Fragment>
     );

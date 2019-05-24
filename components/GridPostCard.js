@@ -116,6 +116,7 @@ class PostCard extends Component {
                   src={`https://steemitimages.com/u/${
                     this.props.post.author
                   }/avatar/small`}
+                  alt={this.props.post.author}
                 />
               </a>
             </Link>

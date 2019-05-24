@@ -1,5 +1,7 @@
 const express = require("express");
 const next = require("next");
+var { join } = require("path");
+const LRUCache = require("lru-cache");
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -90,6 +92,12 @@ const port = process.env.PORT || 3000;
 // Don't use compression: "Node is awfully bad at doing CPU intensive tasks like gzipping, SSL termination, etc. Instead, use a ‘real’ middleware services like nginx"
 // https://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
 
+// https://medium.com/@az/i18n-next-js-app-with-server-side-rendering-and-user-language-aware-caching-part-1-ae1fce25a693
+const ssrCache = new LRUCache({
+  max: 100,
+  maxAge: 1000 * 60 * 60 // 1hour
+});
+
 app
   .prepare()
   .then(() => {
@@ -98,13 +106,18 @@ app
 
     server.use(express.static("public"));
 
+    server.get("/service-worker.js", (req, res) => {
+      const filePath = join(__dirname, ".next", "/service-worker.js");
+      app.serveStatic(req, res, filePath);
+    });
+
     server.get("/@:author/:permlink", (req, res) => {
       const actualPage = "/post";
       const queryParams = {
         author: req.params.author,
         permlink: req.params.permlink
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/:tag/@:author/:permlink", (req, res) => {
@@ -118,7 +131,7 @@ app
       const queryParams = {
         orderby: "featured"
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/feed", (req, res) => {
@@ -126,7 +139,7 @@ app
       const queryParams = {
         orderby: "feed"
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/discover", (req, res) => {
@@ -134,7 +147,7 @@ app
       const queryParams = {
         orderby: "random"
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/created", (req, res) => {
@@ -142,7 +155,7 @@ app
       const queryParams = {
         orderby: "created_at"
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/hot", (req, res) => {
@@ -150,7 +163,7 @@ app
       const queryParams = {
         orderby: "sc_hot"
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/created/:tag", (req, res) => {
@@ -169,7 +182,7 @@ app
         orderby: "sc_hot",
         tags: req.params.tag
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/favorites/:tag", (req, res) => {
@@ -178,7 +191,7 @@ app
         orderby: "total_votes",
         tags: req.params.tag
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/featured/:tag", (req, res) => {
@@ -187,7 +200,7 @@ app
         orderby: "featured",
         tags: req.params.tag
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/destinations/:country", (req, res) => {
@@ -195,7 +208,7 @@ app
       const queryParams = {
         country: req.params.country
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/destinations/:country/:subdivision", (req, res) => {
@@ -204,7 +217,7 @@ app
         country: req.params.country,
         subdivision: req.params.subdivision
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/destinations/:country/:subdivision/:city", (req, res) => {
@@ -214,7 +227,7 @@ app
         subdivision: req.params.subdivision,
         city: req.params.city
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get(
@@ -227,7 +240,7 @@ app
           city: req.params.city,
           suburb: req.params.suburb
         };
-        app.render(req, res, actualPage, queryParams);
+        renderAndCache(req, res, actualPage, queryParams);
       }
     );
 
@@ -236,7 +249,7 @@ app
       const queryParams = {
         author: "travelfeed"
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("/@:author", (req, res) => {
@@ -244,7 +257,7 @@ app
       const queryParams = {
         author: req.params.author
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get("*", (req, res) => {
@@ -260,3 +273,40 @@ app
     console.error(ex.stack);
     process.exit(1);
   });
+
+function getCacheKey(req) {
+  //TODO clean-up, standardize an url to maximize cache hits
+  return req.url;
+}
+
+async function renderAndCache(req, res, pagePath, queryParams) {
+  //TODO add a way to purge cache for a specific url
+  const key = getCacheKey(req);
+
+  // If we have a page in the cache, let's serve it
+  if (ssrCache.has(key)) {
+    res.setHeader("x-cache", "HIT");
+    res.send(ssrCache.get(key));
+    return;
+  }
+
+  // No cache present for specific key? let's try to render and cache
+  try {
+    const html = await app.renderToHTML(req, res, pagePath, queryParams);
+    // If something is wrong with the request, let's not cache
+    // Send the generated content as is for further inspection
+
+    if (dev || res.statusCode !== 200) {
+      res.setHeader("x-cache", "SKIP");
+      res.send(html);
+      return;
+    }
+
+    // Everything seems OK... let's cache
+    ssrCache.set(key, html);
+    res.setHeader("x-cache", "MISS");
+    res.send(html);
+  } catch (err) {
+    app.renderError(err, req, res, pagePath, queryParams);
+  }
+}

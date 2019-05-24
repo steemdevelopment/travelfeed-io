@@ -215,6 +215,7 @@ export class SinglePost extends Component {
                             src={`https://steemitimages.com/u/${
                               data.post.author
                             }/avatar/small`}
+                            alt={data.post.author}
                           />
                         </a>
                       </Link>

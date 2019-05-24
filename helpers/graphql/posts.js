@@ -52,6 +52,7 @@ export const GET_POSTS = gql`
       img_url
       created_at
       body
+      preview
       votes
       tags
       total_votes

@@ -147,7 +147,8 @@ app
       const queryParams = {
         orderby: "random"
       };
-      renderAndCache(req, res, actualPage, queryParams);
+      // No cache for randomness
+      app.render(req, res, actualPage, queryParams);
     });
 
     server.get("/created", (req, res) => {

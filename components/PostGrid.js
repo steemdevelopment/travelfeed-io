@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import GridPostCard from "./GridPostCard";
 import PostListItem from "./PostListItem";
 import PostCommentItem from "./PostCommentItem";
-import { imageProxy } from "../helpers/getImage";
 import readingTime from "reading-time";
 import sanitize from "sanitize-html";
 import parseBody from "../helpers/parseBody";
@@ -19,10 +18,15 @@ import CardContent from "@material-ui/core/CardContent";
 
 class PostGrid extends Component {
   state = {
-    hasMore: true
+    hasMore: true,
+    postslength: this.props.query.limit
   };
   noMore() {
     this.setState({ hasMore: false });
+  }
+  // When switching between different props, e.g. feed/featured/created/ the count needs to be reset
+  UNSAFE_componentWillReceiveProps() {
+    this.setState({ postslength: this.props.query.limit });
   }
   render() {
     return (
@@ -38,38 +42,57 @@ class PostGrid extends Component {
                 </Grid>
               );
             }
-            if (error || data.post === null) {
+            if (error || data.posts === null) {
               return <Fragment />;
             }
             return (
               <InfiniteScroll
-                loadMore={() =>
-                  fetchMore({
-                    variables: {
-                      offset: data.posts ? data.posts.length : 0
-                    },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      if (fetchMoreResult.posts.length === 0) {
-                        this.noMore();
+                initialLoad={false}
+                loadMore={() => {
+                  if (this.state.postslength === data.posts.length) {
+                    fetchMore({
+                      variables: {
+                        offset: data.posts ? data.posts.length : 0,
+                        limit: this.props.query.limit
+                      },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (
+                          fetchMoreResult.posts.length < this.props.query.limit
+                        ) {
+                          this.noMore();
+                        }
+                        if (!fetchMoreResult) return prev;
+                        return Object.assign({}, prev, {
+                          posts: [...prev.posts, ...fetchMoreResult.posts]
+                        });
                       }
-                      if (!fetchMoreResult) return prev;
-                      return Object.assign({}, prev, {
-                        posts: [...prev.posts, ...fetchMoreResult.posts]
-                      });
-                    }
-                  })
-                }
+                    });
+                    this.setState({
+                      postslength:
+                        this.state.postslength + this.props.query.limit
+                    });
+                  } else if (
+                    this.state.postslength !==
+                    data.posts.length + this.props.query.limit
+                  ) {
+                    // When switching between different props, e.g. feed/featured/created/ and switching back, this fix is needed. There should be a better way though..
+                    this.setState({
+                      postslength: data.posts.length
+                    });
+                  }
+                }}
                 hasMore={this.state.hasMore}
-                threshold={1000}
+                threshold={500}
                 loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div className="p-5 text-center">
-                      <CircularProgress />
-                    </div>
-                  </Grid>
+                  this.state.hasMore && (
+                    <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
+                      <div className="p-5 text-center">
+                        <CircularProgress />
+                      </div>
+                    </Grid>
+                  )
                 }
               >
-                {" "}
                 <Grid
                   container
                   spacing={0}
@@ -80,11 +103,9 @@ class PostGrid extends Component {
                     data.posts.length > 0 &&
                     data.posts.map((post, index) => {
                       if (post.is_blacklisted) return;
-                      const imgHeight = this.props.cardHeight * 2;
                       const htmlBody = parseBody(post.preview, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
-                      const image = imageProxy(post.img_url, "0x" + imgHeight);
                       let title = post.title;
                       title =
                         title.length > 85
@@ -158,7 +179,7 @@ class PostGrid extends Component {
                               display_name: post.display_name,
                               permlink: post.permlink,
                               title: title,
-                              img_url: image,
+                              img_url: post.img_url,
                               created_at: post.created_at,
                               readtime: readtime,
                               excerpt: excerpt,

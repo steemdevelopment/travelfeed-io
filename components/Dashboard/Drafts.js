@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
 import { GET_DRAFTS } from "../../helpers/graphql/drafts";
-import Grid from "@material-ui/core/Grid";
 import readingTime from "reading-time";
 import sanitize from "sanitize-html";
 import parseBody from "../../helpers/parseBody";
@@ -15,7 +14,8 @@ import json2Html from "../Editor/json2Html";
 
 class PostGrid extends Component {
   state = {
-    hasMore: true
+    hasMore: true,
+    postslength: 10
   };
   noMore() {
     this.setState({ hasMore: false });
@@ -41,28 +41,33 @@ class PostGrid extends Component {
             }
             return (
               <InfiniteScroll
-                loadMore={() =>
-                  fetchMore({
-                    variables: {
-                      offset: data.drafts.length
-                    },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      if (fetchMoreResult.drafts.length === 0) {
-                        this.noMore();
+                loadMore={() => {
+                  if (this.state.postslength === data.drafts.length) {
+                    fetchMore({
+                      variables: {
+                        offset: data.drafts.length
+                      },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (fetchMoreResult.drafts.length < 10) {
+                          this.noMore();
+                        }
+                        if (!fetchMoreResult) return prev;
+                        return Object.assign({}, prev, {
+                          drafts: [...prev.drafts, ...fetchMoreResult.drafts]
+                        });
                       }
-                      if (!fetchMoreResult) return prev;
-                      return Object.assign({}, prev, {
-                        drafts: [...prev.drafts, ...fetchMoreResult.drafts]
-                      });
-                    }
-                  })
-                }
+                    });
+                    this.setState({ postslength: this.state.postslength + 10 });
+                  }
+                }}
                 hasMore={this.state.hasMore}
                 threshold={1000}
                 loader={
-                  <div className="col-12 p-5 text-center">
-                    <CircularProgress />
-                  </div>
+                  this.state.hasMore && (
+                    <div className="col-12 p-5 text-center">
+                      <CircularProgress />
+                    </div>
+                  )
                 }
               >
                 <div className="container">

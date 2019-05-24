@@ -11,8 +11,8 @@ import BlogGridList from "../components/Sidebar/BlogGridList";
 import LegalNotice from "../components/Sidebar/LegalNotice";
 import NavSide from "../components/Sidebar/NavSide";
 import JoinNow from "../components/Sidebar/JoinNow";
-import DiscoverCountry from "../components/Sidebar/DiscoverCountry";
 import StickyBox from "react-sticky-box";
+import dynamic from "next/dynamic";
 
 class Tag extends Component {
   state = {
@@ -69,6 +69,12 @@ class Tag extends Component {
     });
   }
   render() {
+    const DiscoverCountry = dynamic(
+      () => import("../components/Sidebar/DiscoverCountry"),
+      {
+        ssr: false
+      }
+    );
     return (
       <Fragment>
         <Head

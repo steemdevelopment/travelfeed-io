@@ -12,11 +12,11 @@ import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { regExcerpt } from "../utils/regex";
 import InfiniteScroll from "react-infinite-scroller";
-import Head from "./Head";
 
 class PostGrid extends Component {
   state = {
-    hasMore: true
+    hasMore: true,
+    postslength: 10
   };
   noMore() {
     this.setState({ hasMore: false });
@@ -24,7 +24,6 @@ class PostGrid extends Component {
   render() {
     return (
       <Fragment>
-        <Head title="Bookmarks" />
         <div className="text-center pt-4">
           <h1>Bookmarks</h1>
         </div>
@@ -48,33 +47,39 @@ class PostGrid extends Component {
             }
             return (
               <InfiniteScroll
-                loadMore={() =>
-                  fetchMore({
-                    variables: {
-                      offset: data.bookmarks.length
-                    },
-                    updateQuery: (prev, { fetchMoreResult }) => {
-                      if (fetchMoreResult.bookmarks.length === 0) {
-                        this.noMore();
+                initialLoad={false}
+                loadMore={() => {
+                  if (this.state.postslength === data.bookmarks.length) {
+                    fetchMore({
+                      variables: {
+                        offset: data.bookmarks.length
+                      },
+                      updateQuery: (prev, { fetchMoreResult }) => {
+                        if (fetchMoreResult.bookmarks.length < 10) {
+                          this.noMore();
+                        }
+                        if (!fetchMoreResult) return prev;
+                        return Object.assign({}, prev, {
+                          bookmarks: [
+                            ...prev.bookmarks,
+                            ...fetchMoreResult.bookmarks
+                          ]
+                        });
                       }
-                      if (!fetchMoreResult) return prev;
-                      return Object.assign({}, prev, {
-                        bookmarks: [
-                          ...prev.bookmarks,
-                          ...fetchMoreResult.bookmarks
-                        ]
-                      });
-                    }
-                  })
-                }
+                    });
+                    this.setState({ postslength: this.state.postslength + 10 });
+                  }
+                }}
                 hasMore={this.state.hasMore}
                 threshold={1000}
                 loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
-                    <div className="p-5 text-center">
-                      <CircularProgress />
-                    </div>
-                  </Grid>
+                  this.state.hasMore && (
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <div className="p-5 text-center">
+                        <CircularProgress />
+                      </div>
+                    </Grid>
+                  )
                 }
               >
                 <Grid

@@ -47,7 +47,6 @@ class PublishPage extends Component {
     const Publish = dynamic(
       () => import("../../components/Dashboard/Publish"),
       {
-        loading: () => <p>Loading...</p>,
         ssr: false
       }
     );

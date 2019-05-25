@@ -151,24 +151,25 @@ class PostCard extends Component {
         >
           <a>
             <CardActionArea>
-              {this.props.post.img_url !== undefined && (
-                <LazyLoadImage
-                  effect="blur"
-                  alt={this.props.post.title}
-                  src={imageProxy(
-                    this.props.post.img_url,
-                    "0x" + this.props.cardHeight * 2
-                  )}
-                  threshold="500"
-                  width="100%"
-                  height={this.props.cardHeight}
-                  placeholderSrc={imageProxy(
-                    this.props.post.img_url,
-                    "0x" + 10
-                  )}
-                  wrapperClassName="lazyImage"
-                />
-              )}
+              {this.props.post.img_url !== undefined &&
+                this.props.post.img_url !== "" && (
+                  <LazyLoadImage
+                    effect="blur"
+                    alt={this.props.post.title}
+                    src={imageProxy(
+                      this.props.post.img_url,
+                      "0x" + this.props.cardHeight * 2
+                    )}
+                    threshold="600"
+                    width="100%"
+                    height={this.props.cardHeight}
+                    placeholderSrc={imageProxy(
+                      this.props.post.img_url,
+                      "0x" + 10
+                    )}
+                    wrapperClassName="lazyImage"
+                  />
+                )}
               <CardContent>
                 <Typography gutterBottom variant="h5">
                   {this.props.post.title}

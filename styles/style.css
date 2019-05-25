@@ -1,3 +1,11 @@
+.lazy {
+  transition: opacity 0.5s;
+  opacity: 0.2;
+}
+.lazy.loaded {
+  opacity: 1;
+}
+
 .lazyImage img {
   object-fit: cover;
 }

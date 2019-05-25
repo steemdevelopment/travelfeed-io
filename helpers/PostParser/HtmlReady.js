@@ -14,6 +14,7 @@ import xmldom from "xmldom";
 import embedjs from "embedjs";
 import linksRe from "./Links";
 import { validateAccountName } from "./ChainValidation";
+import { imageProxy } from "../getImage";
 
 const noop = () => {};
 const DOMParser = new xmldom.DOMParser({
@@ -166,17 +167,25 @@ function iframe(state, child) {
 function img(state, child) {
   const url = child.getAttribute("src");
   if (url) {
+    child.setAttribute("src", imageProxy(url, "0x10"));
+    child.setAttribute("data-src", imageProxy(url, "1000x0"));
+    child.setAttribute("data-sizes", "100w");
+    child.setAttribute(
+      "data-srcset",
+      `${imageProxy(url, "400x0")} 400w, ${imageProxy(url, "800x0")} 800w`
+    );
+    child.setAttribute("class", "lazy");
     state.images.add(url);
-    if (state.mutate) {
-      let url2 = url;
-      if (/^\/\//.test(url2)) {
-        // Change relative protocol imgs to https
-        url2 = `https:${url2}`;
-      }
-      if (url2 !== url) {
-        child.setAttribute("src", url2);
-      }
-    }
+    // if (state.mutate) {
+    //   let url2 = url;
+    //   if (/^\/\//.test(url2)) {
+    //     // Change relative protocol imgs to https
+    //     url2 = `https:${url2}`;
+    //   }
+    //   if (url2 !== url) {
+    //     child.setAttribute("src", url2);
+    //   }
+    // }
   }
 }
 

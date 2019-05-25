@@ -101,14 +101,14 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
   // Proxify Image urls
-  if (options.editor != true) {
-    parsedBody = parsedBody.replace(
-      imageRegex,
-      "https://steemitimages.com/1000x0/$1"
-    );
-    // Latex
-    parsedBody = improve(parsedBody);
-  }
+  // if (options.editor != true) {
+  //   parsedBody = parsedBody.replace(
+  //     imageRegex,
+  //     "https://steemitimages.com/1000x0/$1"
+  //   );
+  //   // Latex
+  //   parsedBody = improve(parsedBody);
+  // }
   // Render markdown to HTML
   parsedBody = remarkable.render(parsedBody);
   const htmlReadyOptions = { mutate: true, resolveIframe: true };

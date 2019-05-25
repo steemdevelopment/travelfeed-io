@@ -121,7 +121,7 @@ export default ({
 
     // style is subject to attack, filtering more below
     td: ["style"],
-    img: ["src", "alt"],
+    img: ["src", "alt", "data-src", "data-srcset", "data-sizes", "class"],
     a: ["href", "rel", "target"]
   },
   allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat([
@@ -165,9 +165,9 @@ export default ({
       // replace http:// with // to force https when needed
       src = src.replace(/^http:\/\//i, "//");
 
-      const atts = { src };
-      if (alt && alt !== "") atts.alt = alt;
-      return { tagName, attribs: atts };
+      attribs.attribs = src;
+      if (alt && alt !== "") attribs.alt = alt;
+      return { tagName, attribs };
     },
     div: (tagName, attribs) => {
       const attys = {};

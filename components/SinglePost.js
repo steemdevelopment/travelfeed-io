@@ -28,6 +28,7 @@ import { GET_SETTINGS } from "../helpers/graphql/settings";
 import { getUser } from "../utils/token";
 import dynamic from "next/dynamic";
 import PostImageHeader from "./Post/PostImageHeader";
+import LazyLoad from "vanilla-lazyload";
 
 export class SinglePost extends Component {
   state = {
@@ -46,7 +47,19 @@ export class SinglePost extends Component {
     this.setState(op);
   }
   componentDidMount() {
+    if (!document.lazyLoadInstance) {
+      document.lazyLoadInstance = new LazyLoad({
+        elements_selector: ".lazy",
+        threshold: 1000
+      });
+    }
     this.setState({ parent_id: this.props.post_id });
+    // Update lazyLoad after first rendering of every image
+    document.lazyLoadInstance.update();
+  }
+  // Update lazyLoad after rerendering of every image
+  componentDidUpdate() {
+    document.lazyLoadInstance.update();
   }
   render() {
     // Prevent SSR

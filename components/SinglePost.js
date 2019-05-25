@@ -28,8 +28,6 @@ import { GET_SETTINGS } from "../helpers/graphql/settings";
 import { getUser } from "../utils/token";
 import dynamic from "next/dynamic";
 
-// FIXME: Viewport width too wide on mobile
-
 export class SinglePost extends Component {
   state = {
     title: "Most miles",

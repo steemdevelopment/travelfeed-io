@@ -387,3 +387,255 @@ const countries = [
   { alpha2: "zm", name: "Zambia", slug: "zambia" },
   { alpha2: "zw", name: "Zimbabwe", slug: "zimbabwe" }
 ];
+
+export const featured_cc_europe = [
+  "at",
+  "ch",
+  "fr",
+  "de",
+  "is",
+  "pl",
+  "ru",
+  "nl",
+  "no",
+  "ro",
+  "es",
+  "gb"
+];
+
+export const featured_cc_asia = [
+  "cn",
+  "in",
+  "jp",
+  "my",
+  "ph",
+  "np",
+  "lk",
+  "kr",
+  "th",
+  "tr",
+  "tw",
+  "vn"
+];
+
+export const featured_cc_world = [
+  "au",
+  "nz",
+  "ca",
+  "us",
+  "mx",
+  "co",
+  "pe",
+  "cl",
+  "br",
+  "ar",
+  "ma",
+  "za"
+];
+
+export const featured_places_europe = [
+  {
+    country_slug: "spain",
+    subdivision: "Community of Madrid",
+    city: "Madrid"
+  },
+  {
+    country_slug: "spain",
+    subdivision: "Catalonia",
+    city: "Barcelona"
+  },
+  {
+    country_slug: "spain",
+    subdivision: "Valencian Community",
+    city: "Valencia"
+  },
+  {
+    country_slug: "portugal",
+    subdivision: "Área Metropolitana de Lisboa",
+    city: "Lisbon"
+  },
+  {
+    country_slug: "italy",
+    subdivision: "Lazio",
+    city: "Rome"
+  },
+  {
+    country_slug: "germany",
+    subdivision: "Bavaria",
+    city: "Munich"
+  },
+  {
+    country_slug: "united-kingdom",
+    subdivision: "England",
+    city: "London"
+  },
+  {
+    country_slug: "ireland",
+    subdivision: "Leinster",
+    city: "Dublin"
+  },
+  {
+    country_slug: "poland",
+    subdivision: "Lesser Poland Voivodeship",
+    city: "Krakow"
+  },
+  {
+    country_slug: "france",
+    subdivision: "Ile-de-France",
+    city: "Paris"
+  },
+  {
+    country_slug: "austria",
+    subdivision: "Vienna",
+    city: "Vienna",
+    nocity: true
+  },
+  {
+    country_slug: "netherlands",
+    subdivision: "North Holland",
+    city: "Amsterdam"
+  }
+];
+export const featured_places_asia = [
+  {
+    country_slug: "singapore",
+    city: "Singapore",
+    nocity: true,
+    nosubdivision: true
+  },
+  {
+    country_slug: "malaysia",
+    subdivision: "Kuala Lumpur",
+    city: "Kuala Lumpur",
+    nocity: true
+  },
+  {
+    country_slug: "malaysia",
+    subdivision: "Penang",
+    city: "Penang",
+    nocity: true
+  },
+  {
+    country_slug: "indonesia",
+    subdivision: "Bali",
+    city: "Bali",
+    nocity: true
+  },
+
+  {
+    country_slug: "thailand",
+    subdivision: "Bangkok",
+    city: "Bangkok",
+    nocity: true
+  },
+  {
+    country_slug: "taiwan",
+    subdivision: "Taipei",
+    city: "Taipei",
+    nocity: true
+  },
+  {
+    country_slug: "china",
+    subdivision: "Beijing",
+    city: "Beijing",
+    nocity: true
+  },
+  {
+    country_slug: "turkey",
+    subdivision: "Marmara Region",
+    city: "Istanbul"
+  },
+  {
+    country_slug: "philippines",
+    subdivision: "Cebu",
+    city: "Cebu",
+    nocity: true
+  },
+
+  {
+    country_slug: "japan",
+    subdivision: "Tokyo",
+    city: "Tokyo",
+    nocity: true
+  },
+
+  {
+    country_slug: "japan",
+    subdivision: "Kinki Region",
+    city: "Kyoto"
+  },
+
+  {
+    country_slug: "united-arab-emirates",
+    subdivision: "Dubai",
+    city: "Dubai",
+    nocity: true
+  }
+];
+export const featured_places_world = [
+  {
+    country_slug: "united-states",
+    subdivision: "California",
+    city: "San Francisco"
+  },
+  {
+    country_slug: "united-states",
+    subdivision: "Illinois",
+    city: "Chicago"
+  },
+  {
+    country_slug: "morocco",
+    subdivision: "Marrakech-Safi",
+    city: "Marrakesh"
+  },
+  {
+    country_slug: "united-states",
+    subdivision: "California",
+    city: "California",
+    nocity: true
+  },
+  {
+    country_slug: "united-states",
+    subdivision: "New York",
+    city: "New York City"
+  },
+  {
+    country_slug: "united-states",
+    subdivision: "Hawaii",
+    city: "Hawaii",
+    nocity: true
+  },
+  {
+    country_slug: "peru",
+    subdivision: "Cusco",
+    city: "Cusco"
+  },
+  {
+    country_slug: "mexico",
+    subdivision: "Yucatán",
+    city: "Yucatan",
+    nocity: true
+  },
+  {
+    country_slug: "ecuador",
+    subdivision: "Galápagos",
+    city: "Galápagos",
+    nocity: true
+  },
+  {
+    country_slug: "argentina",
+    subdivision: "Autonomous City of Buenos Aires",
+    city: "Buenos Aires",
+    nocity: true
+  },
+  {
+    country_slug: "canada",
+    subdivision: "Ontario",
+    city: "Toronto"
+  },
+  {
+    country_slug: "australia",
+    subdivision: "New South Wales",
+    city: "Sydney"
+  }
+];

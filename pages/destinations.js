@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import { ccFromSlug, nameFromSlug } from "../helpers/country_codes";
 import NotFound from "../components/NotFound";
 import DestinationHeader from "../components/Destinations/DestinationHeader";
+import DestinationsPage from "../components/Destinations/DestinationsPage";
 
 class Destinations extends Component {
   static async getInitialProps(props) {
@@ -28,14 +29,17 @@ class Destinations extends Component {
     const subdivision = this.props.subdivision;
     const city = this.props.city;
     const suburb = this.props.suburb;
-    if (!country_code) {
+    if (!country_code)
       return (
         <Fragment>
+          <Head
+            title={`Destinations - TravelFeed: The Travel Community`}
+            description={`Discover the best travel destinations on TravelFeed.`}
+          />
           <Header />
-          <NotFound statusCode={404} />
+          <DestinationsPage />
         </Fragment>
       );
-    }
     const title = `${(suburb && `${suburb}, ${city}`) ||
       (city && `${city}, ${country_name}`) ||
       (subdivision && `${subdivision}, ${country_name}`) ||

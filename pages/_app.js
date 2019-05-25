@@ -36,10 +36,10 @@ class MyApp extends App {
     Sentry.init({
       dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
     });
-    if (process.env.NODE_ENV !== "production") register();
+    if (process.env.NODE_ENV === "production") register();
   }
   componentWillUnmount() {
-    if (process.env.NODE_ENV !== "production") unregister();
+    if (process.env.NODE_ENV === "production") unregister();
   }
 
   render() {

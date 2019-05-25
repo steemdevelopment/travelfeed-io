@@ -12,13 +12,16 @@ import sanitizeHtml from "sanitize-html";
 import URL from "url-parse";
 import { ownUrl } from "../../utils/regex";
 
-const ownDomains = ["localhost", "travelfeed.io", "www.travelfeed.io"];
+const ownDomains = [
+  "localhost",
+  "travelfeed.io",
+  "www.travelfeed.io",
+  "staging.travelfeed.io",
+  "beta.travelfeed.io"
+];
 
 const knownDomains = [
   "localhost",
-  "staging.travelfeed.io",
-  "beta.travelfeed.io",
-  "travelfeed.io",
   "busy.org",
   "steempeak.com",
   "steemit.com",
@@ -58,6 +61,9 @@ const iframeWhitelist = [
     re: /^(https?:)?\/\/www\.google\.com\/maps\/embed.*/i
   },
   {
+    re: /^(https?:)?\/\/(?:emb\.)?(?:d.tube\/\#\!\/(?:v\/)?)([a-zA-Z0-9\-\.\/]*)/i
+  },
+  {
     re: /^(https?:)?\/\/w.soundcloud.com\/player\/.*/i,
     fn: src => {
       if (!src) return null;
@@ -73,15 +79,7 @@ const iframeWhitelist = [
     }
   },
   {
-    re: /^(https?:)?\/\/(?:www\.)?(?:periscope.tv\/)(.*)?$/i,
-    fn: src => src // handled by embedjs
-  },
-  {
     re: /^(https?:)?\/\/(?:www\.)?(?:(player.)?twitch.tv\/)(.*)?$/i,
-    fn: src => src // handled by embedjs
-  },
-  {
-    re: /^(https?:)?\/\/(?:www\.)?(?:bitchute\.com\/)(.*)?$/i,
     fn: src => src // handled by embedjs
   }
 ];
@@ -152,11 +150,6 @@ export default ({
           };
         }
       }
-      console.log(
-        'Blocked, did not match iframe "src" white list urls:',
-        tagName,
-        attribs
-      );
       sanitizeErrors.push(`Invalid iframe URL: ${srcAtty}`);
       return { tagName: "div", text: `(Unsupported ${srcAtty})` };
     },
@@ -165,11 +158,6 @@ export default ({
       // See https://github.com/punkave/sanitize-html/issues/117
       let { src, alt } = attribs;
       if (!/^(https?:)?\/\//i.test(src)) {
-        console.log(
-          "Blocked, image tag src does not appear to be a url",
-          tagName,
-          attribs
-        );
         sanitizeErrors.push("An image in this post did not save properly.");
         return { tagName: "img", attribs: { src: "brokenimg.jpg" } };
       }

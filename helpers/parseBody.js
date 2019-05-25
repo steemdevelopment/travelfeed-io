@@ -9,10 +9,9 @@ This function is extracted from the source code of busy.org and Condenser with s
 import sanitizeHtml from "sanitize-html";
 import sanitizeConfig from "./PostParser/SanitizeConfig";
 import htmlReady from "./PostParser/HtmlReady";
-import improve from "./PostParser/improve";
 import Remarkable from "remarkable";
 import {
-  imageRegex,
+  imgFullSize,
   htmlComment,
   markdownComment,
   swmregex,
@@ -100,15 +99,6 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(/https:\/\/steemit\.com/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
-  // Proxify Image urls
-  // if (options.editor != true) {
-  //   parsedBody = parsedBody.replace(
-  //     imageRegex,
-  //     "https://steemitimages.com/1000x0/$1"
-  //   );
-  //   // Latex
-  //   parsedBody = improve(parsedBody);
-  // }
   // Render markdown to HTML
   parsedBody = remarkable.render(parsedBody);
   const htmlReadyOptions = { mutate: true, resolveIframe: true };
@@ -124,6 +114,11 @@ const parseBody = (body, options) => {
   } else {
     parsedBody = parsedBody.replace(/"\.\.\//g, `"${ROOTURL}`);
   }
+  // Proxify image urls that are not proxied already by lazyload
+  parsedBody = parsedBody.replace(
+    imgFullSize,
+    `<img src="https://steemitimages.com/1000x0/$1" alt="travelfeed" />`
+  );
   return parsedBody;
 };
 

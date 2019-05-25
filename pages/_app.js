@@ -25,6 +25,8 @@ new ReactPiwik({
   phpFilename: "matomo.php"
 });
 
+NProgress.configure({ showSpinner: false });
+
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
   hasCookieConsent === "true" && ReactPiwik.push(["setConsentGiven"]);

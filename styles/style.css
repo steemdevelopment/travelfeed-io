@@ -1,3 +1,7 @@
+#nprogress .bar {
+  background: #3849ab !important;
+}
+
 .lazy {
   transition: opacity 0.5s;
   opacity: 0.2;

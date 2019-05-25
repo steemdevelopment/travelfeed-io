@@ -373,32 +373,36 @@ export class SinglePost extends Component {
                     >
                       <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
                         {data.post.depth === 0 && (
-                          <div
-                            className="row"
-                            style={{
-                              height: "500px"
-                            }}
-                          >
-                            <div className="text-center col my-auto">
-                              <Typography
-                                variant="h3"
-                                className="text-light font-weight-bold"
-                                style={{
-                                  textShadow: "1px 1px 20px #343A40"
-                                }}
-                              >
-                                {data.post.title}
-                              </Typography>
+                          <div className="container">
+                            <div
+                              className="row"
+                              style={{
+                                height: "500px"
+                              }}
+                            >
+                              <div className="text-center col my-auto">
+                                <Typography
+                                  variant="h3"
+                                  className="text-light font-weight-bold"
+                                  style={{
+                                    textShadow: "1px 1px 20px #343A40"
+                                  }}
+                                >
+                                  {data.post.title}
+                                </Typography>
+                              </div>
                             </div>
                           </div>
                         )}
                         {data.post.depth !== 0 && (
-                          <div
-                            className="row"
-                            style={{
-                              height: "50px"
-                            }}
-                          />
+                          <div className="container">
+                            <div
+                              className="row"
+                              style={{
+                                height: "50px"
+                              }}
+                            />
+                          </div>
                         )}
                         {card}
                       </Grid>

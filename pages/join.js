@@ -6,8 +6,12 @@ import { Query } from "react-apollo";
 import { GET_TF_STATS } from "../helpers/graphql/stats";
 import { indigo, teal } from "@material-ui/core/colors";
 import Head from "../components/Head";
+import ReactPiwik from "react-piwik";
 
 class Join extends Component {
+  componentDidMount() {
+    ReactPiwik.push(["trackGoal", 1]);
+  }
   render() {
     return (
       <Fragment>

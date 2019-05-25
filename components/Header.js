@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import Button from "@material-ui/core/Button";
 import GeoCoder from "./Header/Geocoder";
 import DownIcon from "@material-ui/icons/ArrowDropDown";
+import ReactPiwik from "react-piwik";
 
 const styles = () => ({
   root: {
@@ -32,6 +33,7 @@ class Header extends Component {
   };
   handleLogout() {
     this.setState({ user: undefined });
+    ReactPiwik.push(["resetUserId"]);
   }
   getUser() {
     this.setState({ user: getUserActive() });

@@ -14,9 +14,22 @@ import "../styles/style.css";
 import * as Sentry from "@sentry/browser";
 import CookieConsent from "../components/CookieConsent/CookieConsent";
 import { register, unregister } from "next-offline/runtime";
+import { hasCookieConsent, getUser } from "../utils/token";
+import ReactPiwik from "react-piwik";
+
+new ReactPiwik({
+  url: "https://matomo.travelfeed.io",
+  siteId: 1,
+  trackErrors: true,
+  jsFilename: "matomo.js",
+  phpFilename: "matomo.php"
+});
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
+  hasCookieConsent === "true" && ReactPiwik.push(["setConsentGiven"]);
+  ReactPiwik.push(["setDocumentTitle", document.title]);
+  ReactPiwik.push(["trackPageView"]);
 });
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
@@ -37,11 +50,15 @@ class MyApp extends App {
       dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
     });
     if (process.env.NODE_ENV === "production") register();
+    ReactPiwik.push(["requireConsent"]);
+    hasCookieConsent === "true" && ReactPiwik.push(["setConsentGiven"]);
+    const user = getUser();
+    user && ReactPiwik.push(["setUserId", user]);
+    ReactPiwik.push(["trackPageView"]);
   }
   componentWillUnmount() {
     if (process.env.NODE_ENV === "production") unregister();
   }
-
   render() {
     const { Component, pageProps, apollo } = this.props;
     return (

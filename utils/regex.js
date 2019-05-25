@@ -33,6 +33,6 @@ export const extractSWM = bodyText => {
   return swmregex.exec(bodyText);
 };
 
-export const dtubeImageRegex = /<center><a href='https:\/\/d\.tube\/#!\/v\/(.*)\/(.*)'><img src='https:\/\/ipfs\.io\/ipfs\/QmWfYxzLpdxRtoteUYq5rcUAU7qPh8TxV74uRnQq7vGz7c'><\/a><\/center><hr>/i;
+export const dtubeImageRegex = /<center><a href='https:\/\/d\.tube\/#!\/v\/(.*)\/(.*)'><img src='https:\/\/ipfs\.io\/ipfs\/.*'><\/a><\/center><hr>/i;
 
 export const dtubeLinkRegex = /\nhttps:\/\/d\.tube\/#!\/v\/(.*\/.*)\n/gi;

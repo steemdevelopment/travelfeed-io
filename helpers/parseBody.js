@@ -15,7 +15,9 @@ import {
   imageRegex,
   htmlComment,
   markdownComment,
-  swmregex
+  swmregex,
+  dtubeImageRegex,
+  dtubeLinkRegex
 } from "../utils/regex";
 import { ROOTURL } from "../config";
 
@@ -63,6 +65,34 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(
     /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong.*d3scr/gi,
     ""
+  );
+  // Remove preview images in dtube posts with dtube embeds
+  const dtubeMatch = dtubeImageRegex.exec(parsedBody);
+  if (dtubeMatch && dtubeMatch[1] && dtubeMatch[2])
+    parsedBody = parsedBody.replace(
+      dtubeImageRegex,
+      `<iframe
+      src="https://emb.d.tube/#!/${dtubeMatch[1]}/${dtubeMatch[2]}"
+        height="300"
+        scrolling="no"
+        frameborder="0"
+        allowtransparency="true"
+        allowfullscreen
+        style="width: 100%;"
+      />`
+    );
+  // Replace dtube links with dtube embeds
+  parsedBody = parsedBody.replace(
+    dtubeLinkRegex,
+    `\n<iframe
+  src="https://emb.d.tube/#!/$1"
+    height="300"
+    scrolling="no"
+    frameborder="0"
+    allowtransparency="true"
+    allowfullscreen
+    style="width: 100%;"
+  />\n`
   );
   //remove remaining SWM snippets
   parsedBody = parsedBody.replace(swmregex, "");

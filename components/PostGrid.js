@@ -45,9 +45,13 @@ class PostGrid extends Component {
             if (error || data.posts === null) {
               return <Fragment />;
             }
+            if (
+              data.posts.length < this.props.query.limit &&
+              this.state.hasMore
+            )
+              this.setState({ hasMore: false });
             return (
               <InfiniteScroll
-                initialLoad={false}
                 loadMore={() => {
                   if (this.state.postslength === data.posts.length) {
                     fetchMore({
@@ -84,13 +88,11 @@ class PostGrid extends Component {
                 hasMore={this.state.hasMore}
                 threshold={500}
                 loader={
-                  this.state.hasMore && (
-                    <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
-                      <div className="p-5 text-center">
-                        <CircularProgress />
-                      </div>
-                    </Grid>
-                  )
+                  <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
+                    <div className="p-5 text-center">
+                      <CircularProgress />
+                    </div>
+                  </Grid>
                 }
               >
                 <Grid

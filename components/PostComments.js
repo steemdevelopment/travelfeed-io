@@ -29,6 +29,8 @@ class PostComments extends Component {
           }}
         >
           {({ data, fetchMore }) => {
+            if (data.posts && data.posts.length < 10 && this.state.hasMore)
+              this.setState({ hasMore: false });
             if (data.posts) {
               return (
                 <InfiniteScroll
@@ -58,7 +60,6 @@ class PostComments extends Component {
                   hasMore={this.state.hasMore}
                   threshold={1000}
                   loader={
-                    this.state.hasMore &&
                     // don't show loadoing indicator for loading subcomments
                     this.props.ismain && (
                       <Grid item lg={12} md={12} sm={12} xs={12}>

@@ -11,6 +11,8 @@ import InfiniteScroll from "react-infinite-scroller";
 import PostListItem from "../PostListItem";
 import { getUser } from "../../utils/token";
 import json2Html from "../Editor/json2Html";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 class PostGrid extends Component {
   state = {
@@ -39,6 +41,8 @@ class PostGrid extends Component {
             if (error || data.drafts === null) {
               return <Fragment />;
             }
+            if (data.drafts.length < 10 && this.state.hasMore)
+              this.setState({ hasMore: false });
             return (
               <InfiniteScroll
                 loadMore={() => {
@@ -63,11 +67,9 @@ class PostGrid extends Component {
                 hasMore={this.state.hasMore}
                 threshold={1000}
                 loader={
-                  this.state.hasMore && (
-                    <div className="col-12 p-5 text-center">
-                      <CircularProgress />
-                    </div>
-                  )
+                  <div className="col-12 p-5 text-center">
+                    <CircularProgress />
+                  </div>
                 }
               >
                 <div className="container">
@@ -106,6 +108,13 @@ class PostGrid extends Component {
                           </div>
                         );
                       })}
+                    {data.drafts && data.drafts.length === 0 && (
+                      <Card className="mt-5">
+                        <CardContent>
+                          You don't have any drafts yet.
+                        </CardContent>
+                      </Card>
+                    )}
                   </div>
                 </div>
               </InfiniteScroll>

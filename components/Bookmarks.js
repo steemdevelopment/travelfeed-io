@@ -12,11 +12,13 @@ import PropTypes from "prop-types";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { regExcerpt } from "../utils/regex";
 import InfiniteScroll from "react-infinite-scroller";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 
 class PostGrid extends Component {
   state = {
     hasMore: true,
-    postslength: 10
+    postslength: 9
   };
   noMore() {
     this.setState({ hasMore: false });
@@ -27,7 +29,7 @@ class PostGrid extends Component {
         <div className="text-center pt-4">
           <h1>Bookmarks</h1>
         </div>
-        <Query query={GET_BOOKMARKS} variables={{ limit: 10 }}>
+        <Query query={GET_BOOKMARKS} variables={{ limit: 9 }}>
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (
@@ -45,9 +47,10 @@ class PostGrid extends Component {
                 </div>
               );
             }
+            if (data.bookmarks.length < 9 && this.state.hasMore)
+              this.setState({ hasMore: false });
             return (
               <InfiniteScroll
-                initialLoad={false}
                 loadMore={() => {
                   if (this.state.postslength === data.bookmarks.length) {
                     fetchMore({
@@ -55,7 +58,7 @@ class PostGrid extends Component {
                         offset: data.bookmarks.length
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
-                        if (fetchMoreResult.bookmarks.length < 10) {
+                        if (fetchMoreResult.bookmarks.length < 9) {
                           this.noMore();
                         }
                         if (!fetchMoreResult) return prev;
@@ -67,19 +70,17 @@ class PostGrid extends Component {
                         });
                       }
                     });
-                    this.setState({ postslength: this.state.postslength + 10 });
+                    this.setState({ postslength: this.state.postslength + 9 });
                   }
                 }}
                 hasMore={this.state.hasMore}
                 threshold={1000}
                 loader={
-                  this.state.hasMore && (
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                      <div className="p-5 text-center">
-                        <CircularProgress />
-                      </div>
-                    </Grid>
-                  )
+                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                    <div className="p-5 text-center">
+                      <CircularProgress />
+                    </div>
+                  </Grid>
                 }
               >
                 <Grid
@@ -138,6 +139,13 @@ class PostGrid extends Component {
                         </Grid>
                       );
                     })}
+                  {data.bookmarks && data.bookmarks.length === 0 && (
+                    <Card className="mt-5">
+                      <CardContent>
+                        You don't have any bookmarks yet.
+                      </CardContent>
+                    </Card>
+                  )}
                 </Grid>
               </InfiniteScroll>
             );

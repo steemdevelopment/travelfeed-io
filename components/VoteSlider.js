@@ -19,14 +19,13 @@ import { withSnackbar } from "notistack";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Query } from "react-apollo";
 import { GET_VOTE_WEIGHTS } from "../helpers/graphql/settings";
-import dynamic from "next/dynamic";
 
 class VoteSlider extends Component {
   state = {
     laoded: false,
     voteExpanded: false,
     commentExpanded: false,
-    loading: 100,
+    loading: undefined,
     weight: 5,
     hasVoted: false,
     user: null,
@@ -58,27 +57,26 @@ class VoteSlider extends Component {
   }
   votePost(author, permlink) {
     const weight = this.state.weight * 1000;
-    vote(author, permlink, weight).then(result => {
-      this.newNotification(result);
+    this.setState({ loading: 0 });
+    return vote(author, permlink, weight).then(res => {
+      if (res) {
+        if (!res.success) this.newNotification(res);
+        else
+          this.setState({
+            hasVoted: true,
+            totalmiles: this.state.totalmiles + this.state.weight
+          });
+        this.setState({ loading: undefined });
+        this.collapseVoteBar();
+      }
     });
-    this.setState({
-      loading: 0
-    });
-    if (this.state.hasVoted == false) {
-      this.setState({
-        totalmiles: this.state.totalmiles + this.state.weight
-      });
-    }
-    this.timer = setInterval(this.progress, 20);
   }
   progress = () => {
     const { loading } = this.state;
-    if (loading <= 100) {
+    if (loading < 100) {
       this.setState({ loading: loading + 1 });
     } else {
-      this.setState({ loading: 0, hasVoted: true });
-      clearInterval(this.timer);
-      this.collapseVoteBar();
+      this.setState({ loading: 0 });
     }
   };
   async componentDidMount() {
@@ -106,14 +104,6 @@ class VoteSlider extends Component {
       });
     }
   }
-  // for (let vote = 0; vote < this.state.activeVotes.length; vote++) {
-  //   if (this.state.activeVotes[vote].voter == user) {
-  // this.setState({
-  //   weight: Math.round(this.state.activeVotes[vote].percent / 1000),
-  //   hasVoted: true
-  // });
-  //   }
-  // }
   render() {
     var sliderstyle = {};
     var rowitem1 = "col-5 p-0";
@@ -257,14 +247,9 @@ class VoteSlider extends Component {
     var weightIndicator = (
       <span className="text-muted font-weight-bold">{this.state.weight}</span>
     );
-    if (this.state.loading != 100 && this.state.loading != 0) {
+    if (this.state.loading !== undefined) {
       weightIndicator = (
-        <CircularProgress
-          variant="determinate"
-          value={this.state.loading}
-          size={18}
-          thickness={4}
-        />
+        <CircularProgress value={this.state.loading} size={19} thickness={4} />
       );
     }
     if (this.state.voteExpanded == true) {

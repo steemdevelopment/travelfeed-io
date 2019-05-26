@@ -4,18 +4,20 @@ import { getUser, getScToken } from "./token";
 export const vote = async (author, permlink, weight) => {
   api.setAccessToken(getScToken());
   const voter = getUser();
-  return await api.vote(
-    voter,
-    author,
-    permlink,
-    weight,
-    await function(err) {
-      if (err != undefined) {
-        return { success: false, message: "Could not vote" };
+  return new Promise(resolve => {
+    api.vote(voter, author, permlink, weight, (err, res) => {
+      if (err) {
+        resolve({
+          success: false,
+          message: `Could not vote${(typeof err === "string" && `: ${err}`) ||
+            (err.error_description && `: ${err.error_description}`)}`
+        });
       }
-      return;
-    }
-  );
+      if (res) {
+        resolve({ success: true });
+      }
+    });
+  });
 };
 
 export const comment = async (
@@ -95,46 +97,43 @@ export const unfollow = async unfollowing => {
 export const customJson = async payload => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  return await api.broadcast(
-    [
-      [
-        "custom_json",
-        {
-          id: "travelfeed",
-          required_auths: [],
-          required_posting_auths: [author],
-          json: JSON.stringify(payload)
+  const id = "travelfeed";
+  const requiredAuths = [];
+  const requiredPostingAuths = [author];
+  const json = JSON.stringify(payload);
+  return new Promise(resolve => {
+    api.customJson(
+      requiredAuths,
+      requiredPostingAuths,
+      id,
+      json,
+      (err, res) => {
+        if (err) {
+          resolve({
+            success: false,
+            message: `Could not write custom_json to Blockchain${(typeof err ===
+              "string" &&
+              `: ${err}`) ||
+              (err.error_description && `: ${err.error_description}`)}`
+          });
         }
-      ]
-    ],
-    await function(err) {
-      if (err) {
-        return {
-          success: false,
-          message: `Could not write custom_json to Blockchain${err.error_description &&
-            `: ${err.error_description}`}`
-        };
+        if (res) {
+          resolve({
+            success: true,
+            message: "Curation action was broadcasted sucessfully"
+          });
+        }
       }
-      return {
-        success: true,
-        message: "Curation action was broadcasted sucessfully"
-      };
-    }
-  );
+    );
+  });
 };
 
 export const broadcastActiveUser = async () => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  return await api.broadcast([
-    [
-      "custom_json",
-      {
-        id: "active_user",
-        required_auths: [],
-        required_posting_auths: [author],
-        json: JSON.stringify({ app: "travelfeed" })
-      }
-    ]
-  ]);
+  const id = "active_user";
+  const requiredAuths = [];
+  const requiredPostingAuths = [author];
+  const json = JSON.stringify({ app: "travelfeed" });
+  return api.customJson(requiredAuths, requiredPostingAuths, id, json);
 };

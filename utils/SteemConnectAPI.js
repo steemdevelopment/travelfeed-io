@@ -1,7 +1,7 @@
 import steemconnect from "steemconnect";
 import { STEEMCONNECT_CALLBACK_URL } from "../config";
 
-const api = steemconnect.Initialize({
+const api = new steemconnect.Client({
   app: "travelfeed.app",
   callbackURL: STEEMCONNECT_CALLBACK_URL,
   accessToken: "access_token",

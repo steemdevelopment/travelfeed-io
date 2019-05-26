@@ -24,7 +24,7 @@ export const getRoles = () => {
     return undefined;
   }
   const jwt = jwt_decode(token);
-  return jwt.roles;
+  return jwt.roles ? jwt.roles : [];
 };
 export const getUser = () => {
   const token = Cookie.get("access_token");

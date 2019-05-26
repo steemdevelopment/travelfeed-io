@@ -55,46 +55,41 @@ export const comment = async (
 export const follow = async following => {
   api.setAccessToken(getScToken());
   const follower = getUser();
-  return await api.follow(
-    follower,
-    following,
-    await function(err) {
-      if (err != undefined) {
-        return { success: false, message: "Could not follow user" };
+  return new Promise(resolve => {
+    api.follow(follower, following, (err, res) => {
+      if (err) {
+        resolve({
+          success: false,
+          message: `Could not follow user${(typeof err === "string" &&
+            `: ${err}`) ||
+            (err.error_description && `: ${err.error_description}`)}`
+        });
       }
-      return;
-    }
-  );
+      if (res) {
+        resolve({ success: true });
+      }
+    });
+  });
 };
 
 export const unfollow = async unfollowing => {
   api.setAccessToken(getScToken());
   const unfollower = getUser();
-  return await api.unfollow(
-    unfollower,
-    unfollowing,
-    await function(err) {
-      if (err != undefined) {
-        return { success: false, message: "Could not unfollow user" };
+  return new Promise(resolve => {
+    api.unfollow(unfollower, unfollowing, (err, res) => {
+      if (err) {
+        resolve({
+          success: false,
+          message: `Could not unfollow user${(typeof err === "string" &&
+            `: ${err}`) ||
+            (err.error_description && `: ${err.error_description}`)}`
+        });
       }
-      return;
-    }
-  );
-};
-
-export const ignore = async following => {
-  api.setAccessToken(getScToken());
-  const follower = getUser();
-  return await api.ignore(
-    follower,
-    following,
-    await function(err) {
-      if (err != undefined) {
-        return { success: false, message: "Could not ignore user" };
+      if (res) {
+        resolve({ success: true });
       }
-      return;
-    }
-  );
+    });
+  });
 };
 
 export const customJson = async payload => {
@@ -113,10 +108,11 @@ export const customJson = async payload => {
       ]
     ],
     await function(err) {
-      if (err != undefined) {
+      if (err) {
         return {
           success: false,
-          message: "Could not write custom_json to Blockchain"
+          message: `Could not write custom_json to Blockchain${err.error_description &&
+            `: ${err.error_description}`}`
         };
       }
       return {

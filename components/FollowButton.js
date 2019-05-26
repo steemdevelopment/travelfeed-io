@@ -13,7 +13,8 @@ class followButton extends Component {
   state = {
     isFollowed: null,
     isMounted: false,
-    isLoaded: false
+    isLoaded: false,
+    changing: false
   };
   componentDidMount() {
     this.setState({
@@ -30,20 +31,24 @@ class followButton extends Component {
       this.props.enqueueSnackbar(notification.message, { variant });
     }
   }
-  followAuthor = author => {
-    follow(author).then(result => {
-      this.newNotification(result);
-    });
-    this.setState({
-      isFollowed: true
+  followAuthor = async author => {
+    this.setState({ changing: true });
+    return follow(author).then(res => {
+      if (res) {
+        if (!res.success) this.newNotification(res);
+        else this.setState({ isFollowed: true });
+        this.setState({ changing: false });
+      }
     });
   };
-  unfollowAuthor = author => {
-    unfollow(author).then(result => {
-      this.newNotification(result);
-    });
-    this.setState({
-      isFollowed: false
+  unfollowAuthor = async author => {
+    this.setState({ changing: true });
+    return unfollow(author).then(res => {
+      if (res) {
+        if (!res.success) this.newNotification(res);
+        else this.setState({ isFollowed: false });
+        this.setState({ changing: false });
+      }
     });
   };
   render() {
@@ -74,6 +79,7 @@ class followButton extends Component {
               return (
                 <Fragment>
                   <Button
+                    style={(this.state.changing && { opacity: 0.2 }) || {}}
                     variant="outlined"
                     size="small"
                     color="inherit"
@@ -88,6 +94,7 @@ class followButton extends Component {
               return (
                 <Fragment>
                   <Button
+                    style={(this.state.changing && { opacity: 0.2 }) || {}}
                     variant="outlined"
                     size="small"
                     color="inherit"

@@ -29,6 +29,7 @@ NProgress.configure({ showSpinner: false });
 
 Router.events.on("routeChangeStart", () => {
   NProgress.start();
+  ReactPiwik.push(["requireConsent"]);
   hasCookieConsent === "true" && ReactPiwik.push(["setConsentGiven"]);
   ReactPiwik.push(["setDocumentTitle", document.title]);
   ReactPiwik.push(["trackPageView"]);

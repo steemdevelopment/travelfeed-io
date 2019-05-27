@@ -34,26 +34,27 @@ export const getUser = () => {
   const jwt = jwt_decode(token);
   return jwt.name;
 };
-export const getUserActive = () => {
-  const token = Cookie.get("access_token");
-  if (token === undefined) {
-    return undefined;
-  }
-  const jwt = jwt_decode(token);
-  // Submit custom_json for steemapps.com tracking once a day
-  const active = Cookie.get("last_active_broadcast");
-  if (active === undefined || active !== jwt.name) {
-    broadcastActiveUser();
-    const expiry =
-      Cookie.get("cookie_consent") !== "true"
-        ? ""
-        : new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
-    Cookie.set("last_active_broadcast", jwt.name, {
-      expires: expiry
-    });
-  }
-  return jwt.name;
-};
+// Submit custom_json for steemapps.com tracking once a day - better to let users do thus manually
+// export const getUserActive = () => {
+//   const token = Cookie.get("access_token");
+//   if (token === undefined) {
+//     return undefined;
+//   }
+//   const jwt = jwt_decode(token);
+//   // Submit custom_json for steemapps.com tracking once a day
+//   const active = Cookie.get("last_active_broadcast");
+//   if (active === undefined || active !== jwt.name) {
+//     broadcastActiveUser();
+//     const expiry =
+//       Cookie.get("cookie_consent") !== "true"
+//         ? ""
+//         : new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
+//     Cookie.set("last_active_broadcast", jwt.name, {
+//       expires: expiry
+//     });
+//   }
+//   return jwt.name;
+// };
 export const getScToken = () => Cookie.get("sc_token");
 export const getAccessToken = () => {
   const token = Cookie.get("access_token");

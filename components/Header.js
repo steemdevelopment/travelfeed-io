@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { grey, teal } from "@material-ui/core/colors";
 import LoginButtons from "./Header/LoginButtons";
-import { getUserActive } from "../utils/token";
+import { getUser } from "../utils/token";
 import dynamic from "next/dynamic";
 import Button from "@material-ui/core/Button";
 import GeoCoder from "./Header/Geocoder";
@@ -36,7 +36,7 @@ class Header extends Component {
     ReactPiwik.push(["resetUserId"]);
   }
   getUser() {
-    this.setState({ user: getUserActive() });
+    this.setState({ user: getUser() });
   }
   componentDidMount() {
     this.getUser();

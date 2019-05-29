@@ -7,6 +7,7 @@ import { GET_TF_STATS } from "../helpers/graphql/stats";
 import { indigo, teal } from "@material-ui/core/colors";
 import Head from "../components/Head";
 import ReactPiwik from "react-piwik";
+import { imageProxy } from "../helpers/getImage";
 
 class Join extends Component {
   componentDidMount() {
@@ -150,7 +151,7 @@ class Join extends Component {
                           rel="nofollow noopener noreferrer"
                         >
                           <button type="button" className="btn btn-dark p-0">
-                            <img src="https://steemitimages.com/p/W5LtFUPm6g7111bbdcuxu3bfUg5qaCq8seb5paCtrrT7zRPoGe552cdWYfHncQ1zPiqJPpjCfugUd3kWR9WUPoKBapvwoByQRAMtpbeAP3NuYCEVhYZ7KCHoyq2a3DW2WePCNz1BWJYpJYFVje28C6FyBYUmk?format=match&mode=fit&width=130" />
+                            <img src={imageProxy("https://cdn.steemitimages.com/DQmboc2XspF4neKbj8cN6WTuCrpADoehKxdXBgfiaWjFsFx/Discord-Logo+Wordmark-Color%20(1).png", 130)} />
                           </button>
                         </a>
                       </div>

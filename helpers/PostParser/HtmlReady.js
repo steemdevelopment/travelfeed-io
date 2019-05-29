@@ -167,14 +167,6 @@ function iframe(state, child) {
 function img(state, child) {
   const url = child.getAttribute("src");
   if (url) {
-    child.setAttribute("src", imageProxy(url, "0x10"));
-    child.setAttribute("data-src", imageProxy(url, "1000x0"));
-    child.setAttribute("data-sizes", "100w");
-    child.setAttribute(
-      "data-srcset",
-      `${imageProxy(url, "400x0")} 400w, ${imageProxy(url, "800x0")} 800w`
-    );
-    child.setAttribute("class", "lazy");
     state.images.add(url);
     // if (state.mutate) {
     //   let url2 = url;

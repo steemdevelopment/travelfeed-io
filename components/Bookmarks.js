@@ -96,7 +96,7 @@ class PostGrid extends Component {
                       const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
-                      const image = imageProxy(post.img_url, "0x" + imgHeight);
+                      const image = imageProxy(post.img_url, undefined, imgHeight);
                       let title = post.title;
                       title =
                         title.length > 85

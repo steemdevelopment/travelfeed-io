@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { imageRegex } from "../../utils/regex";
+import { imageProxy } from "../../helpers/getImage";
 
 class PostImageHeader extends Component {
   state = {
@@ -42,9 +44,12 @@ class PostImageHeader extends Component {
           height: this.state.bgheight,
           position: this.state.bgpos,
           marginTop: this.state.bgmargin,
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("https://steemitimages.com/0x10/${
-            this.props.backgroundImage
-          }")`,
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("${imageProxy(
+            this.props.backgroundImage,
+            undefined,
+            10,
+            "fit"
+          )}")`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
           backgroundSize: "cover"
@@ -56,9 +61,10 @@ class PostImageHeader extends Component {
             height: "100%",
             position: "absolute",
             marginTop: "0px",
-            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("https://steemitimages.com/0x${
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("${imageProxy(
+              this.props.backgroundImage,
               this.state.windowWidth
-            }/${this.props.backgroundImage}")`,
+            )}")`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",
             backgroundSize: "cover",

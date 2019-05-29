@@ -16,12 +16,34 @@ import IconButton from "@material-ui/core/IconButton";
 import { nameFromCC, slugFromCC } from "../helpers/country_codes";
 import dynamic from "next/dynamic";
 import { imageProxy } from "../helpers/getImage";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+import LazyLoad from "vanilla-lazyload";
 
 class PostCard extends Component {
-  state = { show: true };
+  constructor(props) {
+    super(props);
+    this.myInput = React.createRef();
+  }
+  state = { show: true, cardWidth: 800 };
   hide() {
     this.setState({ show: false });
+  }
+  componentDidMount() {
+    if (this.myInput.current) {
+      const cardWidth =
+        Math.round(this.myInput.current.offsetWidth / 100) * 100;
+      this.setState({ cardWidth });
+    }
+    if (!document.lazyLoadInstance) {
+      document.lazyLoadInstance = new LazyLoad({
+        elements_selector: ".lazy",
+        threshold: 1500
+      });
+    }
+    document.lazyLoadInstance.update();
+  }
+  // Update lazyLoad after rerendering of every image
+  componentDidUpdate() {
+    document.lazyLoadInstance.update();
   }
   render() {
     // Prevent SSR
@@ -153,22 +175,39 @@ class PostCard extends Component {
             <CardActionArea>
               {this.props.post.img_url !== undefined &&
                 this.props.post.img_url !== "" && (
-                  <LazyLoadImage
-                    effect="blur"
-                    alt={this.props.post.title}
-                    src={imageProxy(
-                      this.props.post.img_url,
-                      "0x" + this.props.cardHeight * 2
-                    )}
-                    threshold="600"
-                    width="100%"
-                    height={this.props.cardHeight}
-                    placeholderSrc={imageProxy(
-                      this.props.post.img_url,
-                      "0x" + 10
-                    )}
-                    wrapperClassName="lazyImage"
-                  />
+                  <picture ref={this.myInput} className="lazyImage">
+                    <source
+                      className="lazyImage"
+                      height={this.props.cardHeight}
+                      type="image/webp"
+                      data-srcset={`${imageProxy(
+                        this.props.post.img_url,
+                        this.state.cardWidth * 1.2,
+                        this.props.cardHeight * 1.2,
+                        undefined,
+                        "webp"
+                      )}`}
+                      data-sizes="100w"
+                    />
+                    <img
+                      height={this.props.cardHeight}
+                      width="100%"
+                      alt={this.props.post.title}
+                      className="lazy"
+                      src={`${imageProxy(
+                        this.props.post.img_url,
+                        10,
+                        10,
+                        "fit"
+                      )}`}
+                      data-src={`${imageProxy(
+                        this.props.post.img_url,
+                        this.state.cardWidth * 1.2,
+                        this.props.cardHeight * 1.2
+                      )}`}
+                      data-sizes="100w"
+                    />
+                  </picture>
                 )}
               <CardContent>
                 <Typography gutterBottom variant="h5">

@@ -31,6 +31,10 @@ import PostImageHeader from "./Post/PostImageHeader";
 import LazyLoad from "vanilla-lazyload";
 
 export class SinglePost extends Component {
+  constructor(props) {
+    super(props);
+    this.myInput = React.createRef();
+  }
   state = {
     title: "Most miles",
     orderby: "total_votes",
@@ -38,7 +42,8 @@ export class SinglePost extends Component {
     bgpos: "fixed",
     bgheight: "100%",
     bgmargin: "0px",
-    userComment: undefined
+    userComment: undefined,
+    cardWidth: 800
   };
   onCommentAdd(userComment) {
     this.setState({ userComment });
@@ -47,10 +52,15 @@ export class SinglePost extends Component {
     this.setState(op);
   }
   componentDidMount() {
+    if (this.myInput.current) {
+      const cardWidth =
+        Math.round(this.myInput.current.offsetWidth / 100) * 100;
+      this.setState({ cardWidth });
+    }
     if (!document.lazyLoadInstance) {
       document.lazyLoadInstance = new LazyLoad({
         elements_selector: ".lazy",
-        threshold: 1000
+        threshold: 1500
       });
     }
     this.setState({ parent_id: this.props.post_id });
@@ -119,7 +129,9 @@ export class SinglePost extends Component {
             let card = <Fragment />;
             let head = <Fragment />;
             // Render post
-            let htmlBody = parseBody(data.post.body, {});
+            let htmlBody = parseBody(data.post.body, {
+              cardWidth: this.state.cardWidth
+            });
             const bodyText = { __html: htmlBody };
             let bodycontent = (
               <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
@@ -197,102 +209,104 @@ export class SinglePost extends Component {
                 />
               );
               card = (
-                <Card>
-                  <CardHeader
-                    avatar={
-                      <Link
-                        as={`/@${data.post.author}`}
-                        href={`/blog?author=${data.post.author}`}
-                        passHref
-                      >
-                        <a>
-                          <Avatar
-                            className="cpointer"
-                            src={`https://steemitimages.com/u/${
-                              data.post.author
-                            }/avatar/small`}
-                            alt={data.post.author}
-                          />
-                        </a>
-                      </Link>
-                    }
-                    action={
-                      <Fragment>
-                        <span>{appIcon}</span>
-                        <BookmarkIcon
-                          author={data.post.author}
-                          permlink={data.post.permlink}
-                        />
-                        <CuratorMenu
-                          author={data.post.author}
-                          permlink={data.post.permlink}
-                        />
-                      </Fragment>
-                    }
-                    title={
-                      <Fragment>
+                <div ref={this.myInput}>
+                  <Card>
+                    <CardHeader
+                      avatar={
                         <Link
                           as={`/@${data.post.author}`}
                           href={`/blog?author=${data.post.author}`}
                           passHref
                         >
-                          <a className="text-dark cpointer">
-                            <strong>{data.post.display_name}</strong>
-                            <span className="text-muted">
-                              {" "}
-                              @{data.post.author}
-                            </span>
+                          <a>
+                            <Avatar
+                              className="cpointer"
+                              src={`https://steemitimages.com/u/${
+                                data.post.author
+                              }/avatar/small`}
+                              alt={data.post.author}
+                            />
                           </a>
                         </Link>
-                      </Fragment>
-                    }
-                    subheader={
-                      <SubHeader
-                        created_at={data.post.created_at}
-                        readtime={readtime}
-                      />
-                    }
-                  />
-                  <CardContent>
-                    {bodycontent}
-                    <hr />
-                    {data.post.latitude && (
-                      <div className="fullwidth">
-                        <div className="text-center">
-                          <Typography variant="h5" className="p-2">
-                            Post Location:
-                          </Typography>
-                        </div>
-                        <PostMap
-                          location={{
-                            coordinates: {
-                              lat: data.post.latitude,
-                              lng: data.post.longitude
-                            }
-                          }}
+                      }
+                      action={
+                        <Fragment>
+                          <span>{appIcon}</span>
+                          <BookmarkIcon
+                            author={data.post.author}
+                            permlink={data.post.permlink}
+                          />
+                          <CuratorMenu
+                            author={data.post.author}
+                            permlink={data.post.permlink}
+                          />
+                        </Fragment>
+                      }
+                      title={
+                        <Fragment>
+                          <Link
+                            as={`/@${data.post.author}`}
+                            href={`/blog?author=${data.post.author}`}
+                            passHref
+                          >
+                            <a className="text-dark cpointer">
+                              <strong>{data.post.display_name}</strong>
+                              <span className="text-muted">
+                                {" "}
+                                @{data.post.author}
+                              </span>
+                            </a>
+                          </Link>
+                        </Fragment>
+                      }
+                      subheader={
+                        <SubHeader
+                          created_at={data.post.created_at}
+                          readtime={readtime}
                         />
-                        <hr />
-                      </div>
-                    )}
-                    <div className="container">
-                      <div className="row justify-content-center">
-                        <div className="col-lg-6 col-md-9 col-sm12">
-                          <PostAuthorProfile author={data.post.author} />
+                      }
+                    />
+                    <CardContent>
+                      {bodycontent}
+                      <hr />
+                      {data.post.latitude && (
+                        <div className="fullwidth">
+                          <div className="text-center">
+                            <Typography variant="h5" className="p-2">
+                              Post Location:
+                            </Typography>
+                          </div>
+                          <PostMap
+                            location={{
+                              coordinates: {
+                                lat: data.post.latitude,
+                                lng: data.post.longitude
+                              }
+                            }}
+                          />
+                          <hr />
+                        </div>
+                      )}
+                      <div className="container">
+                        <div className="row justify-content-center">
+                          <div className="col-lg-6 col-md-9 col-sm12">
+                            <PostAuthorProfile author={data.post.author} />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                  <VoteSlider
-                    author={data.post.author}
-                    permlink={data.post.permlink}
-                    votes={data.post.votes}
-                    total_votes={data.post.total_votes}
-                    tags={data.post.tags}
-                    depth={data.post.depth}
-                    mode="post"
-                    onCommentAdd={this.onCommentAdd.bind(this)}
-                  />
-                </Card>
+                    </CardContent>
+                    <VoteSlider
+                      author={data.post.author}
+                      permlink={data.post.permlink}
+                      votes={data.post.votes}
+                      total_votes={data.post.total_votes}
+                      tags={data.post.tags}
+                      depth={data.post.depth}
+                      mode="post"
+                      onCommentAdd={this.onCommentAdd.bind(this)}
+                    />
+                  </Card>
+                </div>
               );
             }
             // Don't load comment area  if there are no comments

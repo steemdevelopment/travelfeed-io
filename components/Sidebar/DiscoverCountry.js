@@ -59,7 +59,7 @@ class CountryExplore extends Component {
                                       style={{
                                         backgroundImage:
                                           "url(" +
-                                          imageProxy(post.img_url, "100x100") +
+                                          imageProxy(post.img_url, 100, 100) +
                                           ")",
                                         backgroundRepeat: "no-repeat",
                                         backgroundPosition: "center center",

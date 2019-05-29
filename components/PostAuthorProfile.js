@@ -31,7 +31,7 @@ class PostAuthorProfile extends Component {
                         style={{ cursor: "pointer" }}
                         src={`https://steemitimages.com/u/${
                           data.profile.name
-                        }/avatar`}
+                        }/avatar/medium`}
                         alt={data.profile.name}
                         width="80"
                         height="80"

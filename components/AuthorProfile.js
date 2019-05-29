@@ -17,6 +17,7 @@ import { faCouch } from "@fortawesome/free-solid-svg-icons";
 import CuratorMenu from "./CuratorMenu/BlogMenu";
 import Header from "../components/Header";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { imageProxy } from "../helpers/getImage";
 
 export class PostAuthorProfile extends Component {
   render() {
@@ -39,8 +40,11 @@ export class PostAuthorProfile extends Component {
               data.profile.about != "" ? data.profile.about : <Fragment />;
             const cover_image =
               data.profile.cover_image !== ""
-                ? `https://steemitimages.com/1500x0/${data.profile.cover_image}`
-                : "https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv/Steem_Gradient_Blue.png";
+                ? imageProxy(data.profile.cover_image, 1500)
+                : imageProxy(
+                    "https://cdn.steemitimages.com/DQme1phKjAipUM1zg5GQNaobssCMgmLAvFLFTVJpe9YVSvv",
+                    1500
+                  );
             const location =
               data.profile.location !== "" ? (
                 <span>
@@ -165,7 +169,7 @@ export class PostAuthorProfile extends Component {
                               style={{ cursor: "pointer" }}
                               src={`https://steemitimages.com/u/${
                                 data.profile.name
-                              }/avatar`}
+                              }/avatar/medium`}
                               alt={data.profile.name}
                               width="80"
                               height="80"

@@ -75,7 +75,7 @@ class PostCard extends Component {
             <CardMedia
               className="h-100"
               style={{ minHeight: "150px" }}
-              image={imageProxy(this.props.post.img_url, "0x" + 300)}
+              image={imageProxy(this.props.post.img_url, undefined, 300)}
             />
           </div>
         )}

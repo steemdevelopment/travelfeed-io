@@ -86,7 +86,7 @@ class PostGrid extends Component {
                   }
                 }}
                 hasMore={this.state.hasMore}
-                threshold={500}
+                threshold={800}
                 loader={
                   <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
                     <div className="p-5 text-center">

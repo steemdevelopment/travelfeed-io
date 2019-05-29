@@ -19,6 +19,7 @@ import {
   dtubeLinkRegex
 } from "../utils/regex";
 import { ROOTURL } from "../config";
+import { imageProxy } from "./getImage";
 
 // Initialise Markdown parser
 const remarkable = new Remarkable({
@@ -114,11 +115,33 @@ const parseBody = (body, options) => {
   } else {
     parsedBody = parsedBody.replace(/"\.\.\//g, `"${ROOTURL}`);
   }
-  // Proxify image urls that are not proxied already by lazyload
-  parsedBody = parsedBody.replace(
-    imgFullSize,
-    `<img src="https://steemitimages.com/1000x0/$1" alt="travelfeed" />`
-  );
+
+  // Proxify image urls and add lazyload and conditional webp
+  console.log(options.cardWidth);
+  let imgMatches = imgFullSize.exec(parsedBody);
+  while (imgMatches != null) {
+    imgMatches = imgFullSize.exec(parsedBody);
+    if (imgMatches != null) {
+      parsedBody = parsedBody.replace(
+        imgMatches[0],
+        `<picture>
+            <source type="image/webp"
+                data-srcset="${imageProxy(
+                  imgMatches[1],
+                  options.cardWidth * 1.2,
+                  undefined,
+                  undefined,
+                  "webp"
+                )}"
+                data-sizes="100w">
+            <img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ""} class="lazy"
+                src="${imageProxy(imgMatches[1], undefined, 10, "fit")}"
+                data-sizes="100w">
+        </picture>`
+      );
+    }
+  }
+
   return parsedBody;
 };
 

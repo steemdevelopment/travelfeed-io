@@ -80,7 +80,7 @@ class Settings extends Component {
                 <Query query={GET_SETTINGS}>
                   {({ data }) => {
                     if (data) {
-                      if (loaded === false) {
+                      if (loaded === false && data && data.preferences) {
                         this.setState({
                           loaded: true,
                           defaultVoteWeight: data.preferences.defaultVoteWeight,
@@ -148,7 +148,6 @@ class Settings extends Component {
                                       label="Use TravelFeed Blacklist"
                                     />
                                     <Divider />
-
                                     <TextField
                                       select
                                       label="Default miles weight for posts"

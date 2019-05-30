@@ -18,11 +18,15 @@ class PostPage extends Component {
   }
 }
 
+PostPage.defaultProps = {
+  query: undefined,
+};
+
 PostPage.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.arrayOf(PropTypes.string).isRequired,
+  query: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default PostPage;

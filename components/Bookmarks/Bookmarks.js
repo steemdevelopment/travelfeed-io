@@ -78,7 +78,7 @@ class Bookmarks extends Component {
                 hasMore={hasMore}
                 threshold={1000}
                 loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12}>
+                  <Grid item lg={12} md={12} sm={12} xs={12} key="loader">
                     <div className="p-5 text-center">
                       <CircularProgress />
                     </div>

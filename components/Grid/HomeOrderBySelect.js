@@ -49,8 +49,12 @@ class HomeOrderBySelect extends React.Component {
   }
 }
 
+HomeOrderBySelect.defaultProps = {
+  showFeed: undefined,
+};
+
 HomeOrderBySelect.propTypes = {
-  showFeed: PropTypes.string.isRequired,
+  showFeed: PropTypes.string,
   selection: PropTypes.number.isRequired,
 };
 

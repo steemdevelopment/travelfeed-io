@@ -192,7 +192,7 @@ class PostsTable extends React.Component {
 
 PostsTable.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  data: PropTypes.arrayOf(PropTypes.string, PropTypes.number).isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default withStyles(styles)(PostsTable);

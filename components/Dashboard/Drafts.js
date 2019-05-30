@@ -69,7 +69,7 @@ class Drafts extends Component {
                 hasMore={hasMore}
                 threshold={1000}
                 loader={
-                  <div className="col-12 p-5 text-center">
+                  <div className="col-12 p-5 text-center" key="loader">
                     <CircularProgress />
                   </div>
                 }

@@ -100,7 +100,7 @@ const DiscoverCountry = () => {
                         passHref
                       >
                         <Button variant="contained" color="primary">
-                          <a className="text-light">Explore More</a>
+                          <span className="text-light">Explore More</span>
                         </Button>
                       </Link>
                     </div>

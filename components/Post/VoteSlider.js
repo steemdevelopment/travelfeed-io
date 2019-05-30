@@ -341,6 +341,11 @@ class VoteSlider extends Component {
   }
 }
 
+VoteSlider.defaultProps = {
+  handleClick: undefined,
+  isEdit: undefined,
+};
+
 VoteSlider.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
@@ -349,8 +354,8 @@ VoteSlider.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
   mode: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  handleClick: PropTypes.func.isRequired,
-  isEdit: PropTypes.bool.isRequired,
+  handleClick: PropTypes.func,
+  isEdit: PropTypes.bool,
   depth: PropTypes.number.isRequired,
 };
 

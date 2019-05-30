@@ -57,6 +57,6 @@ export default class RecentEarningsChart extends PureComponent {
 }
 
 RecentEarningsChart.propTypes = {
-  recentPayouts: PropTypes.arrayOf(PropTypes.number).isRequired,
+  recentPayouts: PropTypes.arrayOf(PropTypes.object).isRequired,
   color: PropTypes.string.isRequired,
 };

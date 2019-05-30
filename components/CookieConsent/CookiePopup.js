@@ -78,7 +78,7 @@ CookiePopup.propTypes = {
   open: PropTypes.bool.isRequired,
   containerid: PropTypes.string,
   allowtext: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.objectOf(PropTypes.any).isRequired,
   accept: PropTypes.func.isRequired,
   decline: PropTypes.func.isRequired,
 };

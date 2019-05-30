@@ -40,10 +40,13 @@ class DestinationCityColumn extends Component {
     });
   }
 }
+DestinationCityColumn.defaultProps = {
+  text: undefined,
+};
 
 DestinationCityColumn.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClick: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
 };
 export default DestinationCityColumn;

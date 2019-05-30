@@ -36,10 +36,14 @@ class DestinationMenuItem extends Component {
   }
 }
 
+DestinationMenuItem.defaultProps = {
+  active: false,
+};
+
 DestinationMenuItem.propTypes = {
   icon: PropTypes.element.isRequired,
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  active: PropTypes.bool.isRequired,
+  active: PropTypes.bool,
 };
 export default DestinationMenuItem;

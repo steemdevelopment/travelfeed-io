@@ -95,7 +95,7 @@ class PostGrid extends Component {
                 hasMore={this.state.hasMore}
                 threshold={800}
                 loader={
-                  <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
+                  <Grid item lg={12} md={12} sm={12} xs={12} key="loader">
                     <div className="p-5 text-center">
                       <CircularProgress />
                     </div>
@@ -220,7 +220,7 @@ class PostGrid extends Component {
                   {data.posts &&
                     data.posts.length === 0 &&
                     this.props.poststyle === 'grid' && (
-                      <Card className="mt-5">
+                      <Card className="mt-5" key="noposts">
                         <CardContent>No posts found</CardContent>
                       </Card>
                     )}
@@ -233,11 +233,16 @@ class PostGrid extends Component {
     );
   }
 }
+
+PostGrid.defaultProps = {
+  cardHeight: undefined,
+};
+
 PostGrid.propTypes = {
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
-  cardHeight: PropTypes.number.isRequired,
+  query: PropTypes.objectOf(PropTypes.any).isRequired,
+  cardHeight: PropTypes.number,
   poststyle: PropTypes.string.isRequired,
-  grid: PropTypes.objectOf(PropTypes.string).isRequired,
+  grid: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
 export default PostGrid;

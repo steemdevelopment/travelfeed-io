@@ -115,22 +115,34 @@ const IsNotBookmarked = props => {
   );
 };
 
+BookmarkIcon.defaultProps = {
+  onBmChange: undefined,
+};
+
 BookmarkIcon.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
-  onBmChange: PropTypes.func.isRequired,
+  onBmChange: PropTypes.func,
+};
+
+IsNotBookmarked.defaultProps = {
+  onBmChange: undefined,
 };
 
 IsNotBookmarked.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
-  onBmChange: PropTypes.func.isRequired,
+  onBmChange: PropTypes.func,
+};
+
+IsBookmarked.defaultProps = {
+  onBmChange: undefined,
 };
 
 IsBookmarked.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
-  onBmChange: PropTypes.func.isRequired,
+  onBmChange: PropTypes.func,
 };
 
 export default BookmarkIcon;

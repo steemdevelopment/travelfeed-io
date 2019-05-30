@@ -20,42 +20,42 @@ class HomePage extends Component {
 
   static async getInitialProps(props) {
     let { orderby } = props.query;
-    let minCurationScore = 0;
+    let min_curation_score = 0;
     let selection = 0;
     let title = 'TravelFeed';
     let isFeed = false;
     if (orderby === 'created_at') {
       selection = 0;
-      minCurationScore = 0;
+      min_curation_score = 0;
       title = 'Created';
       isFeed = false;
     } else if (orderby === 'sc_hot') {
       selection = 1;
-      minCurationScore = 0;
+      min_curation_score = 0;
       title = 'Taking Off';
       isFeed = false;
     } else if (orderby === 'random') {
       selection = 2;
-      minCurationScore = 10000;
+      min_curation_score = 10000;
       title = 'Discover';
       isFeed = false;
     } else if (orderby === 'feed') {
       selection = 4;
       orderby = 'created_at';
-      minCurationScore = 0;
+      min_curation_score = 0;
       title = 'Feed';
       isFeed = true;
     } else {
       // featured
       orderby = 'created_at';
       selection = 3;
-      minCurationScore = 10000;
+      min_curation_score = 10000;
       title = 'Featured';
       isFeed = false;
     }
     return {
       orderby,
-      minCurationScore,
+      min_curation_score,
       selection,
       title,
       isFeed,
@@ -69,7 +69,13 @@ class HomePage extends Component {
   }
 
   render() {
-    const { title, selection, orderby, minCurationScore, isFeed } = this.props;
+    const {
+      title,
+      selection,
+      orderby,
+      min_curation_score,
+      isFeed,
+    } = this.props;
     const { user } = this.state;
     const DiscoverCountry = dynamic(
       () => import('../components/Sidebar/DiscoverCountry'),
@@ -99,7 +105,7 @@ class HomePage extends Component {
               <PostGrid
                 query={{
                   orderby,
-                  minCurationScore,
+                  min_curation_score,
                   limit: 8,
                   feed: isFeed ? user : undefined,
                   exclude_authors: ['travelfeed', 'steemitworldmap'],
@@ -126,14 +132,18 @@ class HomePage extends Component {
   }
 }
 
+HomePage.defaultProps = {
+  query: undefined,
+};
+
 HomePage.propTypes = {
   title: PropTypes.string.isRequired,
   orderby: PropTypes.string.isRequired,
-  minCurationScore: PropTypes.number.isRequired,
+  min_curation_score: PropTypes.number.isRequired,
   selection: PropTypes.number.isRequired,
   isFeed: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
+  query: PropTypes.objectOf(PropTypes.string),
 };
 
 export default HomePage;

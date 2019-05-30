@@ -19,7 +19,7 @@ const JoinNow = () => {
             Never miss another story!
           </Typography>
           <div>
-            <Link as="/join" passHref>
+            <Link href="/join" passHref>
               <Button
                 variant="contained"
                 color="primary"

@@ -64,7 +64,7 @@ class PostComments extends Component {
                   loader={
                     // don't show loadoing indicator for loading subcomments
                     this.props.ismain && (
-                      <Grid item lg={12} md={12} sm={12} xs={12}>
+                      <Grid item lg={12} md={12} sm={12} xs={12} key="loader">
                         <div className="p-5 text-center">
                           <CircularProgress />
                         </div>

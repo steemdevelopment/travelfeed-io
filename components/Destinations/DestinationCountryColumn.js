@@ -31,9 +31,13 @@ class DestinationCountryColumn extends Component {
   }
 }
 
+DestinationCountryColumn.defaultProps = {
+  text: undefined,
+};
+
 DestinationCountryColumn.propTypes = {
   onClick: PropTypes.func.isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   countryCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 

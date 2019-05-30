@@ -239,16 +239,16 @@ class GridPostCard extends Component {
   }
 }
 
-GridPostCard.default = {
+GridPostCard.defaultProps = {
   showBookmark: false,
   isBookmark: false,
 };
 
 GridPostCard.propTypes = {
-  post: PropTypes.objectof(PropTypes.any).isRequired,
+  post: PropTypes.objectOf(PropTypes.any).isRequired,
   cardHeight: PropTypes.number.isRequired,
-  showBookmark: PropTypes.bool.isRequired,
-  isBookmark: PropTypes.bool.isRequired,
+  showBookmark: PropTypes.bool,
+  isBookmark: PropTypes.bool,
 };
 
 export default GridPostCard;

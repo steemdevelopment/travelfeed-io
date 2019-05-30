@@ -35,7 +35,11 @@ HeaderCard.propTypes = {
   background: PropTypes.string.isRequired,
   titlesize: PropTypes.string,
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.string,
+    PropTypes.object,
+  ]).isRequired,
   noborder: PropTypes.bool,
 };
 

@@ -65,13 +65,17 @@ const SmallBox = props => {
   );
 };
 
+SmallBox.defaultProps = {
+  prefix: undefined,
+};
+
 SmallBox.propTypes = {
   Icon: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   iconColor: PropTypes.string.isRequired,
   boxColor: PropTypes.string.isRequired,
-  prefix: PropTypes.string.isRequired,
+  prefix: PropTypes.string,
 };
 
 export default SmallBox;

@@ -101,7 +101,7 @@ class MapCluster extends Component {
 }
 
 MapCluster.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.string).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default MapCluster;

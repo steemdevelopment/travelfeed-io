@@ -35,9 +35,13 @@ const SubHeader = props => {
   );
 };
 
+SubHeader.defaultProps = {
+  readtime: undefined,
+};
+
 SubHeader.propTypes = {
   created_at: PropTypes.string.isRequired,
-  readtime: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
+  readtime: PropTypes.objectOf(PropTypes.any),
 };
 
 export default SubHeader;

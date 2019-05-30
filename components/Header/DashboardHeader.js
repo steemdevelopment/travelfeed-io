@@ -103,7 +103,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.getUser();
     if (window.innerWidth < 750) {
       this.setState({ open: false });
     }
@@ -294,11 +293,16 @@ class Dashboard extends Component {
   }
 }
 
+Dashboard.defaultProps = {
+  query: undefined,
+  page: undefined,
+};
+
 Dashboard.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
-  page: PropTypes.string.isRequired,
+  query: PropTypes.objectOf(PropTypes.string),
+  page: PropTypes.string,
   active: PropTypes.string.isRequired,
 };
 

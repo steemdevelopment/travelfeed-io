@@ -134,13 +134,14 @@ class FollowButton extends Component {
 
 FollowButton.defaultProps = {
   btnstyle: 'default',
+  isFollowed: false,
 };
 
 FollowButton.propTypes = {
   author: PropTypes.string.isRequired,
   btnstyle: PropTypes.string,
   enqueueSnackbar: PropTypes.func.isRequired,
-  isFollowed: PropTypes.bool.isRequired,
+  isFollowed: PropTypes.bool,
 };
 
 export default withSnackbar(FollowButton);

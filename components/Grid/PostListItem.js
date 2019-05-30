@@ -169,9 +169,13 @@ class PostListItem extends Component {
   }
 }
 
+PostListItem.defaultProps = {
+  isDraftMode: undefined,
+};
+
 PostListItem.propTypes = {
-  post: PropTypes.object.isRequired.isRequired,
-  isDraftMode: PropTypes.bool.isRequired,
+  post: PropTypes.objectOf(PropTypes.any).isRequired,
+  isDraftMode: PropTypes.bool,
   id: PropTypes.string.isRequired,
 };
 

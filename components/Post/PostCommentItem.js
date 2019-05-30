@@ -237,14 +237,16 @@ class PostCommentItem extends Component {
 PostCommentItem.defaultProps = {
   loadreplies: true,
   title: false,
+  orderby: undefined,
+  orderdir: undefined,
 };
 
 PostCommentItem.propTypes = {
-  post: PropTypes.objectof(PropTypes.any).isRequired,
+  post: PropTypes.objectOf(PropTypes.any).isRequired,
   loadreplies: PropTypes.bool,
   title: PropTypes.bool,
-  orderby: PropTypes.string.isRequired,
-  orderdir: PropTypes.string.isRequired,
+  orderby: PropTypes.string,
+  orderdir: PropTypes.string,
 };
 
 export default PostCommentItem;

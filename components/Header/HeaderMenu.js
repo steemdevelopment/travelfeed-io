@@ -318,9 +318,13 @@ class HeaderMenu extends Component {
   }
 }
 
+HeaderMenu.defaultProps = {
+  handleLogout: undefined,
+};
+
 HeaderMenu.propTypes = {
   isDashboard: PropTypes.bool.isRequired,
-  handleLogout: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func,
 };
 
 export default HeaderMenu;

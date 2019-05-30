@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SinglePost from '../components/Post/SinglePost';
 
-class Post extends Component {
+class PostPage extends Component {
   static async getInitialProps(props) {
     const { author } = props.query;
     const { permlink } = props.query;
@@ -17,11 +17,12 @@ class Post extends Component {
     );
   }
 }
-Post.propTypes = {
+
+PostPage.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default Post;
+export default PostPage;

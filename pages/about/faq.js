@@ -7,7 +7,7 @@ import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 
-const About = () => {
+const Faq = () => {
   const title = 'Frequently Asked Questions';
   return (
     <Fragment>
@@ -29,4 +29,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Faq;

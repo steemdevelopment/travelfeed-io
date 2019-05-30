@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import EnhancedTableHead from './PostsTableHead';
+import PostsTableHead from './PostsTableHead';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -49,7 +49,7 @@ const styles = theme => ({
   },
 });
 
-class EnhancedTable extends React.Component {
+class PostsTable extends React.Component {
   state = {
     order: 'desc',
     orderBy: 'created_at',
@@ -119,7 +119,7 @@ class EnhancedTable extends React.Component {
       <Fragment>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
+            <PostsTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -190,9 +190,9 @@ class EnhancedTable extends React.Component {
   }
 }
 
-EnhancedTable.propTypes = {
+PostsTable.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   data: PropTypes.arrayOf(PropTypes.string, PropTypes.number).isRequired,
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default withStyles(styles)(PostsTable);

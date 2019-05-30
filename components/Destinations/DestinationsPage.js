@@ -19,7 +19,7 @@ import {
 import DestinationCityColumn from './DestinationCityColumn';
 import DestinationCountryColumn from './DestinationCountryColumn';
 
-class DestinationsNav extends Component {
+class DestinationsMobile extends Component {
   state = {
     random: undefined,
   };
@@ -132,8 +132,8 @@ class DestinationsNav extends Component {
   }
 }
 
-DestinationsNav.propTypes = {
+DestinationsMobile.propTypes = {
   closeDest: PropTypes.func.isRequired,
 };
 
-export default DestinationsNav;
+export default DestinationsMobile;

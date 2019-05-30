@@ -19,7 +19,7 @@ const rows = [
   { id: 'payout', numeric: true, disablePadding: false, label: 'Earnings' },
 ];
 
-class EnhancedTableHead extends React.Component {
+class PostsTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
@@ -61,10 +61,10 @@ class EnhancedTableHead extends React.Component {
   }
 }
 
-EnhancedTableHead.propTypes = {
+PostsTableHead.propTypes = {
   onRequestSort: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
 };
 
-export default EnhancedTableHead;
+export default PostsTableHead;

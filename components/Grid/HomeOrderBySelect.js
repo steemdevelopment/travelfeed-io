@@ -10,7 +10,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class IconLabelTabs extends React.Component {
+class HomeOrderBySelect extends React.Component {
   render() {
     return (
       <Paper square>
@@ -49,9 +49,9 @@ class IconLabelTabs extends React.Component {
   }
 }
 
-IconLabelTabs.propTypes = {
+HomeOrderBySelect.propTypes = {
   showFeed: PropTypes.string.isRequired,
   selection: PropTypes.number.isRequired,
 };
 
-export default IconLabelTabs;
+export default HomeOrderBySelect;

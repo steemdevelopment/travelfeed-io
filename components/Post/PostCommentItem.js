@@ -14,7 +14,7 @@ import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
 
-class PostpostItem extends Component {
+class PostCommentItem extends Component {
   state = {
     isEdit: false,
     showEditor: false,
@@ -211,7 +211,7 @@ class PostpostItem extends Component {
         </Card>
         {// "Fake" display new user comment after submitting comment without refreshing from the API
         this.state.userComment && (
-          <PostpostItem
+          <PostCommentItem
             post={{
               body: this.state.userComment.body,
               created_at: new Date(),
@@ -234,17 +234,17 @@ class PostpostItem extends Component {
   }
 }
 
-PostpostItem.defaultProps = {
+PostCommentItem.defaultProps = {
   loadreplies: true,
   title: false,
 };
 
-PostpostItem.propTypes = {
-  post: PropTypes.objectof(PropTypes.string).isRequired,
+PostCommentItem.propTypes = {
+  post: PropTypes.objectof(PropTypes.any).isRequired,
   loadreplies: PropTypes.bool,
   title: PropTypes.bool,
   orderby: PropTypes.string.isRequired,
   orderdir: PropTypes.string.isRequired,
 };
 
-export default PostpostItem;
+export default PostCommentItem;

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { customJson } from '../../../helpers/actions';
 
-class AlertDialog extends React.Component {
+class CustomJson extends React.Component {
   handleConfirm = () => {
     const { author, permlink, action } = this.props;
     const payload = {
@@ -71,7 +71,7 @@ class AlertDialog extends React.Component {
   }
 }
 
-AlertDialog.propTypes = {
+CustomJson.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
@@ -80,4 +80,4 @@ AlertDialog.propTypes = {
   action: PropTypes.string.isRequired,
 };
 
-export default withSnackbar(AlertDialog);
+export default withSnackbar(CustomJson);

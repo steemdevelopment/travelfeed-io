@@ -15,7 +15,7 @@ import { nameFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
-class PostCard extends Component {
+class PostListItem extends Component {
   state = { show: true };
 
   hide = () => {
@@ -169,10 +169,10 @@ class PostCard extends Component {
   }
 }
 
-PostCard.propTypes = {
+PostListItem.propTypes = {
   post: PropTypes.object.isRequired.isRequired,
   isDraftMode: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
 };
 
-export default PostCard;
+export default PostListItem;

@@ -2,13 +2,13 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import DestinationHeader from '../components/Destinations/DestinationHeader';
-import DestinationsPage from '../components/Destinations/DestinationsPage';
+import DestinationsContent from '../components/Destinations/DestinationsPage';
 import PostGrid from '../components/Grid/PostGrid';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import { ccFromSlug, nameFromSlug } from '../helpers/countryCodes';
 
-class Destinations extends Component {
+class DestinationsPage extends Component {
   static async getInitialProps(props) {
     const { country } = props.query;
     const { subdivision } = props.query;
@@ -37,7 +37,7 @@ class Destinations extends Component {
             description="Discover the best travel destinations on TravelFeed."
           />
           <Header />
-          <DestinationsPage />
+          <DestinationsContent />
         </Fragment>
       );
     const title = `${(suburb && `${suburb}, ${city}`) ||
@@ -80,13 +80,13 @@ class Destinations extends Component {
   }
 }
 
-Destinations.defaultProps = {
+DestinationsPage.defaultProps = {
   subdivision: undefined,
   city: undefined,
   suburb: undefined,
 };
 
-Destinations.propTypes = {
+DestinationsPage.propTypes = {
   country: PropTypes.string.isRequired,
   subdivision: PropTypes.string,
   city: PropTypes.string,
@@ -95,4 +95,4 @@ Destinations.propTypes = {
   query: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export default Destinations;
+export default DestinationsPage;

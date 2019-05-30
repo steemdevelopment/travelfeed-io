@@ -6,7 +6,7 @@ import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 import { slugFromCC } from '../helpers/countryCodes';
 
-class Location extends Component {
+class LocationPage extends Component {
   static async getInitialProps(props) {
     const { formatted_address, country_code, showlocations } = props.query;
     const locations = props.query.location_box.split(',');
@@ -61,7 +61,7 @@ class Location extends Component {
   }
 }
 
-Location.propTypes = {
+LocationPage.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.objectOf(PropTypes.string).isRequired,
   showlocations: PropTypes.bool.isRequired,
@@ -70,4 +70,4 @@ Location.propTypes = {
   country_code: PropTypes.string.isRequired,
 };
 
-export default Location;
+export default LocationPage;

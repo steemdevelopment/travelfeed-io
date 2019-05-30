@@ -5,7 +5,7 @@ import SortIcon from '@material-ui/icons/Sort';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class SimpleMenu extends React.Component {
+class OrderBySelect extends React.Component {
   state = {
     anchorEl: null,
   };
@@ -114,9 +114,9 @@ class SimpleMenu extends React.Component {
   }
 }
 
-SimpleMenu.propTypes = {
+OrderBySelect.propTypes = {
   selection: PropTypes.string.isRequired,
   handleClick: PropTypes.func.isRequired,
 };
 
-export default SimpleMenu;
+export default OrderBySelect;

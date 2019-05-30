@@ -48,7 +48,7 @@ const ExpansionPanelDetails = withStyles(theme => ({
   },
 }))(MuiExpansionPanelDetails);
 
-class CustomizedExpansionPanel extends React.Component {
+class FAQAccordion extends React.Component {
   state = {
     expanded: 'panel1',
   };
@@ -122,4 +122,4 @@ class CustomizedExpansionPanel extends React.Component {
   }
 }
 
-export default CustomizedExpansionPanel;
+export default FAQAccordion;

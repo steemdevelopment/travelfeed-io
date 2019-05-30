@@ -18,7 +18,7 @@ import IsCurated from '../Post/IsCurated';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
 
-class PostCard extends Component {
+class GridPostCard extends Component {
   constructor(props) {
     super(props);
     this.myInput = React.createRef();
@@ -239,16 +239,16 @@ class PostCard extends Component {
   }
 }
 
-PostCard.default = {
+GridPostCard.default = {
   showBookmark: false,
   isBookmark: false,
 };
 
-PostCard.propTypes = {
-  post: PropTypes.objectOf(PropTypes.string).isRequired,
+GridPostCard.propTypes = {
+  post: PropTypes.objectof(PropTypes.any).isRequired,
   cardHeight: PropTypes.number.isRequired,
   showBookmark: PropTypes.bool.isRequired,
   isBookmark: PropTypes.bool.isRequired,
 };
 
-export default PostCard;
+export default GridPostCard;

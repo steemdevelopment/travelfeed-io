@@ -11,7 +11,7 @@ import { getRoles } from '../../helpers/token';
 import AuthorBlacklist from './Actions/AuthorBlacklist';
 import PostBlacklist from './Actions/PostBlacklist';
 
-class PostMenu extends Component {
+class CommentMenu extends Component {
   state = {
     roles: [],
   };
@@ -47,9 +47,9 @@ class PostMenu extends Component {
   }
 }
 
-PostMenu.propTypes = {
+CommentMenu.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
 };
 
-export default PostMenu;
+export default CommentMenu;

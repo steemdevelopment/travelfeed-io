@@ -8,7 +8,7 @@ import React, { Fragment } from 'react';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
 
-const Exit = props => {
+const InvalidPost = props => {
   return (
     <Fragment>
       <Head title="External Link | TravelFeed" />
@@ -54,12 +54,12 @@ const Exit = props => {
   );
 };
 
-Exit.defaultProps = {
+InvalidPost.defaultProps = {
   url: undefined,
 };
 
-Exit.propTypes = {
+InvalidPost.propTypes = {
   url: PropTypes.string,
 };
 
-export default Exit;
+export default InvalidPost;

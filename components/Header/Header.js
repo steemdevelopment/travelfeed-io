@@ -138,8 +138,12 @@ class Header extends Component {
   }
 }
 
+Header.defaultProps = {
+  subheader: undefined,
+};
+
 Header.propTypes = {
-  subheader: PropTypes.string.isRequired,
+  subheader: PropTypes.string,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 

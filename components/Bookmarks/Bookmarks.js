@@ -14,7 +14,7 @@ import parseBody from '../../helpers/parseBody';
 import { regExcerpt } from '../../helpers/regex';
 import GridPostCard from '../Grid/GridPostCard';
 
-class PostGrid extends Component {
+class Bookmarks extends Component {
   state = {
     hasMore: true,
     postslength: 9,
@@ -162,4 +162,4 @@ class PostGrid extends Component {
   }
 }
 
-export default PostGrid;
+export default Bookmarks;

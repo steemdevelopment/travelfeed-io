@@ -10,7 +10,7 @@ import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 
-const About = () => {
+const SupportUsPage = () => {
   const title = 'Support Us';
   return (
     <Fragment>
@@ -199,4 +199,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default SupportUsPage;

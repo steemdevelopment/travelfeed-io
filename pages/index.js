@@ -13,7 +13,7 @@ import LegalNotice from '../components/Sidebar/LegalNotice';
 import NavSide from '../components/Sidebar/NavSide';
 import { getUser } from '../helpers/token';
 
-class Tag extends Component {
+class HomePage extends Component {
   state = {
     user: undefined,
   };
@@ -126,7 +126,7 @@ class Tag extends Component {
   }
 }
 
-Tag.propTypes = {
+HomePage.propTypes = {
   title: PropTypes.string.isRequired,
   orderby: PropTypes.string.isRequired,
   minCurationScore: PropTypes.number.isRequired,
@@ -136,4 +136,4 @@ Tag.propTypes = {
   query: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export default Tag;
+export default HomePage;

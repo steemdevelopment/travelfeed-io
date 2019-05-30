@@ -11,7 +11,7 @@ import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { CHANGE_CURATOR_ROLE } from '../../../helpers/graphql/roles';
 
-class AlertDialog extends React.Component {
+class ChangeRoles extends React.Component {
   state = {
     open: false,
   };
@@ -159,10 +159,10 @@ class AlertDialog extends React.Component {
   }
 }
 
-AlertDialog.propTypes = {
+ChangeRoles.propTypes = {
   author: PropTypes.string.isRequired,
   isCurator: PropTypes.bool.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
 };
 
-export default withSnackbar(AlertDialog);
+export default withSnackbar(ChangeRoles);

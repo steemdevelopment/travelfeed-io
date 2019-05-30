@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
 import React, { Fragment } from 'react';
 
-const Text = () => {
+const Cookies = () => {
   return (
     <Fragment>
       <Typography gutterBottom>
@@ -94,4 +94,4 @@ const Text = () => {
   );
 };
 
-export default Text;
+export default Cookies;

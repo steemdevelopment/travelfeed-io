@@ -9,7 +9,7 @@ import NotFound from '../components/General/NotFound';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 
-class Exit extends Component {
+class ExitPage extends Component {
   static async getInitialProps({ req }) {
     const { url } = req.query;
     return { url };
@@ -69,12 +69,12 @@ class Exit extends Component {
   }
 }
 
-Exit.defaultProps = {
+ExitPage.defaultProps = {
   url: undefined,
 };
 
-Exit.propTypes = {
+ExitPage.propTypes = {
   url: PropTypes.string,
 };
 
-export default Exit;
+export default ExitPage;

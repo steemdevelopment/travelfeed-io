@@ -16,7 +16,7 @@ import {
   UNBLACKLIST_POST,
 } from '../../../helpers/graphql/blacklist';
 
-class AlertDialog extends React.Component {
+class PostBlacklist extends React.Component {
   state = {
     reason: '',
     open: false,
@@ -208,10 +208,10 @@ class AlertDialog extends React.Component {
   }
 }
 
-AlertDialog.propTypes = {
+PostBlacklist.propTypes = {
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
 };
 
-export default withSnackbar(AlertDialog);
+export default withSnackbar(PostBlacklist);

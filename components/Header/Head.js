@@ -1,9 +1,9 @@
-import Head from 'next/head';
+import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Header = ({ title, image, description, canonicalUrl }) => (
-  <Head>
+const Head = ({ title, image, description, canonicalUrl }) => (
+  <NextHead>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="twitter:card" content="summary" />
@@ -16,15 +16,20 @@ const Header = ({ title, image, description, canonicalUrl }) => (
     <meta property="og:image" content={image} />
     <meta property="og:site_name" content="TravelFeed" />
     <link rel="canonical" href={canonicalUrl} />
-  </Head>
+  </NextHead>
 );
 // todo: if  canonical undefined no canonical!
-
-Header.propTypes = {
-  title: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  canonicalUrl: PropTypes.string.isRequired,
+Head.defaultProps = {
+  image: undefined,
+  description: undefined,
+  canonicalUrl: undefined,
 };
 
-export default Header;
+Head.propTypes = {
+  title: PropTypes.string.isRequired,
+  image: PropTypes.string,
+  description: PropTypes.string,
+  canonicalUrl: PropTypes.string,
+};
+
+export default Head;

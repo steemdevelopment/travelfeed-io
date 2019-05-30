@@ -7,7 +7,7 @@ import React, { Fragment } from 'react';
 
 dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
-const subHeader = props => {
+const SubHeader = props => {
   const { created_at, readtime } = props;
   const createdAt = dayjs(created_at);
   const time = (
@@ -35,9 +35,9 @@ const subHeader = props => {
   );
 };
 
-subHeader.propTypes = {
+SubHeader.propTypes = {
   created_at: PropTypes.string.isRequired,
   readtime: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
 };
 
-export default subHeader;
+export default SubHeader;

@@ -64,7 +64,7 @@ function MySnackbarContent(props) {
   );
 }
 
-const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
+const CustomSnackbar = withStyles(styles1)(MySnackbarContent);
 
 MySnackbarContent.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
@@ -73,4 +73,4 @@ MySnackbarContent.propTypes = {
   variant: PropTypes.string.isRequired,
 };
 
-export default MySnackbarContentWrapper;
+export default CustomSnackbar;

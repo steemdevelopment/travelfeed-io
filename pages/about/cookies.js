@@ -3,7 +3,7 @@ import { indigo } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Component, Fragment } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
-import Cookies from '../../components/About/Texts/Terms';
+import CookiesText from '../../components/About/Texts/Terms';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
@@ -13,7 +13,7 @@ import {
   setCookieConsent,
 } from '../../helpers/token';
 
-class About extends Component {
+class CookiesPage extends Component {
   state = {
     optin: false,
   };
@@ -52,7 +52,7 @@ class About extends Component {
             <HeaderCard
               title={title}
               background={indigo[600]}
-              content={<Cookies />}
+              content={<CookiesText />}
             />
           </Grid>
           <Grid item lg={7} md={8} sm={11} xs={12} className="pt-3">
@@ -110,4 +110,4 @@ class About extends Component {
   }
 }
 
-export default About;
+export default CookiesPage;

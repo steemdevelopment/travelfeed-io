@@ -9,7 +9,7 @@ import { DEFAULT_META_DESCRIPTION } from '../config';
 import { imageProxy } from '../helpers/getImage';
 import { GET_TF_STATS } from '../helpers/graphql/stats';
 
-class Join extends Component {
+class JoinPage extends Component {
   componentDidMount() {
     ReactPiwik.push(['trackGoal', 1]);
   }
@@ -174,4 +174,4 @@ class Join extends Component {
   }
 }
 
-export default Join;
+export default JoinPage;

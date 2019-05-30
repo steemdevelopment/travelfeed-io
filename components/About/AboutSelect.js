@@ -11,7 +11,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class IconLabelTabs extends React.Component {
+class AboutSelect extends React.Component {
   render() {
     const { selection } = this.props;
     return (
@@ -48,8 +48,8 @@ class IconLabelTabs extends React.Component {
   }
 }
 
-IconLabelTabs.propTypes = {
+AboutSelect.propTypes = {
   selection: PropTypes.number.isRequired,
 };
 
-export default IconLabelTabs;
+export default AboutSelect;

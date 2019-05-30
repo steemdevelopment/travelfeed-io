@@ -13,7 +13,7 @@ import { regExcerpt } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import PostListItem from '../Grid/PostListItem';
 
-class PostGrid extends Component {
+class Drafts extends Component {
   state = {
     hasMore: true,
     postslength: 10,
@@ -128,4 +128,4 @@ class PostGrid extends Component {
   }
 }
 
-export default PostGrid;
+export default Drafts;

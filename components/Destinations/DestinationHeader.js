@@ -6,7 +6,7 @@ import { Query } from 'react-apollo';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 
-const Sublocations = props => {
+const DestinationHeader = props => {
   const { query, countrySlug, title } = props;
   return (
     <Fragment>
@@ -246,10 +246,10 @@ const Sublocations = props => {
   );
 };
 
-Sublocations.propTypes = {
+DestinationHeader.propTypes = {
   query: PropTypes.objectOf(PropTypes.string).isRequired,
   countrySlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };
 
-export default Sublocations;
+export default DestinationHeader;

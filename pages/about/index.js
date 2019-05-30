@@ -6,7 +6,7 @@ import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 
-const About = () => {
+const AboutPage = () => {
   const title = 'About';
   return (
     <Fragment>
@@ -36,4 +36,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutPage;

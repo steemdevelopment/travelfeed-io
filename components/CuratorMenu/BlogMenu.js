@@ -11,7 +11,7 @@ import { getRoles } from '../../helpers/token';
 import AuthorBlacklist from './Actions/AuthorBlacklist';
 import ChangeRoles from './Actions/ChangeRoles';
 
-class PostMenu extends Component {
+class BlogMenu extends Component {
   state = {
     roles: [],
   };
@@ -49,9 +49,9 @@ class PostMenu extends Component {
   }
 }
 
-PostMenu.propTypes = {
+BlogMenu.propTypes = {
   author: PropTypes.string.isRequired,
   isCurator: PropTypes.bool.isRequired,
 };
 
-export default PostMenu;
+export default BlogMenu;

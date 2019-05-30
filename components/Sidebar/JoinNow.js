@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
 import React from 'react';
 
-const LegalNotice = () => {
+const JoinNow = () => {
   return (
     <div className="text-center pt-3">
       <Card>
@@ -35,4 +35,4 @@ const LegalNotice = () => {
   );
 };
 
-export default LegalNotice;
+export default JoinNow;

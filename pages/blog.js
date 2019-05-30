@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import PostGrid from '../components/Grid/PostGrid';
 import AuthorProfile from '../components/Profile/AuthorProfile';
 
-class Blog extends Component {
+class BlogPage extends Component {
   static async getInitialProps(props) {
     const { author } = props.query;
     return { author };
@@ -24,10 +24,10 @@ class Blog extends Component {
   }
 }
 
-Blog.propTypes = {
+BlogPage.propTypes = {
   author: PropTypes.string.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export default Blog;
+export default BlogPage;

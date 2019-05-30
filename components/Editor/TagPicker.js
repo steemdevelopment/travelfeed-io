@@ -142,7 +142,7 @@ function getSuggestions(value) {
       });
 }
 
-class DownshiftMultiple extends React.Component {
+class TagPicker extends React.Component {
   state = {
     inputValue: '',
     selectedItem: ['travelfeed'],
@@ -296,10 +296,10 @@ class DownshiftMultiple extends React.Component {
   }
 }
 
-DownshiftMultiple.propTypes = {
+TagPicker.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   initialValue: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(DownshiftMultiple);
+export default withStyles(styles)(TagPicker);

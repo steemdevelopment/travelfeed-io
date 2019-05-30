@@ -10,7 +10,7 @@ import { Mutation } from 'react-apollo';
 import { REVOKE_TOKEN } from '../../helpers/graphql/token';
 import { getAccessToken } from '../../helpers/token';
 
-class Logout extends Component {
+class LogoutButton extends Component {
   state = {
     mounted: false,
     open: false,
@@ -63,9 +63,9 @@ class Logout extends Component {
   }
 }
 
-Logout.propTypes = {
+LogoutButton.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,
   handleLogout: PropTypes.func.isRequired,
 };
 
-export default withSnackbar(Logout);
+export default withSnackbar(LogoutButton);

@@ -24,7 +24,7 @@ import DestinationCityColumn from '../Destinations/DestinationCityColumn';
 import DestinationCountryColumn from '../Destinations/DestinationCountryColumn';
 import DestinationMenuItem from '../Destinations/DestinationMenuItem';
 
-class DestinationsNav extends Component {
+class HeaderPopupNav extends Component {
   state = {
     selection: undefined,
     random: undefined,
@@ -198,9 +198,9 @@ class DestinationsNav extends Component {
   }
 }
 
-DestinationsNav.propTypes = {
+HeaderPopupNav.propTypes = {
   closeDest: PropTypes.func.isRequired,
   showDest: PropTypes.bool.isRequired,
 };
 
-export default DestinationsNav;
+export default HeaderPopupNav;

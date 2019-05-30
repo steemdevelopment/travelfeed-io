@@ -9,7 +9,7 @@ import Map from '../components/Maps/MapCluster';
 import { GET_PLACES } from '../helpers/graphql/places';
 import { hasCookieConsent } from '../helpers/token';
 
-class About extends Component {
+class MapPage extends Component {
   state = {
     open: false,
     optin: false,
@@ -88,4 +88,4 @@ class About extends Component {
   }
 }
 
-export default About;
+export default MapPage;

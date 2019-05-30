@@ -9,7 +9,7 @@ import { Query } from 'react-apollo';
 import { follow, unfollow } from '../../helpers/actions';
 import { GET_IS_FOLLOWED } from '../../helpers/graphql/profile';
 
-class followButton extends Component {
+class FollowButton extends Component {
   state = {
     isFollowed: null,
     isMounted: false,
@@ -132,15 +132,15 @@ class followButton extends Component {
   }
 }
 
-followButton.defaultProps = {
+FollowButton.defaultProps = {
   btnstyle: 'default',
 };
 
-followButton.propTypes = {
+FollowButton.propTypes = {
   author: PropTypes.string.isRequired,
   btnstyle: PropTypes.string,
   enqueueSnackbar: PropTypes.func.isRequired,
   isFollowed: PropTypes.bool.isRequired,
 };
 
-export default withSnackbar(followButton);
+export default withSnackbar(FollowButton);

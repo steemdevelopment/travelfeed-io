@@ -8,7 +8,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-class IconLabelTabs extends React.Component {
+class TagsOrderBySelect extends React.Component {
   render() {
     return (
       <Paper square>
@@ -47,9 +47,9 @@ class IconLabelTabs extends React.Component {
   }
 }
 
-IconLabelTabs.propTypes = {
+TagsOrderBySelect.propTypes = {
   selection: PropTypes.number.isRequired,
   tags: PropTypes.string.isRequired,
 };
 
-export default IconLabelTabs;
+export default TagsOrderBySelect;

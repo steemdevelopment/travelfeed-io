@@ -9,7 +9,7 @@ import LoginDialog from '../components/Login/LoginDialog';
 import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../helpers/graphql/token';
 import { setAccessToken, setScToken } from '../helpers/token';
 
-class Login extends Component {
+class LoginPage extends Component {
   state = {
     loaded: false,
   };
@@ -103,8 +103,8 @@ class Login extends Component {
   }
 }
 
-Login.propTypes = {
+LoginPage.propTypes = {
   sc: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export default Login;
+export default LoginPage;

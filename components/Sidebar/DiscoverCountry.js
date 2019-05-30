@@ -13,7 +13,7 @@ import { imageProxy } from '../../helpers/getImage';
 import { GET_POSTS } from '../../helpers/graphql/posts';
 import HeaderCard from '../General/HeaderCard';
 
-const CountryExplore = () => {
+const DiscoverCountry = () => {
   const country_code = randomCountry;
   const country_name = nameFromCC(country_code);
   const countryslug = slugFromCC(country_code);
@@ -115,4 +115,4 @@ const CountryExplore = () => {
   );
 };
 
-export default CountryExplore;
+export default DiscoverCountry;

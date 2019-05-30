@@ -6,7 +6,7 @@ import TagsOrderBySelect from '../components/Grid/TagsOrderBySelect';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
 
-class Tag extends Component {
+class TagPage extends Component {
   static async getInitialProps(props) {
     let { orderby } = props.query;
     const { tags } = props.query;
@@ -71,7 +71,7 @@ class Tag extends Component {
   }
 }
 
-Tag.propTypes = {
+TagPage.propTypes = {
   tags: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   orderby: PropTypes.string.isRequired,
@@ -81,4 +81,4 @@ Tag.propTypes = {
   query: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default Tag;
+export default TagPage;

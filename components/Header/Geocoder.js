@@ -63,8 +63,8 @@ class Geocoder extends Component {
           bounds = result.geometry.viewport;
         }
         Router.push(
-          `/location?location_box=${bounds.ia.j},${bounds.na.j},${
-            bounds.ia.l
+          `/location?location_box=${bounds.ga.j},${bounds.na.j},${
+            bounds.ga.l
           },${bounds.na.l}&formatted_address=${result.formatted_address}${args}`
         );
       })

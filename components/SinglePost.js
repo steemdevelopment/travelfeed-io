@@ -29,6 +29,7 @@ import { getUser } from "../utils/token";
 import dynamic from "next/dynamic";
 import PostImageHeader from "./Post/PostImageHeader";
 import LazyLoad from "vanilla-lazyload";
+import Head from "next/head";
 
 export class SinglePost extends Component {
   constructor(props) {
@@ -355,6 +356,9 @@ export class SinglePost extends Component {
               sanitized.substring(0, 180) + `[...] by ${data.post.author}`;
             return (
               <Fragment>
+                <Head>
+                  <link rel="preconnect" href="https://maps.gstatic.com" />
+                </Head>
                 {head}
                 <Header subheader={data.post.display_name} />
                 <div style={{ position: "relative" }}>

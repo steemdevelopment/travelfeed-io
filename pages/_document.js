@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import flush from "styled-jsx/server";
 import * as Sentry from "@sentry/node";
 import { teal } from "@material-ui/core/colors";
+import { GMAPS_API_KEY } from "../config";
 
 export default class extends Document {
   render() {
@@ -38,10 +39,21 @@ export default class extends Document {
           />
           <meta name="msapplication-TileColor" content={teal[800]} />
           <meta name="theme-color" content={teal[800]} />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://steemitimages.com" />
+          <link rel="preconnect" href="https://maps.googleapis.com" />
+          <link rel="preconnect" href="https://matomo.travelfeed.io" />
         </Head>
         <body>
           <Main />
           <NextScript />
+          {
+            // Geocoder
+          }
+          <script
+            type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
+          />
         </body>
         <noscript>
           <img src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1" />

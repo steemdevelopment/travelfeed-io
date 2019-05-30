@@ -1,20 +1,20 @@
 // https://medium.com/@alfianlosari/graphql-cursor-infinite-scroll-pagination-with-react-apollo-client-and-github-api-fafbc510b667
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_POSTS } from "../helpers/graphql/posts";
-import Grid from "@material-ui/core/Grid";
-import GridPostCard from "./GridPostCard";
-import PostListItem from "./PostListItem";
-import PostCommentItem from "./PostCommentItem";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import parseBody from "../helpers/parseBody";
-import PropTypes from "prop-types";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { regExcerpt } from "../utils/regex";
-import InfiniteScroll from "react-infinite-scroller";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import InfiniteScroll from "react-infinite-scroller";
+import readingTime from "reading-time";
+import sanitize from "sanitize-html";
+import { GET_POSTS } from "../../helpers/graphql/posts";
+import parseBody from "../../helpers/parseBody";
+import { regExcerpt } from "../../helpers/regex";
+import PostCommentItem from "../Post/PostCommentItem";
+import GridPostCard from "./GridPostCard";
+import PostListItem from "./PostListItem";
 
 class PostGrid extends Component {
   state = {

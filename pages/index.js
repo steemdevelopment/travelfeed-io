@@ -1,18 +1,18 @@
 //https://codepen.io/ncerminara/pen/eKNROb
-import React, { Component, Fragment } from "react";
+import dynamic from "next/dynamic";
 import PropTypes from "prop-types";
-import PostGrid from "../components/PostGrid";
-import Header from "../components/Header";
-import Head from "../components/Head";
+import React, { Component, Fragment } from "react";
+import StickyBox from "react-sticky-box";
 import HomeOrderBySelect from "../components/Grid/HomeOrderBySelect";
-import { getUser } from "../utils/token";
+import PostGrid from "../components/Grid/PostGrid";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
 // import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from "../components/Sidebar/BlogGridList";
+import JoinNow from "../components/Sidebar/JoinNow";
 import LegalNotice from "../components/Sidebar/LegalNotice";
 import NavSide from "../components/Sidebar/NavSide";
-import JoinNow from "../components/Sidebar/JoinNow";
-import StickyBox from "react-sticky-box";
-import dynamic from "next/dynamic";
+import { getUser } from "../helpers/token";
 
 class Tag extends Component {
   state = {

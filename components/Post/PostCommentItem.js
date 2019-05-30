@@ -1,18 +1,18 @@
-import React, { Fragment, Component } from "react";
-import Link from "next/link";
+import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import parseBody from "../helpers/parseBody";
-import Avatar from "@material-ui/core/Avatar";
 import CardHeader from "@material-ui/core/CardHeader";
-import PropTypes from "prop-types";
-import VoteSlider from "./VoteSlider";
-import PostComments from "./PostComments";
-import SubHeader from "./Post/SubHeader";
-import { getUser } from "../utils/token";
-import CommentEditor from "./Editor/CommentEditor";
-import CuratorMenu from "./CuratorMenu/CommentMenu";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import parseBody from "../../helpers/parseBody";
+import { getUser } from "../../helpers/token";
+import CuratorMenu from "../CuratorMenu/CommentMenu";
+import CommentEditor from "../Editor/CommentEditor";
+import PostComments from "./PostComments";
+import SubHeader from "./SubHeader";
+import VoteSlider from "./VoteSlider";
 
 class PostpostItem extends Component {
   state = {
@@ -40,7 +40,7 @@ class PostpostItem extends Component {
   }
   render() {
     // Prevent SSR
-    const BookmarkIcon = dynamic(() => import("./Post/BookmarkIcon"), {
+    const BookmarkIcon = dynamic(() => import("./BookmarkIcon"), {
       ssr: false
     });
     let htmlBody = parseBody(this.state.body || this.props.post.body, {});

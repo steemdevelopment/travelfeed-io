@@ -1,7 +1,6 @@
 import Cookie from "js-cookie";
 import jwt_decode from "jwt-decode";
-import api from "./SteemConnectAPI";
-import { broadcastActiveUser } from "./actions";
+import api from "./steemConnectAPI";
 
 export const setAccessToken = (token, expires_in) => {
   // If cookies are not accepted, set only session cookie (allowed by gdpr)

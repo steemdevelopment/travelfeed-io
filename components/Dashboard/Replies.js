@@ -1,8 +1,8 @@
-import React, { Fragment, Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
-import PostGrid from "../PostGrid";
-import { getUser } from "../../utils/token";
+import React, { Component, Fragment } from "react";
+import { getUser } from "../../helpers/token";
+import PostGrid from "../Grid/PostGrid";
 
 class Replies extends Component {
   render() {

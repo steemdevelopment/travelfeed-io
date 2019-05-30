@@ -1,10 +1,10 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import { Query } from "react-apollo";
-import { GET_LOCATION_DETAILS } from "../../helpers/graphql/locations";
-import { nameFromSlug } from "../../helpers/country_codes";
 import Typography from "@material-ui/core/Typography";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import { nameFromSlug } from "../../helpers/countryCodes";
+import { GET_LOCATION_DETAILS } from "../../helpers/graphql/locations";
 
 class Sublocations extends Component {
   render() {

@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from "react";
-import Head from "../../components/Head";
-import Header from "../../components/Header";
-import DashboardHeader from "../../components/Header/DashboardHeader";
 import Grid from "@material-ui/core/Grid";
-import NotFound from "../../components/NotFound";
-import { getUser } from "../../utils/token";
+import React, { Component, Fragment } from "react";
 import Wallet from "../../components/Dashboard/Wallet";
+import NotFound from "../../components/General/NotFound";
+import DashboardHeader from "../../components/Header/DashboardHeader";
+import Head from "../../components/Header/Head";
+import Header from "../../components/Header/Header";
+import { getUser } from "../../helpers/token";
 
 class WalletPage extends Component {
   render() {

@@ -1,9 +1,9 @@
-import React, { Fragment, Component } from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Error from "next/error";
 import PropTypes from "prop-types";
-import Head from "./Head";
+import React, { Component, Fragment } from "react";
+import Head from "../Header/Head";
 
 class NotFound extends Component {
   render() {

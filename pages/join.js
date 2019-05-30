@@ -1,13 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
-import { DEFAULT_META_DESCRIPTION } from "../config";
-import { Query } from "react-apollo";
-import { GET_TF_STATS } from "../helpers/graphql/stats";
 import { indigo, teal } from "@material-ui/core/colors";
-import Head from "../components/Head";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
 import ReactPiwik from "react-piwik";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
+import { DEFAULT_META_DESCRIPTION } from "../config";
 import { imageProxy } from "../helpers/getImage";
+import { GET_TF_STATS } from "../helpers/graphql/stats";
 
 class Join extends Component {
   componentDidMount() {
@@ -151,7 +151,12 @@ class Join extends Component {
                           rel="nofollow noopener noreferrer"
                         >
                           <button type="button" className="btn btn-dark p-0">
-                            <img src={imageProxy("https://cdn.steemitimages.com/DQmboc2XspF4neKbj8cN6WTuCrpADoehKxdXBgfiaWjFsFx/Discord-Logo+Wordmark-Color%20(1).png", 130)} />
+                            <img
+                              src={imageProxy(
+                                "https://cdn.steemitimages.com/DQmboc2XspF4neKbj8cN6WTuCrpADoehKxdXBgfiaWjFsFx/Discord-Logo+Wordmark-Color%20(1).png",
+                                130
+                              )}
+                            />
                           </button>
                         </a>
                       </div>

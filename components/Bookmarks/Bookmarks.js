@@ -1,19 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_BOOKMARKS } from "../helpers/graphql/bookmarks";
-import Grid from "@material-ui/core/Grid";
-import GridPostCard from "./GridPostCard";
-import { imageProxy } from "../helpers/getImage";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import parseBody from "../helpers/parseBody";
-import PropTypes from "prop-types";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { regExcerpt } from "../utils/regex";
-import InfiniteScroll from "react-infinite-scroller";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import InfiniteScroll from "react-infinite-scroller";
+import readingTime from "reading-time";
+import sanitize from "sanitize-html";
+import { imageProxy } from "../../helpers/getImage";
+import { GET_BOOKMARKS } from "../../helpers/graphql/bookmarks";
+import parseBody from "../../helpers/parseBody";
+import { regExcerpt } from "../../helpers/regex";
+import GridPostCard from "../Grid/GridPostCard";
 
 class PostGrid extends Component {
   state = {
@@ -96,7 +96,11 @@ class PostGrid extends Component {
                       const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
-                      const image = imageProxy(post.img_url, undefined, imgHeight);
+                      const image = imageProxy(
+                        post.img_url,
+                        undefined,
+                        imgHeight
+                      );
                       let title = post.title;
                       title =
                         title.length > 85

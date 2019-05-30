@@ -1,16 +1,14 @@
 // TODO: Implement new comment editor
 
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
 // import Editor from "rich-markdown-editor";
 import { debounce } from "lodash";
 import { withSnackbar } from "notistack";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import getSlug from "speakingurl";
 import { APP_VERSION } from "../../config";
+import { comment } from "../../helpers/actions";
 import { getImageList } from "../../helpers/getImage";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { comment } from "../../utils/actions";
 class CommentEditor extends Component {
   state = {
     content: "",

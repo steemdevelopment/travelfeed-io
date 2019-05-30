@@ -1,28 +1,28 @@
-import React, { Component, Fragment } from "react";
-import MenuList from "@material-ui/core/MenuList";
+import Grow from "@material-ui/core/Grow";
 import MenuItem from "@material-ui/core/MenuItem";
-import Link from "next/link";
+import MenuList from "@material-ui/core/MenuList";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import RandomIcon from "@material-ui/icons/Explore";
 import CountryIcon from "@material-ui/icons/Landscape";
 import CityIcon from "@material-ui/icons/LocationCity";
 import MapIcon from "@material-ui/icons/Map";
-import RandomIcon from "@material-ui/icons/Explore";
-import Paper from "@material-ui/core/Paper";
-import DestinationMenuItem from "./DestinationMenuItem";
-import DestinationCountryColumn from "./DestinationCountryColumn";
-import DestinationCityColumn from "./DestinationCityColumn";
-import {
-  slugFromCC,
-  popular_countries,
-  featured_cc_europe,
-  featured_cc_asia,
-  featured_cc_world,
-  featured_places_europe,
-  featured_places_asia,
-  featured_places_world
-} from "../../helpers/country_codes";
+import Link from "next/link";
 import PropTypes from "prop-types";
-import Popper from "@material-ui/core/Popper";
-import Grow from "@material-ui/core/Grow";
+import React, { Component, Fragment } from "react";
+import {
+  featured_cc_asia,
+  featured_cc_europe,
+  featured_cc_world,
+  featured_places_asia,
+  featured_places_europe,
+  featured_places_world,
+  popular_countries,
+  slugFromCC
+} from "../../helpers/countryCodes";
+import DestinationCityColumn from "../Destinations/DestinationCityColumn";
+import DestinationCountryColumn from "../Destinations/DestinationCountryColumn";
+import DestinationMenuItem from "../Destinations/DestinationMenuItem";
 
 class DestinationsNav extends Component {
   state = {

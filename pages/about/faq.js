@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from "react";
-import Head from "../../components/Head";
-import Header from "../../components/Header";
-import AboutSelect from "../../components/About/AboutSelect";
-import HeaderCard from "../../components/General/HeaderCard";
 import { teal } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
+import React, { Component, Fragment } from "react";
+import AboutSelect from "../../components/About/AboutSelect";
 import FAQ from "../../components/About/FAQAccordion";
+import HeaderCard from "../../components/General/HeaderCard";
+import Head from "../../components/Header/Head";
+import Header from "../../components/Header/Header";
 
 class About extends Component {
   render() {

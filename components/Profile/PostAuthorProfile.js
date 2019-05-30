@@ -1,10 +1,10 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
 import Typography from "@material-ui/core/Typography";
-import FollowButton from "./FollowButton";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
-import { GET_SHORT_PROFILE } from "../helpers/graphql/profile";
+import { GET_SHORT_PROFILE } from "../../helpers/graphql/profile";
+import FollowButton from "./FollowButton";
 
 class PostAuthorProfile extends Component {
   render() {

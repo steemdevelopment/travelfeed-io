@@ -1,17 +1,13 @@
-import React, { Component, Fragment } from "react";
-import Link from "next/link";
-import { Query } from "react-apollo";
-import { GET_POSTS } from "../../helpers/graphql/posts";
-import Divider from "@material-ui/core/Divider";
-import HeaderCard from "../General/HeaderCard";
-import { teal } from "@material-ui/core/colors";
-import {
-  random_country,
-  nameFromCC,
-  slugFromCC
-} from "../../helpers/country_codes";
-import { imageProxy } from "../../helpers/getImage";
 import Button from "@material-ui/core/Button";
+import { teal } from "@material-ui/core/colors";
+import Divider from "@material-ui/core/Divider";
+import Link from "next/link";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import { nameFromCC, random_country, slugFromCC } from "../../helpers/countryCodes";
+import { imageProxy } from "../../helpers/getImage";
+import { GET_POSTS } from "../../helpers/graphql/posts";
+import HeaderCard from "../General/HeaderCard";
 
 class CountryExplore extends Component {
   render() {

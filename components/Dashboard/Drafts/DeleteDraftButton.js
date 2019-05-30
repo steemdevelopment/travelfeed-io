@@ -1,18 +1,18 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
-import { Mutation } from "react-apollo";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { DELETE_DRAFT } from "../../helpers/graphql/drafts";
+import red from "@material-ui/core/colors/red";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import red from "@material-ui/core/colors/red";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import { withSnackbar } from "notistack";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Mutation } from "react-apollo";
+import { DELETE_DRAFT } from "../../../helpers/graphql/drafts";
 
 const theme = createMuiTheme({
   palette: {

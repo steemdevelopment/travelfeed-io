@@ -1,16 +1,15 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import Terms from "../About/Texts/Terms";
-import Privacy from "../About/Texts/Privacy";
-import Cookies from "../About/Texts/Cookies";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 import Link from "next/link";
-import Header from "../Header";
+import React, { Component, Fragment } from "react";
+import Cookies from "../About/Texts/Cookies";
+import Privacy from "../About/Texts/Privacy";
+import Terms from "../About/Texts/Terms";
+import Header from "../Header/Header";
 
 class LoginDialog extends Component {
   render() {

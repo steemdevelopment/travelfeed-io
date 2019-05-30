@@ -1,13 +1,13 @@
-import React, { Component, Fragment } from "react";
-import Head from "../components/Head";
-import Header from "../components/Header";
-import Map from "../components/Maps/MapCluster";
-import { Query } from "react-apollo";
-import { GET_PLACES } from "../helpers/graphql/places";
-import { hasCookieConsent } from "../utils/token";
 import Typography from "@material-ui/core/Typography";
 import Link from "next/link";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
 import CookiePopup from "../components/CookieConsent/CookiePopup";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
+import Map from "../components/Maps/MapCluster";
+import { GET_PLACES } from "../helpers/graphql/places";
+import { hasCookieConsent } from "../helpers/token";
 
 class About extends Component {
   state = {

@@ -1,21 +1,21 @@
-import React from "react";
-import App, { Container } from "next/app";
-import { MuiThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import JssProvider from "react-jss/lib/JssProvider";
-import getPageContext from "../lib/getPageContext";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import * as Sentry from "@sentry/browser";
+import { register, unregister } from "next-offline/runtime";
+import App, { Container } from "next/app";
+import Router from "next/router";
 import { SnackbarProvider } from "notistack";
 import NProgress from "nprogress";
-import Router from "next/router";
+import React from "react";
 import { ApolloProvider } from "react-apollo";
+import JssProvider from "react-jss/lib/JssProvider";
+import ReactPiwik from "react-piwik";
+import CookieConsent from "../components/CookieConsent/CookieConsent";
+import { getUser, hasCookieConsent } from "../helpers/token";
+import getPageContext from "../lib/getPageContext";
 import withApollo from "../lib/withApollo";
 import "../styles/bootstrap.min.css";
 import "../styles/style.css";
-import * as Sentry from "@sentry/browser";
-import CookieConsent from "../components/CookieConsent/CookieConsent";
-import { register, unregister } from "next-offline/runtime";
-import { hasCookieConsent, getUser } from "../utils/token";
-import ReactPiwik from "react-piwik";
 
 new ReactPiwik({
   url: "https://matomo.travelfeed.io",

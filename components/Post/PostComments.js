@@ -1,12 +1,12 @@
 // https://sysgears.com/articles/how-to-implement-infinite-scroll-with-graphql-and-react/
-import React, { Component, Fragment } from "react";
-import PostCommentItem from "./PostCommentItem";
-import { commentQuery } from "../helpers/graphql/comments";
-import { Query } from "react-apollo";
-import InfiniteScroll from "react-infinite-scroller";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import InfiniteScroll from "react-infinite-scroller";
+import { commentQuery } from "../../helpers/graphql/comments";
+import PostCommentItem from "./PostCommentItem";
 
 class PostComments extends Component {
   state = {

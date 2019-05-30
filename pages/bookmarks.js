@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from "react";
-import Bookmarks from "../components/Bookmarks";
-import Head from "../components/Head";
-import Header from "../components/Header";
-import { getUser } from "../utils/token";
-import NotFound from "../components/NotFound";
 import Grid from "@material-ui/core/Grid";
+import React, { Component, Fragment } from "react";
+import Bookmarks from "../components/Bookmarks/Bookmarks";
+import NotFound from "../components/General/NotFound";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
+import { getUser } from "../helpers/token";
 
 class BookmarksPage extends Component {
   state = {

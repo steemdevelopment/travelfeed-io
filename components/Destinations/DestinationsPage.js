@@ -1,23 +1,23 @@
-import React, { Component, Fragment } from "react";
-import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
-import DestinationCountryColumn from "../Header/DestinationCountryColumn";
-import DestinationCityColumn from "../Header/DestinationCityColumn";
-import {
-  slugFromCC,
-  popular_countries,
-  featured_cc_europe,
-  featured_cc_asia,
-  featured_cc_world,
-  featured_places_europe,
-  featured_places_asia,
-  featured_places_world
-} from "../../helpers/country_codes";
-import PropTypes from "prop-types";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
 import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import {
+  featured_cc_asia,
+  featured_cc_europe,
+  featured_cc_world,
+  featured_places_asia,
+  featured_places_europe,
+  featured_places_world,
+  popular_countries,
+  slugFromCC
+} from "../../helpers/countryCodes";
+import DestinationCityColumn from "./DestinationCityColumn";
+import DestinationCountryColumn from "./DestinationCountryColumn";
 
 class DestinationsNav extends Component {
   state = {

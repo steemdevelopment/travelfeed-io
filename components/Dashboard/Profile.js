@@ -1,15 +1,15 @@
-import React, { Fragment, Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
+import { indigo } from "@material-ui/core/colors";
+import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import SaveIcon from "@material-ui/icons/Save";
 import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
 import { GET_PROFILE } from "../../helpers/graphql/profile";
-import SaveIcon from "@material-ui/icons/Save";
-import { indigo } from "@material-ui/core/colors";
+import { getUser } from "../../helpers/token";
 import HeaderCard from "../General/HeaderCard";
-import { getUser } from "../../utils/token";
 
 class Profile extends Component {
   constructor(props) {

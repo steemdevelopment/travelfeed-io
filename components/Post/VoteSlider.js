@@ -1,24 +1,24 @@
 // Todo: Tooltip with individual voters over total miles
 
-import React, { Fragment, Component } from "react";
 import CardActions from "@material-ui/core/CardActions";
-import FlightIcon from "@material-ui/icons/FlightTakeoff";
-import FlightVotedIcon from "@material-ui/icons/Flight";
-import CloseIcon from "@material-ui/icons/Close";
-import CommentIcon from "@material-ui/icons/AddComment";
-import LinkIcon from "@material-ui/icons/Link";
-import EditIcon from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { getUser } from "../utils/token";
-import Link from "next/link";
-import { vote } from "../utils/actions";
-import Slider from "@material-ui/lab/Slider";
-import PropTypes from "prop-types";
-import { withSnackbar } from "notistack";
+import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import CommentIcon from "@material-ui/icons/AddComment";
+import CloseIcon from "@material-ui/icons/Close";
+import EditIcon from "@material-ui/icons/Edit";
+import FlightVotedIcon from "@material-ui/icons/Flight";
+import FlightIcon from "@material-ui/icons/FlightTakeoff";
+import LinkIcon from "@material-ui/icons/Link";
+import Slider from "@material-ui/lab/Slider";
+import Link from "next/link";
+import { withSnackbar } from "notistack";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
-import { GET_VOTE_WEIGHTS } from "../helpers/graphql/settings";
+import { vote } from "../../helpers/actions";
+import { GET_VOTE_WEIGHTS } from "../../helpers/graphql/settings";
+import { getUser } from "../../helpers/token";
 
 class VoteSlider extends Component {
   state = {

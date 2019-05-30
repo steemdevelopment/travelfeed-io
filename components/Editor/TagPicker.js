@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import deburr from "lodash/deburr";
-import Downshift from "downshift";
+import Chip from "@material-ui/core/Chip";
+import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import Chip from "@material-ui/core/Chip";
-import { allSpecialChars } from "../../utils/regex";
+import Downshift from "downshift";
+import deburr from "lodash/deburr";
+import PropTypes from "prop-types";
+import React from "react";
+import { allSpecialChars } from "../../helpers/regex";
 
 const styles = theme => ({
   root: {

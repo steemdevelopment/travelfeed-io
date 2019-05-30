@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
 import GoogleMapReact from "google-map-react";
-import { GMAPS_API_KEY } from "../config";
 import PropTypes from "prop-types";
-import MapMarker from "./Maps/Marker";
+import React, { Component, Fragment } from "react";
+import { GMAPS_API_KEY } from "../../config";
+import MapMarker from "./Marker";
 
 class PostMap extends Component {
   state = {

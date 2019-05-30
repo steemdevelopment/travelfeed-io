@@ -1,13 +1,13 @@
-import React, { Fragment } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import PropTypes from "prop-types";
-import dynamic from "next/dynamic";
+import Typography from "@material-ui/core/Typography";
 import AddLocationIcon from "@material-ui/icons/AddLocation";
 import EditLocationIcon from "@material-ui/icons/EditLocation";
-import { hasCookieConsent } from "../../utils/token";
-import Typography from "@material-ui/core/Typography";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Fragment } from "react";
+import { hasCookieConsent } from "../../helpers/token";
 import CookiePopup from "../CookieConsent/CookiePopup";
 
 class LocationPicker extends React.Component {

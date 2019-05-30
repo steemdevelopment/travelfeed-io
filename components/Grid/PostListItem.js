@@ -1,19 +1,19 @@
-import React, { Component, Fragment } from "react";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import CardActions from "@material-ui/core/CardActions";
-import Link from "next/link";
-import Typography from "@material-ui/core/Typography";
-import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import EditIcon from "@material-ui/icons/Create";
-import ViewIcon from "@material-ui/icons/OpenInBrowser";
-import DeleteDraftButton from "./Post/DeleteDraftButton";
-import { nameFromCC, slugFromCC } from "../helpers/country_codes";
-import LocationIcon from "@material-ui/icons/LocationOn";
 import Tooltip from "@material-ui/core/Tooltip";
-import { imageProxy } from "../helpers/getImage";
+import Typography from "@material-ui/core/Typography";
+import EditIcon from "@material-ui/icons/Create";
+import LocationIcon from "@material-ui/icons/LocationOn";
+import ViewIcon from "@material-ui/icons/OpenInBrowser";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { nameFromCC } from "../../helpers/countryCodes";
+import { imageProxy } from "../../helpers/getImage";
+import DeleteDraftButton from "../Dashboard/Drafts/DeleteDraftButton";
 
 class PostCard extends Component {
   state = { show: true };

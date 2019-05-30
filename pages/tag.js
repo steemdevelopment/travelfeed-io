@@ -1,10 +1,10 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import PostGrid from "../components/PostGrid";
-import Header from "../components/Header";
-import Head from "../components/Head";
 import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import PostGrid from "../components/Grid/PostGrid";
 import TagsOrderBySelect from "../components/Grid/TagsOrderBySelect";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
 
 class Tag extends Component {
   static async getInitialProps(props) {

@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react";
-import { hasCookieConsent, setCookieConsent } from "../../utils/token";
 import Typography from "@material-ui/core/Typography";
 import Link from "next/link";
+import React, { Component, Fragment } from "react";
+import { hasCookieConsent, setCookieConsent } from "../../helpers/token";
 import CookiePopup from "./CookiePopup";
 
 class CookieConsent extends Component {

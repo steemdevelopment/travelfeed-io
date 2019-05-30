@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from "react";
-import Head from "../../components/Head";
-import Header from "../../components/Header";
-import AboutSelect from "../../components/About/AboutSelect";
-import HeaderCard from "../../components/General/HeaderCard";
+import Button from "@material-ui/core/Button";
 import { indigo } from "@material-ui/core/colors";
 import Grid from "@material-ui/core/Grid";
+import React, { Component, Fragment } from "react";
+import AboutSelect from "../../components/About/AboutSelect";
 import Cookies from "../../components/About/Texts/Terms";
+import HeaderCard from "../../components/General/HeaderCard";
+import Head from "../../components/Header/Head";
+import Header from "../../components/Header/Header";
 import {
+  deleteCookieConsent,
   hasCookieConsent,
-  setCookieConsent,
-  deleteCookieConsent
-} from "../../utils/token";
-import Button from "@material-ui/core/Button";
+  setCookieConsent
+} from "../../helpers/token";
 
 class About extends Component {
   state = {

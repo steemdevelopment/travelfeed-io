@@ -1,18 +1,18 @@
 // Todo: Add delete account to remove all of users data from our database
-import React, { Fragment, Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import { Mutation, Query } from "react-apollo";
-import { GET_SETTINGS, CHANGE_SETTINGS } from "../../helpers/graphql/settings";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import FormControl from "@material-ui/core/FormControl";
+import { teal } from "@material-ui/core/colors";
 import Divider from "@material-ui/core/Divider";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import Switch from "@material-ui/core/Switch";
+import TextField from "@material-ui/core/TextField";
 import { withSnackbar } from "notistack";
 import PropTypes from "prop-types";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import { teal } from "@material-ui/core/colors";
+import React, { Component, Fragment } from "react";
+import { Mutation, Query } from "react-apollo";
+import { CHANGE_SETTINGS, GET_SETTINGS } from "../../helpers/graphql/settings";
 import HeaderCard from "../General/HeaderCard";
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];

@@ -1,14 +1,12 @@
 // TODO: Create content for /destinations, especially for mobile view
-import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import PostGrid from "../components/PostGrid";
-import Header from "../components/Header";
-import Head from "../components/Head";
-import Typography from "@material-ui/core/Typography";
-import { ccFromSlug, nameFromSlug } from "../helpers/country_codes";
-import NotFound from "../components/NotFound";
+import React, { Component, Fragment } from "react";
 import DestinationHeader from "../components/Destinations/DestinationHeader";
 import DestinationsPage from "../components/Destinations/DestinationsPage";
+import PostGrid from "../components/Grid/PostGrid";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
+import { ccFromSlug, nameFromSlug } from "../helpers/countryCodes";
 
 class Destinations extends Component {
   static async getInitialProps(props) {

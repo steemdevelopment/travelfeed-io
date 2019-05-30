@@ -1,23 +1,27 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
-import Typography from "@material-ui/core/Typography";
-import FollowButton from "./FollowButton";
-import Head from "./Head";
-import { Query } from "react-apollo";
-import { GET_PROFILE } from "../helpers/graphql/profile";
-import NotFound from "./NotFound";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
-import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
-import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
-import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { faYoutube } from "@fortawesome/free-brands-svg-icons";
-import { faCouch } from "@fortawesome/free-solid-svg-icons";
-import CuratorMenu from "./CuratorMenu/BlogMenu";
-import Header from "../components/Header";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { imageProxy } from "../helpers/getImage";
+import {
+  faFacebookF,
+  faInstagram,
+  faTwitter,
+  faYoutube
+} from "@fortawesome/free-brands-svg-icons";
+import {
+  faCouch,
+  faLink,
+  faMapMarkerAlt
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import { imageProxy } from "../../helpers/getImage";
+import { GET_PROFILE } from "../../helpers/graphql/profile";
+import CuratorMenu from "../CuratorMenu/BlogMenu";
+import NotFound from "../General/NotFound";
+import Head from "../Header/Head";
+import Header from "../Header/Header";
+import FollowButton from "./FollowButton";
 
 export class PostAuthorProfile extends Component {
   render() {

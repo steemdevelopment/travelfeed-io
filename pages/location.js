@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import PostGrid from "../components/PostGrid";
-import Header from "../components/Header";
-import Head from "../components/Head";
-import Typography from "@material-ui/core/Typography";
+import React, { Component, Fragment } from "react";
 import DestinationHeader from "../components/Destinations/DestinationHeader";
-import { slugFromCC } from "../helpers/country_codes";
+import PostGrid from "../components/Grid/PostGrid";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
+import { slugFromCC } from "../helpers/countryCodes";
 
 class Location extends Component {
   static async getInitialProps(props) {

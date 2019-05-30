@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
-import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { Mutation } from "react-apollo";
-import { REVOKE_TOKEN } from "../../helpers/graphql/token";
-import { getAccessToken } from "../../utils/token";
+import MenuItem from "@material-ui/core/MenuItem";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+import Router from "next/router";
 import { withSnackbar } from "notistack";
 import PropTypes from "prop-types";
-import Router from "next/router";
+import React, { Component } from "react";
+import { Mutation } from "react-apollo";
+import { REVOKE_TOKEN } from "../../helpers/graphql/token";
+import { getAccessToken } from "../../helpers/token";
 
 class Logout extends Component {
   state = {

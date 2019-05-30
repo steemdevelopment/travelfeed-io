@@ -1,13 +1,13 @@
-import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
-import PropTypes from "prop-types";
-import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import NotFound from "../components/NotFound";
-import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import Router from "next/router";
-import Head from "../components/Head";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import NotFound from "../components/General/NotFound";
+import Head from "../components/Header/Head";
+import Header from "../components/Header/Header";
 
 class Exit extends Component {
   static async getInitialProps({ req }) {

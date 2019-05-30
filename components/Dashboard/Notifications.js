@@ -1,10 +1,10 @@
-import React, { Fragment, Component } from "react";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
 import { GET_NOTIFICATIONS } from "../../helpers/graphql/posts";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import CustomSnackbar from "../General/CustomSnackbar";
-import PropTypes from "prop-types";
-import { getUser } from "../../utils/token";
+import { getUser } from "../../helpers/token";
+import CustomSnackbar from "./Notifications/CustomSnackbar";
 
 class Notifications extends Component {
   render() {

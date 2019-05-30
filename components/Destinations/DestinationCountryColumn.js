@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import MenuItem from "@material-ui/core/MenuItem";
 import Link from "next/link";
-import { slugFromCC, nameFromSlug } from "../../helpers/country_codes";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { nameFromSlug, slugFromCC } from "../../helpers/countryCodes";
 
 class DestinationCountryColumn extends Component {
   state = {

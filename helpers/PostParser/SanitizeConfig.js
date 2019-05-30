@@ -10,7 +10,7 @@ This function is extracted from the source code of busy.org and condenser with s
 
 import sanitizeHtml from "sanitize-html";
 import URL from "url-parse";
-import { ownUrl } from "../../utils/regex";
+import { ownUrl } from "../regex";
 
 const ownDomains = [
   "localhost",

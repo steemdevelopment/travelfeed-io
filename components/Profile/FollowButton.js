@@ -1,13 +1,13 @@
 // no ssr since current user is essential to determine follow status
 
-import React, { Fragment, Component } from "react";
-import { follow, unfollow } from "../utils/actions";
 import Button from "@material-ui/core/Button";
 import Link from "next/link";
-import PropTypes from "prop-types";
 import { withSnackbar } from "notistack";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import { Query } from "react-apollo";
-import { GET_IS_FOLLOWED } from "../helpers/graphql/profile";
+import { follow, unfollow } from "../../helpers/actions";
+import { GET_IS_FOLLOWED } from "../../helpers/graphql/profile";
 
 class followButton extends Component {
   state = {

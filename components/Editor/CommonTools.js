@@ -1,13 +1,13 @@
-import Header from "@editorjs/header";
-import List from "@editorjs/list";
-import Image from "@editorjs/image";
-import Embed from "@editorjs/embed";
-import Quote from "@editorjs/quote";
 import Delimiter from "@editorjs/delimiter";
-import Table from "@editorjs/table";
+import Embed from "@editorjs/embed";
+import Header from "@editorjs/header";
+import Image from "@editorjs/image";
+import List from "@editorjs/list";
 import Paragraph from "@editorjs/paragraph";
+import Quote from "@editorjs/quote";
+import Table from "@editorjs/table";
 import uploadFile from "../../helpers/imageUpload";
-import { getUser } from "../../utils/token";
+import { getUser } from "../../helpers/token";
 
 export default {
   header: Header,

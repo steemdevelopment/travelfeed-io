@@ -10,11 +10,10 @@ This function is extracted from the source code of steemhunt and condenser with 
  *
  *
  */
-import xmldom from "xmldom";
 import embedjs from "embedjs";
+import xmldom from "xmldom";
+import { validateAccountName } from "./chainValidation";
 import linksRe from "./Links";
-import { validateAccountName } from "./ChainValidation";
-import { imageProxy } from "../getImage";
 
 const noop = () => {};
 const DOMParser = new xmldom.DOMParser({

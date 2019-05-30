@@ -1,22 +1,22 @@
-import React, { Fragment, Component } from "react";
+import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
-import Link from "next/link";
-import Typography from "@material-ui/core/Typography";
-import VoteSlider from "./VoteSlider";
-import PropTypes from "prop-types";
-import IsCurated from "./IsCurated";
-import SubHeader from "./Post/SubHeader";
-import LocationIcon from "@material-ui/icons/LocationOn";
-import Tooltip from "@material-ui/core/Tooltip";
+import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
-import { nameFromCC, slugFromCC } from "../helpers/country_codes";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import LocationIcon from "@material-ui/icons/LocationOn";
 import dynamic from "next/dynamic";
-import { imageProxy } from "../helpers/getImage";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import LazyLoad from "vanilla-lazyload";
+import { nameFromCC, slugFromCC } from "../../helpers/countryCodes";
+import { imageProxy } from "../../helpers/getImage";
+import IsCurated from "../Post/IsCurated";
+import SubHeader from "../Post/SubHeader";
+import VoteSlider from "../Post/VoteSlider";
 
 class PostCard extends Component {
   constructor(props) {
@@ -46,7 +46,7 @@ class PostCard extends Component {
   }
   render() {
     // Prevent SSR
-    const BookmarkIcon = dynamic(() => import("./Post/BookmarkIcon"), {
+    const BookmarkIcon = dynamic(() => import("../Post/BookmarkIcon"), {
       ssr: false
     });
     // Hide if deleted (for bookmarks)

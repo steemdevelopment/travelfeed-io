@@ -1,10 +1,10 @@
-import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
-import Link from "next/link";
-import { getLoginURL } from "../../utils/token";
-import { withStyles } from "@material-ui/core/styles";
-import PropTypes from "prop-types";
 import { grey } from "@material-ui/core/colors";
+import { withStyles } from "@material-ui/core/styles";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { getLoginURL } from "../../helpers/token";
 
 const styles = theme => ({
   whitebutton: {

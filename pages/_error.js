@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
-import NotFound from "../components/NotFound";
-import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";
 import PropTypes from "prop-types";
+import React, { Fragment } from "react";
+import NotFound from "../components/General/NotFound";
+import Header from "../components/Header/Header";
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {

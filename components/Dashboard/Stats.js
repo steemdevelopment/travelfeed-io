@@ -1,32 +1,34 @@
 // Todo: Show current mana, ressource credits, upvote worth
-import React, { Fragment, Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
-import { Query } from "react-apollo";
-import { GET_USER_STATS } from "../../helpers/graphql/stats";
-import { GET_DASHBOARD_POSTS } from "../../helpers/graphql/posts";
-import { GET_NOTIFICATIONS } from "../../helpers/graphql/posts";
-import RecentEarnings from "./Stats/RecentEarningsChart";
-import SmallBox from "./Stats/SmallBox";
-import TotalPostsIcon from "@material-ui/icons/Create";
-import TotalPayoutIcon from "@material-ui/icons/AttachMoney";
-import TotalFeaturedIcon from "@material-ui/icons/Star";
-import QualityIcon from "@material-ui/icons/CheckCircle";
-import CustomSnackbar from "../General/CustomSnackbar";
-import PostsTable from "./Stats/PostsTable";
 import {
   cyan,
-  orange,
-  indigo,
   green,
-  teal,
+  indigo,
+  lightGreen,
+  orange,
   pink,
   purple,
-  lightGreen
+  teal
 } from "@material-ui/core/colors";
-import HeaderCard from "../../components/General/HeaderCard";
+import Grid from "@material-ui/core/Grid";
+import TotalPayoutIcon from "@material-ui/icons/AttachMoney";
+import QualityIcon from "@material-ui/icons/CheckCircle";
+import TotalPostsIcon from "@material-ui/icons/Create";
+import TotalFeaturedIcon from "@material-ui/icons/Star";
 import Link from "next/link";
-import { getUser } from "../../utils/token";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import {
+  GET_DASHBOARD_POSTS,
+  GET_NOTIFICATIONS
+} from "../../helpers/graphql/posts";
+import { GET_USER_STATS } from "../../helpers/graphql/stats";
+import { getUser } from "../../helpers/token";
+import HeaderCard from "../General/HeaderCard";
+import CustomSnackbar from "./Notifications/CustomSnackbar";
+import PostsTable from "./Stats/PostsTable";
+import RecentEarnings from "./Stats/RecentEarningsChart";
+import SmallBox from "./Stats/SmallBox";
 
 class Stats extends Component {
   render() {

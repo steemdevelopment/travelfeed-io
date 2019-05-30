@@ -1,18 +1,18 @@
-import React, { Component, Fragment } from "react";
 import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
-import HeaderMenu from "./HeaderMenu";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { grey, teal } from "@material-ui/core/colors";
-import LoginButtons from "./Header/LoginButtons";
-import { getUser } from "../utils/token";
-import dynamic from "next/dynamic";
 import Button from "@material-ui/core/Button";
-import GeoCoder from "./Header/Geocoder";
+import { grey, teal } from "@material-ui/core/colors";
+import { withStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import DownIcon from "@material-ui/icons/ArrowDropDown";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import ReactPiwik from "react-piwik";
+import { getUser } from "../../helpers/token";
+import GeoCoder from "./Geocoder";
+import HeaderMenu from "./HeaderMenu";
+import LoginButtons from "./LoginButtons";
 
 const styles = () => ({
   root: {
@@ -43,18 +43,21 @@ class Header extends Component {
   }
   render() {
     const { classes } = this.props;
-    const DestinationsNav = dynamic(() => import("./Header/DestinationsNav"), {
-      loading: () => (
-        <Link href="/destinations" passHref>
-          <a>
-            <Button color="default" className={classes.whitebutton}>
-              Destinations <DownIcon />
-            </Button>
-          </a>
-        </Link>
-      ),
-      ssr: false
-    });
+    const DestinationsNav = dynamic(
+      () => import("../Destinations/DestinationsNav"),
+      {
+        loading: () => (
+          <Link href="/destinations" passHref>
+            <a>
+              <Button color="default" className={classes.whitebutton}>
+                Destinations <DownIcon />
+              </Button>
+            </a>
+          </Link>
+        ),
+        ssr: false
+      }
+    );
     return (
       <Fragment>
         <div style={{ flexGrow: 1 }}>

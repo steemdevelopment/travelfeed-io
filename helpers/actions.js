@@ -1,5 +1,5 @@
-import api from "./SteemConnectAPI";
-import { getUser, getScToken } from "./token";
+import api from "./steemConnectAPI";
+import { getScToken, getUser } from "./token";
 
 export const vote = async (author, permlink, weight) => {
   api.setAccessToken(getScToken());

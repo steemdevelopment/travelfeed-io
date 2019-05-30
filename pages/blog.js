@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import PostGrid from "../components/PostGrid";
-import AuthorProfile from "../components/AuthorProfile";
+import React, { Component, Fragment } from "react";
+import PostGrid from "../components/Grid/PostGrid";
+import AuthorProfile from "../components/Profile/AuthorProfile";
 
 class Blog extends Component {
   static async getInitialProps(props) {

@@ -1,18 +1,18 @@
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_DRAFTS } from "../../helpers/graphql/drafts";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import parseBody from "../../helpers/parseBody";
-import PropTypes from "prop-types";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { regExcerpt } from "../../utils/regex";
-import InfiniteScroll from "react-infinite-scroller";
-import PostListItem from "../PostListItem";
-import { getUser } from "../../utils/token";
-import json2Html from "../Editor/json2Html";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { Query } from "react-apollo";
+import InfiniteScroll from "react-infinite-scroller";
+import readingTime from "reading-time";
+import sanitize from "sanitize-html";
+import { GET_DRAFTS } from "../../helpers/graphql/drafts";
+import json2Html from "../../helpers/json2Html";
+import parseBody from "../../helpers/parseBody";
+import { regExcerpt } from "../../helpers/regex";
+import { getUser } from "../../helpers/token";
+import PostListItem from "../Grid/PostListItem";
 
 class PostGrid extends Component {
   state = {

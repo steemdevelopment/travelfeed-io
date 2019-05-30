@@ -1,14 +1,14 @@
-import React, { Component, Fragment } from "react";
-import { slugFromCC, popular_countries } from "../../helpers/country_codes";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import PropTypes from "prop-types";
-import DestinationsIcon from "@material-ui/icons/Explore";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import DownIcon from "@material-ui/icons/ArrowDropDown";
-import { withStyles } from "@material-ui/core/styles";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { grey } from "@material-ui/core/colors";
-import PopupNav from "./PopupNav";
+import IconButton from "@material-ui/core/IconButton";
+import { withStyles } from "@material-ui/core/styles";
+import DownIcon from "@material-ui/icons/ArrowDropDown";
+import DestinationsIcon from "@material-ui/icons/Explore";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { popular_countries, slugFromCC } from "../../helpers/countryCodes";
+import PopupNav from "../Header/HeaderPopupNav";
 
 const styles = () => ({
   whitebutton: {

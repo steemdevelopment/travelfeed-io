@@ -6,20 +6,20 @@ This function is extracted from the source code of busy.org and Condenser with s
  */
 //
 
-import sanitizeHtml from "sanitize-html";
-import sanitizeConfig from "./PostParser/SanitizeConfig";
-import htmlReady from "./PostParser/HtmlReady";
 import Remarkable from "remarkable";
-import {
-  imgFullSize,
-  htmlComment,
-  markdownComment,
-  swmregex,
-  dtubeImageRegex,
-  dtubeLinkRegex
-} from "../utils/regex";
+import sanitizeHtml from "sanitize-html";
 import { ROOTURL } from "../config";
 import { imageProxy } from "./getImage";
+import htmlReady from "./PostParser/htmlReady";
+import sanitizeConfig from "./PostParser/sanitizeConfig";
+import {
+  dtubeImageRegex,
+  dtubeLinkRegex,
+  htmlComment,
+  imgFullSize,
+  markdownComment,
+  swmregex
+} from "./regex";
 
 // Initialise Markdown parser
 const remarkable = new Remarkable({

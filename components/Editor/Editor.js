@@ -1,10 +1,9 @@
 // https://github.com/stfy/react-editor.js Copyright (c) 2019 Semenyuk Timofey
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
 import EditorJS from "@editorjs/editorjs";
-import commonTools from "./common-tools";
-import json2Html from "./json2Html";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import commonTools from "./CommonTools";
 
 class Editor extends Component {
   static defaultProps = {

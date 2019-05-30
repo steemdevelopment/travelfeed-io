@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
+import Button from "@material-ui/core/Button";
+import { indigo } from "@material-ui/core/colors";
+import Divider from "@material-ui/core/Divider";
+import Grid from "@material-ui/core/Grid";
+import Link from "next/link";
 import React, { Component, Fragment } from "react";
-import Head from "../../components/Head";
-import Header from "../../components/Header";
 import AboutSelect from "../../components/About/AboutSelect";
 import HeaderCard from "../../components/General/HeaderCard";
-import { indigo } from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
-import Link from "next/link";
-import Button from "@material-ui/core/Button";
+import Head from "../../components/Header/Head";
+import Header from "../../components/Header/Header";
 
 class About extends Component {
   render() {

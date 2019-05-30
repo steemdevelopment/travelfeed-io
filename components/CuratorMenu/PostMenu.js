@@ -1,18 +1,17 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
 import IconButton from "@material-ui/core/IconButton";
-import CuratorIcon from "@material-ui/icons/MoreVert";
-import { getRoles } from "../../utils/token";
 import Menu from "@material-ui/core/Menu";
+import CuratorIcon from "@material-ui/icons/MoreVert";
+import PopupState, {
+  bindMenu,
+  bindTrigger
+} from "material-ui-popup-state/index";
+import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
+import { getRoles } from "../../helpers/token";
+import AuthorBlacklist from "./Actions/AuthorBlacklist";
 import CustomJson from "./Actions/CustomJson";
 import JsonAndMutate from "./Actions/JsonAndMutate";
 import PostBlacklist from "./Actions/PostBlacklist";
-import AuthorBlacklist from "./Actions/AuthorBlacklist";
-
-import PopupState, {
-  bindTrigger,
-  bindMenu
-} from "material-ui-popup-state/index";
 
 class PostMenu extends Component {
   state = {

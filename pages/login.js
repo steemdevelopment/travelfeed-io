@@ -1,13 +1,13 @@
-import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
 import Grid from "@material-ui/core/Grid";
-import NotFound from "../components/NotFound";
-import { setAccessToken, setScToken } from "../utils/token";
 import Router from "next/router";
 import PropTypes from "prop-types";
+import React, { Component, Fragment } from "react";
 import { Mutation, Query } from "react-apollo";
-import { GET_LOGIN_TOKEN, ACCEPT_TOS } from "../helpers/graphql/token";
+import NotFound from "../components/General/NotFound";
+import Header from "../components/Header/Header";
 import LoginDialog from "../components/Login/LoginDialog";
+import { ACCEPT_TOS, GET_LOGIN_TOKEN } from "../helpers/graphql/token";
+import { setAccessToken, setScToken } from "../helpers/token";
 
 class Login extends Component {
   state = {

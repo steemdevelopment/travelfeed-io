@@ -16,21 +16,19 @@ class Logout extends Component {
     open: false,
   };
 
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
+
   newNotification(notification) {
     if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
     }
-  }
-
-  componentDidMount() {
-    this.setState({ mounted: true });
   }
 
   render() {
@@ -66,8 +64,8 @@ class Logout extends Component {
 }
 
 Logout.propTypes = {
-  enqueueSnackbar: PropTypes.func,
-  handleLogout: PropTypes.func,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(Logout);

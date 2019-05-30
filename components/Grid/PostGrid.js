@@ -26,7 +26,8 @@ class PostGrid extends Component {
     this.setState({ hasMore: false });
   }
 
-  // When switching between different props, e.g. feed/featured/created/ the count needs to be reset
+  // When switching between different props, e.g. feed/featured/created/ the
+  // count needs to be reset
   UNSAFE_componentWillReceiveProps() {
     this.setState({ postslength: this.props.query.limit });
   }
@@ -74,15 +75,18 @@ class PostGrid extends Component {
                         });
                       },
                     });
-                    this.setState({
+                    this.setState(prevState => ({
                       postslength:
-                        this.state.postslength + this.props.query.limit,
-                    });
+                        prevState.postslength + this.props.query.limit,
+                    }));
                   } else if (
                     this.state.postslength !==
                     data.posts.length + this.props.query.limit
                   ) {
-                    // When switching between different props, e.g. feed/featured/created/ and switching back, this fix is needed. There should be a better way though..
+                    // When switching between different props, e.g.
+                    // feed/featured/created/ and switching back, this fix is
+                    // needed.
+                    // There should be a better way though..
                     this.setState({
                       postslength: data.posts.length,
                     });
@@ -106,8 +110,8 @@ class PostGrid extends Component {
                 >
                   {data.posts &&
                     data.posts.length > 0 &&
-                    data.posts.map((post, index) => {
-                      if (post.is_blacklisted) return;
+                    data.posts.map(post => {
+                      if (post.is_blacklisted) return <Fragment />;
                       const htmlBody = parseBody(post.preview, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
@@ -207,7 +211,7 @@ class PostGrid extends Component {
                           md={this.props.grid.md}
                           sm={this.props.grid.sm}
                           xs={this.props.grid.xs}
-                          key={index}
+                          key={post.id}
                         >
                           {card}
                         </Grid>
@@ -230,10 +234,10 @@ class PostGrid extends Component {
   }
 }
 PostGrid.propTypes = {
-  query: PropTypes.object.isRequired,
-  cardHeight: PropTypes.number,
-  poststyle: PropTypes.string,
-  grid: PropTypes.object,
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
+  cardHeight: PropTypes.number.isRequired,
+  poststyle: PropTypes.string.isRequired,
+  grid: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default PostGrid;

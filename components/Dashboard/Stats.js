@@ -193,10 +193,10 @@ const Stats = () => {
                       (data.posts &&
                         data.posts.length === 0 &&
                         'No notifications.') ||
-                      data.posts.map((post, index) => {
+                      data.posts.map(post => {
                         return post.curation_score === 10000 ? (
                           <div
-                            key={index}
+                            key={post.title}
                             className="d-flex justify-content-center p-2"
                           >
                             <CustomSnackbar
@@ -208,7 +208,7 @@ const Stats = () => {
                           </div>
                         ) : (
                           <div
-                            key={index}
+                            key={post.title}
                             className="d-flex justify-content-center p-2"
                           >
                             <CustomSnackbar

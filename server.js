@@ -82,14 +82,18 @@ const euCountries = [
 const handle = (req, res) => {
   // Check country code of user IP as supplied by Cloudflare
   const country_code = req.header('CF-IPCountry');
-  // Set session cookie for cookie consent for non-EU users to not annoy them with a cookie consent popup that is nor legally required for their country
+  // Set session cookie for cookie consent for non-EU users to not annoy
+  // them with a cookie consent popup that is nor legally required for
+  // their country
   if (!euCountries.includes(country_code)) res.cookie('cookie_consent', true);
   handleNextRequests(req, res);
 };
 
 const port = process.env.PORT || 3000;
 
-// Don't use compression: "Node is awfully bad at doing CPU intensive tasks like gzipping, SSL termination, etc. Instead, use a ‘real’ middleware services like nginx"
+// Don't use compression: "Node is awfully bad at doing CPU intensive
+// tasks like gzipping, SSL termination, etc. Instead, use a ‘real’
+// middleware services like nginx"
 // https://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
 
 // https://medium.com/@az/i18n-next-js-app-with-server-side-rendering-and-user-language-aware-caching-part-1-ae1fce25a693
@@ -305,10 +309,12 @@ app
 
     server.listen(port, err => {
       if (err) throw err;
+      // eslint-disable-next-line no-console
       console.log(`Listening on Port ${port}`);
     });
   })
   .catch(ex => {
+    // eslint-disable-next-line no-console
     console.error(ex.stack);
     process.exit(1);
   });

@@ -9,6 +9,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
 import WarningIcon from '@material-ui/icons/Warning';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const variantIcon = {
@@ -64,5 +65,12 @@ function MySnackbarContent(props) {
 }
 
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
+
+MySnackbarContent.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  className: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  variant: PropTypes.string.isRequired,
+};
 
 export default MySnackbarContentWrapper;

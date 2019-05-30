@@ -39,7 +39,8 @@ export default {
   embed: {
     class: Embed,
     config: {
-      // todo: enable all services supported by other steem dApps. Implement dtube with regex!
+      // todo: enable all services supported by other steem dApps.
+      // Implement dtube with regex!
       // https://github.com/editor-js/embed
       services: {
         youtube: true,

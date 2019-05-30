@@ -7,7 +7,6 @@ import HomeOrderBySelect from '../components/Grid/HomeOrderBySelect';
 import PostGrid from '../components/Grid/PostGrid';
 import Head from '../components/Header/Head';
 import Header from '../components/Header/Header';
-// import FrontPageHeader from "../components/FrontPageHeader";
 import BlogGridList from '../components/Sidebar/BlogGridList';
 import JoinNow from '../components/Sidebar/JoinNow';
 import LegalNotice from '../components/Sidebar/LegalNotice';
@@ -133,6 +132,8 @@ Tag.propTypes = {
   minCurationScore: PropTypes.number.isRequired,
   selection: PropTypes.number.isRequired,
   isFeed: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default Tag;

@@ -26,7 +26,6 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { getUser } from '../../helpers/token';
 import HeaderMenu from './HeaderMenu';
 
 const drawerWidth = 200;
@@ -96,7 +95,7 @@ const styles = theme => ({
   },
 });
 class Dashboard extends Component {
-  state = { user: '', open: true, active: '' };
+  state = { open: true };
 
   static async getInitialProps(props) {
     const { page } = props.query;
@@ -110,24 +109,12 @@ class Dashboard extends Component {
     }
   }
 
-  getUser() {
-    this.setState({ user: getUser() });
-  }
-
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
 
   handleDrawerClose = () => {
     this.setState({ open: false });
-  };
-
-  handleLogout = () => {
-    this.setState({ user: '' });
-  };
-
-  setActive = item => {
-    this.setState({ active: item });
   };
 
   render() {
@@ -308,8 +295,11 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  classes: PropTypes.object,
-  page: PropTypes.string,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
+  page: PropTypes.string.isRequired,
+  active: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(Dashboard);

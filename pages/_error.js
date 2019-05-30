@@ -6,7 +6,9 @@ import Header from '../components/Header/Header';
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : null;
+    let statusCode = null;
+    if (res) ({ statusCode } = res);
+    else if (err) ({ statusCode } = err);
     return { statusCode };
   }
 

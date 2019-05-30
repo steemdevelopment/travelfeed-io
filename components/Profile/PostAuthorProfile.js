@@ -65,7 +65,7 @@ const PostAuthorProfile = props => {
                   author={data.profile.name}
                   isFollowed={data.profile.isFollowed}
                   isIgnored={data.profile.isIgnored}
-                  style="default"
+                  btnstyle="default"
                 />
               </div>
             </div>

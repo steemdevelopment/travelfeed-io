@@ -182,14 +182,15 @@ class Profile extends Component {
     }
     let link = 'https://steemconnect.com/sign/profile-update?';
     let count = 0;
-    for (const info of changed) {
+    changed.forEach(info => {
       if (count > 0) {
         link += '&';
       }
       link += `${info}=${this.state[info]}`;
-      ++count;
-    }
+      count += count;
+    });
     window.open(link, '_blank');
+    return '';
   }
 
   render() {
@@ -260,7 +261,8 @@ class Profile extends Component {
                     background={indigo[600]}
                     content={
                       <Fragment>
-                        {/* Todo: Find out what the blockchain imposed length limits are for each field */}
+                        {/* Todo: Find out what the blockchain imposed 
+                        length limits are for each field */}
                         <TextField
                           label="Name"
                           inputProps={{

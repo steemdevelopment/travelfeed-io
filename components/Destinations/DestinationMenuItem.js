@@ -12,9 +12,8 @@ class DestinationMenuItem extends Component {
   };
 
   componentDidMount() {
-    this.props.active && !this.state.active && this.state.firstmount
-      ? this.setState({ active: true })
-      : '';
+    if (this.props.active && !this.state.active && this.state.firstmount)
+      this.setState({ active: true });
   }
 
   render() {
@@ -38,9 +37,9 @@ class DestinationMenuItem extends Component {
 }
 
 DestinationMenuItem.propTypes = {
-  icon: PropTypes.element,
-  text: PropTypes.string,
-  onClick: PropTypes.func,
-  active: PropTypes.bool,
+  icon: PropTypes.element.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired,
 };
 export default DestinationMenuItem;

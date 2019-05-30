@@ -29,6 +29,10 @@ class AlertDialog extends React.Component {
     this.setState({ [name]: event.target.checked });
   };
 
+  handleTextFieldChange = content => {
+    this.setState({ reason: content.target.value });
+  };
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -37,29 +41,24 @@ class AlertDialog extends React.Component {
     this.setState({ open: false });
   };
 
-  handleTextFieldChange = content => {
-    this.setState({ reason: content.target.value });
-  };
-
   newNotification(notification) {
     if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
-      this.props.enqueueSnackbar(notification.message, { variant });
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
     }
   }
 
   render() {
-    const { author } = this.props;
-    const { open, reason, isOnlyCommentBlacklisted } = this.state;
     return (
       <div>
         <Query
           query={IS_BLACKLISTED_AUTHOR}
           variables={{
-            author,
+            author: this.props.author,
           }}
         >
           {({ data }) => {
@@ -73,15 +72,19 @@ class AlertDialog extends React.Component {
                 <Mutation
                   mutation={UNBLACKLIST_AUTHOR}
                   variables={{
-                    author,
+                    author: this.props.author,
                   }}
                 >
-                  {unblacklistAuthor => {
+                  {(
+                    unblacklistAuthor,
+                    // eslint-disable-next-line no-shadow
+                    data,
+                  ) => {
                     if (
                       data &&
                       data.data &&
                       data.data.unblacklistAuthor &&
-                      open === true
+                      this.state.open === true
                     ) {
                       this.newNotification({
                         success: data.data.unblacklistAuthor.success,
@@ -95,7 +98,7 @@ class AlertDialog extends React.Component {
                           Remove author from blacklist
                         </MenuItem>
                         <Dialog
-                          open={open}
+                          open={this.state.open}
                           onClose={this.handleClose}
                           aria-labelledby="alert-dialog-title"
                           aria-describedby="alert-dialog-description"
@@ -147,17 +150,22 @@ class AlertDialog extends React.Component {
                 <Mutation
                   mutation={BLACKLIST_AUTHOR}
                   variables={{
-                    author,
-                    reason: `Author blacklist: ${reason}`,
-                    isOnlyCommentBlacklisted,
+                    author: this.props.author,
+                    reason: `Author blacklist: ${this.state.reason}`,
+                    isOnlyCommentBlacklisted: this.state
+                      .isOnlyCommentBlacklisted,
                   }}
                 >
-                  {blacklistAuthor => {
+                  {(
+                    blacklistAuthor,
+                    // eslint-disable-next-line no-shadow
+                    data,
+                  ) => {
                     if (
                       data &&
                       data.data &&
                       data.data.blacklistAuthor &&
-                      open === true
+                      this.state.open === true
                     ) {
                       this.newNotification({
                         success: data.data.blacklistAuthor.success,
@@ -171,7 +179,7 @@ class AlertDialog extends React.Component {
                           Blacklist author
                         </MenuItem>
                         <Dialog
-                          open={open}
+                          open={this.state.open}
                           onClose={this.handleClose}
                           aria-labelledby="alert-dialog-title"
                           aria-describedby="alert-dialog-description"
@@ -182,14 +190,15 @@ class AlertDialog extends React.Component {
                           <DialogContent>
                             <DialogContentText id="alert-dialog-description">
                               Are you sure that you want to blacklist the author
-                              @{author}? Posts/comment from this author will no
-                              longer be visible on TravelFeed. Please enter a
-                              reason for blacklisting this author.
+                              @{this.props.author}? Posts/comment from this
+                              author will no longer be visible on TravelFeed.
+                              Please enter a reason for blacklisting this
+                              author.
                             </DialogContentText>
                             <TextField
                               autoFocus
                               margin="dense"
-                              value={reason}
+                              value={this.state.reason}
                               onChange={this.handleTextFieldChange}
                               label="Reason"
                               fullWidth
@@ -198,7 +207,7 @@ class AlertDialog extends React.Component {
                               labelPlacement="end"
                               control={
                                 <Switch
-                                  checked={isOnlyCommentBlacklisted}
+                                  checked={this.state.isOnlyCommentBlacklisted}
                                   onChange={this.handleCheckboxChange(
                                     'isOnlyCommentBlacklisted',
                                   )}

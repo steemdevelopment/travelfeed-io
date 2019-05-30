@@ -5,6 +5,7 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import Cookies from '../About/Texts/Cookies';
 import Privacy from '../About/Texts/Privacy';
@@ -54,5 +55,9 @@ class LoginDialog extends Component {
     );
   }
 }
+
+LoginDialog.propTypes = {
+  acceptTos: PropTypes.func.isRequired,
+};
 
 export default LoginDialog;

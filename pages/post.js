@@ -18,8 +18,10 @@ class Post extends Component {
   }
 }
 Post.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Post;

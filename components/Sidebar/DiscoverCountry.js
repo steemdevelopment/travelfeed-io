@@ -6,7 +6,7 @@ import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import {
   nameFromCC,
-  random_country,
+  randomCountry,
   slugFromCC,
 } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
@@ -14,7 +14,7 @@ import { GET_POSTS } from '../../helpers/graphql/posts';
 import HeaderCard from '../General/HeaderCard';
 
 const CountryExplore = () => {
-  const country_code = random_country;
+  const country_code = randomCountry;
   const country_name = nameFromCC(country_code);
   const countryslug = slugFromCC(country_code);
   return (
@@ -40,9 +40,9 @@ const CountryExplore = () => {
                 background={teal[600]}
                 content={
                   <div className="pt-2">
-                    {data.posts.map((post, index) => {
+                    {data.posts.map(post => {
                       return (
-                        <div key={index}>
+                        <div key={post.author + post.permlink}>
                           <Link
                             as={`/@${post.author}/${post.permlink}`}
                             href={`/post?author=${post.author}&permlink=${

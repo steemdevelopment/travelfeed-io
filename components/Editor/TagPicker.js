@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Downshift from 'downshift';
-import deburr from 'lodash/deburr';
+import deburr from 'lodash.deburr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { allSpecialChars } from '../../helpers/regex';
@@ -72,7 +72,7 @@ const suggestions = [
   { label: 'marketfriday' },
 ];
 
-function renderInput(inputProps) {
+const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
 
   return (
@@ -88,7 +88,7 @@ function renderInput(inputProps) {
       {...other}
     />
   );
-}
+};
 
 function renderSuggestion({
   suggestion,
@@ -115,10 +115,10 @@ function renderSuggestion({
   );
 }
 renderSuggestion.propTypes = {
-  highlightedIndex: PropTypes.number,
-  index: PropTypes.number,
-  itemProps: PropTypes.object,
-  selectedItem: PropTypes.string,
+  highlightedIndex: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
+  itemProps: PropTypes.objectOf(PropTypes.string).isRequired,
+  selectedItem: PropTypes.string.isRequired,
   suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
 };
 
@@ -160,7 +160,8 @@ class DownshiftMultiple extends React.Component {
 
   handleKeyDown = event => {
     //   Todooooo
-    const { inputValue, selectedItem } = this.state;
+    const { inputValue } = this.state;
+    let { selectedItem } = this.state;
     if (
       selectedItem.length &&
       !inputValue.length &&
@@ -182,7 +183,6 @@ class DownshiftMultiple extends React.Component {
       selectedItem.length < 5
     ) {
       const item = this.state.inputValue.toLowerCase().replace(/\s/g, '');
-      let { selectedItem } = this.state;
 
       if (selectedItem.indexOf(item) === -1) {
         selectedItem = [...selectedItem, item];
@@ -297,9 +297,9 @@ class DownshiftMultiple extends React.Component {
 }
 
 DownshiftMultiple.propTypes = {
-  classes: PropTypes.object.isRequired,
-  initialValue: PropTypes.array,
-  onChange: PropTypes.func,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  initialValue: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DownshiftMultiple);

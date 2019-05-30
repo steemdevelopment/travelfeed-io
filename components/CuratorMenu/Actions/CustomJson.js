@@ -11,20 +11,7 @@ import React from 'react';
 import { customJson } from '../../../helpers/actions';
 
 class AlertDialog extends React.Component {
-  state = {
-    open: false,
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
   handleConfirm = () => {
-    this.setState({ open: false });
     const { author, permlink, action } = this.props;
     const payload = {
       author,

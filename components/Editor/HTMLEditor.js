@@ -1,10 +1,13 @@
+// FIXME: Add beter editor
+/* eslint-disable */
+
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/markdown/markdown';
 import React from 'react';
 import CodeMirror from 'react-codemirror';
 
-const HtmlEditor = () => {
-  const { data, onChange } = this.props;
+const HtmlEditor = props => {
+  const { data, onChange } = props;
   return (
     <div className="border">
       <CodeMirror

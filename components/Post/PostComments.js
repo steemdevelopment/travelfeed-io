@@ -54,9 +54,9 @@ class PostComments extends Component {
                           });
                         },
                       });
-                      this.setState({
-                        postslength: this.state.postslength + 10,
-                      });
+                      this.setState(prevState => ({
+                        postslength: prevState.postslength + 10,
+                      }));
                     }
                   }}
                   hasMore={this.state.hasMore}
@@ -74,7 +74,7 @@ class PostComments extends Component {
                 >
                   {data.posts &&
                     data.posts.length > 0 &&
-                    data.posts.map((post, index) => (
+                    data.posts.map(post => (
                       <Grid
                         item
                         lg={12}
@@ -82,7 +82,7 @@ class PostComments extends Component {
                         sm={12}
                         xs={12}
                         className="pb-2"
-                        key={index}
+                        key={post.post_id}
                       >
                         <PostCommentItem
                           post={{
@@ -121,8 +121,8 @@ PostComments.defaultProps = {
 
 PostComments.propTypes = {
   post_id: PropTypes.number.isRequired,
-  orderby: PropTypes.string,
-  orderdir: PropTypes.string,
+  orderby: PropTypes.string.isRequired,
+  orderdir: PropTypes.string.isRequired,
   ismain: PropTypes.bool,
 };
 

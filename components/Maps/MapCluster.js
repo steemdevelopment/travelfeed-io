@@ -35,7 +35,7 @@ class MapCluster extends Component {
     popupInfo: null,
   };
 
-  _renderPopup() {
+  renderPopup() {
     const { popupInfo } = this.state;
     return (
       popupInfo && (
@@ -66,6 +66,7 @@ class MapCluster extends Component {
           className="h-100 w-100"
           mapStyle="mapbox://styles/mapbox/dark-v9"
           accessToken={MAPBOX_TOKEN}
+          // eslint-disable-next-line no-shadow
           onViewportChange={viewport => this.setState({ viewport })}
           {...viewport}
         >
@@ -76,9 +77,9 @@ class MapCluster extends Component {
             nodeSize={64}
             component={ClusterMarker}
           >
-            {this.props.data.map((point, index) => (
+            {this.props.data.map(point => (
               <Marker
-                key={index}
+                key={point.latitude + point.longitude}
                 latitude={point.latitude}
                 longitude={point.longitude}
               >
@@ -89,7 +90,7 @@ class MapCluster extends Component {
               </Marker>
             ))}
           </Cluster>
-          {this._renderPopup()}
+          {this.renderPopup()}
           <NavigationControl showZoom position="top-left" />
           <GeolocateControl position="top-left" />
           <FullscreenControl position="top-right" />
@@ -100,7 +101,7 @@ class MapCluster extends Component {
 }
 
 MapCluster.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default MapCluster;

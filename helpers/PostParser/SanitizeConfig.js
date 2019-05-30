@@ -1,6 +1,7 @@
 /**
-This function is extracted from the source code of busy.org and condenser with some slight-
- * adjustments to meet our needs. Refer to the main one in case of future problems:
+This function is extracted from the source code of busy.org and condenser with 
+some slight adjustments to meet our needs. Refer to the main one in case of 
+future problems:
  * 
  * 
  * https://github.com/busyorg/busy/blob/a09049a4cb18103363fb578ebaec57b35c7d15e0/src/client/vendor/SanitizeConfig.js
@@ -61,7 +62,7 @@ const iframeWhitelist = [
     re: /^(https?:)?\/\/www\.google\.com\/maps\/embed.*/i,
   },
   {
-    re: /^(https?:)?\/\/(?:emb\.)?(?:d.tube\/\#\!\/(?:v\/)?)([a-zA-Z0-9\-\.\/]*)/i,
+    re: /^(https?:)?\/\/(?:emb\.)?(?:d.tube\/#!\/(?:v\/)?)([a-zA-Z0-9\-./]*)/i,
   },
   {
     re: /^(https?:)?\/\/w.soundcloud.com\/player\/.*/i,
@@ -131,11 +132,11 @@ export default ({
   transformTags: {
     iframe: (tagName, attribs) => {
       const srcAtty = decodeURIComponent(attribs.src);
-      for (const item of iframeWhitelist) {
+      iframeWhitelist.forEach(item => {
         if (item.re.test(srcAtty)) {
           const src =
             typeof item.fn === 'function' ? item.fn(srcAtty, item.re) : srcAtty;
-          if (!src) break;
+          if (!src) return {};
           return {
             tagName: 'iframe',
             attribs: {
@@ -149,14 +150,16 @@ export default ({
             },
           };
         }
-      }
+        return {};
+      });
       sanitizeErrors.push(`Invalid iframe URL: ${srcAtty}`);
       return { tagName: 'div', text: `(Unsupported ${srcAtty})` };
     },
     img: (tagName, attribs) => {
       if (noImage) return { tagName: 'div', text: noImageText };
       // See https://github.com/punkave/sanitize-html/issues/117
-      let { src, alt } = attribs;
+      const { alt } = attribs;
+      let { src } = attribs;
       if (!/^(https?:)?\/\//i.test(src)) {
         sanitizeErrors.push('An image in this post did not save properly.');
         return { tagName: 'img', attribs: { src: 'brokenimg.jpg' } };

@@ -7,7 +7,7 @@ import DownIcon from '@material-ui/icons/ArrowDropDown';
 import DestinationsIcon from '@material-ui/icons/Explore';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { popular_countries, slugFromCC } from '../../helpers/countryCodes';
+import { popularCountries, slugFromCC } from '../../helpers/countryCodes';
 import PopupNav from '../Header/HeaderPopupNav';
 
 const styles = () => ({
@@ -38,9 +38,9 @@ class DestinationsNav extends Component {
   render() {
     const { classes } = this.props;
     if (this.state.random === undefined) {
-      const random_country =
-        popular_countries[Math.floor(Math.random() * popular_countries.length)];
-      this.setState({ random: slugFromCC(random_country) });
+      const randomCountry =
+        popularCountries[Math.floor(Math.random() * popularCountries.length)];
+      this.setState({ random: slugFromCC(randomCountry) });
     }
     return (
       <Fragment>

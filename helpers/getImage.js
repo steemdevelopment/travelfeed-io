@@ -1,4 +1,5 @@
-// Gets the image from the json_metadata if they are defined, if not it crawls the body for an image, if none is found it returns a placeholder
+// Gets the image from the json_metadata if they are defined, if not it crawls
+// the body for an image, if none is found it returns a placeholder
 import { imageRegex } from './regex';
 
 const bs58 = require('bs58');

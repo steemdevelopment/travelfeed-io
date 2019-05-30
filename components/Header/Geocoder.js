@@ -1,6 +1,9 @@
 // https://github.com/Giners/mui-places-autocomplete/blob/master/demo/DemoGeocodeLatLong.jsx Copyright (c) 2017 Chris Austin
 // Todo: Apply styles to search field, see https://material-ui.com/demos/app-bar/#app-bar-with-search-field
-// Todo: Look into OSM alternative to google places (issues with privacy, at some point cost). Mapbox restricts their Geocoder to map queries (tos), nominatim forbids autocomplete. Komoot photon, osmnames or pelias (probably the best option, but complicated) could be considered.
+// Todo: Look into OSM alternative to google places (issues with privacy,
+// at some point cost). Mapbox restricts their Geocoder to map queries (tos),
+//  nominatim forbids autocomplete. Komoot photon, osmnames or pelias
+//  (probably the best option, but complicated) could be considered.
 import InputAdornment from '@material-ui/core/InputAdornment';
 import { withStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -34,17 +37,22 @@ const styles = theme => ({
 });
 
 class Geocoder extends Component {
+  // eslint-disable-next-line class-methods-use-this
   onSuggestionSelected(suggestion) {
-    // Once a suggestion has been selected by your consumer you can use the utility geocoding
+    // Once a suggestion has been selected by your consumer you can use the
+    // utility geocoding
     // functions to get the latitude and longitude for the selected suggestion.
     geocodeBySuggestion(suggestion)
       .then(results => {
         if (results.length < 1) {
-          console.log('no results');
           return;
         }
         const result = results[0];
-        // A location box is not exact since countries are usually not rectangular, therefore a query for Germany would result in posts from neighbouring countries to be returned as well. Unlike the subdivision, the country-code is consistant to the database, adding it to the query improves the accuracy
+        // A location box is not exact since countries are usually not
+        // rectangular, therefore a query for Germany would result in posts
+        // from neighbouring countries to be returned as well. Unlike the
+        // subdivision, the country-code is consistant to the database,
+        // adding it to the query improves the accuracy
         let args = '';
         const components =
           result.address_components[result.address_components.length - 1];
@@ -55,7 +63,8 @@ class Geocoder extends Component {
           }
         });
         let { bounds } = result.geometry;
-        // Some exact locations have no boundary, so use the less exact viewport instead
+        // Some exact locations have no boundary, so use the less exact viewport
+        //  instead
         if (!bounds) {
           bounds = result.geometry.viewport;
         }
@@ -68,6 +77,7 @@ class Geocoder extends Component {
         );
       })
       .catch(err => {
+        // eslint-disable-next-line no-console
         console.log(err);
       });
   }
@@ -99,7 +109,7 @@ class Geocoder extends Component {
 }
 
 Geocoder.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default withStyles(styles)(Geocoder);

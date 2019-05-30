@@ -33,7 +33,8 @@ export const getUser = () => {
   const jwt = jwtDecode(token);
   return jwt.name;
 };
-// Submit custom_json for steemapps.com tracking once a day - better to let users do thus manually
+// Submit custom_json for steemapps.com tracking once a day - better to let
+// users do this manually
 // export const getUserActive = () => {
 //   const token = Cookie.get("access_token");
 //   if (token === undefined) {

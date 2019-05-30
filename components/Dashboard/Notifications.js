@@ -34,10 +34,10 @@ const Notifications = () => {
                 )}
                 {data.posts &&
                   data.posts.length > 0 &&
-                  data.posts.map((post, index) => {
+                  data.posts.map(post => {
                     return post.curation_score === 10000 ? (
                       <div
-                        key={index}
+                        key={post.title}
                         className="d-flex justify-content-center p-2"
                       >
                         <CustomSnackbar
@@ -49,7 +49,7 @@ const Notifications = () => {
                       </div>
                     ) : (
                       <div
-                        key={index}
+                        key={post.title}
                         className="d-flex justify-content-center p-2"
                       >
                         <CustomSnackbar

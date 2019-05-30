@@ -55,7 +55,7 @@ class Destinations extends Component {
         />
         <Header />
         <DestinationHeader
-          country_slug={country}
+          countrySlug={country}
           query={{ countryCode, subdivision, city }}
           title={`${(suburb && `${suburb}, ${city}`) ||
             (city && `${city}`) ||
@@ -91,6 +91,8 @@ Destinations.propTypes = {
   subdivision: PropTypes.string,
   city: PropTypes.string,
   suburb: PropTypes.string,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default Destinations;

@@ -26,7 +26,7 @@ const BlogGridList = () => {
                 background={indigo[600]}
                 content={data.posts.map((post, index) => {
                   return (
-                    <div key={index}>
+                    <div key={post.author + post.permlink}>
                       {index !== 0 && <Divider className="mt-2 mb-2" />}
                       <Link
                         as={`/@${post.author}/${post.permlink}`}

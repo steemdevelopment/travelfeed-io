@@ -51,7 +51,7 @@ class PostpostItem extends Component {
     const htmlBody = parseBody(this.state.body || this.props.post.body, {});
     const bodyText = { __html: htmlBody };
     let children = <Fragment />;
-    if (this.props.post.children !== 0 && this.props.loadreplies == true) {
+    if (this.props.post.children !== 0 && this.props.loadreplies === true) {
       children = (
         <PostComments
           post_id={this.props.post.post_id}
@@ -61,12 +61,13 @@ class PostpostItem extends Component {
       );
     }
     let debth = 0;
-    if (this.props.post.depth > 1 && this.props.loadreplies == true) {
+    if (this.props.post.depth > 1 && this.props.loadreplies === true) {
       debth = `${String(this.props.post.depth * 20)}px`;
     }
     let title = <Fragment />;
     let appIcon = <Fragment />;
-    // Set the caninical URL to travelfeed.io if the post was authored through the dApp
+    // Set the caninical URL to travelfeed.io if the post was authored through
+    // the dApp
     if (
       this.props.post.app !== undefined &&
       this.props.post.app.split('/')[0] === 'travelfeed'
@@ -100,7 +101,7 @@ class PostpostItem extends Component {
         </div>
       );
     }
-    if (this.props.title == true) {
+    if (this.props.title === true) {
       title = (
         <div className="bg-light border p-3 mb-2">
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
@@ -124,6 +125,7 @@ class PostpostItem extends Component {
       );
     }
     let cardcontent = (
+      // eslint-disable-next-line react/no-danger
       <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
     );
     if (this.state.showEditor) {
@@ -238,11 +240,11 @@ PostpostItem.defaultProps = {
 };
 
 PostpostItem.propTypes = {
-  post: PropTypes.object.isRequired,
+  post: PropTypes.objectof(PropTypes.string).isRequired,
   loadreplies: PropTypes.bool,
   title: PropTypes.bool,
-  orderby: PropTypes.string,
-  orderdir: PropTypes.string,
+  orderby: PropTypes.string.isRequired,
+  orderdir: PropTypes.string.isRequired,
 };
 
 export default PostpostItem;

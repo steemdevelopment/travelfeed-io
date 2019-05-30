@@ -21,10 +21,10 @@ const Header = ({ title, image, description, canonicalUrl }) => (
 // todo: if  canonical undefined no canonical!
 
 Header.propTypes = {
-  title: PropTypes.string,
-  image: PropTypes.string,
-  description: PropTypes.string,
-  canonicalUrl: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  canonicalUrl: PropTypes.string.isRequired,
 };
 
 export default Header;

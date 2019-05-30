@@ -1,6 +1,7 @@
 /**
-This function is extracted from the source code of busy.org and Condenser with some slight-
- * adjustments to meet our needs. Refer to the main one in case of future problems:
+This function is extracted from the source code of busy.org and Condenser with 
+some slight   adjustments to meet our needs. Refer to the main one in case of 
+future problems:
  * https://github.com/busyorg/busy/blob/27dd2383806eda8daf46748cbbbb26739d08ced4/src/client/components/Story/Body.js
  *
  */
@@ -105,7 +106,7 @@ const parseBody = (body, options) => {
   const htmlReadyOptions = { mutate: true, resolveIframe: true };
   parsedBody = htmlReady(parsedBody, htmlReadyOptions).html;
   // Sanitize
-  if (options.editor != true) {
+  if (options.editor !== true) {
     parsedBody = sanitizeHtml(
       parsedBody,
       sanitizeConfig({

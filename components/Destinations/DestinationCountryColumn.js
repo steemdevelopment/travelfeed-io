@@ -7,9 +7,9 @@ import { nameFromSlug, slugFromCC } from '../../helpers/countryCodes';
 
 class DestinationCountryColumn extends Component {
   render() {
-    const { onClick, text, country_codes } = this.props;
+    const { onClick, text, countryCodes } = this.props;
     const slugs = [];
-    country_codes.forEach(cc => slugs.push(slugFromCC(cc)));
+    countryCodes.forEach(cc => slugs.push(slugFromCC(cc)));
     slugs.sort();
     return slugs.map(slug => {
       const name = nameFromSlug(slug);
@@ -34,7 +34,7 @@ class DestinationCountryColumn extends Component {
 DestinationCountryColumn.propTypes = {
   onClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
-  country_codes: PropTypes.arrayOf(PropTypes.string).isRequired,
+  countryCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default DestinationCountryColumn;

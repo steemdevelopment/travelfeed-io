@@ -26,7 +26,6 @@ class Location extends Component {
   render() {
     const showLocations =
       this.props.showlocations === 'true' ? this.props.country_code : undefined;
-    console.log(showLocations);
     return (
       <Fragment>
         <Head
@@ -44,7 +43,7 @@ class Location extends Component {
             country_code: showLocations,
           }}
           title={this.props.formatted_address}
-          country_slug={slugFromCC(this.props.country_code)}
+          countrySlug={slugFromCC(this.props.country_code)}
         />
         <PostGrid
           query={{
@@ -63,10 +62,12 @@ class Location extends Component {
 }
 
 Location.propTypes = {
-  query: PropTypes.object,
-  formatted_address: PropTypes.string,
-  location_box: PropTypes.arrayOf(PropTypes.number),
-  country_code: PropTypes.string,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
+  showlocations: PropTypes.bool.isRequired,
+  formatted_address: PropTypes.string.isRequired,
+  location_box: PropTypes.arrayOf(PropTypes.number).isRequired,
+  country_code: PropTypes.string.isRequired,
 };
 
 export default Location;

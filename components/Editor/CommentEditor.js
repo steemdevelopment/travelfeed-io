@@ -1,7 +1,8 @@
-// TODO: Implement new comment editor
+// FIXME: Implement new comment editor
+/* eslint-disable */
 
 // import Editor from "rich-markdown-editor";
-import { debounce } from 'lodash';
+import { debounce } from 'lodash.debounce';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -13,13 +14,17 @@ import { getImageList } from '../../helpers/getImage';
 class CommentEditor extends Component {
   state = {
     content: '',
-    permlink: '',
     completed: 0,
   };
 
   handleEditorChange = debounce(value => {
     this.setState({ content: value() });
   }, 250);
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
+  };
 
   newNotification(notification) {
     if (notification !== undefined) {
@@ -28,16 +33,8 @@ class CommentEditor extends Component {
         variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
     }
   }
-
-  progress = () => {
-    const { completed } = this.state;
-    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
-  };
 
   publish() {
     const title = '';
@@ -47,7 +44,6 @@ class CommentEditor extends Component {
     const permlink =
       (this.props.editMode && this.props.permlink) ||
       `re-${parentPermlink}-${commenttime}`;
-    this.setState({ permlink });
     const body = this.state.content;
     const metadata = {};
     metadata.tags = ['travelfeed'];
@@ -126,16 +122,16 @@ CommentEditor.defaultProps = {
 };
 
 CommentEditor.propTypes = {
-  permlink: PropTypes.string,
-  defaultValue: PropTypes.string,
-  onCommentAdd: PropTypes.func,
-  onCommentEdit: PropTypes.func,
-  onClose: PropTypes.func,
-  editMode: PropTypes.bool,
-  parent_author: PropTypes.string,
-  parent_permlink: PropTypes.string,
-  edit: PropTypes.object,
-  enqueueSnackbar: PropTypes.func,
+  permlink: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string.isRequired,
+  onCommentAdd: PropTypes.func.isRequired,
+  onCommentEdit: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  editMode: PropTypes.bool.isRequired,
+  parent_author: PropTypes.string.isRequired,
+  parent_permlink: PropTypes.string.isRequired,
+  edit: PropTypes.object.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(CommentEditor);

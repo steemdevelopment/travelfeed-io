@@ -31,6 +31,7 @@ const uploadFile = (file, user) => {
         });
       } else {
         // If failed
+        // eslint-disable-next-line prefer-promise-reject-errors
         reject({
           success: 0,
           file: {

@@ -14,6 +14,25 @@ class PostImageHeader extends Component {
     webpSupport: undefined,
   };
 
+  async componentDidMount() {
+    window.addEventListener(
+      'scroll',
+      this.listenScrollEvent,
+      // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+      detectIt.passiveEvents ? { passive: true } : false,
+    );
+    const webpSupport = await supportsWebp();
+    this.setState({
+      windowWidth: (Math.ceil(window.innerWidth / 640) + 1) * 640,
+      opacity: 1,
+      webpSupport,
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.listenScrollEvent);
+  }
+
   listenScrollEvent = () => {
     if (window.scrollY > 500) {
       this.setState({
@@ -29,25 +48,6 @@ class PostImageHeader extends Component {
       });
     }
   };
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.listenScrollEvent);
-  }
-
-  async componentDidMount() {
-    window.addEventListener(
-      'scroll',
-      this.listenScrollEvent,
-      // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-      detectIt.passiveEvents ? { passive: true } : false,
-    );
-    const webpSupport = await supportsWebp();
-    this.setState({
-      windowWidth: (Math.ceil(window.innerWidth / 640) + 1) * 640,
-      opacity: 1,
-      webpSupport,
-    });
-  }
 
   render() {
     return (
@@ -94,7 +94,7 @@ class PostImageHeader extends Component {
 }
 
 PostImageHeader.propTypes = {
-  backgroundImage: PropTypes.string,
+  backgroundImage: PropTypes.string.isRequired,
 };
 
 export default PostImageHeader;

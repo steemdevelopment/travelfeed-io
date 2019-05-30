@@ -34,6 +34,6 @@ export default class MarkerSmall extends PureComponent {
 }
 
 MarkerSmall.propTypes = {
-  size: PropTypes.number,
-  onClick: PropTypes.func,
+  size: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
 };

@@ -1,5 +1,6 @@
 import Grid from '@material-ui/core/Grid';
 import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import NotFound from '../../components/General/NotFound';
 import DashboardHeader from '../../components/Header/DashboardHeader';
@@ -63,5 +64,11 @@ class PublishPage extends Component {
     );
   }
 }
+
+PublishPage.propTypes = {
+  edit: PropTypes.bool.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
+};
 
 export default PublishPage;

@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import MapGL, {
   GeolocateControl,
@@ -25,7 +26,7 @@ const navStyle = {
   padding: '10px',
 };
 
-class App extends Component {
+class LocationPickerDialog extends Component {
   state = {
     width: 200,
     height: 200,
@@ -36,7 +37,6 @@ class App extends Component {
       bearing: 0,
       pitch: 0,
     },
-    searchResultLayer: null,
     marker: {
       latitude: 30,
       longitude: 0,
@@ -45,29 +45,6 @@ class App extends Component {
   };
 
   mapRef = React.createRef();
-
-  _updateViewport = viewport => {
-    this.setState({ viewport });
-  };
-
-  _logDragEvent(name, event) {
-    this.setState({
-      events: {
-        ...this.state.events,
-        [name]: event.lngLat,
-      },
-    });
-  }
-
-  _onMarkerDragEnd = event => {
-    this._logDragEvent('onDragEnd', event);
-    this.setState({
-      marker: {
-        longitude: round(event.lngLat[0], 4),
-        latitude: round(event.lngLat[1], 4),
-      },
-    });
-  };
 
   componentDidMount() {
     const width = document.getElementById('container').clientWidth;
@@ -80,6 +57,20 @@ class App extends Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.resize);
   }
+
+  updateViewport = event => {
+    this.logDragEvent('onDragEnd', event);
+    this.setState({
+      marker: {
+        longitude: round(event.lngLat[0], 4),
+        latitude: round(event.lngLat[1], 4),
+      },
+    });
+  };
+
+  updateViewport = viewport => {
+    this.setState({ viewport });
+  };
 
   resize = () => {
     this.handleViewportChange({
@@ -97,9 +88,7 @@ class App extends Component {
         },
       });
     }
-    this.setState({
-      viewport: { ...this.state.viewport, ...viewport },
-    });
+    this.setState(prevState => ({ ...prevState.viewport, ...viewport }));
   };
 
   //   Faster speed
@@ -111,6 +100,15 @@ class App extends Component {
       ...geocoderDefaultOverrides,
     });
   };
+
+  logDragEvent(name, event) {
+    this.setState(prevState => ({
+      events: {
+        ...prevState.events,
+        [name]: event.lngLat,
+      },
+    }));
+  }
 
   render() {
     const { viewport, marker } = this.state;
@@ -142,7 +140,7 @@ class App extends Component {
             <MapGL
               ref={this.mapRef}
               {...viewport}
-              onViewportChange={this._updateViewport}
+              onViewportChange={this.updateViewport}
               mapboxApiAccessToken={MAPBOX_TOKEN}
             >
               <Geocoder
@@ -156,13 +154,13 @@ class App extends Component {
                 offsetTop={-20}
                 offsetLeft={-10}
                 draggable
-                onDragEnd={this._onMarkerDragEnd}
+                onDragEnd={this.updateViewport}
               >
                 <MapMarker />
               </Marker>
               <div className="nav" style={navStyle}>
                 <NavigationControl
-                  onViewportChange={this._updateViewport}
+                  onViewportChange={this.updateViewport}
                   showCompass={false}
                 />
                 <GeolocateControl
@@ -198,4 +196,9 @@ class App extends Component {
   }
 }
 
-export default App;
+LocationPickerDialog.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  onPick: PropTypes.func.isRequired,
+};
+
+export default LocationPickerDialog;

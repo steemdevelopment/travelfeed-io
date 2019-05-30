@@ -3,47 +3,45 @@ import { grey } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { getLoginURL } from '../../helpers/token';
 
-const styles = theme => ({
+const styles = () => ({
   whitebutton: {
     color: grey[200],
     borderColor: grey[200],
   },
 });
 
-class LoginButtons extends Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <div>
-        <Link href="/join" passHref>
-          <a>
-            <Button
-              color="secondary"
-              variant="contained"
-              className={`p-2 ${classes.whitebutton}`}
-            >
-              Join Now
-            </Button>
-          </a>
-        </Link>
-        <a href={getLoginURL}>
+const LoginButtons = props => {
+  const { classes } = props;
+  return (
+    <div>
+      <Link href="/join" passHref>
+        <a>
           <Button
-            color="default"
-            // variant="outlined"
-            className={`ml-1 p-2 ${classes.whitebutton}`}
+            color="secondary"
+            variant="contained"
+            className={`p-2 ${classes.whitebutton}`}
           >
-            Login
+            Join Now
           </Button>
         </a>
-      </div>
-    );
-  }
-}
+      </Link>
+      <a href={getLoginURL}>
+        <Button
+          color="default"
+          // variant="outlined"
+          className={`ml-1 p-2 ${classes.whitebutton}`}
+        >
+          Login
+        </Button>
+      </a>
+    </div>
+  );
+};
 
 LoginButtons.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 export default withStyles(styles)(LoginButtons);

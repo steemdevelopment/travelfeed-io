@@ -32,7 +32,8 @@ class CookieConsent extends Component {
         accept={this.accept}
         decline={this.decline}
         allowtext="Allow cookies"
-        // Set containerid only for this consent since some browser plugins block this
+        // Set containerid only for this consent since some browser
+        // plugins block this
         containerid="cookieconsent"
         content={
           <Typography variant="p" className="text-light">

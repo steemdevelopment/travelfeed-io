@@ -1,3 +1,5 @@
+// FIXME: Working editor
+/* eslint-disable */
 // Todo: Image upload.
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -22,13 +24,11 @@ import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2Html from '../../helpers/json2Html';
 import { getUser } from '../../helpers/token';
 import Editor from '../Editor/Editor';
-// import dynamic from "next/dynamic";
 import HtmlEditor from '../Editor/HTMLEditor';
 import HtmlEditorPreview from '../Editor/HTMLEditorPreview';
 import LocationPicker from '../Editor/LocationPickerButton';
 import PostPreview from '../Editor/PostPreview';
 import TagPicker from '../Editor/TagPicker';
-// import { debounce } from "lodash";
 import PostMap from '../Maps/PostMap';
 
 class PostEditor extends Component {

@@ -1,6 +1,7 @@
 /**
- * This function is extracted from steemit.com source code and does the same tasks with some slight-
- * adjustments to meet our needs. Refer to the main one in case of future problems:
+ * This function is extracted from steemit.com source code and does the same
+ * tasks with some slight adjustments to meet our needs. Refer to the main
+ * one in case of future problems:
  * https://github.com/steemit/steemit.com/blob/06c90aa8260f09c4ae061e652d884f68b8a6a409/app/utils/ChainValidation.js
  */
 

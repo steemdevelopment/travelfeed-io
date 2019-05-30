@@ -62,7 +62,7 @@ class followButton extends Component {
       return <Fragment />;
     }
     let btnclass = 'm-1';
-    if (this.props.style == 'whiteborder') {
+    if (this.props.btnstyle === 'whiteborder') {
       btnclass = 'm-1 border-light';
     }
     return (
@@ -133,12 +133,12 @@ class followButton extends Component {
 }
 
 followButton.defaultProps = {
-  style: 'default',
+  btnstyle: 'default',
 };
 
 followButton.propTypes = {
   author: PropTypes.string.isRequired,
-  style: PropTypes.string,
+  btnstyle: PropTypes.string,
   enqueueSnackbar: PropTypes.func.isRequired,
   isFollowed: PropTypes.bool.isRequired,
 };

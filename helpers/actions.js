@@ -39,14 +39,16 @@ export const comment = async (
     title,
     body,
     jsonMetadata,
+    // FIXME: Add support for sc3
+    // eslint-disable-next-line func-names
     await function(err) {
       if (type === 'comment') {
-        if (err != undefined) {
+        if (err !== undefined) {
           return { success: false, message: 'Comment could not be published' };
         }
         return { success: true, message: 'Comment was published successfully' };
       }
-      if (err != undefined) {
+      if (err !== undefined) {
         return { success: false, message: 'Post could not be published' };
       }
       return { success: true, message: 'Post was published successfully' };

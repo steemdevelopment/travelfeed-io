@@ -115,8 +115,8 @@ class SimpleMenu extends React.Component {
 }
 
 SimpleMenu.propTypes = {
-  selection: PropTypes.string,
-  handleClick: PropTypes.func,
+  selection: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default SimpleMenu;

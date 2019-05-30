@@ -22,10 +22,10 @@ class DestinationCityColumn extends Component {
       return (
         <Link
           key={c.city}
-          href={`/destinations?country=${c.country_slug}${
+          href={`/destinations?country=${c.countrySlug}${
             c.nosubdivision ? '' : `&subdivision=${c.subdivision}`
           }${c.nocity ? '' : `&city=${c.city}`}`}
-          as={`/destinations/${c.country_slug}${
+          as={`/destinations/${c.countrySlug}${
             c.nosubdivision ? '' : `/${c.subdivision}`
           }${c.nocity ? '' : `/${c.city}`}`}
           passHref

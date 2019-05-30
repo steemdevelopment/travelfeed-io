@@ -1,4 +1,4 @@
-export const popular_countries = [
+export const popularCountries = [
   'ar',
   'au',
   'at',
@@ -40,10 +40,10 @@ export const popular_countries = [
   'bg',
 ];
 
-export const random_country =
-  popular_countries[Math.floor(Math.random() * popular_countries.length)];
+export const randomCountry =
+  popularCountries[Math.floor(Math.random() * popularCountries.length)];
 
-// https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes
+// https://en.wikipedia.org/wiki/List_of_ISO_3166_countryCodes
 const countries = [
   { alpha2: 'af', name: 'Afghanistan', slug: 'afghanistan' },
   { alpha2: 'ax', name: 'Åland Islands', slug: 'aland-islands' },
@@ -364,7 +364,7 @@ const countries = [
   { alpha2: 'zw', name: 'Zimbabwe', slug: 'zimbabwe' },
 ];
 
-export const featured_cc_europe = [
+export const featuredCcEurope = [
   'at',
   'ch',
   'fr',
@@ -379,7 +379,7 @@ export const featured_cc_europe = [
   'gb',
 ];
 
-export const featured_cc_asia = [
+export const featuredCcAsia = [
   'cn',
   'in',
   'jp',
@@ -394,7 +394,7 @@ export const featured_cc_asia = [
   'vn',
 ];
 
-export const featured_cc_world = [
+export const featuredCcWorld = [
   'au',
   'nz',
   'ca',
@@ -409,208 +409,208 @@ export const featured_cc_world = [
   'za',
 ];
 
-export const featured_places_europe = [
+export const featuredPlacesEurope = [
   {
-    country_slug: 'spain',
+    countrySlug: 'spain',
     subdivision: 'Community of Madrid',
     city: 'Madrid',
   },
   {
-    country_slug: 'spain',
+    countrySlug: 'spain',
     subdivision: 'Catalonia',
     city: 'Barcelona',
   },
   {
-    country_slug: 'spain',
+    countrySlug: 'spain',
     subdivision: 'Valencian Community',
     city: 'Valencia',
   },
   {
-    country_slug: 'portugal',
+    countrySlug: 'portugal',
     subdivision: 'Área Metropolitana de Lisboa',
     city: 'Lisbon',
   },
   {
-    country_slug: 'italy',
+    countrySlug: 'italy',
     subdivision: 'Lazio',
     city: 'Rome',
   },
   {
-    country_slug: 'germany',
+    countrySlug: 'germany',
     subdivision: 'Bavaria',
     city: 'Munich',
   },
   {
-    country_slug: 'united-kingdom',
+    countrySlug: 'united-kingdom',
     subdivision: 'England',
     city: 'London',
   },
   {
-    country_slug: 'ireland',
+    countrySlug: 'ireland',
     subdivision: 'Leinster',
     city: 'Dublin',
   },
   {
-    country_slug: 'poland',
+    countrySlug: 'poland',
     subdivision: 'Lesser Poland Voivodeship',
     city: 'Krakow',
   },
   {
-    country_slug: 'france',
+    countrySlug: 'france',
     subdivision: 'Ile-de-France',
     city: 'Paris',
   },
   {
-    country_slug: 'austria',
+    countrySlug: 'austria',
     subdivision: 'Vienna',
     city: 'Vienna',
     nocity: true,
   },
   {
-    country_slug: 'netherlands',
+    countrySlug: 'netherlands',
     subdivision: 'North Holland',
     city: 'Amsterdam',
   },
 ];
-export const featured_places_asia = [
+export const featuredPlacesAsia = [
   {
-    country_slug: 'singapore',
+    countrySlug: 'singapore',
     city: 'Singapore',
     nocity: true,
     nosubdivision: true,
   },
   {
-    country_slug: 'malaysia',
+    countrySlug: 'malaysia',
     subdivision: 'Kuala Lumpur',
     city: 'Kuala Lumpur',
     nocity: true,
   },
   {
-    country_slug: 'malaysia',
+    countrySlug: 'malaysia',
     subdivision: 'Penang',
     city: 'Penang',
     nocity: true,
   },
   {
-    country_slug: 'indonesia',
+    countrySlug: 'indonesia',
     subdivision: 'Bali',
     city: 'Bali',
     nocity: true,
   },
 
   {
-    country_slug: 'thailand',
+    countrySlug: 'thailand',
     subdivision: 'Bangkok',
     city: 'Bangkok',
     nocity: true,
   },
   {
-    country_slug: 'taiwan',
+    countrySlug: 'taiwan',
     subdivision: 'Taipei',
     city: 'Taipei',
     nocity: true,
   },
   {
-    country_slug: 'china',
+    countrySlug: 'china',
     subdivision: 'Beijing',
     city: 'Beijing',
     nocity: true,
   },
   {
-    country_slug: 'turkey',
+    countrySlug: 'turkey',
     subdivision: 'Marmara Region',
     city: 'Istanbul',
   },
   {
-    country_slug: 'philippines',
+    countrySlug: 'philippines',
     subdivision: 'Cebu',
     city: 'Cebu',
     nocity: true,
   },
 
   {
-    country_slug: 'japan',
+    countrySlug: 'japan',
     subdivision: 'Tokyo',
     city: 'Tokyo',
     nocity: true,
   },
 
   {
-    country_slug: 'japan',
+    countrySlug: 'japan',
     subdivision: 'Kinki Region',
     city: 'Kyoto',
   },
 
   {
-    country_slug: 'united-arab-emirates',
+    countrySlug: 'united-arab-emirates',
     subdivision: 'Dubai',
     city: 'Dubai',
     nocity: true,
   },
 ];
-export const featured_places_world = [
+export const featuredPlacesWorld = [
   {
-    country_slug: 'united-states',
+    countrySlug: 'united-states',
     subdivision: 'California',
     city: 'San Francisco',
   },
   {
-    country_slug: 'united-states',
+    countrySlug: 'united-states',
     subdivision: 'Illinois',
     city: 'Chicago',
   },
   {
-    country_slug: 'morocco',
+    countrySlug: 'morocco',
     subdivision: 'Marrakech-Safi',
     city: 'Marrakesh',
   },
   {
-    country_slug: 'united-states',
+    countrySlug: 'united-states',
     subdivision: 'California',
     city: 'California',
     nocity: true,
   },
   {
-    country_slug: 'united-states',
+    countrySlug: 'united-states',
     subdivision: 'New York',
     city: 'New York City',
   },
   {
-    country_slug: 'united-states',
+    countrySlug: 'united-states',
     subdivision: 'Hawaii',
     city: 'Hawaii',
     nocity: true,
   },
   {
-    country_slug: 'peru',
+    countrySlug: 'peru',
     subdivision: 'Cusco',
     city: 'Cusco',
   },
   {
-    country_slug: 'mexico',
+    countrySlug: 'mexico',
     subdivision: 'Yucatán',
     city: 'Yucatan',
     nocity: true,
   },
   {
-    country_slug: 'ecuador',
+    countrySlug: 'ecuador',
     subdivision: 'Galápagos',
     city: 'Galápagos',
     nocity: true,
   },
   {
-    country_slug: 'argentina',
+    countrySlug: 'argentina',
     subdivision: 'Autonomous City of Buenos Aires',
     city: 'Buenos Aires',
     nocity: true,
   },
   {
-    country_slug: 'canada',
+    countrySlug: 'canada',
     subdivision: 'Ontario',
     city: 'Toronto',
   },
   {
-    country_slug: 'australia',
+    countrySlug: 'australia',
     subdivision: 'New South Wales',
     city: 'Sydney',
   },

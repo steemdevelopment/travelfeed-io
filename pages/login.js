@@ -104,7 +104,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  sc: PropTypes.object,
+  sc: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default Login;

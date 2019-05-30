@@ -18,53 +18,53 @@ class Editor extends Component {
 
   static propTypes = {
     holder: PropTypes.string,
-    customTools: PropTypes.object,
+    customTools: PropTypes.objectOf(PropTypes.object),
     excludeDefaultTools: PropTypes.arrayOf(PropTypes.string),
     onChange: PropTypes.func,
     onReady: PropTypes.func,
-    data: PropTypes.object,
+    data: PropTypes.objectOf(PropTypes.object),
     autofocus: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
 
-    this._tools = this._initTools(props.tools, props.excludeTools);
+    this.tools = this.initTools(props.tools);
 
-    this._onChange = props.onChange;
-    this._onReady = props.onReady;
+    this.onChange = props.onChange;
+    this.onReady = props.onReady;
 
-    this._el = React.createRef();
+    this.el = React.createRef();
   }
 
   componentDidMount() {
-    this._initEditor();
+    this.initEditor();
   }
 
   componentWillUnmount() {
-    this._destroyEditor();
+    this.destroyEditor();
   }
 
-  _initEditor = () => {
+  initEditor = () => {
     const { holder, autofocus, data } = this.props;
-    const tools = this._tools;
+    const { tools } = this;
     this.editor = new EditorJS({
       holder,
       autofocus,
       data,
       tools,
-      onChange: this._handleChange,
-      onReady: this._handleReady,
+      onChange: this.handleChange,
+      onReady: this.handleReady,
     });
   };
 
-  _destroyEditor = () => {
+  destroyEditor = () => {
     if (!this.editor) return;
     // this.editor.destroy();
     this.editor = null;
   };
 
-  _initTools = () => {
+  initTools = () => {
     const { customTools, excludeDefaultTools } = this.props;
     const toolsList = { ...commonTools, ...customTools };
 
@@ -77,19 +77,19 @@ class Editor extends Component {
     return toolsList;
   };
 
-  _handleChange = async () => {
+  handleChange = async () => {
     if (this.editor) {
       const data = await this.editor.save();
       // HTML serializer
       // const html = json2Html(data);
       // console.log(JSON.stringify(data));
       // console.log(html);
-      this._onChange(data);
+      this.onChange(data);
     }
   };
 
-  _handleReady = () => {
-    this._onReady();
+  handleReady = () => {
+    this.onReady();
   };
 
   render() {
@@ -97,9 +97,13 @@ class Editor extends Component {
     return React.createElement('div', {
       id: holder,
       className: 'border',
-      ref: this._el,
+      ref: this.el,
     });
   }
 }
+
+Editor.propTypes = {
+  tools: PropTypes.objectOf(PropTypes.object).isRequired,
+};
 
 export default Editor;

@@ -3,30 +3,28 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
-class HeaderCard extends Component {
-  render() {
-    return (
-      <Card>
-        <CardHeader
-          style={{ background: this.props.background }}
-          title={
-            <Typography
-              variant={this.props.titlesize}
-              align="center"
-              className="p-2 text-light"
-            >
-              {this.props.title}
-            </Typography>
-          }
-        />
-        {this.props.noborder && this.props.content}
-        <CardContent>{!this.props.noborder && this.props.content}</CardContent>
-      </Card>
-    );
-  }
-}
+const HeaderCard = props => {
+  return (
+    <Card>
+      <CardHeader
+        style={{ background: props.background }}
+        title={
+          <Typography
+            variant={props.titlesize}
+            align="center"
+            className="p-2 text-light"
+          >
+            {props.title}
+          </Typography>
+        }
+      />
+      {props.noborder && props.content}
+      <CardContent>{!props.noborder && props.content}</CardContent>
+    </Card>
+  );
+};
 
 HeaderCard.defaultProps = {
   titlesize: 'h4',
@@ -34,10 +32,10 @@ HeaderCard.defaultProps = {
 };
 
 HeaderCard.propTypes = {
-  background: PropTypes.string,
+  background: PropTypes.string.isRequired,
   titlesize: PropTypes.string,
-  title: PropTypes.string,
-  content: PropTypes.any,
+  title: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
   noborder: PropTypes.bool,
 };
 

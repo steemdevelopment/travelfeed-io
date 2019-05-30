@@ -98,7 +98,6 @@ export default function(html, { mutate = true, resolveIframe } = {}) {
     return { html: doc ? XMLSerializer.serializeToString(doc) : '', ...state };
   } catch (error) {
     // Not Used, parseFromString might throw an error in the future
-    console.error(error);
     return { html };
   }
 }
@@ -209,6 +208,7 @@ function linkifyNode(child, state) {
       return newChild;
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 }
@@ -284,7 +284,6 @@ function isEmbedable(child, links, images, resolveIframe) {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }

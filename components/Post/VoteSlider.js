@@ -22,7 +22,7 @@ import { getUser } from '../../helpers/token';
 
 class VoteSlider extends Component {
   state = {
-    laoded: false,
+    loaded: false,
     voteExpanded: false,
     commentExpanded: false,
     loading: undefined,
@@ -30,62 +30,6 @@ class VoteSlider extends Component {
     hasVoted: false,
     user: null,
     totalmiles: null,
-  };
-
-  newNotification(notification) {
-    if (notification !== undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      this.props.enqueueSnackbar(notification.message, { variant });
-    }
-  }
-
-  setWeight = (event, value) => {
-    this.setState({ weight: value });
-  };
-
-  expandVoteBar() {
-    this.setState({ voteExpanded: true });
-  }
-
-  collapseVoteBar() {
-    this.setState({ voteExpanded: false });
-  }
-
-  expandCommentBar() {
-    this.setState({ commentExpanded: true });
-  }
-
-  collapseCommentBar() {
-    this.setState({ commentExpanded: false });
-  }
-
-  votePost(author, permlink) {
-    const weight = this.state.weight * 1000;
-    this.setState({ loading: 0 });
-    return vote(author, permlink, weight).then(res => {
-      if (res) {
-        if (!res.success) this.newNotification(res);
-        else
-          this.setState({
-            hasVoted: true,
-            totalmiles: this.state.totalmiles + this.state.weight,
-          });
-        this.setState({ loading: undefined });
-        this.collapseVoteBar();
-      }
-    });
-  }
-
-  progress = () => {
-    const { loading } = this.state;
-    if (loading < 100) {
-      this.setState({ loading: loading + 1 });
-    } else {
-      this.setState({ loading: 0 });
-    }
   };
 
   async componentDidMount() {
@@ -114,11 +58,67 @@ class VoteSlider extends Component {
     }
   }
 
+  progress = () => {
+    const { loading } = this.state;
+    if (loading < 100) {
+      this.setState({ loading: loading + 1 });
+    } else {
+      this.setState({ loading: 0 });
+    }
+  };
+
+  setWeight = (event, value) => {
+    this.setState({ weight: value });
+  };
+
+  votePost(author, permlink) {
+    const weight = this.state.weight * 1000;
+    this.setState({ loading: 0 });
+    return vote(author, permlink, weight).then(res => {
+      if (res) {
+        if (!res.success) this.newNotification(res);
+        else
+          this.setState(prevState => ({
+            hasVoted: true,
+            totalmiles: prevState.totalmiles + prevState.weight,
+          }));
+        this.setState({ loading: undefined });
+        this.collapseVoteBar();
+      }
+    });
+  }
+
+  expandVoteBar() {
+    this.setState({ voteExpanded: true });
+  }
+
+  collapseVoteBar() {
+    this.setState({ voteExpanded: false });
+  }
+
+  expandCommentBar() {
+    this.setState({ commentExpanded: true });
+  }
+
+  collapseCommentBar() {
+    this.setState({ commentExpanded: false });
+  }
+
+  newNotification(notification) {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      this.props.enqueueSnackbar(notification.message, { variant });
+    }
+  }
+
   render() {
     let sliderstyle = {};
     let rowitem1 = 'col-5 p-0';
     let rowitem2 = 'col-7 text-right p-0 pt-2';
-    if (this.props.mode == 'gridcard') {
+    if (this.props.mode === 'gridcard') {
       sliderstyle = { fontSize: '0.6rem' };
       rowitem1 = 'col-6 p-0';
       rowitem2 = 'col-6 pt-2 p-0 text-right';
@@ -142,7 +142,7 @@ class VoteSlider extends Component {
         </Tooltip>
       );
     }
-    if (this.state.hasVoted == true) {
+    if (this.state.hasVoted === true) {
       voteButton = (
         <Tooltip title="Upvote" placement="bottom">
           <IconButton
@@ -156,7 +156,7 @@ class VoteSlider extends Component {
       );
     }
     let commentButton = <Fragment />;
-    if (this.props.mode != 'gridcard') {
+    if (this.props.mode !== 'gridcard') {
       commentButton = (
         <Link href="/join" passHref>
           <Tooltip title="Login to reply" placement="bottom">
@@ -214,7 +214,7 @@ class VoteSlider extends Component {
         );
       }
     }
-    if (this.state.voteExpanded == false) {
+    if (this.state.voteExpanded === false) {
       cardFooter = (
         <CardActions>
           <div className="container">
@@ -262,7 +262,7 @@ class VoteSlider extends Component {
         <CircularProgress value={this.state.loading} size={19} thickness={4} />
       );
     }
-    if (this.state.voteExpanded == true) {
+    if (this.state.voteExpanded === true) {
       cardFooter = (
         <Query query={GET_VOTE_WEIGHTS}>
           {({ data, loading, error }) => {
@@ -271,12 +271,12 @@ class VoteSlider extends Component {
             }
             // set default vote weight based on preferences if not voted
             if (data && !this.state.loaded && !this.state.hasVoted) {
-              this.props.depth === 0 &&
+              if (this.props.depth === 0)
                 this.setState({
                   loaded: true,
                   weight: data.preferences.defaultVoteWeight,
                 });
-              this.props.depth > 0 &&
+              if (this.props.depth > 0)
                 this.setState({
                   loaded: true,
                   weight: data.preferences.defaultCommentsVoteWeight,
@@ -314,7 +314,7 @@ class VoteSlider extends Component {
         </Query>
       );
     }
-    if (this.props.mode != 'gridcard' && this.state.commentExpanded == true) {
+    if (this.props.mode !== 'gridcard' && this.state.commentExpanded === true) {
       // const CommentEditor = dynamic(() => import("./Editor/CommentEditor"), {
       //   loading: () => <p>Loading...</p>,
       //   ssr: false
@@ -342,16 +342,15 @@ class VoteSlider extends Component {
 }
 
 VoteSlider.propTypes = {
-  onCommentAdd: PropTypes.func,
-  author: PropTypes.string,
-  permlink: PropTypes.string,
-  votes: PropTypes.string,
-  total_votes: PropTypes.number,
-  tags: PropTypes.array,
-  mode: PropTypes.string,
-  enqueueSnackbar: PropTypes.func,
-  handleClick: PropTypes.func,
-  isEdit: PropTypes.bool,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  votes: PropTypes.string.isRequired,
+  total_votes: PropTypes.number.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  mode: PropTypes.string.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  isEdit: PropTypes.bool.isRequired,
   depth: PropTypes.number.isRequired,
 };
 

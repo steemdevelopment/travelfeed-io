@@ -139,8 +139,8 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  subheader: PropTypes.string,
-  classes: PropTypes.object.isRequired,
+  subheader: PropTypes.string.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default withStyles(styles)(Header);

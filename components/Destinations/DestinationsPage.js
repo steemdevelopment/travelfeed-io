@@ -7,13 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import {
-  featured_cc_asia,
-  featured_cc_europe,
-  featured_cc_world,
-  featured_places_asia,
-  featured_places_europe,
-  featured_places_world,
-  popular_countries,
+  featuredCcAsia,
+  featuredCcEurope,
+  featuredCcWorld,
+  featuredPlacesAsia,
+  featuredPlacesEurope,
+  featuredPlacesWorld,
+  popularCountries,
   slugFromCC,
 } from '../../helpers/countryCodes';
 import DestinationCityColumn from './DestinationCityColumn';
@@ -21,12 +21,7 @@ import DestinationCountryColumn from './DestinationCountryColumn';
 
 class DestinationsNav extends Component {
   state = {
-    selection: undefined,
     random: undefined,
-  };
-
-  onMenuClick = selection => {
-    this.setState({ selection });
   };
 
   newRandom = () => {
@@ -36,9 +31,9 @@ class DestinationsNav extends Component {
 
   render() {
     if (this.state.random === undefined) {
-      const random_country =
-        popular_countries[Math.floor(Math.random() * popular_countries.length)];
-      this.setState({ random: slugFromCC(random_country) });
+      const randomCountry =
+        popularCountries[Math.floor(Math.random() * popularCountries.length)];
+      this.setState({ random: slugFromCC(randomCountry) });
     }
     return (
       <Fragment>
@@ -59,7 +54,7 @@ class DestinationsNav extends Component {
                         </MenuItem>
                         <DestinationCountryColumn
                           onClick={this.props.closeDest}
-                          country_codes={featured_cc_europe}
+                          countryCodes={featuredCcEurope}
                         />
                       </MenuList>
                     </div>
@@ -70,7 +65,7 @@ class DestinationsNav extends Component {
                         </MenuItem>
                         <DestinationCountryColumn
                           onClick={this.props.closeDest}
-                          country_codes={featured_cc_asia}
+                          countryCodes={featuredCcAsia}
                         />
                       </MenuList>
                     </div>{' '}
@@ -81,7 +76,7 @@ class DestinationsNav extends Component {
                         </MenuItem>
                         <DestinationCountryColumn
                           onClick={this.props.closeDest}
-                          country_codes={featured_cc_world}
+                          countryCodes={featuredCcWorld}
                         />
                       </MenuList>
                     </div>
@@ -99,7 +94,7 @@ class DestinationsNav extends Component {
                         </MenuItem>
                         <DestinationCityColumn
                           onClick={this.props.closeDest}
-                          cities={featured_places_europe}
+                          cities={featuredPlacesEurope}
                         />
                       </MenuList>
                     </div>
@@ -110,7 +105,7 @@ class DestinationsNav extends Component {
                         </MenuItem>
                         <DestinationCityColumn
                           onClick={this.props.closeDest}
-                          cities={featured_places_asia}
+                          cities={featuredPlacesAsia}
                         />
                       </MenuList>
                     </div>
@@ -121,7 +116,7 @@ class DestinationsNav extends Component {
                         </MenuItem>
                         <DestinationCityColumn
                           onClick={this.props.closeDest}
-                          cities={featured_places_world}
+                          cities={featuredPlacesWorld}
                         />
                       </MenuList>
                     </div>
@@ -138,8 +133,7 @@ class DestinationsNav extends Component {
 }
 
 DestinationsNav.propTypes = {
-  closeDest: PropTypes.func,
-  showDest: PropTypes.bool,
+  closeDest: PropTypes.func.isRequired,
 };
 
 export default DestinationsNav;

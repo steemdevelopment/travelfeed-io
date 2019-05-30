@@ -3,7 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import BookmarkIconFilled from '@material-ui/icons/Bookmark';
 import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import {
   ADD_BOOKMARK,
@@ -11,132 +11,126 @@ import {
   IS_BOOKMARKED,
 } from '../../helpers/graphql/bookmarks';
 
-class BookmarkIcon extends Component {
-  render() {
-    return (
-      <Fragment>
-        <Query
-          query={IS_BOOKMARKED}
-          variables={{
-            author: this.props.author,
-            permlink: this.props.permlink,
-          }}
-        >
-          {({ data, loading, error }) => {
-            if (loading || error) {
-              return <Fragment />;
-            }
-            if (data.isBookmarked) {
-              return (
-                <IsBookmarked
-                  author={this.props.author}
-                  permlink={this.props.permlink}
-                  onBmChange={this.props.onBmChange}
-                />
-              );
-            }
-            return (
-              <IsNotBookmarked
-                author={this.props.author}
-                permlink={this.props.permlink}
-                onBmChange={this.props.onBmChange}
-              />
-            );
-          }}
-        </Query>
-      </Fragment>
-    );
-  }
-}
-
-class IsBookmarked extends Component {
-  render() {
-    return (
-      <Mutation
-        mutation={DELETE_BOOKMARK}
+const BookmarkIcon = props => {
+  return (
+    <Fragment>
+      <Query
+        query={IS_BOOKMARKED}
         variables={{
-          author: this.props.author,
-          permlink: this.props.permlink,
+          author: props.author,
+          permlink: props.permlink,
         }}
       >
-        {(deleteBookmark, data) => {
-          if (data.data && data.data.deleteBookmark.success) {
-            if (this.props.onBmChange !== undefined) {
-              this.props.onBmChange();
-            }
-            return (
-              <IsNotBookmarked
-                author={this.props.author}
-                permlink={this.props.permlink}
-                onBmChange={this.props.onBmChange}
-              />
-            );
+        {({ data, loading, error }) => {
+          if (loading || error) {
+            return <Fragment />;
           }
-          return (
-            <Tooltip title="Remove bookmark" placement="bottom">
-              <IconButton onClick={deleteBookmark}>
-                <BookmarkIconFilled />
-              </IconButton>
-            </Tooltip>
-          );
-        }}
-      </Mutation>
-    );
-  }
-}
-
-class IsNotBookmarked extends Component {
-  render() {
-    return (
-      <Mutation
-        mutation={ADD_BOOKMARK}
-        variables={{
-          author: this.props.author,
-          permlink: this.props.permlink,
-        }}
-      >
-        {(addBookmark, data) => {
-          if (data.data && data.data.addBookmark.success) {
-            if (this.props.onBmChange !== undefined) {
-              this.props.onBmChange();
-            }
+          if (data.isBookmarked) {
             return (
               <IsBookmarked
-                author={this.props.author}
-                permlink={this.props.permlink}
-                onBmChange={this.props.onBmChange}
+                author={props.author}
+                permlink={props.permlink}
+                onBmChange={props.onBmChange}
               />
             );
           }
           return (
-            <Tooltip title="Add bookmark" placement="bottom">
-              <IconButton onClick={addBookmark}>
-                <BookmarkIconBorder />
-              </IconButton>
-            </Tooltip>
+            <IsNotBookmarked
+              author={props.author}
+              permlink={props.permlink}
+              onBmChange={props.onBmChange}
+            />
           );
         }}
-      </Mutation>
-    );
-  }
-}
+      </Query>
+    </Fragment>
+  );
+};
+
+const IsBookmarked = props => {
+  return (
+    <Mutation
+      mutation={DELETE_BOOKMARK}
+      variables={{
+        author: props.author,
+        permlink: props.permlink,
+      }}
+    >
+      {(deleteBookmark, data) => {
+        if (data.data && data.data.deleteBookmark.success) {
+          if (props.onBmChange !== undefined) {
+            props.onBmChange();
+          }
+          return (
+            <IsNotBookmarked
+              author={props.author}
+              permlink={props.permlink}
+              onBmChange={props.onBmChange}
+            />
+          );
+        }
+        return (
+          <Tooltip title="Remove bookmark" placement="bottom">
+            <IconButton onClick={deleteBookmark}>
+              <BookmarkIconFilled />
+            </IconButton>
+          </Tooltip>
+        );
+      }}
+    </Mutation>
+  );
+};
+
+const IsNotBookmarked = props => {
+  return (
+    <Mutation
+      mutation={ADD_BOOKMARK}
+      variables={{
+        author: props.author,
+        permlink: props.permlink,
+      }}
+    >
+      {(addBookmark, data) => {
+        if (data.data && data.data.addBookmark.success) {
+          if (props.onBmChange !== undefined) {
+            props.onBmChange();
+          }
+          return (
+            <IsBookmarked
+              author={props.author}
+              permlink={props.permlink}
+              onBmChange={props.onBmChange}
+            />
+          );
+        }
+        return (
+          <Tooltip title="Add bookmark" placement="bottom">
+            <IconButton onClick={addBookmark}>
+              <BookmarkIconBorder />
+            </IconButton>
+          </Tooltip>
+        );
+      }}
+    </Mutation>
+  );
+};
 
 BookmarkIcon.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
-  onBmChange: PropTypes.func,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  onBmChange: PropTypes.func.isRequired,
 };
 
 IsNotBookmarked.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
-  onBmChange: PropTypes.func,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  onBmChange: PropTypes.func.isRequired,
 };
 
 IsBookmarked.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
-  onBmChange: PropTypes.func,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  onBmChange: PropTypes.func.isRequired,
 };
 
 export default BookmarkIcon;

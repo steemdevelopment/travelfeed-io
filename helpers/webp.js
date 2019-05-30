@@ -1,5 +1,6 @@
 // https://davidwalsh.name/detect-webp
 const supportsWebp = async () => {
+  // eslint-disable-next-line no-restricted-globals
   if (!self.createImageBitmap) return false;
 
   const webpData =

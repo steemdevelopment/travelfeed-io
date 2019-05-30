@@ -26,6 +26,8 @@ class Blog extends Component {
 
 Blog.propTypes = {
   author: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default Blog;

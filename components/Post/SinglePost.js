@@ -173,6 +173,30 @@ class SinglePost extends Component {
             }
             const sanitized = sanitize(htmlBody, { allowedTags: [] });
             const readtime = readingTime(sanitized);
+            const excerpt = `${sanitized.substring(0, 180)}[...] by ${
+              data.post.author
+            }`;
+            // Set the canonical URL to steemit.com by default to avoid
+            // duplicate content SEO problems
+            let canonicalUrl = `https://steemit.com/travelfeed/@${
+              data.post.author
+            }/${data.post.permlink}`;
+            let appIcon = <Fragment />;
+            // Set the caninical URL to travelfeed.io if the post was authored
+            // through the dApp
+            if (data.post.app.split('/')[0] === 'travelfeed') {
+              canonicalUrl = `https://travelfeed.io/@${data.post.author}/${
+                data.post.permlink
+              }`;
+              appIcon = (
+                <img
+                  alt="TravelFeed"
+                  width="25"
+                  className="mr-1"
+                  src="https://travelfeed.io/favicon.ico"
+                />
+              );
+            }
             if (data.post.depth > 0) {
               head = (
                 <Head
@@ -334,30 +358,6 @@ class SinglePost extends Component {
                 </Fragment>
               );
             }
-            // Set the canonical URL to steemit.com by default to avoid
-            // duplicate content SEO problems
-            let canonicalUrl = `https://steemit.com/travelfeed/@${
-              data.post.author
-            }/${data.post.permlink}`;
-            let appIcon = <Fragment />;
-            // Set the caninical URL to travelfeed.io if the post was authored
-            // through the dApp
-            if (data.post.app.split('/')[0] === 'travelfeed') {
-              canonicalUrl = `https://travelfeed.io/@${data.post.author}/${
-                data.post.permlink
-              }`;
-              appIcon = (
-                <img
-                  alt="TravelFeed"
-                  width="25"
-                  className="mr-1"
-                  src="https://travelfeed.io/favicon.ico"
-                />
-              );
-            }
-            const excerpt = `${sanitized.substring(0, 180)}[...] by ${
-              data.post.author
-            }`;
             return (
               <Fragment>
                 <NextHead>

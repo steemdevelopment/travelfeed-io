@@ -95,12 +95,12 @@ Document.getInitialProps = ctx => {
   let pageContext;
   const page = ctx.renderPage(Component => {
     const WrappedComponent = props => {
-      pageContext = props.pageContext;
+      ({ pageContext } = props);
       return <Component {...props} />;
     };
 
     WrappedComponent.propTypes = {
-      pageContext: PropTypes.object.isRequired,
+      pageContext: PropTypes.objectOf(PropTypes.any).isRequired,
     };
 
     return WrappedComponent;

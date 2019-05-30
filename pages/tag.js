@@ -77,6 +77,8 @@ Tag.propTypes = {
   orderby: PropTypes.string.isRequired,
   min_curation_score: PropTypes.number.isRequired,
   selection: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
+  query: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Tag;

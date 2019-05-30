@@ -36,12 +36,12 @@ class HeaderMenu extends Component {
     menuopen: false,
   };
 
-  getUser() {
-    this.setState({ user: getUser() });
-  }
-
   componentDidMount() {
     this.getUser();
+  }
+
+  getUser() {
+    this.setState({ user: getUser() });
   }
 
   handleToggle = () => {
@@ -189,7 +189,7 @@ class HeaderMenu extends Component {
         </Fragment>
       );
     }
-    if (this.state.user != null && this.state.user != '') {
+    if (this.state.user != null && this.state.user !== '') {
       me = (
         <Fragment>
           <Button
@@ -319,7 +319,8 @@ class HeaderMenu extends Component {
 }
 
 HeaderMenu.propTypes = {
-  isDashboard: PropTypes.bool,
+  isDashboard: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 };
 
 export default HeaderMenu;

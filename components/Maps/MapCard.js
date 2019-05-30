@@ -34,5 +34,5 @@ export default class MapCard extends PureComponent {
 }
 
 MapCard.propTypes = {
-  info: PropTypes.object,
+  info: PropTypes.objectOf(PropTypes.string).isRequired,
 };

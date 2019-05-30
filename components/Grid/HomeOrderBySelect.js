@@ -50,8 +50,8 @@ class IconLabelTabs extends React.Component {
 }
 
 IconLabelTabs.propTypes = {
-  showFeed: PropTypes.string,
-  selection: PropTypes.number,
+  showFeed: PropTypes.string.isRequired,
+  selection: PropTypes.number.isRequired,
 };
 
 export default IconLabelTabs;

@@ -29,14 +29,13 @@ class PostCard extends Component {
   }
   componentDidMount() {
     if (this.myInput.current) {
-      const cardWidth =
-        Math.round(this.myInput.current.offsetWidth / 100) * 100;
+      const cardWidth = Math.ceil(this.myInput.current.offsetWidth / 100) * 100;
       this.setState({ cardWidth });
     }
     if (!document.lazyLoadInstance) {
       document.lazyLoadInstance = new LazyLoad({
         elements_selector: ".lazy",
-        threshold: 1500
+        threshold: 1200
       });
     }
     document.lazyLoadInstance.update();
@@ -182,8 +181,8 @@ class PostCard extends Component {
                       type="image/webp"
                       data-srcset={`${imageProxy(
                         this.props.post.img_url,
-                        this.state.cardWidth * 1.2,
-                        this.props.cardHeight * 1.2,
+                        this.state.cardWidth,
+                        this.props.cardHeight,
                         undefined,
                         "webp"
                       )}`}
@@ -202,8 +201,8 @@ class PostCard extends Component {
                       )}`}
                       data-src={`${imageProxy(
                         this.props.post.img_url,
-                        this.state.cardWidth * 1.2,
-                        this.props.cardHeight * 1.2
+                        this.state.cardWidth,
+                        this.props.cardHeight
                       )}`}
                       data-sizes="100w"
                     />

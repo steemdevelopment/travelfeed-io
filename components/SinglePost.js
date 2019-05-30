@@ -60,7 +60,7 @@ export class SinglePost extends Component {
     if (!document.lazyLoadInstance) {
       document.lazyLoadInstance = new LazyLoad({
         elements_selector: ".lazy",
-        threshold: 1500
+        threshold: 1200
       });
     }
     this.setState({ parent_id: this.props.post_id });

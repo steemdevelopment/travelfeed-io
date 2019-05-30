@@ -117,7 +117,6 @@ const parseBody = (body, options) => {
   }
 
   // Proxify image urls and add lazyload and conditional webp
-  console.log(options.cardWidth);
   let imgMatches = imgFullSize.exec(parsedBody);
   while (imgMatches != null) {
     imgMatches = imgFullSize.exec(parsedBody);
@@ -128,7 +127,7 @@ const parseBody = (body, options) => {
             <source type="image/webp"
                 data-srcset="${imageProxy(
                   imgMatches[1],
-                  options.cardWidth * 1.2,
+                  options.cardWidth,
                   undefined,
                   undefined,
                   "webp"

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { imageRegex } from "../../utils/regex";
 import { imageProxy } from "../../helpers/getImage";
+import { supportsWebp } from "../../helpers/webp";
+import detectIt from "detect-it";
 
 class PostImageHeader extends Component {
   state = {
@@ -9,7 +10,8 @@ class PostImageHeader extends Component {
     bgheight: "100%",
     bgmargin: "0px",
     windowWidth: 10,
-    opacity: 0
+    opacity: 0,
+    webpSupport: undefined
   };
   listenScrollEvent = () => {
     if (window.scrollY > 500) {
@@ -29,11 +31,18 @@ class PostImageHeader extends Component {
   componentWillUnmount() {
     window.removeEventListener("scroll", this.listenScrollEvent);
   }
-  componentDidMount() {
-    window.addEventListener("scroll", this.listenScrollEvent);
+  async componentDidMount() {
+    window.addEventListener(
+      "scroll",
+      this.listenScrollEvent,
+      // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
+      detectIt.passiveEvents ? { passive: true } : false
+    );
+    const webpSupport = await supportsWebp();
     this.setState({
-      windowWidth: (Math.round(window.innerWidth / 640) + 1) * 640,
-      opacity: 1
+      windowWidth: (Math.ceil(window.innerWidth / 640) + 1) * 640,
+      opacity: 1,
+      webpSupport
     });
   }
   render() {
@@ -63,7 +72,10 @@ class PostImageHeader extends Component {
             marginTop: "0px",
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("${imageProxy(
               this.props.backgroundImage,
-              this.state.windowWidth
+              this.state.windowWidth,
+              undefined,
+              undefined,
+              this.state.webpSupport ? "webp" : undefined
             )}")`,
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center center",

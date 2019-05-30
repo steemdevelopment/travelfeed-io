@@ -20,13 +20,13 @@ class About extends Component {
     this.setState({ open: cookie, optin: !cookie });
   }
 
-  decline() {
+  decline = () => {
     this.setState({ open: false });
-  }
+  };
 
-  accept() {
+  accept = () => {
     this.setState({ open: false, optin: true });
-  }
+  };
 
   render() {
     const title = 'Map';
@@ -42,7 +42,9 @@ class About extends Component {
           className="w-100 h-100"
         >
           {
-            // Fetches all posts with a location and a minimum upvote of 50%. Not-curated posts are not displayed since they are usually less relevant.
+            // Fetches all posts with a location and a minimum upvote of 50%.
+            // Not-curated posts are not displayed since they are usually
+            // less relevant.
           }
           {(this.state.optin && (
             <Query query={GET_PLACES}>
@@ -56,8 +58,8 @@ class About extends Component {
           )) || (
             <CookiePopup
               open={this.state.open}
-              accept={this.accept.bind(this)}
-              decline={this.decline.bind(this)}
+              accept={this.accept}
+              decline={this.decline}
               allowtext="Allow cookies once"
               content={
                 <Typography variant="p" className="text-light">

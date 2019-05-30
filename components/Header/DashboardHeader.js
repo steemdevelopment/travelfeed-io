@@ -103,8 +103,15 @@ class Dashboard extends Component {
     return { page };
   }
 
-  handleLogout() {
-    this.setState({ user: '' });
+  componentDidMount() {
+    this.getUser();
+    if (window.innerWidth < 750) {
+      this.setState({ open: false });
+    }
+  }
+
+  getUser() {
+    this.setState({ user: getUser() });
   }
 
   handleDrawerOpen = () => {
@@ -115,20 +122,13 @@ class Dashboard extends Component {
     this.setState({ open: false });
   };
 
-  getUser() {
-    this.setState({ user: getUser() });
-  }
+  handleLogout = () => {
+    this.setState({ user: '' });
+  };
 
   setActive = item => {
     this.setState({ active: item });
   };
-
-  componentDidMount() {
-    this.getUser();
-    if (window.innerWidth < 750) {
-      this.setState({ open: false });
-    }
-  }
 
   render() {
     const { classes } = this.props;
@@ -165,7 +165,7 @@ class Dashboard extends Component {
               </Typography>
             </a>
           </Link>
-          <HeaderMenu isDashboard handleLogout={this.handleLogout.bind(this)} />
+          <HeaderMenu isDashboard handleLogout={this.handleLogout} />
         </Toolbar>
       </AppBar>
     );
@@ -193,7 +193,7 @@ class Dashboard extends Component {
         <List>
           <Link href="/dashboard" passHref>
             <a>
-              <ListItem selected={this.props.active == 'stats'} button>
+              <ListItem selected={this.props.active === 'stats'} button>
                 <ListItemIcon className={classNames(classes.listitem)}>
                   <DashboardIcon />
                 </ListItemIcon>
@@ -203,7 +203,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/publish" passHref>
             <a>
-              <ListItem selected={this.props.active == 'publish'} button>
+              <ListItem selected={this.props.active === 'publish'} button>
                 <ListItemIcon>
                   <PublishIcon />
                 </ListItemIcon>
@@ -213,7 +213,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/drafts" passHref>
             <a>
-              <ListItem selected={this.props.active == 'drafts'} button>
+              <ListItem selected={this.props.active === 'drafts'} button>
                 <ListItemIcon>
                   <DraftIcon />
                 </ListItemIcon>
@@ -223,7 +223,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/posts" passHref>
             <a>
-              <ListItem selected={this.props.active == 'posts'} button>
+              <ListItem selected={this.props.active === 'posts'} button>
                 <ListItemIcon>
                   <PostsIcon />
                 </ListItemIcon>
@@ -233,7 +233,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/comments" passHref>
             <a>
-              <ListItem selected={this.props.active == 'comments'} button>
+              <ListItem selected={this.props.active === 'comments'} button>
                 <ListItemIcon>
                   <CommentsIcon />
                 </ListItemIcon>
@@ -243,7 +243,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/replies" passHref>
             <a>
-              <ListItem selected={this.props.active == 'replies'} button>
+              <ListItem selected={this.props.active === 'replies'} button>
                 <ListItemIcon>
                   <RepliesIcon />
                 </ListItemIcon>
@@ -253,7 +253,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/notifications" passHref>
             <a>
-              <ListItem selected={this.props.active == 'notifications'} button>
+              <ListItem selected={this.props.active === 'notifications'} button>
                 <ListItemIcon>
                   <NotificationsIcon />
                 </ListItemIcon>
@@ -266,7 +266,7 @@ class Dashboard extends Component {
         <List>
           <Link href="/dashboard/profile" passHref>
             <a>
-              <ListItem selected={this.props.active == 'profile'} button>
+              <ListItem selected={this.props.active === 'profile'} button>
                 <ListItemIcon>
                   <ProfileIcon />
                 </ListItemIcon>
@@ -276,7 +276,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/wallet" passHref>
             <a>
-              <ListItem selected={this.props.active == 'wallet'} button>
+              <ListItem selected={this.props.active === 'wallet'} button>
                 <ListItemIcon>
                   <WalletIcon />
                 </ListItemIcon>
@@ -286,7 +286,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/settings" passHref>
             <a>
-              <ListItem selected={this.props.active == 'settings'} button>
+              <ListItem selected={this.props.active === 'settings'} button>
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>

@@ -22,18 +22,18 @@ class DestinationsNav extends Component {
     showDest: false,
   };
 
-  toggleDest() {
-    this.setState(state => ({ showDest: !state.showDest }));
-  }
-
-  closeDest() {
+  closeDest = () => {
     this.setState({ showDest: false });
-  }
+  };
 
   newRandom = () => {
     this.setState({ random: undefined });
     this.toggleDest();
   };
+
+  toggleDest() {
+    this.setState(state => ({ showDest: !state.showDest }));
+  }
 
   render() {
     const { classes } = this.props;
@@ -44,7 +44,7 @@ class DestinationsNav extends Component {
     }
     return (
       <Fragment>
-        <ClickAwayListener onClickAway={this.closeDest.bind(this)}>
+        <ClickAwayListener onClickAway={this.closeDest}>
           <div>
             {(this.props.isSmall && (
               <IconButton
@@ -64,7 +64,7 @@ class DestinationsNav extends Component {
             )}
             <PopupNav
               showDest={this.state.showDest}
-              closeDest={this.closeDest.bind(this)}
+              closeDest={this.closeDest}
             />
           </div>
         </ClickAwayListener>
@@ -79,7 +79,7 @@ DestinationsNav.defaultProps = {
 
 DestinationsNav.propTypes = {
   isSmall: PropTypes.bool,
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default withStyles(styles)(DestinationsNav);

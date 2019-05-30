@@ -37,9 +37,9 @@ class AlertDialog extends React.Component {
     this.setState({ open: false });
   };
 
-  handleTextFieldChange(content) {
+  handleTextFieldChange = content => {
     this.setState({ reason: content.target.value });
-  }
+  };
 
   newNotification(notification) {
     if (notification !== undefined) {
@@ -62,10 +62,7 @@ class AlertDialog extends React.Component {
             author,
           }}
         >
-          {({ data, loading, error }) => {
-            if (loading || error) {
-              return <Fragment />;
-            }
+          {({ data }) => {
             if (
               data.isBlacklistedAuthor.isBlacklisted ||
               data.isBlacklistedAuthor.isOnlyCommentBlacklisted
@@ -193,7 +190,7 @@ class AlertDialog extends React.Component {
                               autoFocus
                               margin="dense"
                               value={reason}
-                              onChange={this.handleTextFieldChange.bind(this)}
+                              onChange={this.handleTextFieldChange}
                               label="Reason"
                               fullWidth
                             />
@@ -231,6 +228,7 @@ class AlertDialog extends React.Component {
                 </Mutation>
               );
             }
+            return <Fragment />;
           }}
         </Query>
       </div>

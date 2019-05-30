@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -5,6 +6,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
+import NextHead from 'next/head';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -30,7 +32,7 @@ import PostImageHeader from './PostImageHeader';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
 
-export class SinglePost extends Component {
+class SinglePost extends Component {
   constructor(props) {
     super(props);
     this.myInput = React.createRef();
@@ -40,20 +42,9 @@ export class SinglePost extends Component {
     title: 'Most miles',
     orderby: 'total_votes',
     orderdir: 'DESC',
-    bgpos: 'fixed',
-    bgheight: '100%',
-    bgmargin: '0px',
     userComment: undefined,
     cardWidth: 800,
   };
-
-  onCommentAdd(userComment) {
-    this.setState({ userComment });
-  }
-
-  handleClick(op) {
-    this.setState(op);
-  }
 
   componentDidMount() {
     if (this.myInput.current) {
@@ -67,7 +58,6 @@ export class SinglePost extends Component {
         threshold: 1200,
       });
     }
-    this.setState({ parent_id: this.props.post_id });
     // Update lazyLoad after first rendering of every image
     document.lazyLoadInstance.update();
   }
@@ -76,6 +66,14 @@ export class SinglePost extends Component {
   componentDidUpdate() {
     document.lazyLoadInstance.update();
   }
+
+  handleClick = op => {
+    this.setState(op);
+  };
+
+  onCommentAdd = userComment => {
+    this.setState({ userComment });
+  };
 
   render() {
     // Prevent SSR
@@ -122,7 +120,8 @@ export class SinglePost extends Component {
               );
             }
             // Don't render invalid posts but return Steempeak link
-            // Todo: Display NSFW posts for logged in users based on prefererences
+            // Todo: Display NSFW posts for logged in users based on
+            // prefererences
             if (!data.post.is_travelfeed && data.post.depth === 0) {
               const url = `https://steempeak.com/@${data.post.author}/${
                 data.post.permlink
@@ -138,6 +137,7 @@ export class SinglePost extends Component {
             });
             const bodyText = { __html: htmlBody };
             let bodycontent = (
+              // eslint-disable-next-line react/no-danger
               <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
             );
             const isBacklisted = data.post.is_blacklisted;
@@ -163,6 +163,7 @@ export class SinglePost extends Component {
                     return (
                       <div
                         className="postcontent"
+                        // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={bodyText}
                       />
                     );
@@ -307,7 +308,7 @@ export class SinglePost extends Component {
                       tags={data.post.tags}
                       depth={data.post.depth}
                       mode="post"
-                      onCommentAdd={this.onCommentAdd.bind(this)}
+                      onCommentAdd={this.onCommentAdd}
                     />
                   </Card>
                 </div>
@@ -320,7 +321,7 @@ export class SinglePost extends Component {
                 <Fragment>
                   <Grid item lg={12} md={12} sm={12} xs={12}>
                     <OrderBySelect
-                      handleClick={this.handleClick.bind(this)}
+                      handleClick={this.handleClick}
                       selection={this.state.title || 'Most miles'}
                     />
                   </Grid>
@@ -333,18 +334,21 @@ export class SinglePost extends Component {
                 </Fragment>
               );
             }
-            // Set the canonical URL to steemit.com by default to avoid duplicate content SEO problems
+            // Set the canonical URL to steemit.com by default to avoid
+            // duplicate content SEO problems
             let canonicalUrl = `https://steemit.com/travelfeed/@${
               data.post.author
             }/${data.post.permlink}`;
             let appIcon = <Fragment />;
-            // Set the caninical URL to travelfeed.io if the post was authored through the dApp
+            // Set the caninical URL to travelfeed.io if the post was authored
+            // through the dApp
             if (data.post.app.split('/')[0] === 'travelfeed') {
               canonicalUrl = `https://travelfeed.io/@${data.post.author}/${
                 data.post.permlink
               }`;
               appIcon = (
                 <img
+                  alt="TravelFeed"
                   width="25"
                   className="mr-1"
                   src="https://travelfeed.io/favicon.ico"
@@ -356,9 +360,9 @@ export class SinglePost extends Component {
             }`;
             return (
               <Fragment>
-                <Head>
+                <NextHead>
                   <link rel="preconnect" href="https://maps.gstatic.com" />
-                </Head>
+                </NextHead>
                 {head}
                 <Header subheader={data.post.display_name} />
                 <div style={{ position: 'relative' }}>
@@ -451,6 +455,7 @@ export class SinglePost extends Component {
 }
 
 SinglePost.propTypes = {
-  post: PropTypes.object,
-  post_id: PropTypes.number,
+  post: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
 };
+
+export default SinglePost;

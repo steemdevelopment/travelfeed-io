@@ -22,26 +22,26 @@ class PostpostItem extends Component {
     body: undefined,
   };
 
-  handleClick() {
-    this.setState({
-      showEditor: true,
-    });
-  }
-
-  onCommentAdd(userComment) {
-    this.setState({ userComment });
-  }
-
-  onCommentEdit(userComment) {
-    this.setState({ body: userComment.body, showEditor: false });
-  }
-
   componentDidMount() {
     const user = getUser();
     if (user === this.props.post.author) {
       this.setState({ isEdit: true });
     }
   }
+
+  onCommentEdit = userComment => {
+    this.setState({ body: userComment.body, showEditor: false });
+  };
+
+  onCommentAdd = userComment => {
+    this.setState({ userComment });
+  };
+
+  handleClick = () => {
+    this.setState({
+      showEditor: true,
+    });
+  };
 
   render() {
     // Prevent SSR
@@ -73,6 +73,7 @@ class PostpostItem extends Component {
     ) {
       appIcon = (
         <img
+          alt="TravelFeed"
           width="25"
           className="mr-1"
           src="https://travelfeed.io/favicon.ico"
@@ -133,7 +134,7 @@ class PostpostItem extends Component {
           parent_author={this.props.post.parent_author}
           parent_permlink={this.props.post.parent_permlink}
           defaultValue={this.props.post.body}
-          onCommentEdit={this.onCommentEdit.bind(this)}
+          onCommentEdit={this.onCommentEdit}
         />
       );
     }
@@ -200,10 +201,10 @@ class PostpostItem extends Component {
             total_votes={this.props.post.total_votes}
             tags={[]}
             mode="comment"
-            handleClick={this.handleClick.bind(this)}
+            handleClick={this.handleClick}
             isEdit={this.state.isEdit}
             depth={this.props.post.depth}
-            onCommentAdd={this.onCommentAdd.bind(this)}
+            onCommentAdd={this.onCommentAdd}
           />
         </Card>
         {// "Fake" display new user comment after submitting comment without refreshing from the API

@@ -18,9 +18,9 @@ import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 class PostCard extends Component {
   state = { show: true };
 
-  hide() {
+  hide = () => {
     this.setState({ show: false });
-  }
+  };
 
   render() {
     // Hide if deleted (for drafts)
@@ -35,6 +35,7 @@ class PostCard extends Component {
       appIcon = (
         <Tooltip title="Published with TravelFeed" placement="bottom">
           <img
+            alt="TravelFeed"
             width="25"
             className="mr-1"
             src="https://travelfeed.io/favicon.ico"
@@ -58,9 +59,7 @@ class PostCard extends Component {
       </Link>
     );
     if (this.props.isDraftMode) {
-      button2 = (
-        <DeleteDraftButton id={this.props.id} onDelete={this.hide.bind(this)} />
-      );
+      button2 = <DeleteDraftButton id={this.props.id} onDelete={this.hide} />;
     }
     let colsize = 'col-12';
     if (this.props.post.img_url !== undefined) {
@@ -171,11 +170,9 @@ class PostCard extends Component {
 }
 
 PostCard.propTypes = {
-  onEditorOpen: PropTypes.func,
-  post: PropTypes.object.isRequired,
-  sanitized: PropTypes.string,
-  isDraftMode: PropTypes.bool,
-  id: PropTypes.string,
+  post: PropTypes.object.isRequired.isRequired,
+  isDraftMode: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
 };
 
 export default PostCard;

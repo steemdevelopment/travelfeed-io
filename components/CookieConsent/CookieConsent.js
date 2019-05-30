@@ -14,14 +14,14 @@ class CookieConsent extends Component {
     this.setState({ open: cookie });
   }
 
-  decline() {
+  decline = () => {
     this.setState({ open: false });
-  }
+  };
 
-  accept() {
+  accept = () => {
     setCookieConsent('true');
     this.setState({ open: false });
-  }
+  };
 
   render() {
     const { open } = this.state;
@@ -29,8 +29,8 @@ class CookieConsent extends Component {
     return (
       <CookiePopup
         open={open}
-        accept={this.accept.bind(this)}
-        decline={this.decline.bind(this)}
+        accept={this.accept}
+        decline={this.decline}
         allowtext="Allow cookies"
         // Set containerid only for this consent since some browser plugins block this
         containerid="cookieconsent"

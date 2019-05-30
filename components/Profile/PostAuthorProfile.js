@@ -5,10 +5,10 @@ import { Query } from 'react-apollo';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
 import FollowButton from './FollowButton';
 
-const PostAuthorProfile = () => {
+const PostAuthorProfile = props => {
   return (
     <Fragment>
-      <Query query={GET_SHORT_PROFILE} variables={this.props}>
+      <Query query={GET_SHORT_PROFILE} variables={props}>
         {({ data, loading, error }) => {
           if (loading || error || data.post === null) {
             return <Fragment />;

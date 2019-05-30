@@ -12,7 +12,8 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const NavSide = () => {
+const NavSide = props => {
+  const { user } = props;
   return (
     <div className="row">
       <div className="col-4" />
@@ -59,11 +60,7 @@ const NavSide = () => {
               </MenuItem>
             </a>
           </Link>
-          <Link
-            as={`@${this.props.user}`}
-            href={`/blog?author=${this.props.user}`}
-            passHref
-          >
+          <Link as={`@${user}`} href={`/blog?author=${user}`} passHref>
             <a>
               <MenuItem>
                 <ListItemIcon>
@@ -80,7 +77,7 @@ const NavSide = () => {
 };
 
 NavSide.propTypes = {
-  user: PropTypes.string,
+  user: PropTypes.string.isRequired,
 };
 
 export default NavSide;

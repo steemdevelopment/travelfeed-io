@@ -30,9 +30,9 @@ class AlertDialog extends React.Component {
     this.setState({ open: false });
   };
 
-  handleTextFieldChange(content) {
+  handleTextFieldChange = content => {
     this.setState({ reason: content.target.value });
-  }
+  };
 
   newNotification(notification) {
     if (notification !== undefined) {
@@ -174,8 +174,8 @@ class AlertDialog extends React.Component {
                             <TextField
                               autoFocus
                               margin="dense"
-                              value={reason}
-                              onChange={this.handleTextFieldChange.bind(this)}
+                              value={this.state.reason}
+                              onChange={this.handleTextFieldChange}
                               label="Reason"
                               fullWidth
                             />

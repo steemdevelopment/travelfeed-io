@@ -144,7 +144,7 @@ const Stats = () => {
                       content={
                         <RecentEarnings
                           color={teal[400]}
-                          recent_payouts={data.userstats.recent_payouts}
+                          recentPayouts={data.userstats.recent_payouts}
                         />
                       }
                     />

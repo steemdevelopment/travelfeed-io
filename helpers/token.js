@@ -2,19 +2,19 @@ import Cookie from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import api from './steemConnectAPI';
 
-export const setAccessToken = (token, expires_in) => {
+export const setAccessToken = (token, expiresIn) => {
   // If cookies are not accepted, set only session cookie (allowed by gdpr)
   const expiry =
     Cookie.get('cookie_consent') !== 'true'
       ? ''
-      : new Date(new Date().getTime() + expires_in * 1000);
+      : new Date(new Date().getTime() + expiresIn * 1000);
   Cookie.set('access_token', token, { expires: expiry });
 };
-export const setScToken = (token, expires_in) => {
+export const setScToken = (token, expiresIn) => {
   const expiry =
     Cookie.get('cookie_consent') !== 'true'
       ? ''
-      : new Date(new Date().getTime() + expires_in * 1000);
+      : new Date(new Date().getTime() + expiresIn * 1000);
   Cookie.set('sc_token', token, { expires: expiry });
 };
 export const getRoles = () => {

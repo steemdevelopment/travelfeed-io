@@ -1,5 +1,5 @@
 // https://davidwalsh.name/detect-webp
-export const supportsWebp = async () => {
+const supportsWebp = async () => {
   if (!self.createImageBitmap) return false;
 
   const webpData =
@@ -7,3 +7,4 @@ export const supportsWebp = async () => {
   const blob = await fetch(webpData).then(r => r.blob());
   return createImageBitmap(blob).then(() => true, () => false);
 };
+export default supportsWebp;

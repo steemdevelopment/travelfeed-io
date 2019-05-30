@@ -304,7 +304,7 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Logout handleLogout={this.handleLogout.bind(this)} />
+                      <Logout handleLogout={this.handleLogout} />
                     </MenuList>
                   </ClickAwayListener>
                 </Paper>

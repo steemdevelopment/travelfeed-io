@@ -3,7 +3,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Grid from '@material-ui/core/Grid';
-import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -162,8 +161,5 @@ class PostGrid extends Component {
     );
   }
 }
-PostGrid.propTypes = {
-  query: PropTypes.array.isRequired,
-};
 
 export default PostGrid;

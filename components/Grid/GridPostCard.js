@@ -26,10 +26,6 @@ class PostCard extends Component {
 
   state = { show: true, cardWidth: 800 };
 
-  hide() {
-    this.setState({ show: false });
-  }
-
   componentDidMount() {
     if (this.myInput.current) {
       const cardWidth = Math.ceil(this.myInput.current.offsetWidth / 100) * 100;
@@ -48,6 +44,10 @@ class PostCard extends Component {
   componentDidUpdate() {
     document.lazyLoadInstance.update();
   }
+
+  hide = () => {
+    this.setState({ show: false });
+  };
 
   render() {
     // Prevent SSR
@@ -71,7 +71,7 @@ class PostCard extends Component {
         <BookmarkIcon
           author={this.props.post.author}
           permlink={this.props.post.permlink}
-          onBmChange={this.hide.bind(this)}
+          onBmChange={this.hide}
         />
       );
     } else {
@@ -80,6 +80,7 @@ class PostCard extends Component {
         appIcon = (
           <img
             width="25"
+            alt="TravelFeed"
             className="mr-1"
             src="https://travelfeed.io/favicon.ico"
           />
@@ -244,10 +245,10 @@ PostCard.default = {
 };
 
 PostCard.propTypes = {
-  post: PropTypes.object.isRequired,
-  cardHeight: PropTypes.number,
-  showBookmark: PropTypes.bool,
-  isBookmark: PropTypes.bool,
+  post: PropTypes.objectOf(PropTypes.string).isRequired,
+  cardHeight: PropTypes.number.isRequired,
+  showBookmark: PropTypes.bool.isRequired,
+  isBookmark: PropTypes.bool.isRequired,
 };
 
 export default PostCard;

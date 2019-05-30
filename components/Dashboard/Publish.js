@@ -20,7 +20,6 @@ import { APP_VERSION, ROOTURL } from '../../config';
 import { getImageList } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2Html from '../../helpers/json2Html';
-import { extractSWM } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import Editor from '../Editor/Editor';
 // import dynamic from "next/dynamic";
@@ -68,13 +67,9 @@ class PostEditor extends Component {
     this.setState({ htmlContent, codeEditor: true, id });
   }
 
-  handleTagClick(op) {
-    this.setState(op);
-  }
-
-  handleTitleEditorChange(title) {
+  handleTitleEditorChange = title => {
     this.setState({ title: title.target.value });
-  }
+  };
 
   // onEditorChange = content => {
   //   this.setState({ content });
@@ -98,11 +93,6 @@ class PostEditor extends Component {
     // console.log({ latitude, longitude });
     this.setState({ location: { latitude, longitude } });
   };
-
-  componentWillUnmount() {
-    // Stop saving drafts
-    clearInterval(this.interval);
-  }
 
   componentDidMount() {
     const json = this.props.edit.json
@@ -152,6 +142,11 @@ class PostEditor extends Component {
     this.interval = setInterval(() => this.setState({ saved: false }), 20000);
   }
 
+  componentWillUnmount() {
+    // Stop saving drafts
+    clearInterval(this.interval);
+  }
+
   progress = () => {
     // Publish animation
     const { completed } = this.state;
@@ -168,15 +163,9 @@ class PostEditor extends Component {
     this.setState({ completed: 0 });
   }
 
-  getLocation(bodyText) {
-    const coordinates = extractSWM(bodyText);
-    if (coordinates != null && coordinates.length > 2) {
-      const lat = coordinates[1];
-      const long = coordinates[2];
-      return [lat, long];
-    }
-    return '';
-  }
+  handleTagClick = op => {
+    this.setState(op);
+  };
 
   publishPost() {
     let parentAuthor = '';
@@ -295,7 +284,7 @@ class PostEditor extends Component {
                     className="font-weight-bold inputtitle"
                     placeholder="Title"
                     value={this.state.title}
-                    onChange={this.handleTitleEditorChange.bind(this)}
+                    onChange={this.handleTitleEditorChange}
                     fullWidth
                   />
                 </CardContent>
@@ -343,9 +332,7 @@ class PostEditor extends Component {
                             <Fragment>
                               <HtmlEditor
                                 data={this.state.htmlContent}
-                                onChange={this.handleHtmlEditorChange.bind(
-                                  this,
-                                )}
+                                onChange={this.handleHtmlEditorChange}
                               />
                               {(this.state.htmlContent && (
                                 <Tooltip title="Once you start typing, the only way to switch back for this post is to restore a previous draft">
@@ -371,7 +358,7 @@ class PostEditor extends Component {
                             <div>
                               <Editor
                                 holder="editorjs-container"
-                                onChange={this.handleEditorChange.bind(this)}
+                                onChange={this.handleEditorChange}
                                 data={this.state.content}
                               />
                               <span
@@ -397,7 +384,7 @@ class PostEditor extends Component {
                       {this.state.tags && (
                         <TagPicker
                           initialValue={this.state.tags}
-                          onChange={this.handleTagClick.bind(this)}
+                          onChange={this.handleTagClick}
                         />
                       )}
                     </CardContent>
@@ -441,7 +428,7 @@ class PostEditor extends Component {
                       )}
                       <div className="text-center p-1">
                         <LocationPicker
-                          onPick={this.onLocationPick.bind(this)}
+                          onPick={this.onLocationPick}
                           isChange={this.state.location}
                         />
                       </div>

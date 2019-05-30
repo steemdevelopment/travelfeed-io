@@ -1,5 +1,5 @@
-// The API keys in this file are used client-side and restricted to travelfeed.io,
-//  so don't bother trying to steal them ;)
+// The API keys in this file are used client-side and restricted to
+// travelfeed.io, so don't bother trying to steal them ;)
 
 // Prduction settings. TODO: Add next.js equivalent of dotenv for localhost keys
 //  (local development)

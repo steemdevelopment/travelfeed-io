@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { SinglePost } from '../components/Post/SinglePost';
+import SinglePost from '../components/Post/SinglePost';
 
 class Post extends Component {
   static async getInitialProps(props) {

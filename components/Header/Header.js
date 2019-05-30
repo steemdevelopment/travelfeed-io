@@ -32,18 +32,18 @@ class Header extends Component {
     user: undefined,
   };
 
-  handleLogout() {
-    this.setState({ user: undefined });
-    ReactPiwik.push(['resetUserId']);
+  componentDidMount() {
+    this.getUser();
   }
 
   getUser() {
     this.setState({ user: getUser() });
   }
 
-  componentDidMount() {
-    this.getUser();
-  }
+  handleLogout = () => {
+    this.setState({ user: undefined });
+    ReactPiwik.push(['resetUserId']);
+  };
 
   render() {
     const { classes } = this.props;
@@ -126,7 +126,7 @@ class Header extends Component {
                 >
                   <HeaderMenu
                     isDashboard={false}
-                    handleLogout={this.handleLogout.bind(this)}
+                    handleLogout={this.handleLogout}
                   />
                 </div>
               </div>

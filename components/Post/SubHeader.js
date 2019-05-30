@@ -7,23 +7,21 @@ import React, { Fragment } from 'react';
 
 dayjs.extend(relativeTime, LocalizedFormat); // use plugin
 
-const subHeader = () => {
-  const created_at = dayjs(this.props.created_at);
+const subHeader = props => {
+  const { created_at, readtime } = props;
+  const createdAt = dayjs(created_at);
   const time = (
-    <Tooltip title={created_at.format('MMMM DD YYYY H:mm')} placement="bottom">
-      <span>{created_at.fromNow()}</span>
+    <Tooltip title={createdAt.format('MMMM DD YYYY H:mm')} placement="bottom">
+      <span>{createdAt.fromNow()}</span>
     </Tooltip>
   );
-  let readtime = <Fragment />;
-  if (this.props.readtime !== undefined) {
-    readtime = (
+  let readingTime = <Fragment />;
+  if (readtime !== undefined) {
+    readingTime = (
       <Fragment>
         <span> | </span>
-        <Tooltip
-          title={`${this.props.readtime.words} words`}
-          placement="bottom"
-        >
-          <span>{this.props.readtime.text}</span>
+        <Tooltip title={`${readtime.words} words`} placement="bottom">
+          <span>{readtime.text}</span>
         </Tooltip>
       </Fragment>
     );
@@ -32,14 +30,14 @@ const subHeader = () => {
   return (
     <Fragment>
       {time}
-      {readtime}
+      {readingTime}
     </Fragment>
   );
 };
 
 subHeader.propTypes = {
-  created_at: PropTypes.string,
-  readtime: PropTypes.object,
+  created_at: PropTypes.string.isRequired,
+  readtime: PropTypes.object.isRequired,
 };
 
 export default subHeader;

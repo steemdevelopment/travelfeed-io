@@ -73,13 +73,13 @@ class DestinationsNav extends Component {
                     <div className="col-xl-4 col-lg-4 col-md-4">
                       <MenuList>
                         <DestinationMenuItem
-                          onClick={this.onMenuClick.bind(this)}
+                          onClick={this.onMenuClick}
                           icon={<CountryIcon />}
                           text="Popular Countries"
                           active={this.state.selection !== 'Popular Places'}
                         />
                         <DestinationMenuItem
-                          onClick={this.onMenuClick.bind(this)}
+                          onClick={this.onMenuClick}
                           icon={<CityIcon />}
                           text="Popular Places"
                           active={this.state.selection === 'Popular Places'}

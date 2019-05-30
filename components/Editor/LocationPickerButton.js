@@ -17,6 +17,11 @@ class LocationPicker extends React.Component {
     optin: false,
   };
 
+  componentDidMount() {
+    const cookie = hasCookieConsent() !== 'true';
+    this.setState({ optopen: cookie, optin: !cookie });
+  }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -25,18 +30,13 @@ class LocationPicker extends React.Component {
     this.setState({ open: false });
   };
 
-  componentDidMount() {
-    const cookie = hasCookieConsent() !== 'true';
-    this.setState({ optopen: cookie, optin: !cookie });
-  }
-
-  decline() {
+  decline = () => {
     this.setState({ optopen: false });
-  }
+  };
 
-  accept() {
+  accept = () => {
     this.setState({ optopen: false, optin: true });
-  }
+  };
 
   render() {
     //   https://medium.com/@timothyde/making-next-js-and-mapbox-gl-js-get-along-a99608667e67
@@ -74,14 +74,14 @@ class LocationPicker extends React.Component {
         >
           {(this.state.optin && (
             <DynamicMap
-              handleClose={this.handleClose.bind(this)}
+              handleClose={this.handleClose}
               onPick={this.props.onPick}
             />
           )) || (
             <CookiePopup
               open={this.state.optopen}
-              accept={this.accept.bind(this)}
-              decline={this.decline.bind(this)}
+              accept={this.accept}
+              decline={this.decline}
               allowtext="Allow cookies once"
               content={
                 <Typography variant="p" className="text-light">
@@ -107,8 +107,8 @@ class LocationPicker extends React.Component {
 }
 
 LocationPicker.propTypes = {
-  onPick: PropTypes.func,
-  isChange: PropTypes.bool,
+  onPick: PropTypes.func.isRequired,
+  isChange: PropTypes.bool.isRequired,
 };
 
 export default LocationPicker;

@@ -17,7 +17,8 @@ import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
 
-new ReactPiwik({
+// eslint-disable-next-line no-unused-vars
+const Piwik = new ReactPiwik({
   url: 'https://matomo.travelfeed.io',
   siteId: 1,
   trackErrors: true,
@@ -30,7 +31,7 @@ NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', () => {
   NProgress.start();
   ReactPiwik.push(['requireConsent']);
-  hasCookieConsent === 'true' && ReactPiwik.push(['setConsentGiven']);
+  if (hasCookieConsent === 'true') ReactPiwik.push(['setConsentGiven']);
   ReactPiwik.push(['setDocumentTitle', document.title]);
   ReactPiwik.push(['trackPageView']);
 });
@@ -54,9 +55,9 @@ class MyApp extends App {
     });
     if (process.env.NODE_ENV === 'production') register();
     ReactPiwik.push(['requireConsent']);
-    hasCookieConsent === 'true' && ReactPiwik.push(['setConsentGiven']);
+    if (hasCookieConsent === 'true') ReactPiwik.push(['setConsentGiven']);
     const user = getUser();
-    user && ReactPiwik.push(['setUserId', user]);
+    if (user) ReactPiwik.push(['setUserId', user]);
     ReactPiwik.push(['trackPageView']);
   }
 

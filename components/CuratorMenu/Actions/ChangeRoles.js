@@ -1,4 +1,3 @@
-import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -8,23 +7,18 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import { CHANGE_CURATOR_ROLE } from '../../../helpers/graphql/roles';
 
 class AlertDialog extends React.Component {
   state = {
-    reason: '',
     open: false,
-    isOnlyCommentBlacklisted: false,
   };
 
   handleCheckboxChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
-
-  handleTextFieldChange(content) {
-    this.setState({ reason: content.target.value });
-  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -35,25 +29,24 @@ class AlertDialog extends React.Component {
   };
 
   newNotification(notification) {
-    if (notification != undefined) {
+    if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
     }
   }
 
   render() {
-    if (this.props.isCurator) {
+    const { isCurator, author } = this.props;
+    const { open } = this.state;
+    if (isCurator) {
       return (
         <Mutation
           mutation={CHANGE_CURATOR_ROLE}
           variables={{
-            user: this.props.author,
+            user: author,
             isCurator: false,
           }}
         >
@@ -62,7 +55,7 @@ class AlertDialog extends React.Component {
               data &&
               data.data &&
               data.data.updateUserRoles &&
-              this.state.open === true
+              open === true
             ) {
               this.newNotification({
                 success: data.data.updateUserRoles.success,
@@ -76,7 +69,7 @@ class AlertDialog extends React.Component {
                   Remove curator role
                 </MenuItem>
                 <Dialog
-                  open={this.state.open}
+                  open={open}
                   onClose={this.handleClose}
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
@@ -87,7 +80,7 @@ class AlertDialog extends React.Component {
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                       Are you sure that you want to revoke curator rights for @
-                      {this.props.author}?
+                      {author}?
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
@@ -114,17 +107,12 @@ class AlertDialog extends React.Component {
       <Mutation
         mutation={CHANGE_CURATOR_ROLE}
         variables={{
-          user: this.props.author,
+          user: author,
           isCurator: true,
         }}
       >
         {(makeCurator, data) => {
-          if (
-            data &&
-            data.data &&
-            data.data.updateUserRoles &&
-            this.state.open === true
-          ) {
+          if (data && data.data && data.data.updateUserRoles && open === true) {
             this.newNotification({
               success: data.data.updateUserRoles.success,
               message: data.data.updateUserRoles.message,
@@ -135,7 +123,7 @@ class AlertDialog extends React.Component {
             <Fragment>
               <MenuItem onClick={this.handleClickOpen}>Make curator</MenuItem>
               <Dialog
-                open={this.state.open}
+                open={open}
                 onClose={this.handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
@@ -145,8 +133,8 @@ class AlertDialog extends React.Component {
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    Are you sure that you want to give the user @
-                    {this.props.author} curator rights?
+                    Are you sure that you want to give the user @{author}{' '}
+                    curator rights?
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -174,7 +162,7 @@ class AlertDialog extends React.Component {
 AlertDialog.propTypes = {
   author: PropTypes.string.isRequired,
   isCurator: PropTypes.bool.isRequired,
-  enqueueSnackbar: PropTypes.func,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(AlertDialog);

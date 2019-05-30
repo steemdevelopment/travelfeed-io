@@ -25,6 +25,7 @@ class PostGrid extends Component {
   }
 
   render() {
+    const { hasMore, postslength } = this.state;
     const user = getUser();
     return (
       <Fragment>
@@ -43,12 +44,12 @@ class PostGrid extends Component {
             if (error || data.drafts === null) {
               return <Fragment />;
             }
-            if (data.drafts.length < 10 && this.state.hasMore)
+            if (data.drafts.length < 10 && hasMore)
               this.setState({ hasMore: false });
             return (
               <InfiniteScroll
                 loadMore={() => {
-                  if (this.state.postslength === data.drafts.length) {
+                  if (postslength === data.drafts.length) {
                     fetchMore({
                       variables: {
                         offset: data.drafts.length,
@@ -63,10 +64,10 @@ class PostGrid extends Component {
                         });
                       },
                     });
-                    this.setState({ postslength: this.state.postslength + 10 });
+                    this.setState({ postslength: postslength + 10 });
                   }
                 }}
-                hasMore={this.state.hasMore}
+                hasMore={hasMore}
                 threshold={1000}
                 loader={
                   <div className="col-12 p-5 text-center">
@@ -113,7 +114,7 @@ class PostGrid extends Component {
                     {data.drafts && data.drafts.length === 0 && (
                       <Card className="mt-5">
                         <CardContent>
-                          You don't have any drafts yet.
+                          You don&apos;t have any drafts yet.
                         </CardContent>
                       </Card>
                     )}

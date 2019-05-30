@@ -7,12 +7,11 @@ import CookiePopup from './CookiePopup';
 class CookieConsent extends Component {
   state = {
     open: false,
-    optin: false,
   };
 
   componentDidMount() {
     const cookie = hasCookieConsent() !== 'true';
-    this.setState({ open: cookie, optin: !cookie });
+    this.setState({ open: cookie });
   }
 
   decline() {
@@ -21,14 +20,15 @@ class CookieConsent extends Component {
 
   accept() {
     setCookieConsent('true');
-    this.setState({ open: false, optin: true });
+    this.setState({ open: false });
   }
 
   render() {
-    if (this.state.open === false) return <Fragment />;
+    const { open } = this.state;
+    if (open === false) return <Fragment />;
     return (
       <CookiePopup
-        open={this.state.open}
+        open={open}
         accept={this.accept.bind(this)}
         decline={this.decline.bind(this)}
         allowtext="Allow cookies"

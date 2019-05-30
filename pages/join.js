@@ -153,6 +153,7 @@ class Join extends Component {
                         >
                           <button type="button" className="btn btn-dark p-0">
                             <img
+                              alt="Discord"
                               src={imageProxy(
                                 'https://cdn.steemitimages.com/DQmboc2XspF4neKbj8cN6WTuCrpADoehKxdXBgfiaWjFsFx/Discord-Logo+Wordmark-Color%20(1).png',
                                 130,

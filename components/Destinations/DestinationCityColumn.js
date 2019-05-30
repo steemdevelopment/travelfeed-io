@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class DestinationCityColumn extends Component {
-  state = {
-    active: false,
-  };
-
   render() {
-    const { cities } = this.props;
+    const { cities, onClick, text } = this.props;
     // http://www.javascriptkit.com/javatutors/arraysort2.shtml
     // Sort alphabetically by city name
     cities.sort((a, b) => {
@@ -35,11 +31,7 @@ class DestinationCityColumn extends Component {
           passHref
         >
           <a>
-            <MenuItem
-              onClick={() =>
-                this.props.onClick && this.props.onClick(this.props.text)
-              }
-            >
+            <MenuItem onClick={() => onClick && onClick(text)}>
               <ListItemText primary={c.city} />
             </MenuItem>
           </a>
@@ -50,8 +42,8 @@ class DestinationCityColumn extends Component {
 }
 
 DestinationCityColumn.propTypes = {
-  cities: PropTypes.arrayOf(PropTypes.object),
-  onClick: PropTypes.func,
-  text: PropTypes.string,
+  cities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
 };
 export default DestinationCityColumn;

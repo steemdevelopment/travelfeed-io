@@ -24,16 +24,6 @@ class followButton extends Component {
     });
   }
 
-  newNotification(notification) {
-    if (notification != undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      this.props.enqueueSnackbar(notification.message, { variant });
-    }
-  }
-
   followAuthor = async author => {
     this.setState({ changing: true });
     return follow(author).then(res => {
@@ -55,6 +45,17 @@ class followButton extends Component {
       }
     });
   };
+
+  newNotification(notification) {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
+    }
+  }
 
   render() {
     if (this.state.isMounted === false) {
@@ -132,15 +133,14 @@ class followButton extends Component {
 }
 
 followButton.defaultProps = {
-  btnstyle: 'default',
+  style: 'default',
 };
 
 followButton.propTypes = {
   author: PropTypes.string.isRequired,
   style: PropTypes.string,
-  enqueueSnackbar: PropTypes.func,
-  isFollowed: PropTypes.bool,
-  isIgnored: PropTypes.bool,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  isFollowed: PropTypes.bool.isRequired,
 };
 
 export default withSnackbar(followButton);

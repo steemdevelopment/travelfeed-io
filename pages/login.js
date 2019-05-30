@@ -28,11 +28,13 @@ class Login extends Component {
   }
 
   render() {
+    const { loaded } = this.state;
+    const { sc } = this.props;
     return (
       <Fragment>
-        <Query query={GET_LOGIN_TOKEN} variables={this.props.sc}>
-          {({ data, loading, error }) => {
-            if (loading || !this.state.loaded) {
+        <Query query={GET_LOGIN_TOKEN} variables={sc}>
+          {({ data, loading }) => {
+            if (loading || !loaded) {
               return (
                 <Fragment>
                   <Header />
@@ -49,25 +51,6 @@ class Login extends Component {
                 </Fragment>
               );
             }
-            if (error || data.login === null) {
-              return (
-                <Fragment>
-                  <Header />
-                  <Grid
-                    container
-                    spacing={0}
-                    alignItems="center"
-                    justify="center"
-                    className="pt-4 pb-4"
-                    style={{ paddingLeft: '75px' }}
-                  >
-                    <Grid item lg={7} md={8} sm={11} xs={12}>
-                      <NotFound statusCode={404} />
-                    </Grid>
-                  </Grid>
-                </Fragment>
-              );
-            }
             if (data) {
               // If tos are not accepted, display tos dialogue
               if (data && data.login && data.login.hasAcceptedTos === false) {
@@ -75,21 +58,15 @@ class Login extends Component {
                   <Mutation
                     mutation={ACCEPT_TOS}
                     variables={{
-                      sc_token: this.props.sc.sc_token,
+                      sc_token: sc.sc_token,
                       acceptTos: true,
                     }}
                   >
-                    {(acceptTos, data) => {
+                    {acceptTos => {
                       // If successful
                       if (data && data.data && data.data.login.hasAcceptedTos) {
-                        setAccessToken(
-                          data.data.login.jwt,
-                          this.props.sc.expires_in,
-                        );
-                        setScToken(
-                          this.props.sc.sc_token,
-                          this.props.sc.expires_in,
-                        );
+                        setAccessToken(data.data.login.jwt, sc.expires_in);
+                        setScToken(sc.sc_token, sc.expires_in);
                         Router.replace('/dashboard');
                       }
                       return <LoginDialog acceptTos={acceptTos} />;
@@ -97,11 +74,28 @@ class Login extends Component {
                   </Mutation>
                 );
               }
-              setScToken(this.props.sc.sc_token, this.props.sc.expires_in);
-              setAccessToken(data.login.jwt, this.props.sc.expires_in);
+              setScToken(sc.sc_token, sc.expires_in);
+              setAccessToken(data.login.jwt, sc.expires_in);
               Router.replace('/dashboard');
               return '';
             }
+            return (
+              <Fragment>
+                <Header />
+                <Grid
+                  container
+                  spacing={0}
+                  alignItems="center"
+                  justify="center"
+                  className="pt-4 pb-4"
+                  style={{ paddingLeft: '75px' }}
+                >
+                  <Grid item lg={7} md={8} sm={11} xs={12}>
+                    <NotFound statusCode={404} />
+                  </Grid>
+                </Grid>
+              </Fragment>
+            );
           }}
         </Query>
       </Fragment>

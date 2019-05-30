@@ -1,27 +1,3 @@
-export const nameFromCC = cc => {
-  return countries.find(country => country.alpha2 == cc)
-    ? countries.find(country => country.alpha2 == cc).name
-    : undefined;
-};
-
-export const slugFromCC = cc => {
-  return countries.find(country => country.alpha2 == cc)
-    ? countries.find(country => country.alpha2 == cc).slug
-    : undefined;
-};
-
-export const ccFromSlug = cc => {
-  return countries.find(country => country.slug == cc)
-    ? countries.find(country => country.slug == cc).alpha2
-    : undefined;
-};
-
-export const nameFromSlug = cc => {
-  return countries.find(country => country.slug == cc)
-    ? countries.find(country => country.slug == cc).name
-    : '';
-};
-
 export const popular_countries = [
   'ar',
   'au',
@@ -639,3 +615,27 @@ export const featured_places_world = [
     city: 'Sydney',
   },
 ];
+
+export const nameFromCC = cc => {
+  return countries.find(country => country.alpha2 === cc)
+    ? countries.find(country => country.alpha2 === cc).name
+    : undefined;
+};
+
+export const slugFromCC = cc => {
+  return countries.find(country => country.alpha2 === cc)
+    ? countries.find(country => country.alpha2 === cc).slug
+    : undefined;
+};
+
+export const ccFromSlug = cc => {
+  return countries.find(country => country.slug === cc)
+    ? countries.find(country => country.slug === cc).alpha2
+    : undefined;
+};
+
+export const nameFromSlug = cc => {
+  return countries.find(country => country.slug === cc)
+    ? countries.find(country => country.slug === cc).name
+    : '';
+};

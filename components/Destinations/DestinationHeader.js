@@ -8,9 +8,10 @@ import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 
 class Sublocations extends Component {
   render() {
+    const { query, city, country_slug, subdivision, title } = this.props;
     return (
       <Fragment>
-        <Query query={GET_LOCATION_DETAILS} variables={this.props.query}>
+        <Query query={GET_LOCATION_DETAILS} variables={query}>
           {({ data }) => {
             if (data && data.locationDetails) {
               return (
@@ -35,58 +36,47 @@ class Sublocations extends Component {
                             }}
                           >
                             {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
-                            (this.props.query.city && (
+                            (query.city && (
                               <span>
                                 <Link
-                                  as={`/destinations/${
-                                    this.props.country_slug
-                                  }/`}
-                                  href={`/destinations?country=${
-                                    this.props.country_slug
-                                  }`}
+                                  as={`/destinations/${country_slug}/`}
+                                  href={`/destinations?country=${country_slug}`}
                                   passHref
                                 >
                                   <a className="text-light font-weight-bold">
-                                    {nameFromSlug(this.props.country_slug)}
+                                    {nameFromSlug(country_slug)}
                                   </a>
                                 </Link>
                                 <span className="text-light">
                                   {' '}
                                   &raquo;{' '}
                                   <Link
-                                    as={`/destinations/${
-                                      this.props.country_slug
-                                    }/${this.props.query.subdivision}`}
-                                    href={`/destinations?country=${
-                                      this.props.country_slug
-                                    }&subdivision=${
-                                      this.props.query.subdivision
+                                    as={`/destinations/${country_slug}/${
+                                      query.subdivision
+                                    }`}
+                                    href={`/destinations?country=${country_slug}&subdivision=${
+                                      query.subdivision
                                     }`}
                                     passHref
                                   >
                                     <a className="text-light font-weight-bold">
-                                      {this.props.query.subdivision}
+                                      {query.subdivision}
                                     </a>
                                   </Link>
                                 </span>{' '}
                               </span>
                             )) ||
-                              (((this.props.query.search &&
-                                !this.props.query.country_code) ||
-                                this.props.query.subdivision ||
-                                this.props.query.city) && (
+                              (((query.search && !query.country_code) ||
+                                query.subdivision ||
+                                query.city) && (
                                 <Link
-                                  as={`/destinations/${
-                                    this.props.country_slug
-                                  }/`}
-                                  href={`/destinations?country=${
-                                    this.props.country_slug
-                                  }`}
+                                  as={`/destinations/${country_slug}/`}
+                                  href={`/destinations?country=${country_slug}`}
                                   passHref
                                 >
                                   <a className="text-light font-weight-bold">
                                     {data.locationDetails.subtitle ||
-                                      nameFromSlug(this.props.country_slug)}
+                                      nameFromSlug(country_slug)}
                                   </a>
                                 </Link>
                               ))}
@@ -99,7 +89,7 @@ class Sublocations extends Component {
                               textShadow: '1px 1px 10px #343A40',
                             }}
                           >
-                            {this.props.title}
+                            {title}
                           </Typography>
                           <p
                             className="lead text-light text-center"
@@ -134,23 +124,19 @@ class Sublocations extends Component {
                                         className="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 text-center"
                                       >
                                         <Link
-                                          href={`/destinations?country=${
-                                            this.props.country_slug
-                                          }&subdivision=${
+                                          href={`/destinations?country=${country_slug}&subdivision=${
                                             location.subdivision
                                               ? location.subdivision
-                                              : `${
-                                                  this.props.query.subdivision
-                                                }&city=${location.city}`
+                                              : `${query.subdivision}&city=${
+                                                  location.city
+                                                }`
                                           }`}
-                                          as={`/destinations/${
-                                            this.props.country_slug
-                                          }/${
+                                          as={`/destinations/${country_slug}/${
                                             location.subdivision
                                               ? location.subdivision
-                                              : `${
-                                                  this.props.query.subdivision
-                                                }/${location.city}`
+                                              : `${query.subdivision}/${
+                                                  location.city
+                                                }`
                                           }`}
                                           passHref
                                         >
@@ -257,8 +243,8 @@ class Sublocations extends Component {
 }
 
 Sublocations.propTypes = {
-  query: PropTypes.object,
-  country_slug: PropTypes.string,
+  query: PropTypes.object.isRequired,
+  country_slug: PropTypes.string.isRequired,
 };
 
 export default Sublocations;

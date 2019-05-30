@@ -26,6 +26,7 @@ class PostGrid extends Component {
   }
 
   render() {
+    const { hasMore, postslength } = this.state;
     return (
       <Fragment>
         <div className="text-center pt-4">
@@ -49,12 +50,12 @@ class PostGrid extends Component {
                 </div>
               );
             }
-            if (data.bookmarks.length < 9 && this.state.hasMore)
+            if (data.bookmarks.length < 9 && hasMore)
               this.setState({ hasMore: false });
             return (
               <InfiniteScroll
                 loadMore={() => {
-                  if (this.state.postslength === data.bookmarks.length) {
+                  if (postslength === data.bookmarks.length) {
                     fetchMore({
                       variables: {
                         offset: data.bookmarks.length,
@@ -72,10 +73,10 @@ class PostGrid extends Component {
                         });
                       },
                     });
-                    this.setState({ postslength: this.state.postslength + 9 });
+                    this.setState({ postslength: postslength + 9 });
                   }
                 }}
-                hasMore={this.state.hasMore}
+                hasMore={hasMore}
                 threshold={1000}
                 loader={
                   <Grid item lg={12} md={12} sm={12} xs={12}>

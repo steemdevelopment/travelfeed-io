@@ -1,6 +1,8 @@
-// The API keys in this file are used client-side and restricted to travelfeed.io, so don't bother trying to steal them ;)
+// The API keys in this file are used client-side and restricted to travelfeed.io,
+//  so don't bother trying to steal them ;)
 
-// Prduction settings. TODO: Add next.js equivalent of dotenv for localhost keys (local development)
+// Prduction settings. TODO: Add next.js equivalent of dotenv for localhost keys
+//  (local development)
 export const GMAPS_API_KEY = 'AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c';
 export const MAPBOX_TOKEN =
   'pk.eyJ1IjoidGlvdGRldiIsImEiOiJjanZ2NjVzdjQxZ3Q2M3ptczN5NTIwY3k4In0.ZIhYhbkfSAfbX11XDwI57w';
@@ -11,13 +13,13 @@ export const APP_VERSION = 'travelfeed/0.2.5';
 let url = 'http://localhost:3000/login';
 let rooturl = 'http://localhost:3000';
 // TODO: When merging to master remove beta from URL
-if (process.env.NODE_ENV == 'production') {
+if (process.env.NODE_ENV === 'production') {
   url = 'https://beta.travelfeed.io/login';
   rooturl = 'https://beta.travelfeed.io';
 }
 
 export const GRAPHQL_URL =
-  process.env.NODE_ENV == 'production'
+  process.env.NODE_ENV === 'production'
     ? 'https://api.travelfeed.io/graphql'
     : 'https://api.travelfeed.io/graphql';
 // Enable for local API development

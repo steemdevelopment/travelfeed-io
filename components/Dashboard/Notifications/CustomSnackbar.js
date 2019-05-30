@@ -1,15 +1,15 @@
 // https://material-ui.com/demos/snackbars/#snackbars
 
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import InfoIcon from '@material-ui/icons/Info';
-import ErrorIcon from '@material-ui/icons/Error';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import WarningIcon from '@material-ui/icons/Warning';
-import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
+import green from '@material-ui/core/colors/green';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import { withStyles } from '@material-ui/core/styles';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import InfoIcon from '@material-ui/icons/Info';
+import WarningIcon from '@material-ui/icons/Warning';
 import classNames from 'classnames';
+import React from 'react';
 
 const variantIcon = {
   success: CheckCircleIcon,

@@ -1,16 +1,16 @@
 // https://github.com/Giners/mui-places-autocomplete/blob/master/demo/DemoGeocodeLatLong.jsx Copyright (c) 2017 Chris Austin
 // Todo: Apply styles to search field, see https://material-ui.com/demos/app-bar/#app-bar-with-search-field
 // Todo: Look into OSM alternative to google places (issues with privacy, at some point cost). Mapbox restricts their Geocoder to map queries (tos), nominatim forbids autocomplete. Komoot photon, osmnames or pelias (probably the best option, but complicated) could be considered.
-import React, { Component, Fragment } from 'react';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import { withStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import SearchIcon from '@material-ui/icons/Search';
 import MUIPlacesAutocomplete, {
   geocodeBySuggestion,
 } from 'mui-places-autocomplete';
 import Router from 'next/router';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 
 // https://stackoverflow.com/questions/49040092/material-ui-v1-input-focus-style-override
 const styles = theme => ({

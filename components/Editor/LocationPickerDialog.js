@@ -1,22 +1,22 @@
-import 'mapbox-gl/dist/mapbox-gl.css';
-import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
-import React, { Component, Fragment } from 'react';
-import MapGL, {
-  Marker,
-  NavigationControl,
-  GeolocateControl,
-} from 'react-map-gl';
-import Geocoder from 'react-map-gl-geocoder';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
-import MapMarker from '../Maps/Marker';
-import { round } from '../../helpers/math';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import React, { Component, Fragment } from 'react';
+import MapGL, {
+  GeolocateControl,
+  Marker,
+  NavigationControl,
+} from 'react-map-gl';
+import Geocoder from 'react-map-gl-geocoder';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { MAPBOX_TOKEN } from '../../config';
+import { round } from '../../helpers/math';
+import MapMarker from '../Maps/Marker';
 
 const navStyle = {
   position: 'absolute',

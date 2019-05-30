@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import detectIt from 'detect-it';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { imageProxy } from '../../helpers/getImage';
 import { supportsWebp } from '../../helpers/webp';
 

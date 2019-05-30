@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie';
-import jwt_decode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import api from './steemConnectAPI';
 
 export const setAccessToken = (token, expires_in) => {
@@ -22,7 +22,7 @@ export const getRoles = () => {
   if (token === undefined) {
     return undefined;
   }
-  const jwt = jwt_decode(token);
+  const jwt = jwtDecode(token);
   return jwt.roles ? jwt.roles : [];
 };
 export const getUser = () => {
@@ -30,7 +30,7 @@ export const getUser = () => {
   if (token === undefined) {
     return undefined;
   }
-  const jwt = jwt_decode(token);
+  const jwt = jwtDecode(token);
   return jwt.name;
 };
 // Submit custom_json for steemapps.com tracking once a day - better to let users do thus manually
@@ -39,7 +39,7 @@ export const getUser = () => {
 //   if (token === undefined) {
 //     return undefined;
 //   }
-//   const jwt = jwt_decode(token);
+//   const jwt = jwtDecode(token);
 //   // Submit custom_json for steemapps.com tracking once a day
 //   const active = Cookie.get("last_active_broadcast");
 //   if (active === undefined || active !== jwt.name) {
@@ -57,7 +57,7 @@ export const getUser = () => {
 export const getScToken = () => Cookie.get('sc_token');
 export const getAccessToken = () => {
   const token = Cookie.get('access_token');
-  const decoded = jwt_decode(token);
+  const decoded = jwtDecode(token);
   const expires = new Date(decoded.exp * 1000);
   return { token, expires };
 };

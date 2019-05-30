@@ -13,57 +13,45 @@ import { customJson } from '../../../helpers/actions';
 import { BLACKLIST_POST } from '../../../helpers/graphql/blacklist';
 
 class AlertDialog extends React.Component {
-  state = {
-    open: false,
-  };
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  newNotification(notification) {
-    if (notification != undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
-    }
-  }
-
   handleConfirm = () => {
-    this.setState({ open: false });
+    const { author, permlink, action } = this.props;
     const payload = {
-      author: this.props.author,
-      permlink: this.props.permlink,
-      action: this.props.action,
+      author,
+      permlink,
+      action,
     };
     customJson(payload).then(result => {
       this.newNotification(result);
     });
   };
 
+  newNotification(notification) {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
+    }
+  }
+
   render() {
+    const { action, title, desc, author, permlink, reason } = this.props;
+    const open = this.state;
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>{this.props.action}</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>{action}</MenuItem>
         <Dialog
-          open={this.state.open}
+          open={open}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {this.props.desc}
+              {desc}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -73,9 +61,9 @@ class AlertDialog extends React.Component {
             <Mutation
               mutation={BLACKLIST_POST}
               variables={{
-                author: this.props.author,
-                permlink: this.props.permlink,
-                reason: this.props.reason,
+                author,
+                permlink,
+                reason,
               }}
             >
               {(blacklistPost, data) => {
@@ -83,7 +71,7 @@ class AlertDialog extends React.Component {
                   data &&
                   data.data &&
                   data.data.blacklistPost &&
-                  this.state.open === true
+                  open === true
                 ) {
                   this.newNotification({
                     success: data.data.blacklistPost.success,
@@ -111,13 +99,13 @@ class AlertDialog extends React.Component {
 }
 
 AlertDialog.propTypes = {
-  enqueueSnackbar: PropTypes.func,
-  title: PropTypes.string,
-  desc: PropTypes.string,
-  author: PropTypes.string,
-  permlink: PropTypes.string,
-  action: PropTypes.string,
-  reason: PropTypes.string,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  desc: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  action: PropTypes.string.isRequired,
+  reason: PropTypes.string.isRequired,
 };
 
 export default withSnackbar(AlertDialog);

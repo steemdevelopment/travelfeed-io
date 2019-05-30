@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
 import grey from '@material-ui/core/colors/grey';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 export default class SmallBox extends Component {
   render() {

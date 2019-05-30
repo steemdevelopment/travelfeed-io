@@ -17,7 +17,7 @@ class Logout extends Component {
   };
 
   newNotification(notification) {
-    if (notification != undefined) {
+    if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';

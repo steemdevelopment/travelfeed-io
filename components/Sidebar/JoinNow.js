@@ -3,38 +3,36 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Link from 'next/link';
-import React, { Component } from 'react';
+import React from 'react';
 
-class LegalNotice extends Component {
-  render() {
-    return (
-      <div className="text-center pt-3">
-        <Card>
-          <CardContent>
-            <Typography
-              variant="h6"
-              align="center"
-              gutterBottom
-              className="p-2 text-dark"
-            >
-              Never miss another story!
-            </Typography>
-            <div>
-              <Link as="/join" passHref>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className="text-light"
-                >
-                  Join TravelFeed
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-}
+const LegalNotice = () => {
+  return (
+    <div className="text-center pt-3">
+      <Card>
+        <CardContent>
+          <Typography
+            variant="h6"
+            align="center"
+            gutterBottom
+            className="p-2 text-dark"
+          >
+            Never miss another story!
+          </Typography>
+          <div>
+            <Link as="/join" passHref>
+              <Button
+                variant="contained"
+                color="primary"
+                className="text-light"
+              >
+                Join TravelFeed
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 export default LegalNotice;

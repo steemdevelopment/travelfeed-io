@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 
 class DestinationMenuItem extends Component {
   state = {
@@ -18,17 +18,19 @@ class DestinationMenuItem extends Component {
   }
 
   render() {
+    const { onClick, text, icon } = this.props;
+    const { active } = this.state;
     return (
       <ClickAwayListener onClickAway={() => this.setState({ active: false })}>
         <MenuItem
           onClick={() => {
-            this.props.onClick(this.props.text);
+            onClick(text);
             this.setState({ active: true });
           }}
-          selected={this.state.active}
+          selected={active}
         >
-          <ListItemIcon>{this.props.icon}</ListItemIcon>
-          <ListItemText inset primary={this.props.text} />
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText inset primary={text} />
         </MenuItem>
       </ClickAwayListener>
     );

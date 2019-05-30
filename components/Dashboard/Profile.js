@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { GET_PROFILE } from '../../helpers/graphql/profile';
@@ -17,8 +16,8 @@ class Profile extends Component {
     this.state = {
       loaded: false,
       author: getUser(),
-      profile_image: '',
-      cover_image: '',
+      profileImage: '',
+      coverImage: '',
       name: '',
       about: '',
       location: '',
@@ -30,63 +29,57 @@ class Profile extends Component {
       couchsurfing: '',
       changed: [],
     };
-    this.handleEditorChange_profile_image = this.handleEditorChange_profile_image.bind(
+    this.handleEditorChangeProfileImage = this.handleEditorChangeProfileImage.bind(
       this,
     );
-    this.handleEditorChange_cover_image = this.handleEditorChange_cover_image.bind(
+    this.handleEditorChangeCoverImage = this.handleEditorChangeCoverImage.bind(
       this,
     );
-    this.handleEditorChange_name = this.handleEditorChange_name.bind(this);
-    this.handleEditorChange_about = this.handleEditorChange_about.bind(this);
-    this.handleEditorChange_location = this.handleEditorChange_location.bind(
+    this.handleEditorChangeName = this.handleEditorChangeName.bind(this);
+    this.handleEditorChangeAbout = this.handleEditorChangeAbout.bind(this);
+    this.handleEditorChangeLocation = this.handleEditorChangeLocation.bind(
       this,
     );
-    this.handleEditorChange_website = this.handleEditorChange_website.bind(
+    this.handleEditorChangeWebsite = this.handleEditorChangeWebsite.bind(this);
+    this.handleEditorChangeFacebook = this.handleEditorChangeFacebook.bind(
       this,
     );
-    this.handleEditorChange_facebook = this.handleEditorChange_facebook.bind(
+    this.handleEditorChangeTwitter = this.handleEditorChangeTwitter.bind(this);
+    this.handleEditorChangeInstagram = this.handleEditorChangeInstagram.bind(
       this,
     );
-    this.handleEditorChange_twitter = this.handleEditorChange_twitter.bind(
-      this,
-    );
-    this.handleEditorChange_instagram = this.handleEditorChange_instagram.bind(
-      this,
-    );
-    this.handleEditorChange_youtube = this.handleEditorChange_youtube.bind(
-      this,
-    );
-    this.handleEditorChange_couchsurfing = this.handleEditorChange_couchsurfing.bind(
+    this.handleEditorChangeYoutube = this.handleEditorChangeYoutube.bind(this);
+    this.handleEditorChangeCouchsurfing = this.handleEditorChangeCouchsurfing.bind(
       this,
     );
   }
 
-  handleEditorChange_profile_image(profile_image) {
+  handleEditorChangeProfileImage(profileImage) {
     let { changed } = this.state;
-    if (changed.indexOf('profile_image') > -1 === false) {
-      changed = this.state.changed.concat('profile_image');
+    if (changed.indexOf(profileImage) > -1 === false) {
+      changed = changed.concat(profileImage);
     }
     this.setState({
-      profile_image: profile_image.target.value,
+      profileImage: profileImage.target.value,
       changed,
     });
   }
 
-  handleEditorChange_cover_image(cover_image) {
+  handleEditorChangeCoverImage(coverImage) {
     let { changed } = this.state;
-    if (changed.indexOf('cover_image') > -1 === false) {
-      changed = this.state.changed.concat('cover_image');
+    if (changed.indexOf('coverImage') > -1 === false) {
+      changed = changed.concat('coverImage');
     }
     this.setState({
-      cover_image: cover_image.target.value,
+      coverImage: coverImage.target.value,
       changed,
     });
   }
 
-  handleEditorChange_name(name) {
+  handleEditorChangeName(name) {
     let { changed } = this.state;
     if (changed.indexOf('name') > -1 === false) {
-      changed = this.state.changed.concat('name');
+      changed = changed.concat('name');
     }
     this.setState({
       name: name.target.value,
@@ -94,10 +87,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_about(about) {
+  handleEditorChangeAbout(about) {
     let { changed } = this.state;
     if (changed.indexOf('about') > -1 === false) {
-      changed = this.state.changed.concat('about');
+      changed = changed.concat('about');
     }
     this.setState({
       about: about.target.value,
@@ -105,10 +98,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_location(location) {
+  handleEditorChangeLocation(location) {
     let { changed } = this.state;
     if (changed.indexOf('location') > -1 === false) {
-      changed = this.state.changed.concat('location');
+      changed = changed.concat('location');
     }
     this.setState({
       location: location.target.value,
@@ -116,10 +109,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_website(website) {
+  handleEditorChangeWebsite(website) {
     let { changed } = this.state;
     if (changed.indexOf('website') > -1 === false) {
-      changed = this.state.changed.concat('website');
+      changed = changed.concat('website');
     }
     this.setState({
       website: website.target.value,
@@ -127,10 +120,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_facebook(facebook) {
+  handleEditorChangeFacebook(facebook) {
     let { changed } = this.state;
     if (changed.indexOf('facebook') > -1 === false) {
-      changed = this.state.changed.concat('facebook');
+      changed = changed.concat('facebook');
     }
     this.setState({
       facebook: facebook.target.value,
@@ -138,10 +131,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_twitter(twitter) {
+  handleEditorChangeTwitter(twitter) {
     let { changed } = this.state;
     if (changed.indexOf('twitter') > -1 === false) {
-      changed = this.state.changed.concat('twitter');
+      changed = changed.concat('twitter');
     }
     this.setState({
       twitter: twitter.target.value,
@@ -149,10 +142,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_instagram(instagram) {
+  handleEditorChangeInstagram(instagram) {
     let { changed } = this.state;
     if (changed.indexOf('instagram') > -1 === false) {
-      changed = this.state.changed.concat('instagram');
+      changed = changed.concat('instagram');
     }
     this.setState({
       instagram: instagram.target.value,
@@ -160,10 +153,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_youtube(youtube) {
+  handleEditorChangeYoutube(youtube) {
     let { changed } = this.state;
     if (changed.indexOf('youtube') > -1 === false) {
-      changed = this.state.changed.concat('youtube');
+      changed = changed.concat('youtube');
     }
     this.setState({
       youtube: youtube.target.value,
@@ -171,10 +164,10 @@ class Profile extends Component {
     });
   }
 
-  handleEditorChange_couchsurfing(couchsurfing) {
+  handleEditorChangeCouchsurfing(couchsurfing) {
     let { changed } = this.state;
     if (changed.indexOf('couchsurfing') > -1 === false) {
-      changed = this.state.changed.concat('couchsurfing');
+      changed = changed.concat('couchsurfing');
     }
     this.setState({
       couchsurfing: couchsurfing.target.value,
@@ -183,12 +176,13 @@ class Profile extends Component {
   }
 
   linkBuilder() {
-    if (this.state.changed.length == 0) {
+    const { changed } = this.state;
+    if (changed.length === 0) {
       return '#';
     }
     let link = 'https://steemconnect.com/sign/profile-update?';
     let count = 0;
-    for (const info of this.state.changed) {
+    for (const info of changed) {
       if (count > 0) {
         link += '&';
       }
@@ -199,13 +193,28 @@ class Profile extends Component {
   }
 
   render() {
+    const {
+      changed,
+      loaded,
+      name,
+      about,
+      profileImage,
+      location,
+      website,
+      coverImage,
+      facebook,
+      twitter,
+      instagram,
+      youtube,
+      couchsurfing,
+    } = this.state;
     let updatebtn = (
       <Button color="primary" variant="outlined" disabled>
         <SaveIcon />
         <span className="pl-2">Update Profile</span>
       </Button>
     );
-    if (this.state.changed.length > 0) {
+    if (changed.length > 0) {
       updatebtn = (
         <Button
           color="primary"
@@ -221,11 +230,11 @@ class Profile extends Component {
       <Fragment>
         <Query query={GET_PROFILE} variables={{ author: getUser() }}>
           {({ data }) => {
-            if (data && data.profile && this.state.loaded === false) {
+            if (data && data.profile && loaded === false) {
               this.setState({
                 loaded: true,
-                profile_image: data.profile.profile_image,
-                cover_image: data.profile.cover_image,
+                profileImage: data.profile.profileImage,
+                coverImage: data.profile.coverImage,
                 name: data.profile.display_name,
                 about: data.profile.about,
                 location: data.profile.location,
@@ -260,8 +269,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your display name"
                           margin="normal"
-                          value={this.state.name}
-                          onChange={this.handleEditorChange_name}
+                          value={name}
+                          onChange={this.handleEditorChangeName}
                           fullWidth
                         />
                         <TextField
@@ -272,8 +281,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Profile description"
                           margin="normal"
-                          value={this.state.about}
-                          onChange={this.handleEditorChange_about}
+                          value={about}
+                          onChange={this.handleEditorChangeAbout}
                           fullWidth
                         />
                         <TextField
@@ -283,8 +292,8 @@ class Profile extends Component {
                           }}
                           placeholder="Profile image"
                           margin="normal"
-                          value={this.state.profile_image}
-                          onChange={this.handleEditorChange_profile_image}
+                          value={profileImage}
+                          onChange={this.handleEditorChangeProfileImage}
                           fullWidth
                         />
                         <TextField
@@ -294,8 +303,8 @@ class Profile extends Component {
                           }}
                           placeholder="Cover image for your blog"
                           margin="normal"
-                          value={this.state.cover_image}
-                          onChange={this.handleEditorChange_cover_image}
+                          value={coverImage}
+                          onChange={this.handleEditorChangeCoverImage}
                           fullWidth
                         />
                         <TextField
@@ -306,8 +315,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your location"
                           margin="normal"
-                          value={this.state.location}
-                          onChange={this.handleEditorChange_location}
+                          value={location}
+                          onChange={this.handleEditorChangeLocation}
                           fullWidth
                         />
                         <TextField
@@ -318,8 +327,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your website"
                           margin="normal"
-                          value={this.state.website}
-                          onChange={this.handleEditorChange_website}
+                          value={website}
+                          onChange={this.handleEditorChangeWebsite}
                           fullWidth
                         />
                         <TextField
@@ -330,8 +339,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your Facebook username or fanpage"
                           margin="normal"
-                          value={this.state.facebook}
-                          onChange={this.handleEditorChange_facebook}
+                          value={facebook}
+                          onChange={this.handleEditorChangeFacebook}
                           fullWidth
                         />
                         <TextField
@@ -342,8 +351,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your Twitter username"
                           margin="normal"
-                          value={this.state.twitter}
-                          onChange={this.handleEditorChange_twitter}
+                          value={twitter}
+                          onChange={this.handleEditorChangeTwitter}
                           fullWidth
                         />
                         <TextField
@@ -354,8 +363,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your Instagram username"
                           margin="normal"
-                          value={this.state.instagram}
-                          onChange={this.handleEditorChange_instagram}
+                          value={instagram}
+                          onChange={this.handleEditorChangeInstagram}
                           fullWidth
                         />
                         <TextField
@@ -366,8 +375,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your Youtube username"
                           margin="normal"
-                          value={this.state.youtube}
-                          onChange={this.handleEditorChange_youtube}
+                          value={youtube}
+                          onChange={this.handleEditorChangeYoutube}
                           fullWidth
                         />
                         <TextField
@@ -378,8 +387,8 @@ class Profile extends Component {
                           multiline
                           placeholder="Your Couchsurfing username or fanpage"
                           margin="normal"
-                          value={this.state.couchsurfing}
-                          onChange={this.handleEditorChange_couchsurfing}
+                          value={couchsurfing}
+                          onChange={this.handleEditorChangeCouchsurfing}
                           fullWidth
                         />
                         {updatebtn}
@@ -410,9 +419,5 @@ class Profile extends Component {
     );
   }
 }
-
-Profile.propTypes = {
-  user: PropTypes.string,
-};
 
 export default Profile;

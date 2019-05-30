@@ -26,7 +26,9 @@ class PostMenu extends Component {
   }
 
   render() {
-    if (this.state.roles && this.state.roles.indexOf('curator') !== -1) {
+    const { roles } = this.state;
+    const { author, permlink } = this.props;
+    if (roles && roles.indexOf('curator') !== -1) {
       return (
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (
@@ -36,48 +38,45 @@ class PostMenu extends Component {
               </IconButton>
               <Menu {...bindMenu(popupState)}>
                 <CustomJson
-                  author={this.props.author}
-                  permlink={this.props.permlink}
+                  author={author}
+                  permlink={permlink}
                   action="curate"
                   title="Are you sure that you want to curate this post?"
                   desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
                 />
                 <CustomJson
-                  author={this.props.author}
-                  permlink={this.props.permlink}
+                  author={author}
+                  permlink={permlink}
                   action="honour"
                   title="Are you sure that you want to honour this post?"
                   desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
                 />
                 <JsonAndMutate
-                  author={this.props.author}
-                  permlink={this.props.permlink}
+                  author={author}
+                  permlink={permlink}
                   action="short"
                   title="Are you sure that you want to mark this post as too short?"
                   desc="This post will be blacklisted and receive a comment."
                   reason="Post is under the threshold of 250 words."
                 />
                 <JsonAndMutate
-                  author={this.props.author}
-                  permlink={this.props.permlink}
+                  author={author}
+                  permlink={permlink}
                   action="language"
                   title="Are you sure that you want to mark this post as having less than 250 words in English?"
                   desc="This post will be blacklisted and receive a comment."
                   reason="Post is under the threshold of 250 English words."
                 />
                 <JsonAndMutate
-                  author={this.props.author}
-                  permlink={this.props.permlink}
+                  author={author}
+                  permlink={permlink}
                   action="copyright"
                   title="Are you sure that you want to mark this post as violating copyright?"
                   desc="This post will be blacklisted and receive a comment."
                   reason="Post is violating copyright."
                 />
-                <PostBlacklist
-                  author={this.props.author}
-                  permlink={this.props.permlink}
-                />
-                <AuthorBlacklist author={this.props.author} />
+                <PostBlacklist author={author} permlink={permlink} />
+                <AuthorBlacklist author={author} />
               </Menu>
             </React.Fragment>
           )}
@@ -89,8 +88,8 @@ class PostMenu extends Component {
 }
 
 PostMenu.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
 };
 
 export default PostMenu;

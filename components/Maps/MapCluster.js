@@ -1,20 +1,20 @@
 // Popups: https://github.com/uber/react-map-gl/blob/4.1-release/examples/controls/src/city-pin.js Copyright (c) 2015 Uber Technologies, Inc.
 // Cluster: https://github.com/urbica/react-map-gl-cluster Copyright (c) 2017 Urbica Design
 import MapGL, {
-  Marker,
-  Popup,
-  NavigationControl,
-  GeolocateControl,
   FullscreenControl,
+  GeolocateControl,
+  Marker,
+  NavigationControl,
+  Popup,
 } from '@urbica/react-map-gl';
 import Cluster from '@urbica/react-map-gl-cluster';
 // Todo: Maybe fork and adapt to uber's react-map-gl to make use of Geocoder?
 import 'mapbox-gl/dist/mapbox-gl.css';
-import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MarkerSmall from './MarkerSmall';
-import MapCard from './MapCard';
+import React, { Component } from 'react';
 import { MAPBOX_TOKEN } from '../../config';
+import MapCard from './MapCard';
+import MarkerSmall from './MarkerSmall';
 
 const style = {
   width: '20px',

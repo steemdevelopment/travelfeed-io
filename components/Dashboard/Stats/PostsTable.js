@@ -1,6 +1,4 @@
 // https://material-ui.com/demos/tables/#tables
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

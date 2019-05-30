@@ -16,12 +16,13 @@ class Exit extends Component {
   }
 
   render() {
+    const { url } = this.props;
     let content = (
       <Grid item lg={7} md={8} sm={11} xs={12}>
         <NotFound statusCode={404} />
       </Grid>
     );
-    if (this.props.url != undefined) {
+    if (url !== undefined) {
       content = (
         <Grid item lg={7} md={8} sm={11} xs={12}>
           <Card className="text-center">
@@ -31,17 +32,16 @@ class Exit extends Component {
                 Warning: This is an external link. Please check it carefully
                 before proceeding.
               </p>
-              <p>{this.props.url}</p>
-              <a onClick={() => Router.back()}>
-                <Button color="primary" variant="outlined" className="m-1">
-                  Go back
-                </Button>
-              </a>
-              <a
-                rel="nofollow noopener noreferrer"
-                target="_blank"
-                href={this.props.url}
+              <p>{url}</p>
+              <Button
+                onClick={() => Router.back()}
+                color="primary"
+                variant="outlined"
+                className="m-1"
               >
+                Go back
+              </Button>
+              <a rel="nofollow noopener noreferrer" target="_blank" href={url}>
                 <Button color="primary" variant="contained" className="m-1">
                   Visit this Website
                 </Button>

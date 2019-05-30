@@ -1,10 +1,10 @@
-import React, { Fragment, Component } from 'react';
-import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
-import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
-import BookmarkIconFilled from '@material-ui/icons/Bookmark';
-import { Mutation, Query } from 'react-apollo';
 import Tooltip from '@material-ui/core/Tooltip';
+import BookmarkIconFilled from '@material-ui/icons/Bookmark';
+import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Mutation, Query } from 'react-apollo';
 import {
   ADD_BOOKMARK,
   DELETE_BOOKMARK,

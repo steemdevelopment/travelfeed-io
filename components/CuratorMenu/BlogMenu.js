@@ -24,7 +24,9 @@ class PostMenu extends Component {
   }
 
   render() {
-    if (this.state.roles && this.state.roles.indexOf('curator') !== -1) {
+    const { roles } = this.state;
+    const { author, isCurator } = this.props;
+    if (roles && roles.indexOf('curator') !== -1) {
       return (
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (
@@ -33,12 +35,9 @@ class PostMenu extends Component {
                 <CuratorIcon className="text-light" />
               </IconButton>
               <Menu {...bindMenu(popupState)}>
-                <AuthorBlacklist author={this.props.author} />
-                {this.state.roles.indexOf('admin') !== -1 && (
-                  <ChangeRoles
-                    author={this.props.author}
-                    isCurator={this.props.isCurator}
-                  />
+                <AuthorBlacklist author={author} />
+                {roles.indexOf('admin') !== -1 && (
+                  <ChangeRoles author={author} isCurator={isCurator} />
                 )}
               </Menu>
             </React.Fragment>
@@ -51,8 +50,8 @@ class PostMenu extends Component {
 }
 
 PostMenu.propTypes = {
-  author: PropTypes.string,
-  isCurator: PropTypes.bool,
+  author: PropTypes.string.isRequired,
+  isCurator: PropTypes.bool.isRequired,
 };
 
 export default PostMenu;

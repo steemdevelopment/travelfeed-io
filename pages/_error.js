@@ -11,6 +11,7 @@ export default class Error extends React.Component {
   }
 
   render() {
+    const { statusCode } = this.props;
     return (
       <Fragment>
         <Header />
@@ -22,7 +23,7 @@ export default class Error extends React.Component {
           className="pt-4 pb-4"
         >
           <Grid item lg={7} md={8} sm={11} xs={12}>
-            <NotFound statusCode={this.props.statusCode} />
+            <NotFound statusCode={statusCode} />
           </Grid>
         </Grid>
       </Fragment>
@@ -31,5 +32,5 @@ export default class Error extends React.Component {
 }
 
 Error.propTypes = {
-  statusCode: PropTypes.number,
+  statusCode: PropTypes.number.isRequired,
 };

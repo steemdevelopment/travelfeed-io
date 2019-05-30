@@ -1,22 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
-import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import AboutIcon from '@material-ui/icons/Info';
-import TermsIcon from '@material-ui/icons/Toc';
-import PrivacyIcon from '@material-ui/icons/Lock';
-import CookieIcon from '@material-ui/icons/GroupWork';
-import FAQIcon from '@material-ui/icons/QuestionAnswer';
+import Tabs from '@material-ui/core/Tabs';
 import SupportIcon from '@material-ui/icons/Favorite';
+import CookieIcon from '@material-ui/icons/GroupWork';
+import AboutIcon from '@material-ui/icons/Info';
+import PrivacyIcon from '@material-ui/icons/Lock';
+import FAQIcon from '@material-ui/icons/QuestionAnswer';
+import TermsIcon from '@material-ui/icons/Toc';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 class IconLabelTabs extends React.Component {
   render() {
+    const { selection } = this.props;
     return (
       <Paper square>
         <Tabs
-          value={this.props.selection}
+          value={selection}
           onChange={this.handleChange}
           variant="fullWidth"
           indicatorColor="secondary"
@@ -48,7 +49,7 @@ class IconLabelTabs extends React.Component {
 }
 
 IconLabelTabs.propTypes = {
-  selection: PropTypes.number,
+  selection: PropTypes.number.isRequired,
 };
 
 export default IconLabelTabs;

@@ -16,11 +16,12 @@ class BookmarksPage extends Component {
   }
 
   render() {
+    const { user } = this.state;
     return (
       <Fragment>
         <Header subheader="Bookmarks" />
         <Head title="Bookmarks - TravelFeed: The Travel Community" />
-        {(!this.state.user && (
+        {(!user && (
           <Grid
             container
             spacing={0}
@@ -33,7 +34,7 @@ class BookmarksPage extends Component {
               <NotFound statusCode="logged_out" />
             </Grid>
           </Grid>
-        )) || <Bookmarks user={this.state.user} />}
+        )) || <Bookmarks user={user} />}
       </Fragment>
     );
   }

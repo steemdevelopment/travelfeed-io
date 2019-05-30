@@ -1,8 +1,8 @@
-import React, { Fragment, Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import PropTypes from 'prop-types';
 import CurateIcon from '@material-ui/icons/Star';
 import HonourIcon from '@material-ui/icons/StarHalf';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 
 class IsCurated extends Component {
   render() {
@@ -83,7 +83,7 @@ export default IsCurated;
 //     this.setState({ confirm_open: false });
 //   };
 //   newNotification(notification) {
-//     if (notification != undefined) {
+//     if ((notification !== undefined)) {
 //       const text = notification[0];
 //       const variant = notification[1];
 //       this.props.enqueueSnackbar(text, { variant });

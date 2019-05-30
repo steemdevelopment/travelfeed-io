@@ -24,7 +24,9 @@ class PostMenu extends Component {
   }
 
   render() {
-    if (this.state.roles && this.state.roles.indexOf('curator') !== -1) {
+    const { roles } = this.state;
+    const { author, permlink } = this.props;
+    if (roles && roles.indexOf('curator') !== -1) {
       return (
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (
@@ -33,11 +35,8 @@ class PostMenu extends Component {
                 <CuratorIcon />
               </IconButton>
               <Menu {...bindMenu(popupState)}>
-                <PostBlacklist
-                  author={this.props.author}
-                  permlink={this.props.permlink}
-                />
-                <AuthorBlacklist author={this.props.author} />
+                <PostBlacklist author={author} permlink={permlink} />
+                <AuthorBlacklist author={author} />
               </Menu>
             </React.Fragment>
           )}
@@ -49,8 +48,8 @@ class PostMenu extends Component {
 }
 
 PostMenu.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
 };
 
 export default PostMenu;

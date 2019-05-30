@@ -72,11 +72,11 @@ class Tag extends Component {
 }
 
 Tag.propTypes = {
-  tags: PropTypes.string,
-  title: PropTypes.string,
-  orderby: PropTypes.string,
-  min_curation_score: PropTypes.number,
-  selection: PropTypes.number,
+  tags: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  orderby: PropTypes.string.isRequired,
+  min_curation_score: PropTypes.number.isRequired,
+  selection: PropTypes.number.isRequired,
 };
 
 export default Tag;

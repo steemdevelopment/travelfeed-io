@@ -18,6 +18,11 @@ class About extends Component {
     optin: false,
   };
 
+  componentDidMount() {
+    const cookie = hasCookieConsent() === 'true';
+    this.setState({ optin: cookie });
+  }
+
   decline() {
     this.setState({ optin: false });
     deleteCookieConsent();
@@ -28,12 +33,8 @@ class About extends Component {
     this.setState({ optin: true });
   }
 
-  componentDidMount() {
-    const cookie = hasCookieConsent() === 'true';
-    this.setState({ optin: cookie });
-  }
-
   render() {
+    const { optin } = this.state;
     const title = 'Cookies';
     return (
       <Fragment>
@@ -63,7 +64,7 @@ class About extends Component {
                   <p>
                     {' '}
                     Your current cookie Settings are:{' '}
-                    {(this.state.optin && (
+                    {(optin && (
                       <Fragment>
                         <strong>You are opted in.</strong>{' '}
                         <Button
@@ -94,10 +95,10 @@ class About extends Component {
                   </p>
                   <p>
                     These option only applies to EU-users. If you are accessing
-                    this page from outside the EU, pressing the "opt out" button
-                    will have no effect since you are opted in by default on
-                    every page load. You can change this by updating your
-                    browser's cookie settings.
+                    this page from outside the EU, pressing the &quot;opt
+                    out&quot; button will have no effect since you are opted in
+                    by default on every page load. You can change this by
+                    updating your browser&apos;s cookie settings.
                   </p>
                 </Fragment>
               }

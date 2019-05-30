@@ -67,8 +67,12 @@ class About extends Component {
                   We and our partners use cookies to improve your experience and
                   to analyze how our site is used.
                   <br />
-                  <Link href="/about/cookies" passHref>
-                    <a className="text-light text-decoration-underline">
+                  <Link href="/about/cookies">
+                    <a
+                      className="passHref
+                  text-light
+                  text-decoration-underline"
+                    >
                       Learn more
                     </a>
                   </Link>

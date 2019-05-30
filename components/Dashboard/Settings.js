@@ -27,19 +27,6 @@ class Settings extends Component {
     useTfBlacklist: true,
   };
 
-  newNotification(notification) {
-    if (notification != undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
-    }
-  }
-
   handleCheckboxChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
@@ -56,7 +43,26 @@ class Settings extends Component {
     this.setState({ defaultVoteWeight: value });
   };
 
+  newNotification(notification) {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
+    }
+  }
+
   render() {
+    const {
+      defaultVoteWeight,
+      defaultCommentsVoteWeight,
+      loaded,
+      showNSFW,
+      useTfBlacklist,
+      saved,
+    } = this.state;
     return (
       <Fragment>
         <Grid
@@ -72,12 +78,9 @@ class Settings extends Component {
               background={teal[600]}
               content={
                 <Query query={GET_SETTINGS}>
-                  {({ data, loading, error }) => {
-                    if (loading || error) {
-                      return <Fragment />;
-                    }
+                  {({ data }) => {
                     if (data) {
-                      if (this.state.loaded === false) {
+                      if (loaded === false) {
                         this.setState({
                           loaded: true,
                           defaultVoteWeight: data.preferences.defaultVoteWeight,
@@ -92,18 +95,17 @@ class Settings extends Component {
                         <Mutation
                           mutation={CHANGE_SETTINGS}
                           variables={{
-                            defaultVoteWeight: this.state.defaultVoteWeight,
-                            defaultCommentsVoteWeight: this.state
-                              .defaultCommentsVoteWeight,
-                            showNSFW: this.state.showNSFW,
-                            useTfBlacklist: this.state.useTfBlacklist,
+                            defaultVoteWeight,
+                            defaultCommentsVoteWeight,
+                            showNSFW,
+                            useTfBlacklist,
                           }}
                         >
-                          {(changeSettings, data) => {
-                            if (data.loading && this.state.saved) {
+                          {changeSettings => {
+                            if (data.loading && saved) {
                               this.setState({ saved: false });
                             }
-                            if (data.data && !this.state.saved) {
+                            if (data.data && !saved) {
                               this.newNotification({
                                 success: data.data.updatePreferences.success,
                                 message: data.data.updatePreferences.message,
@@ -118,7 +120,7 @@ class Settings extends Component {
                                       labelPlacement="end"
                                       control={
                                         <Switch
-                                          checked={this.state.showNSFW}
+                                          checked={showNSFW}
                                           onChange={this.handleCheckboxChange(
                                             'showNSFW',
                                           )}
@@ -134,7 +136,7 @@ class Settings extends Component {
                                       labelPlacement="end"
                                       control={
                                         <Switch
-                                          checked={this.state.useTfBlacklist}
+                                          checked={useTfBlacklist}
                                           onChange={this.handleCheckboxChange(
                                             'useTfBlacklist',
                                           )}
@@ -150,7 +152,7 @@ class Settings extends Component {
                                     <TextField
                                       select
                                       label="Default miles weight for posts"
-                                      value={this.state.defaultVoteWeight}
+                                      value={defaultVoteWeight}
                                       onChange={value => {
                                         this.setDefaultVoteWeight(
                                           value.target.value,
@@ -174,9 +176,7 @@ class Settings extends Component {
                                     <TextField
                                       select
                                       label="Default miles weight on comments"
-                                      value={
-                                        this.state.defaultCommentsVoteWeight
-                                      }
+                                      value={defaultCommentsVoteWeight}
                                       onChange={value => {
                                         this.setDefaultCommentsVoteWeight(
                                           value.target.value,
@@ -204,6 +204,7 @@ class Settings extends Component {
                         </Mutation>
                       );
                     }
+                    return <Fragment />;
                   }}
                 </Query>
               }
@@ -216,6 +217,6 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  enqueueSnackbar: PropTypes.func,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 export default withSnackbar(Settings);

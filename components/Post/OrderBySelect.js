@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import SortIcon from '@material-ui/icons/Sort';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 class SimpleMenu extends React.Component {
   state = {

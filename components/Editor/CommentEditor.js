@@ -22,7 +22,7 @@ class CommentEditor extends Component {
   }, 250);
 
   newNotification(notification) {
-    if (notification != undefined) {
+    if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';

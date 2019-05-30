@@ -37,35 +37,35 @@ class DeleteDraftButton extends Component {
   };
 
   newNotification(notification) {
-    if (notification != undefined) {
+    if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
     }
   }
 
   render() {
+    const { id, onDelete } = this.props;
+    const { open } = this.state;
     return (
       <Mutation
         mutation={DELETE_DRAFT}
         variables={{
-          id: this.props.id,
+          id,
         }}
       >
         {(deleteDraft, data) => {
-          if (data.data && data.data.deleteDraft && this.state.open) {
+          if (data.data && data.data.deleteDraft && open) {
             this.handleClose();
             this.newNotification({
               success: data.data.deleteDraft.success,
               message: data.data.deleteDraft.message,
             });
             if (data.data.deleteDraft.success) {
-              this.props.onDelete();
+              onDelete();
             }
           }
           return (
@@ -80,7 +80,7 @@ class DeleteDraftButton extends Component {
                 </Button>
               </a>
               <Dialog
-                open={this.state.open}
+                open={open}
                 onClose={this.handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
@@ -118,9 +118,9 @@ class DeleteDraftButton extends Component {
 }
 
 DeleteDraftButton.propTypes = {
-  id: PropTypes.string,
-  enqueueSnackbar: PropTypes.func,
-  onDelete: PropTypes.func,
+  id: PropTypes.string.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(DeleteDraftButton);

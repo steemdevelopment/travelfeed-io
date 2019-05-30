@@ -6,13 +6,10 @@ import React, { Component } from 'react';
 import { nameFromSlug, slugFromCC } from '../../helpers/countryCodes';
 
 class DestinationCountryColumn extends Component {
-  state = {
-    active: false,
-  };
-
   render() {
+    const { onClick, text, country_codes } = this.props;
     const slugs = [];
-    this.props.country_codes.forEach(cc => slugs.push(slugFromCC(cc)));
+    country_codes.forEach(cc => slugs.push(slugFromCC(cc)));
     slugs.sort();
     return slugs.map(slug => {
       const name = nameFromSlug(slug);
@@ -24,11 +21,7 @@ class DestinationCountryColumn extends Component {
           passHref
         >
           <a>
-            <MenuItem
-              onClick={() =>
-                this.props.onClick && this.props.onClick(this.props.text)
-              }
-            >
+            <MenuItem onClick={() => onClick && onClick(text)}>
               <ListItemText primary={name} />
             </MenuItem>
           </a>
@@ -39,9 +32,9 @@ class DestinationCountryColumn extends Component {
 }
 
 DestinationCountryColumn.propTypes = {
-  onClick: PropTypes.func,
-  text: PropTypes.string,
-  country_codes: PropTypes.arrayOf(PropTypes.string),
+  onClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+  country_codes: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default DestinationCountryColumn;

@@ -9,6 +9,8 @@ module.exports = {
     node: true,
   },
   rules: {
+    // Next js needs empty <a> inside Link
+    'jsx-a11y/anchor-is-valid': ['off'],
     'jsx-a11y/href-no-hash': ['off'],
     'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
     'max-len': [

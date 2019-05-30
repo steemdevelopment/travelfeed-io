@@ -1,9 +1,9 @@
-import React from 'react';
+import { teal } from '@material-ui/core/colors';
+import * as Sentry from '@sentry/node';
 import Document, { Head, Main, NextScript } from 'next/document';
 import PropTypes from 'prop-types';
+import React from 'react';
 import flush from 'styled-jsx/server';
-import * as Sentry from '@sentry/node';
-import { teal } from '@material-ui/core/colors';
 import { GMAPS_API_KEY } from '../config';
 
 export default class extends Document {
@@ -56,7 +56,10 @@ export default class extends Document {
           />
         </body>
         <noscript>
-          <img src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1" />
+          <img
+            alt=""
+            src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1"
+          />
         </noscript>
       </html>
     );
@@ -86,7 +89,9 @@ Document.getInitialProps = ctx => {
   // 3. app.render
   // 4. page.render
 
-  // Render app and page and get the context of the page with collected side effects.
+  // Render app and page and get the context of the page
+  // with collected side effects.
+
   let pageContext;
   const page = ctx.renderPage(Component => {
     const WrappedComponent = props => {

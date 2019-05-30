@@ -10,11 +10,12 @@ class Blog extends Component {
   }
 
   render() {
+    const { author } = this.props;
     return (
       <Fragment>
-        <AuthorProfile author={this.props.author} />
+        <AuthorProfile author={author} />
         <PostGrid
-          query={{ author: this.props.author, limit: 12 }}
+          query={{ author, limit: 12 }}
           grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
           cardHeight={140}
         />
@@ -24,7 +25,7 @@ class Blog extends Component {
 }
 
 Blog.propTypes = {
-  author: PropTypes.string,
+  author: PropTypes.string.isRequired,
 };
 
 export default Blog;

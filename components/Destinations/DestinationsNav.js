@@ -18,7 +18,6 @@ const styles = () => ({
 
 class DestinationsNav extends Component {
   state = {
-    selection: undefined,
     random: undefined,
     showDest: false,
   };
@@ -30,10 +29,6 @@ class DestinationsNav extends Component {
   closeDest() {
     this.setState({ showDest: false });
   }
-
-  onMenuClick = selection => {
-    this.setState({ selection });
-  };
 
   newRandom = () => {
     this.setState({ random: undefined });

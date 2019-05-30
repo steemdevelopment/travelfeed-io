@@ -1,7 +1,7 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { teal, indigo } from '@material-ui/core/colors';
+import { indigo, teal } from '@material-ui/core/colors';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 
 class CookiePopup extends Component {
   state = {
@@ -10,7 +10,8 @@ class CookiePopup extends Component {
   };
 
   render() {
-    if (this.props.open === false) return <Fragment />;
+    const { open, containerid, content, allowtext } = this.props;
+    if (open === false) return <Fragment />;
     return (
       <div
         style={{
@@ -20,7 +21,7 @@ class CookiePopup extends Component {
           zIndex: 99999999999,
         }}
       >
-        <div className="container" id={this.props.containerid}>
+        <div className="container" id={containerid}>
           <div className="row">
             <div
               style={{ width: '20px' }}
@@ -30,7 +31,7 @@ class CookiePopup extends Component {
               className="col-xl-6 col-lg-6 col-md-6 col-sm-8 col-12 text-light p-3"
               style={{ background: indigo[700] }}
             >
-              {this.props.content}
+              {content}
             </div>
           </div>
           <div className="row">
@@ -57,7 +58,7 @@ class CookiePopup extends Component {
               style={{ background: teal[this.state.acceptColor] }}
             >
               <Typography variant="p" className="text-light">
-                {this.props.allowtext}
+                {allowtext}
               </Typography>
             </div>
             <div
@@ -72,16 +73,16 @@ class CookiePopup extends Component {
 }
 
 CookiePopup.defaultProps = {
-  id: '',
+  containerid: '',
 };
 
 CookiePopup.propTypes = {
-  open: PropTypes.bool,
-  id: PropTypes.string,
-  allowtext: PropTypes.string,
-  content: PropTypes.string,
-  accept: PropTypes.func,
-  decline: PropTypes.func,
+  open: PropTypes.bool.isRequired,
+  containerid: PropTypes.string,
+  allowtext: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  accept: PropTypes.func.isRequired,
+  decline: PropTypes.func.isRequired,
 };
 
 export default CookiePopup;

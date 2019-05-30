@@ -23,6 +23,8 @@ class PublishPage extends Component {
   }
 
   render() {
+    const { edit } = this.props;
+
     if (getUser() === null || !getUser()) {
       return (
         <Fragment>
@@ -54,7 +56,7 @@ class PublishPage extends Component {
         <div style={{ display: 'flex' }}>
           <DashboardHeader active="publish" />
           <main style={{ flexGrow: 1 }}>
-            <Publish edit={this.props.edit} />
+            <Publish edit={edit} />
           </main>
         </div>
       </Fragment>

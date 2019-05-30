@@ -1,4 +1,3 @@
-import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -6,15 +5,15 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { Mutation, Query } from 'react-apollo';
-import TextField from '@material-ui/core/TextField';
-
 import {
   BLACKLIST_POST,
-  UNBLACKLIST_POST,
   IS_BLACKLISTED_POST,
+  UNBLACKLIST_POST,
 } from '../../../helpers/graphql/blacklist';
 
 class AlertDialog extends React.Component {
@@ -22,10 +21,6 @@ class AlertDialog extends React.Component {
     reason: '',
     open: false,
   };
-
-  handleTextFieldChange(content) {
-    this.setState({ reason: content.target.value });
-  }
 
   handleClickOpen = () => {
     this.setState({ open: true });
@@ -35,49 +30,50 @@ class AlertDialog extends React.Component {
     this.setState({ open: false });
   };
 
+  handleTextFieldChange(content) {
+    this.setState({ reason: content.target.value });
+  }
+
   newNotification(notification) {
-    if (notification != undefined) {
+    if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
+      const { enqueueSnackbar } = this.props;
+      enqueueSnackbar(notification.message, { variant });
     }
   }
 
   render() {
+    const { author, permlink } = this.props;
+    const { open } = this.state;
     return (
       <div>
         <Query
           query={IS_BLACKLISTED_POST}
           variables={{
-            author: this.props.author,
-            permlink: this.props.permlink,
+            author,
+            permlink,
           }}
         >
-          {({ data, loading, error }) => {
-            if (loading || error) {
-              return <Fragment />;
-            }
+          {({ data }) => {
             if (data.isBlacklistedPost.isBlacklisted) {
               const { reason } = data.isBlacklistedPost;
               return (
                 <Mutation
                   mutation={UNBLACKLIST_POST}
                   variables={{
-                    author: this.props.author,
-                    permlink: this.props.permlink,
+                    author,
+                    permlink,
                   }}
                 >
-                  {(unblacklistPost, data) => {
+                  {unblacklistPost => {
                     if (
                       data &&
                       data.data &&
                       data.data.unblacklistPost &&
-                      this.state.open === true
+                      open === true
                     ) {
                       this.newNotification({
                         success: data.data.unblacklistPost.success,
@@ -91,7 +87,7 @@ class AlertDialog extends React.Component {
                           Remove post from blacklist
                         </MenuItem>
                         <Dialog
-                          open={this.state.open}
+                          open={open}
                           onClose={this.handleClose}
                           aria-labelledby="alert-dialog-title"
                           aria-describedby="alert-dialog-description"
@@ -137,17 +133,17 @@ class AlertDialog extends React.Component {
                 <Mutation
                   mutation={BLACKLIST_POST}
                   variables={{
-                    author: this.props.author,
-                    permlink: this.props.permlink,
+                    author,
+                    permlink,
                     reason: this.state.reason,
                   }}
                 >
-                  {(blacklistPost, data) => {
+                  {blacklistPost => {
                     if (
                       data &&
                       data.data &&
                       data.data.blacklistPost &&
-                      this.state.open === true
+                      open === true
                     ) {
                       this.newNotification({
                         success: data.data.blacklistPost.success,
@@ -161,7 +157,7 @@ class AlertDialog extends React.Component {
                           Blacklist post
                         </MenuItem>
                         <Dialog
-                          open={this.state.open}
+                          open={open}
                           onClose={this.handleClose}
                           aria-labelledby="alert-dialog-title"
                           aria-describedby="alert-dialog-description"
@@ -178,7 +174,7 @@ class AlertDialog extends React.Component {
                             <TextField
                               autoFocus
                               margin="dense"
-                              value={this.state.reason}
+                              value={reason}
                               onChange={this.handleTextFieldChange.bind(this)}
                               label="Reason"
                               fullWidth
@@ -204,6 +200,7 @@ class AlertDialog extends React.Component {
                 </Mutation>
               );
             }
+            return <Fragment />;
           }}
         </Query>
       </div>
@@ -212,9 +209,9 @@ class AlertDialog extends React.Component {
 }
 
 AlertDialog.propTypes = {
-  author: PropTypes.string,
-  permlink: PropTypes.string,
-  enqueueSnackbar: PropTypes.func,
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(AlertDialog);

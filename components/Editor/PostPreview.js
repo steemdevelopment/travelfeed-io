@@ -1,10 +1,6 @@
-import React, { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import PropTypes from 'prop-types';
-import dynamic from 'next/dynamic';
-import AddLocationIcon from '@material-ui/icons/AddLocation';
-import EditLocationIcon from '@material-ui/icons/EditLocation';
+import React from 'react';
 
 class PostPreview extends React.Component {
   state = {

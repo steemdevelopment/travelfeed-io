@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 
 export default class MapCard extends PureComponent {
   render() {

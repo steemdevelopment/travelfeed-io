@@ -23,12 +23,13 @@ class Destinations extends Component {
   }
 
   render() {
-    const country_name = nameFromSlug(this.props.country);
-    const country_code = ccFromSlug(this.props.country);
+    const { country } = this.props;
+    const countryName = nameFromSlug(country);
+    const countryCode = ccFromSlug(country);
     const { subdivision } = this.props;
     const { city } = this.props;
     const { suburb } = this.props;
-    if (!country_code)
+    if (!countryCode)
       return (
         <Fragment>
           <Head
@@ -40,9 +41,9 @@ class Destinations extends Component {
         </Fragment>
       );
     const title = `${(suburb && `${suburb}, ${city}`) ||
-      (city && `${city}, ${country_name}`) ||
-      (subdivision && `${subdivision}, ${country_name}`) ||
-      country_name}`;
+      (city && `${city}, ${countryName}`) ||
+      (subdivision && `${subdivision}, ${countryName}`) ||
+      countryName}`;
     return (
       <Fragment>
         <Head
@@ -50,22 +51,22 @@ class Destinations extends Component {
           description={`Discover the best travel blog posts about ${suburb ||
             city ||
             subdivision ||
-            country_name} on TravelFeed.`}
+            countryName} on TravelFeed.`}
         />
         <Header />
         <DestinationHeader
-          country_slug={this.props.country}
-          query={{ country_code, subdivision, city }}
+          country_slug={country}
+          query={{ countryCode, subdivision, city }}
           title={`${(suburb && `${suburb}, ${city}`) ||
             (city && `${city}`) ||
             (subdivision && `${subdivision}`) ||
-            country_name}`}
+            countryName}`}
         />
         <PostGrid
           query={{
             limit: 8,
             orderby: 'curation_score DESC, total_votes DESC',
-            country_code,
+            countryCode,
             subdivision,
             city,
             suburb,
@@ -79,8 +80,14 @@ class Destinations extends Component {
   }
 }
 
+Destinations.defaultProps = {
+  subdivision: undefined,
+  city: undefined,
+  suburb: undefined,
+};
+
 Destinations.propTypes = {
-  country: PropTypes.string,
+  country: PropTypes.string.isRequired,
   subdivision: PropTypes.string,
   city: PropTypes.string,
   suburb: PropTypes.string,

@@ -1,20 +1,21 @@
 // http://recharts.org/en-US/examples/SimpleBarChart
-import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
 import {
-  BarChart,
   Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
+  BarChart,
   Legend,
   ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
 } from 'recharts';
 
 const data = [];
 
 export default class RecentEarningsChart extends PureComponent {
   render() {
+    const { recentPayouts, color } = this.props;
     const months = [
       '',
       'Jan',
@@ -30,7 +31,7 @@ export default class RecentEarningsChart extends PureComponent {
       'Nov',
       'Dec',
     ];
-    this.props.recent_payouts.forEach(d => {
+    recentPayouts.forEach(d => {
       data.push({ name: months[d.month], earnings: d.earnings });
     });
     return (
@@ -48,7 +49,7 @@ export default class RecentEarningsChart extends PureComponent {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="earnings" fill={this.props.color} />
+          <Bar dataKey="earnings" fill={color} />
         </BarChart>
       </ResponsiveContainer>
     );
@@ -56,6 +57,6 @@ export default class RecentEarningsChart extends PureComponent {
 }
 
 RecentEarningsChart.propTypes = {
-  recent_payouts: PropTypes.array,
-  color: PropTypes.string,
+  recentPayouts: PropTypes.array.isRequired,
+  color: PropTypes.string.isRequired,
 };

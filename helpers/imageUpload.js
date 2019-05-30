@@ -19,14 +19,14 @@ const uploadFile = (file, user) => {
   return new Promise((resolve, reject) => {
     xhr.onreadystatechange = () => {
       if (xhr.readyState !== 4) return;
-      if (xhr.readyState == 4 && xhr.status == 200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         // File uploaded successfully
         const response = JSON.parse(xhr.responseText);
-        const url = response.secure_url;
+        const uploadUrl = response.secure_url;
         resolve({
           success: 1,
           file: {
-            url,
+            uploadUrl,
           },
         });
       } else {

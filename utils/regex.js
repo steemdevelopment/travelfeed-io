@@ -1,6 +1,6 @@
 export const imageRegex = /(https?:\/\/(?:[-a-zA-Z0-9._]*[-a-zA-Z0-9])(?::\d{2,5})?(?:[/?#](?:[^\s"'<>\][()]*[^\s"'<>\][().,])?(?:(?:\.(?:tiff?|jpe?g|png|svg|ico)|ipfs\/[a-z\d]{40,}))))/gi;
 
-export const imgFullSize = /<img src="(http[^"]*)"(?:| alt="([^"]*)") \/>/;
+export const imgFullSize = /<img src="([^"]*)"(?:| alt="([^"]*)") \/>/;
 
 export const ownUrl = /^(localhost|travelfeed\.io|travelfeedio\.herokuapp.com)$/;
 

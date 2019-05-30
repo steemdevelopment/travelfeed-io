@@ -37,7 +37,7 @@ class PostMap extends Component {
 }
 
 PostMap.propTypes = {
-  location: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  location: PropTypes.objectOf(PropTypes.objectOf(PropTypes.number)).isRequired,
 };
 
 export default PostMap;

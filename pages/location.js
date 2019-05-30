@@ -61,10 +61,14 @@ class LocationPage extends Component {
   }
 }
 
+LocationPage.defaultProps = {
+  query: undefined,
+};
+
 LocationPage.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
-  showlocations: PropTypes.bool.isRequired,
+  query: PropTypes.objectOf(PropTypes.string),
+  showlocations: PropTypes.string.isRequired,
   formatted_address: PropTypes.string.isRequired,
   location_box: PropTypes.arrayOf(PropTypes.number).isRequired,
   country_code: PropTypes.string.isRequired,

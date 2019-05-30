@@ -25,11 +25,11 @@ class DestinationsPage extends Component {
   render() {
     const { country } = this.props;
     const countryName = nameFromSlug(country);
-    const countryCode = ccFromSlug(country);
+    const country_code = ccFromSlug(country);
     const { subdivision } = this.props;
     const { city } = this.props;
     const { suburb } = this.props;
-    if (!countryCode)
+    if (!country_code)
       return (
         <Fragment>
           <Head
@@ -56,7 +56,7 @@ class DestinationsPage extends Component {
         <Header />
         <DestinationHeader
           countrySlug={country}
-          query={{ countryCode, subdivision, city }}
+          query={{ country_code, subdivision, city }}
           title={`${(suburb && `${suburb}, ${city}`) ||
             (city && `${city}`) ||
             (subdivision && `${subdivision}`) ||
@@ -66,7 +66,7 @@ class DestinationsPage extends Component {
           query={{
             limit: 8,
             orderby: 'curation_score DESC, total_votes DESC',
-            countryCode,
+            country_code,
             subdivision,
             city,
             suburb,
@@ -84,6 +84,7 @@ DestinationsPage.defaultProps = {
   subdivision: undefined,
   city: undefined,
   suburb: undefined,
+  query: undefined,
 };
 
 DestinationsPage.propTypes = {
@@ -92,7 +93,7 @@ DestinationsPage.propTypes = {
   city: PropTypes.string,
   suburb: PropTypes.string,
   // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
+  query: PropTypes.objectOf(PropTypes.string),
 };
 
 export default DestinationsPage;

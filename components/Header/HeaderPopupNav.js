@@ -1,15 +1,15 @@
-import Grow from "@material-ui/core/Grow";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import RandomIcon from "@material-ui/icons/Explore";
-import CountryIcon from "@material-ui/icons/Landscape";
-import CityIcon from "@material-ui/icons/LocationCity";
-import MapIcon from "@material-ui/icons/Map";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
+import Grow from '@material-ui/core/Grow';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import RandomIcon from '@material-ui/icons/Explore';
+import CountryIcon from '@material-ui/icons/Landscape';
+import CityIcon from '@material-ui/icons/LocationCity';
+import MapIcon from '@material-ui/icons/Map';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 import {
   featured_cc_asia,
   featured_cc_europe,
@@ -18,24 +18,27 @@ import {
   featured_places_europe,
   featured_places_world,
   popular_countries,
-  slugFromCC
-} from "../../helpers/countryCodes";
-import DestinationCityColumn from "../Destinations/DestinationCityColumn";
-import DestinationCountryColumn from "../Destinations/DestinationCountryColumn";
-import DestinationMenuItem from "../Destinations/DestinationMenuItem";
+  slugFromCC,
+} from '../../helpers/countryCodes';
+import DestinationCityColumn from '../Destinations/DestinationCityColumn';
+import DestinationCountryColumn from '../Destinations/DestinationCountryColumn';
+import DestinationMenuItem from '../Destinations/DestinationMenuItem';
 
 class DestinationsNav extends Component {
   state = {
     selection: undefined,
-    random: undefined
+    random: undefined,
   };
+
   onMenuClick = selection => {
     this.setState({ selection });
   };
+
   newRandom = () => {
     this.setState({ random: undefined });
     this.props.closeDest();
   };
+
   render() {
     if (this.state.random === undefined) {
       const random_country =
@@ -47,12 +50,12 @@ class DestinationsNav extends Component {
         <div
           className="w-100 container bg-primary"
           style={{
-            paddingLeft: "0px",
-            position: "fixed",
+            paddingLeft: '0px',
+            position: 'fixed',
             zIndex: 99999,
-            top: "65px",
-            right: "0px",
-            left: "0px"
+            top: '65px',
+            right: '0px',
+            left: '0px',
           }}
         >
           <Popper open={this.props.showDest} transition disablePortal>
@@ -62,7 +65,7 @@ class DestinationsNav extends Component {
                 id="menu-list-grow"
                 style={{
                   transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
+                    placement === 'bottom' ? 'center top' : 'center bottom',
                 }}
               >
                 <Paper>
@@ -73,13 +76,13 @@ class DestinationsNav extends Component {
                           onClick={this.onMenuClick.bind(this)}
                           icon={<CountryIcon />}
                           text="Popular Countries"
-                          active={this.state.selection !== "Popular Places"}
+                          active={this.state.selection !== 'Popular Places'}
                         />
                         <DestinationMenuItem
                           onClick={this.onMenuClick.bind(this)}
                           icon={<CityIcon />}
                           text="Popular Places"
-                          active={this.state.selection === "Popular Places"}
+                          active={this.state.selection === 'Popular Places'}
                         />
                         <Link href="/map" passHref>
                           <a>
@@ -106,7 +109,7 @@ class DestinationsNav extends Component {
                       </MenuList>
                     </div>
                     <div className="col-xl-8 col-lg-8 col-md-8">
-                      {(this.state.selection === "Popular Places" && (
+                      {(this.state.selection === 'Popular Places' && (
                         <div className="container-fluid">
                           <div className="row">
                             <div className="col-4">
@@ -168,7 +171,7 @@ class DestinationsNav extends Component {
                                   country_codes={featured_cc_asia}
                                 />
                               </MenuList>
-                            </div>{" "}
+                            </div>{' '}
                             <div className="col-4">
                               <MenuList>
                                 <MenuItem>
@@ -197,7 +200,7 @@ class DestinationsNav extends Component {
 
 DestinationsNav.propTypes = {
   closeDest: PropTypes.func,
-  showDest: PropTypes.bool
+  showDest: PropTypes.bool,
 };
 
 export default DestinationsNav;

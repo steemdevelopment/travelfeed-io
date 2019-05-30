@@ -1,54 +1,55 @@
 // Todo: Image upload.
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import InputBase from "@material-ui/core/InputBase";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import InputBase from '@material-ui/core/InputBase';
 // import { UPLOAD_IMAGE } from "../../helpers/graphql/upload";
-import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
-import Router from "next/router";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Mutation } from "react-apollo";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import getSlug from "speakingurl";
-import { APP_VERSION, ROOTURL } from "../../config";
-import { getImageList } from "../../helpers/getImage";
-import { SAVE_DRAFT } from "../../helpers/graphql/drafts";
-import json2Html from "../../helpers/json2Html";
-import { extractSWM } from "../../helpers/regex";
-import { getUser } from "../../helpers/token";
-import Editor from "../Editor/Editor";
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
+import Router from 'next/router';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Mutation } from 'react-apollo';
+import readingTime from 'reading-time';
+import sanitize from 'sanitize-html';
+import getSlug from 'speakingurl';
+import { APP_VERSION, ROOTURL } from '../../config';
+import { getImageList } from '../../helpers/getImage';
+import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import json2Html from '../../helpers/json2Html';
+import { extractSWM } from '../../helpers/regex';
+import { getUser } from '../../helpers/token';
+import Editor from '../Editor/Editor';
 // import dynamic from "next/dynamic";
-import HtmlEditor from "../Editor/HTMLEditor";
-import HtmlEditorPreview from "../Editor/HTMLEditorPreview";
-import LocationPicker from "../Editor/LocationPickerButton";
-import PostPreview from "../Editor/PostPreview";
-import TagPicker from "../Editor/TagPicker";
+import HtmlEditor from '../Editor/HTMLEditor';
+import HtmlEditorPreview from '../Editor/HTMLEditorPreview';
+import LocationPicker from '../Editor/LocationPickerButton';
+import PostPreview from '../Editor/PostPreview';
+import TagPicker from '../Editor/TagPicker';
 // import { debounce } from "lodash";
-import PostMap from "../Maps/PostMap";
+import PostMap from '../Maps/PostMap';
 
 class PostEditor extends Component {
   state = {
-    title: "",
+    title: '',
     content: undefined,
     htmlContent: undefined,
     tags: undefined,
     completed: 0,
     location: undefined,
     codeEditor: false,
-    saved: true
+    saved: true,
     // codeEditor: true
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -56,21 +57,25 @@ class PostEditor extends Component {
       }
     }
   }
+
   changeToHtmlEditor() {
-    let htmlContent = "";
+    let htmlContent = '';
     if (this.state.content) {
       htmlContent = json2Html(this.state.content);
     }
     // Generate new ID to not overwrite the current draft
-    const id = getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
+    const id = `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
     this.setState({ htmlContent, codeEditor: true, id });
   }
+
   handleTagClick(op) {
     this.setState(op);
   }
+
   handleTitleEditorChange(title) {
     this.setState({ title: title.target.value });
   }
+
   // onEditorChange = content => {
   //   this.setState({ content });
   //   console.log(content)
@@ -79,26 +84,31 @@ class PostEditor extends Component {
     // console.log(content);
     this.setState({ content });
   };
+
   handleHtmlEditorChange = htmlContent => {
     // console.log(htmlContent);
     this.setState({ htmlContent });
   };
+
   handleTagsEditorChange(tags) {
     this.setState({ tags: tags.target.value });
   }
+
   onLocationPick = ({ latitude, longitude }) => {
     // console.log({ latitude, longitude });
     this.setState({ location: { latitude, longitude } });
   };
+
   componentWillUnmount() {
     // Stop saving drafts
     clearInterval(this.interval);
   }
+
   componentDidMount() {
     const json = this.props.edit.json
       ? JSON.parse(this.props.edit.json)
       : undefined;
-    const title = this.props.edit.title ? this.props.edit.title : "";
+    const title = this.props.edit.title ? this.props.edit.title : '';
     const content =
       this.props.edit.body && this.props.edit.isCodeEditor === false
         ? this.props.edit.body
@@ -106,24 +116,24 @@ class PostEditor extends Component {
             time: 1554920381017,
             blocks: [
               {
-                type: "header",
+                type: 'header',
                 data: {
-                  text: "Hello Editor.js",
-                  level: 2
-                }
-              }
+                  text: 'Hello Editor.js',
+                  level: 2,
+                },
+              },
             ],
-            version: "2.12.4"
+            version: '2.12.4',
           };
     const htmlContent =
       this.props.edit.body && this.props.edit.isCodeEditor === true
         ? this.props.edit.body
         : undefined;
-    const tags = json && json.tags ? json.tags : ["travelfeed"];
+    const tags = json && json.tags ? json.tags : ['travelfeed'];
     const location = json && json.location ? json.location : undefined;
     const id = this.props.edit.id
       ? this.props.edit.id
-      : getUser() + "-" + getSlug(new Date().toJSON()).replace(/-/g, "");
+      : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
     const mounted = true;
     const codeEditor = this.props.edit.isCodeEditor
       ? this.props.edit.isCodeEditor
@@ -136,16 +146,18 @@ class PostEditor extends Component {
       location,
       id,
       mounted,
-      codeEditor
+      codeEditor,
     });
     // Save draft every 20 seconds
     this.interval = setInterval(() => this.setState({ saved: false }), 20000);
   }
+
   progress = () => {
     // Publish animation
     const { completed } = this.state;
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
+
   async success() {
     const sleep = milliseconds => {
       // eslint-disable-next-line no-undef
@@ -155,28 +167,29 @@ class PostEditor extends Component {
     clearInterval(this.timer);
     this.setState({ completed: 0 });
   }
+
   getLocation(bodyText) {
-    let coordinates = extractSWM(bodyText);
+    const coordinates = extractSWM(bodyText);
     if (coordinates != null && coordinates.length > 2) {
       const lat = coordinates[1];
       const long = coordinates[2];
       return [lat, long];
-    } else {
-      return "";
     }
+    return '';
   }
+
   publishPost() {
-    let parentAuthor = "";
-    let parentPermlink = "travelfeed";
-    let title = this.state.title;
+    let parentAuthor = '';
+    let parentPermlink = 'travelfeed';
+    const { title } = this.state;
     let permlink = getSlug(title);
     let body = this.state.content;
-    let location = this.state.location;
-    let imageList = getImageList(body);
-    let metadata = {};
+    const { location } = this.state;
+    const imageList = getImageList(body);
+    const metadata = {};
     metadata.tags = this.state.tags;
     metadata.app = APP_VERSION;
-    metadata.community = "travelfeed";
+    metadata.community = 'travelfeed';
     if (imageList !== null) {
       metadata.image = imageList;
     }
@@ -193,8 +206,8 @@ class PostEditor extends Component {
     }
     // Todo: Parse body for images and links and include them in the json_metadata
     let username = getUser();
-    if (this.props.type == "comment") {
-      let commenttime = getSlug(new Date().toJSON()).replace(/-/g, "");
+    if (this.props.type == 'comment') {
+      const commenttime = getSlug(new Date().toJSON()).replace(/-/g, '');
       permlink = `re-${this.props.parent_permlink}-${commenttime}`;
       parentAuthor = this.props.parent_author;
       parentPermlink = this.props.parent_permlink;
@@ -203,7 +216,7 @@ class PostEditor extends Component {
       permlink = this.props.edit.permlink;
     }
     this.timer = setInterval(this.progress, 60);
-    this.setState({ user: username, permlink: permlink });
+    this.setState({ user: username, permlink });
     console.log(
       parentAuthor,
       parentPermlink,
@@ -211,7 +224,7 @@ class PostEditor extends Component {
       title,
       body,
       JSON.stringify(metadata),
-      "post"
+      'post',
     );
     // comment(
     // parentAuthor,
@@ -225,23 +238,24 @@ class PostEditor extends Component {
     //   this.newNotification(result);
     // });
   }
+
   render() {
-    const bodyText = "aaaa";
-    let sanitized = sanitize(bodyText, { allowedTags: [] });
-    let wordCount = "";
-    let readTime = "";
+    const bodyText = 'aaaa';
+    const sanitized = sanitize(bodyText, { allowedTags: [] });
+    let wordCount = '';
+    let readTime = '';
     if (this.state.codeEditor) {
       const readingtime = this.state.htmlContent
         ? readingTime(this.state.htmlContent)
-        : { words: 0, text: "0 min" };
+        : { words: 0, text: '0 min' };
       wordCount = readingtime.words;
       readTime = readingtime.text;
     } else {
-      let html = "";
+      let html = '';
       this.state.content &&
         this.state.content.blocks &&
         this.state.content.blocks.forEach(b => {
-          if (b.type === "paragraph" || b.type === "header") {
+          if (b.type === 'paragraph' || b.type === 'header') {
             html += `${b.data.text} `;
           }
         });
@@ -249,10 +263,10 @@ class PostEditor extends Component {
       wordCount = readingtime.words;
       readTime = readingtime.text;
     }
-    let location = this.state.location;
+    const { location } = this.state;
     if (this.state.completed == 100 && this.state.success == true) {
       this.success();
-      let url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
+      const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
     }
 
@@ -262,9 +276,9 @@ class PostEditor extends Component {
     //   );
     // }
     const publishTooltip =
-      wordCount < 250 || this.state.title === ""
-        ? "You need to write at least 250 words and set a title before you can publish your post"
-        : "Once published, your post cannot be deleted";
+      wordCount < 250 || this.state.title === ''
+        ? 'You need to write at least 250 words and set a title before you can publish your post'
+        : 'Once published, your post cannot be deleted';
     return (
       <Fragment>
         <div className="container">
@@ -273,11 +287,11 @@ class PostEditor extends Component {
               <Card>
                 <CardContent>
                   <InputBase
-                    autoFocus={true}
+                    autoFocus
                     inputProps={{
-                      maxLength: 100
+                      maxLength: 100,
                     }}
-                    multiline={true}
+                    multiline
                     className="font-weight-bold inputtitle"
                     placeholder="Title"
                     value={this.state.title}
@@ -294,7 +308,7 @@ class PostEditor extends Component {
                     action={
                       <Fragment>
                         <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                          {wordCount + " words"}
+                          {`${wordCount} words`}
                         </span>
                         <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
                           {readTime}
@@ -312,15 +326,15 @@ class PostEditor extends Component {
                         JSON.stringify(this.state.content),
                       json: JSON.stringify({
                         tags: this.state.tags,
-                        location: this.state.location
+                        location: this.state.location,
                       }),
-                      isCodeEditor: this.state.codeEditor
+                      isCodeEditor: this.state.codeEditor,
                     }}
                   >
                     {saveDraft => {
                       if (!this.state.saved) {
                         if (wordCount > 1) saveDraft();
-                        console.log("saving");
+                        console.log('saving');
                         this.setState({ saved: true });
                       }
                       return (
@@ -330,15 +344,11 @@ class PostEditor extends Component {
                               <HtmlEditor
                                 data={this.state.htmlContent}
                                 onChange={this.handleHtmlEditorChange.bind(
-                                  this
+                                  this,
                                 )}
                               />
                               {(this.state.htmlContent && (
-                                <Tooltip
-                                  title={
-                                    "Once you start typing, the only way to switch back for this post is to restore a previous draft"
-                                  }
-                                >
+                                <Tooltip title="Once you start typing, the only way to switch back for this post is to restore a previous draft">
                                   <span className="font-weight-bold font-size-8 cpointer text-muted">
                                     Switch to TravelFeed editor
                                   </span>
@@ -424,8 +434,8 @@ class PostEditor extends Component {
                           location={{
                             coordinates: {
                               lat: this.state.location.latitude,
-                              lng: this.state.location.longitude
-                            }
+                              lng: this.state.location.longitude,
+                            },
                           }}
                         />
                       )}
@@ -449,10 +459,10 @@ class PostEditor extends Component {
                             color="primary"
                             onClick={() => this.publishPost()}
                             disabled={
-                              wordCount < 250 || this.state.title === ""
+                              wordCount < 250 || this.state.title === ''
                             }
                           >
-                            {(this.props.editMode && "Edit") || "Publish"}
+                            {(this.props.editMode && 'Edit') || 'Publish'}
                           </Button>
                         </div>
                       </Tooltip>
@@ -478,8 +488,8 @@ class PostEditor extends Component {
 }
 
 PostEditor.defaultProps = {
-  initialValue: "",
-  edit: {}
+  initialValue: '',
+  edit: {},
 };
 
 PostEditor.propTypes = {
@@ -490,7 +500,7 @@ PostEditor.propTypes = {
   edit: PropTypes.object,
   mode: PropTypes.string,
   type: PropTypes.string,
-  enqueueSnackbar: PropTypes.func
+  enqueueSnackbar: PropTypes.func,
 };
 
 export default withSnackbar(PostEditor);

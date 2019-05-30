@@ -1,14 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import NewIcon from "@material-ui/icons/Restore";
-import FeaturedIcon from "@material-ui/icons/Star";
-import HotIcon from "@material-ui/icons/FlightTakeoff";
-import FeedIcon from "@material-ui/icons/Favorite";
-import DiscoverIcon from "@material-ui/icons/Explore";
-import Link from "next/link";
+import Paper from '@material-ui/core/Paper';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import DiscoverIcon from '@material-ui/icons/Explore';
+import FeedIcon from '@material-ui/icons/Favorite';
+import HotIcon from '@material-ui/icons/FlightTakeoff';
+import NewIcon from '@material-ui/icons/Restore';
+import FeaturedIcon from '@material-ui/icons/Star';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 class IconLabelTabs extends React.Component {
   render() {
@@ -22,24 +22,24 @@ class IconLabelTabs extends React.Component {
           textColor="secondary"
           centered
         >
-          <Link as={`/created`} href={`/?orderby=created_at`} passHref>
+          <Link as="/created" href="/?orderby=created_at" passHref>
             <Tab
               icon={<NewIcon />}
               label="NEW"
               className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
             />
           </Link>
-          <Link as={`/hot`} href={`/?orderby=sc_hot`} passHref>
+          <Link as="/hot" href="/?orderby=sc_hot" passHref>
             <Tab icon={<HotIcon />} label="TAKING OFF" />
           </Link>
-          <Link as={`/discover`} href={`/?orderby=random`} passHref>
+          <Link as="/discover" href="/?orderby=random" passHref>
             <Tab icon={<DiscoverIcon />} label="DISCOVER" />
           </Link>
-          <Link as={`/featured`} href={`/?orderby=featured`} passHref>
+          <Link as="/featured" href="/?orderby=featured" passHref>
             <Tab icon={<FeaturedIcon />} label="FEATURED" />
           </Link>
           {this.props.showFeed && (
-            <Link as={`/feed`} href={`/?orderby=feed`} passHref>
+            <Link as="/feed" href="/?orderby=feed" passHref>
               <Tab icon={<FeedIcon />} label="FEED" />
             </Link>
           )}
@@ -51,7 +51,7 @@ class IconLabelTabs extends React.Component {
 
 IconLabelTabs.propTypes = {
   showFeed: PropTypes.string,
-  selection: PropTypes.number
+  selection: PropTypes.number,
 };
 
 export default IconLabelTabs;

@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
 
 export default class MapCard extends PureComponent {
   render() {
@@ -18,7 +18,7 @@ export default class MapCard extends PureComponent {
           </Link>
           <br />
           <em>
-            by{" "}
+            by{' '}
             <Link
               as={`/@${this.props.info.author}`}
               href={`/blog?author=${this.props.info.author}`}
@@ -34,5 +34,5 @@ export default class MapCard extends PureComponent {
 }
 
 MapCard.propTypes = {
-  info: PropTypes.object
+  info: PropTypes.object,
 };

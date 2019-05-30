@@ -1,28 +1,31 @@
 // TODO: Implement new comment editor
 
 // import Editor from "rich-markdown-editor";
-import { debounce } from "lodash";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import getSlug from "speakingurl";
-import { APP_VERSION } from "../../config";
-import { comment } from "../../helpers/actions";
-import { getImageList } from "../../helpers/getImage";
+import { debounce } from 'lodash';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import getSlug from 'speakingurl';
+import { APP_VERSION } from '../../config';
+import { comment } from '../../helpers/actions';
+import { getImageList } from '../../helpers/getImage';
+
 class CommentEditor extends Component {
   state = {
-    content: "",
-    permlink: "",
-    completed: 0
+    content: '',
+    permlink: '',
+    completed: 0,
   };
+
   handleEditorChange = debounce(value => {
     this.setState({ content: value() });
   }, 250);
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -30,24 +33,26 @@ class CommentEditor extends Component {
       }
     }
   }
+
   progress = () => {
     const { completed } = this.state;
     this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
   };
+
   publish() {
-    const title = "";
+    const title = '';
     const parentAuthor = this.props.parent_author;
     const parentPermlink = this.props.parent_permlink;
-    let commenttime = getSlug(new Date().toJSON()).replace(/-/g, "");
-    let permlink =
+    const commenttime = getSlug(new Date().toJSON()).replace(/-/g, '');
+    const permlink =
       (this.props.editMode && this.props.permlink) ||
       `re-${parentPermlink}-${commenttime}`;
     this.setState({ permlink });
     const body = this.state.content;
     const metadata = {};
-    metadata.tags = ["travelfeed"];
+    metadata.tags = ['travelfeed'];
     metadata.app = APP_VERSION;
-    metadata.community = "travelfeed";
+    metadata.community = 'travelfeed';
     // Parse comment for images. Todo: Parse links
     const imageList = getImageList(body);
     if (imageList !== null) {
@@ -62,11 +67,12 @@ class CommentEditor extends Component {
       title,
       body,
       metadata,
-      "comment"
+      'comment',
     ).then(result => {
       this.newNotification(result);
     });
   }
+
   render() {
     return <Fragment />;
     // if (this.state.success) {
@@ -116,7 +122,7 @@ class CommentEditor extends Component {
 }
 
 CommentEditor.defaultProps = {
-  editMode: false
+  editMode: false,
 };
 
 CommentEditor.propTypes = {
@@ -129,7 +135,7 @@ CommentEditor.propTypes = {
   parent_author: PropTypes.string,
   parent_permlink: PropTypes.string,
   edit: PropTypes.object,
-  enqueueSnackbar: PropTypes.func
+  enqueueSnackbar: PropTypes.func,
 };
 
 export default withSnackbar(CommentEditor);

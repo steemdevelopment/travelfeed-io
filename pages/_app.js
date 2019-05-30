@@ -1,41 +1,41 @@
-import CssBaseline from "@material-ui/core/CssBaseline";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import * as Sentry from "@sentry/browser";
-import { register, unregister } from "next-offline/runtime";
-import App, { Container } from "next/app";
-import Router from "next/router";
-import { SnackbarProvider } from "notistack";
-import NProgress from "nprogress";
-import React from "react";
-import { ApolloProvider } from "react-apollo";
-import JssProvider from "react-jss/lib/JssProvider";
-import ReactPiwik from "react-piwik";
-import CookieConsent from "../components/CookieConsent/CookieConsent";
-import { getUser, hasCookieConsent } from "../helpers/token";
-import getPageContext from "../lib/getPageContext";
-import withApollo from "../lib/withApollo";
-import "../styles/bootstrap.min.css";
-import "../styles/style.css";
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import * as Sentry from '@sentry/browser';
+import { register, unregister } from 'next-offline/runtime';
+import App, { Container } from 'next/app';
+import Router from 'next/router';
+import { SnackbarProvider } from 'notistack';
+import NProgress from 'nprogress';
+import React from 'react';
+import { ApolloProvider } from 'react-apollo';
+import JssProvider from 'react-jss/lib/JssProvider';
+import ReactPiwik from 'react-piwik';
+import CookieConsent from '../components/CookieConsent/CookieConsent';
+import { getUser, hasCookieConsent } from '../helpers/token';
+import getPageContext from '../lib/getPageContext';
+import withApollo from '../lib/withApollo';
+import '../styles/bootstrap.min.css';
+import '../styles/style.css';
 
 new ReactPiwik({
-  url: "https://matomo.travelfeed.io",
+  url: 'https://matomo.travelfeed.io',
   siteId: 1,
   trackErrors: true,
-  jsFilename: "matomo.js",
-  phpFilename: "matomo.php"
+  jsFilename: 'matomo.js',
+  phpFilename: 'matomo.php',
 });
 
 NProgress.configure({ showSpinner: false });
 
-Router.events.on("routeChangeStart", () => {
+Router.events.on('routeChangeStart', () => {
   NProgress.start();
-  ReactPiwik.push(["requireConsent"]);
-  hasCookieConsent === "true" && ReactPiwik.push(["setConsentGiven"]);
-  ReactPiwik.push(["setDocumentTitle", document.title]);
-  ReactPiwik.push(["trackPageView"]);
+  ReactPiwik.push(['requireConsent']);
+  hasCookieConsent === 'true' && ReactPiwik.push(['setConsentGiven']);
+  ReactPiwik.push(['setDocumentTitle', document.title]);
+  ReactPiwik.push(['trackPageView']);
 });
-Router.events.on("routeChangeComplete", () => NProgress.done());
-Router.events.on("routeChangeError", () => NProgress.done());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
   constructor(props) {
@@ -45,23 +45,25 @@ class MyApp extends App {
 
   componentDidMount() {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
+    const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     Sentry.init({
-      dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
+      dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
     });
-    if (process.env.NODE_ENV === "production") register();
-    ReactPiwik.push(["requireConsent"]);
-    hasCookieConsent === "true" && ReactPiwik.push(["setConsentGiven"]);
+    if (process.env.NODE_ENV === 'production') register();
+    ReactPiwik.push(['requireConsent']);
+    hasCookieConsent === 'true' && ReactPiwik.push(['setConsentGiven']);
     const user = getUser();
-    user && ReactPiwik.push(["setUserId", user]);
-    ReactPiwik.push(["trackPageView"]);
+    user && ReactPiwik.push(['setUserId', user]);
+    ReactPiwik.push(['trackPageView']);
   }
+
   componentWillUnmount() {
-    if (process.env.NODE_ENV === "production") unregister();
+    if (process.env.NODE_ENV === 'production') unregister();
   }
+
   render() {
     const { Component, pageProps, apollo } = this.props;
     return (
@@ -82,7 +84,7 @@ class MyApp extends App {
             {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
             {/* <Header /> */}
-            <div style={{ paddingTop: "65px" }} />
+            <div style={{ paddingTop: '65px' }} />
             <SnackbarProvider maxSnack={3}>
               <ApolloProvider client={apollo}>
                 <CookieConsent />

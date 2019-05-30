@@ -5,24 +5,24 @@ import MapGL, {
   Popup,
   NavigationControl,
   GeolocateControl,
-  FullscreenControl
-} from "@urbica/react-map-gl";
-import Cluster from "@urbica/react-map-gl-cluster";
+  FullscreenControl,
+} from '@urbica/react-map-gl';
+import Cluster from '@urbica/react-map-gl-cluster';
 // Todo: Maybe fork and adapt to uber's react-map-gl to make use of Geocoder?
-import "mapbox-gl/dist/mapbox-gl.css";
-import React, { Component } from "react";
-import MarkerSmall from "./MarkerSmall";
-import MapCard from "./MapCard";
-import { MAPBOX_TOKEN } from "../../config";
-import PropTypes from "prop-types";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import MarkerSmall from './MarkerSmall';
+import MapCard from './MapCard';
+import { MAPBOX_TOKEN } from '../../config';
 
 const style = {
-  width: "20px",
-  height: "20px",
-  color: "#fff",
-  background: "#1978c8",
-  borderRadius: "20px",
-  textAlign: "center"
+  width: '20px',
+  height: '20px',
+  color: '#fff',
+  background: '#1978c8',
+  borderRadius: '20px',
+  textAlign: 'center',
 };
 
 class MapCluster extends Component {
@@ -30,10 +30,11 @@ class MapCluster extends Component {
     viewport: {
       latitude: 0,
       longitude: 0,
-      zoom: 1
+      zoom: 1,
     },
-    popupInfo: null
+    popupInfo: null,
   };
+
   _renderPopup() {
     const { popupInfo } = this.state;
     return (
@@ -51,10 +52,11 @@ class MapCluster extends Component {
       )
     );
   }
+
   render() {
     const ClusterMarker = args => (
       <Marker longitude={args.longitude} latitude={args.latitude}>
-        <div style={{ ...style, background: "#f28a25" }}>{args.pointCount}</div>
+        <div style={{ ...style, background: '#f28a25' }}>{args.pointCount}</div>
       </Marker>
     );
     const { viewport } = this.state;
@@ -98,7 +100,7 @@ class MapCluster extends Component {
 }
 
 MapCluster.propTypes = {
-  data: PropTypes.array
+  data: PropTypes.array,
 };
 
 export default MapCluster;

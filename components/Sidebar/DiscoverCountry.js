@@ -1,13 +1,17 @@
-import Button from "@material-ui/core/Button";
-import { teal } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import Link from "next/link";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { nameFromCC, random_country, slugFromCC } from "../../helpers/countryCodes";
-import { imageProxy } from "../../helpers/getImage";
-import { GET_POSTS } from "../../helpers/graphql/posts";
-import HeaderCard from "../General/HeaderCard";
+import Button from '@material-ui/core/Button';
+import { teal } from '@material-ui/core/colors';
+import Divider from '@material-ui/core/Divider';
+import Link from 'next/link';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import {
+  nameFromCC,
+  random_country,
+  slugFromCC,
+} from '../../helpers/countryCodes';
+import { imageProxy } from '../../helpers/getImage';
+import { GET_POSTS } from '../../helpers/graphql/posts';
+import HeaderCard from '../General/HeaderCard';
 
 class CountryExplore extends Component {
   render() {
@@ -21,7 +25,7 @@ class CountryExplore extends Component {
           variables={{
             country_code,
             limit: 5,
-            min_curation_score: 10000
+            min_curation_score: 10000,
           }}
         >
           {({ data, loading, error }) => {
@@ -53,15 +57,16 @@ class CountryExplore extends Component {
                                     <div
                                       className="col-3 my-auto"
                                       style={{
-                                        backgroundImage:
-                                          "url(" +
-                                          imageProxy(post.img_url, 100, 100) +
-                                          ")",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundPosition: "center center",
-                                        backgroundSize: "cover",
-                                        width: "70px",
-                                        height: "70px"
+                                        backgroundImage: `url(${imageProxy(
+                                          post.img_url,
+                                          100,
+                                          100,
+                                        )})`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center center',
+                                        backgroundSize: 'cover',
+                                        width: '70px',
+                                        height: '70px',
                                       }}
                                     />
                                     <div className="col-9 my-auto">

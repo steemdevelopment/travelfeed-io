@@ -8,11 +8,11 @@ export function validateAccountName(value) {
   let label;
   let suffix;
 
-  suffix = "Account name should ";
+  suffix = 'Account name should ';
   if (!value) {
     return `${suffix}not be empty.`;
   }
-  const length = value.length;
+  const { length } = value;
   if (length < 3) {
     return `${suffix}be longer.`;
   }
@@ -20,9 +20,9 @@ export function validateAccountName(value) {
     return `${suffix}be shorter.`;
   }
   if (/\./.test(value)) {
-    suffix = "Each account segment should ";
+    suffix = 'Each account segment should ';
   }
-  const ref = value.split(".");
+  const ref = value.split('.');
   for (let i = 0, len = ref.length; i < len; i += 1) {
     label = ref[i];
     if (!/^[a-z]/.test(label)) {

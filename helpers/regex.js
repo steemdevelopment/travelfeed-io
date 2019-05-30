@@ -18,15 +18,15 @@ export const markdownComment = /\[\/\/\]:\S?\s\(.*\)/g;
 
 export const regExcerpt = text => {
   return text
-    .replace(allURLs, "")
-    .replace(allowedTitleChars, "")
+    .replace(allURLs, '')
+    .replace(allowedTitleChars, '')
     .substring(0, 250);
 };
 
 export const allSpecialChars = /(?:[!-\/:-@[-`{-~]|[^\x00-\x7F]|\s)/g;
 
 export const permlinkFromTitle = title => {
-  return title.replace(nospecialchars, "-").toLowerCase();
+  return title.replace(nospecialchars, '-').toLowerCase();
 };
 
 export const extractSWM = bodyText => {

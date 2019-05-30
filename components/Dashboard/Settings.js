@@ -1,19 +1,19 @@
 // Todo: Add delete account to remove all of users data from our database
-import { teal } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormGroup from "@material-ui/core/FormGroup";
-import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import Switch from "@material-ui/core/Switch";
-import TextField from "@material-ui/core/TextField";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Mutation, Query } from "react-apollo";
-import { CHANGE_SETTINGS, GET_SETTINGS } from "../../helpers/graphql/settings";
-import HeaderCard from "../General/HeaderCard";
+import { teal } from '@material-ui/core/colors';
+import Divider from '@material-ui/core/Divider';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+import Switch from '@material-ui/core/Switch';
+import TextField from '@material-ui/core/TextField';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
+import HeaderCard from '../General/HeaderCard';
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -24,13 +24,14 @@ class Settings extends Component {
     defaultVoteWeight: 0,
     defaultCommentsVoteWeight: 0,
     showNSFW: false,
-    useTfBlacklist: true
+    useTfBlacklist: true,
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -38,6 +39,7 @@ class Settings extends Component {
       }
     }
   }
+
   handleCheckboxChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
@@ -49,9 +51,11 @@ class Settings extends Component {
   setDefaultCommentsVoteWeight = value => {
     this.setState({ defaultCommentsVoteWeight: value });
   };
+
   setDefaultVoteWeight = value => {
     this.setState({ defaultVoteWeight: value });
   };
+
   render() {
     return (
       <Fragment>
@@ -80,7 +84,7 @@ class Settings extends Component {
                           defaultCommentsVoteWeight:
                             data.preferences.defaultCommentsVoteWeight,
                           showNSFW: data.preferences.showNSFW,
-                          useTfBlacklist: data.preferences.useTfBlacklist
+                          useTfBlacklist: data.preferences.useTfBlacklist,
                         });
                         return <Fragment />;
                       }
@@ -92,7 +96,7 @@ class Settings extends Component {
                             defaultCommentsVoteWeight: this.state
                               .defaultCommentsVoteWeight,
                             showNSFW: this.state.showNSFW,
-                            useTfBlacklist: this.state.useTfBlacklist
+                            useTfBlacklist: this.state.useTfBlacklist,
                           }}
                         >
                           {(changeSettings, data) => {
@@ -102,7 +106,7 @@ class Settings extends Component {
                             if (data.data && !this.state.saved) {
                               this.newNotification({
                                 success: data.data.updatePreferences.success,
-                                message: data.data.updatePreferences.message
+                                message: data.data.updatePreferences.message,
                               });
                               this.setState({ saved: true });
                             }
@@ -116,7 +120,7 @@ class Settings extends Component {
                                         <Switch
                                           checked={this.state.showNSFW}
                                           onChange={this.handleCheckboxChange(
-                                            "showNSFW"
+                                            'showNSFW',
                                           )}
                                           onInput={changeSettings}
                                           value="showNSFW"
@@ -132,7 +136,7 @@ class Settings extends Component {
                                         <Switch
                                           checked={this.state.useTfBlacklist}
                                           onChange={this.handleCheckboxChange(
-                                            "useTfBlacklist"
+                                            'useTfBlacklist',
                                           )}
                                           onInput={changeSettings}
                                           value="useTfBlacklist"
@@ -149,13 +153,13 @@ class Settings extends Component {
                                       value={this.state.defaultVoteWeight}
                                       onChange={value => {
                                         this.setDefaultVoteWeight(
-                                          value.target.value
+                                          value.target.value,
                                         );
                                         changeSettings({
                                           variables: {
                                             defaultVoteWeight:
-                                              value.target.value
-                                          }
+                                              value.target.value,
+                                          },
                                         });
                                       }}
                                       margin="normal"
@@ -175,13 +179,13 @@ class Settings extends Component {
                                       }
                                       onChange={value => {
                                         this.setDefaultCommentsVoteWeight(
-                                          value.target.value
+                                          value.target.value,
                                         );
                                         changeSettings({
                                           variables: {
                                             defaultCommentsVoteWeight:
-                                              value.target.value
-                                          }
+                                              value.target.value,
+                                          },
                                         });
                                       }}
                                       margin="normal"
@@ -212,6 +216,6 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  enqueueSnackbar: PropTypes.func
+  enqueueSnackbar: PropTypes.func,
 };
 export default withSnackbar(Settings);

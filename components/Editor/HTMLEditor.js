@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CodeMirror from "react-codemirror";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/markdown/markdown";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CodeMirror from 'react-codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/markdown/markdown';
 
 class HtmlEditor extends Component {
   render() {
@@ -11,7 +11,7 @@ class HtmlEditor extends Component {
         <CodeMirror
           defaultValue={this.props.data}
           options={{
-            mode: "markdown"
+            mode: 'markdown',
           }}
           onChange={this.props.onChange}
         />

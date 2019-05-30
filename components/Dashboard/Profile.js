@@ -1,15 +1,15 @@
-import Button from "@material-ui/core/Button";
-import { indigo } from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import SaveIcon from "@material-ui/icons/Save";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_PROFILE } from "../../helpers/graphql/profile";
-import { getUser } from "../../helpers/token";
-import HeaderCard from "../General/HeaderCard";
+import Button from '@material-ui/core/Button';
+import { indigo } from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import SaveIcon from '@material-ui/icons/Save';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { GET_PROFILE } from '../../helpers/graphql/profile';
+import { getUser } from '../../helpers/token';
+import HeaderCard from '../General/HeaderCard';
 
 class Profile extends Component {
   constructor(props) {
@@ -17,176 +17,189 @@ class Profile extends Component {
     this.state = {
       loaded: false,
       author: getUser(),
-      profile_image: "",
-      cover_image: "",
-      name: "",
-      about: "",
-      location: "",
-      website: "",
-      facebook: "",
-      twitter: "",
-      instagram: "",
-      youtube: "",
-      couchsurfing: "",
-      changed: []
+      profile_image: '',
+      cover_image: '',
+      name: '',
+      about: '',
+      location: '',
+      website: '',
+      facebook: '',
+      twitter: '',
+      instagram: '',
+      youtube: '',
+      couchsurfing: '',
+      changed: [],
     };
     this.handleEditorChange_profile_image = this.handleEditorChange_profile_image.bind(
-      this
+      this,
     );
     this.handleEditorChange_cover_image = this.handleEditorChange_cover_image.bind(
-      this
+      this,
     );
     this.handleEditorChange_name = this.handleEditorChange_name.bind(this);
     this.handleEditorChange_about = this.handleEditorChange_about.bind(this);
     this.handleEditorChange_location = this.handleEditorChange_location.bind(
-      this
+      this,
     );
     this.handleEditorChange_website = this.handleEditorChange_website.bind(
-      this
+      this,
     );
     this.handleEditorChange_facebook = this.handleEditorChange_facebook.bind(
-      this
+      this,
     );
     this.handleEditorChange_twitter = this.handleEditorChange_twitter.bind(
-      this
+      this,
     );
     this.handleEditorChange_instagram = this.handleEditorChange_instagram.bind(
-      this
+      this,
     );
     this.handleEditorChange_youtube = this.handleEditorChange_youtube.bind(
-      this
+      this,
     );
     this.handleEditorChange_couchsurfing = this.handleEditorChange_couchsurfing.bind(
-      this
+      this,
     );
   }
+
   handleEditorChange_profile_image(profile_image) {
-    var changed = this.state.changed;
-    if (changed.indexOf("profile_image") > -1 === false) {
-      changed = this.state.changed.concat("profile_image");
+    let { changed } = this.state;
+    if (changed.indexOf('profile_image') > -1 === false) {
+      changed = this.state.changed.concat('profile_image');
     }
     this.setState({
       profile_image: profile_image.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_cover_image(cover_image) {
-    var changed = this.state.changed;
-    if (changed.indexOf("cover_image") > -1 === false) {
-      changed = this.state.changed.concat("cover_image");
+    let { changed } = this.state;
+    if (changed.indexOf('cover_image') > -1 === false) {
+      changed = this.state.changed.concat('cover_image');
     }
     this.setState({
       cover_image: cover_image.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_name(name) {
-    var changed = this.state.changed;
-    if (changed.indexOf("name") > -1 === false) {
-      changed = this.state.changed.concat("name");
+    let { changed } = this.state;
+    if (changed.indexOf('name') > -1 === false) {
+      changed = this.state.changed.concat('name');
     }
     this.setState({
       name: name.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_about(about) {
-    var changed = this.state.changed;
-    if (changed.indexOf("about") > -1 === false) {
-      changed = this.state.changed.concat("about");
+    let { changed } = this.state;
+    if (changed.indexOf('about') > -1 === false) {
+      changed = this.state.changed.concat('about');
     }
     this.setState({
       about: about.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_location(location) {
-    var changed = this.state.changed;
-    if (changed.indexOf("location") > -1 === false) {
-      changed = this.state.changed.concat("location");
+    let { changed } = this.state;
+    if (changed.indexOf('location') > -1 === false) {
+      changed = this.state.changed.concat('location');
     }
     this.setState({
       location: location.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_website(website) {
-    var changed = this.state.changed;
-    if (changed.indexOf("website") > -1 === false) {
-      changed = this.state.changed.concat("website");
+    let { changed } = this.state;
+    if (changed.indexOf('website') > -1 === false) {
+      changed = this.state.changed.concat('website');
     }
     this.setState({
       website: website.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_facebook(facebook) {
-    var changed = this.state.changed;
-    if (changed.indexOf("facebook") > -1 === false) {
-      changed = this.state.changed.concat("facebook");
+    let { changed } = this.state;
+    if (changed.indexOf('facebook') > -1 === false) {
+      changed = this.state.changed.concat('facebook');
     }
     this.setState({
       facebook: facebook.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_twitter(twitter) {
-    var changed = this.state.changed;
-    if (changed.indexOf("twitter") > -1 === false) {
-      changed = this.state.changed.concat("twitter");
+    let { changed } = this.state;
+    if (changed.indexOf('twitter') > -1 === false) {
+      changed = this.state.changed.concat('twitter');
     }
     this.setState({
       twitter: twitter.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_instagram(instagram) {
-    var changed = this.state.changed;
-    if (changed.indexOf("instagram") > -1 === false) {
-      changed = this.state.changed.concat("instagram");
+    let { changed } = this.state;
+    if (changed.indexOf('instagram') > -1 === false) {
+      changed = this.state.changed.concat('instagram');
     }
     this.setState({
       instagram: instagram.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_youtube(youtube) {
-    var changed = this.state.changed;
-    if (changed.indexOf("youtube") > -1 === false) {
-      changed = this.state.changed.concat("youtube");
+    let { changed } = this.state;
+    if (changed.indexOf('youtube') > -1 === false) {
+      changed = this.state.changed.concat('youtube');
     }
     this.setState({
       youtube: youtube.target.value,
-      changed: changed
+      changed,
     });
   }
+
   handleEditorChange_couchsurfing(couchsurfing) {
-    var changed = this.state.changed;
-    if (changed.indexOf("couchsurfing") > -1 === false) {
-      changed = this.state.changed.concat("couchsurfing");
+    let { changed } = this.state;
+    if (changed.indexOf('couchsurfing') > -1 === false) {
+      changed = this.state.changed.concat('couchsurfing');
     }
     this.setState({
       couchsurfing: couchsurfing.target.value,
-      changed: changed
+      changed,
     });
   }
+
   linkBuilder() {
     if (this.state.changed.length == 0) {
-      return "#";
+      return '#';
     }
-    var link = "https://steemconnect.com/sign/profile-update?";
-    var count = 0;
-    for (let info of this.state.changed) {
+    let link = 'https://steemconnect.com/sign/profile-update?';
+    let count = 0;
+    for (const info of this.state.changed) {
       if (count > 0) {
-        link += "&";
+        link += '&';
       }
-      link += info + "=" + this.state[info];
+      link += `${info}=${this.state[info]}`;
       ++count;
     }
-    window.open(link, "_blank");
+    window.open(link, '_blank');
   }
+
   render() {
-    var updatebtn = (
+    let updatebtn = (
       <Button color="primary" variant="outlined" disabled>
         <SaveIcon />
         <span className="pl-2">Update Profile</span>
@@ -221,7 +234,7 @@ class Profile extends Component {
                 twitter: data.profile.twitter,
                 instagram: data.profile.instagram,
                 youtube: data.profile.youtube,
-                couchsurfing: data.profile.couchsurfing
+                couchsurfing: data.profile.couchsurfing,
               });
             }
             return (
@@ -242,9 +255,9 @@ class Profile extends Component {
                         <TextField
                           label="Name"
                           inputProps={{
-                            maxLength: 20
+                            maxLength: 20,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your display name"
                           margin="normal"
                           value={this.state.name}
@@ -254,9 +267,9 @@ class Profile extends Component {
                         <TextField
                           label="Profile description"
                           inputProps={{
-                            maxLength: 160
+                            maxLength: 160,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Profile description"
                           margin="normal"
                           value={this.state.about}
@@ -266,7 +279,7 @@ class Profile extends Component {
                         <TextField
                           label="Profile image"
                           inputProps={{
-                            maxLength: 1000
+                            maxLength: 1000,
                           }}
                           placeholder="Profile image"
                           margin="normal"
@@ -277,7 +290,7 @@ class Profile extends Component {
                         <TextField
                           label="Cover image"
                           inputProps={{
-                            maxLength: 1000
+                            maxLength: 1000,
                           }}
                           placeholder="Cover image for your blog"
                           margin="normal"
@@ -288,9 +301,9 @@ class Profile extends Component {
                         <TextField
                           label="Location"
                           inputProps={{
-                            maxLength: 30
+                            maxLength: 30,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your location"
                           margin="normal"
                           value={this.state.location}
@@ -300,9 +313,9 @@ class Profile extends Component {
                         <TextField
                           label="Website"
                           inputProps={{
-                            maxLength: 100
+                            maxLength: 100,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your website"
                           margin="normal"
                           value={this.state.website}
@@ -312,9 +325,9 @@ class Profile extends Component {
                         <TextField
                           label="Facebook"
                           inputProps={{
-                            maxLength: 50
+                            maxLength: 50,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your Facebook username or fanpage"
                           margin="normal"
                           value={this.state.facebook}
@@ -324,9 +337,9 @@ class Profile extends Component {
                         <TextField
                           label="Twitter"
                           inputProps={{
-                            maxLength: 50
+                            maxLength: 50,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your Twitter username"
                           margin="normal"
                           value={this.state.twitter}
@@ -336,9 +349,9 @@ class Profile extends Component {
                         <TextField
                           label="Instagram"
                           inputProps={{
-                            maxLength: 30
+                            maxLength: 30,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your Instagram username"
                           margin="normal"
                           value={this.state.instagram}
@@ -348,9 +361,9 @@ class Profile extends Component {
                         <TextField
                           label="Youtube"
                           inputProps={{
-                            maxLength: 20
+                            maxLength: 20,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your Youtube username"
                           margin="normal"
                           value={this.state.youtube}
@@ -360,9 +373,9 @@ class Profile extends Component {
                         <TextField
                           label="Couchsurfing"
                           inputProps={{
-                            maxLength: 50
+                            maxLength: 50,
                           }}
-                          multiline={true}
+                          multiline
                           placeholder="Your Couchsurfing username or fanpage"
                           margin="normal"
                           value={this.state.couchsurfing}
@@ -399,7 +412,7 @@ class Profile extends Component {
 }
 
 Profile.propTypes = {
-  user: PropTypes.string
+  user: PropTypes.string,
 };
 
 export default Profile;

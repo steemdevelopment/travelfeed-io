@@ -1,31 +1,31 @@
-import Button from "@material-ui/core/Button";
-import red from "@material-ui/core/colors/red";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Mutation } from "react-apollo";
-import { DELETE_DRAFT } from "../../../helpers/graphql/drafts";
+import Button from '@material-ui/core/Button';
+import red from '@material-ui/core/colors/red';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Mutation } from 'react-apollo';
+import { DELETE_DRAFT } from '../../../helpers/graphql/drafts';
 
 const theme = createMuiTheme({
   palette: {
-    primary: red
+    primary: red,
   },
   typography: {
-    useNextVariants: true
-  }
+    useNextVariants: true,
+  },
 });
 
 class DeleteDraftButton extends Component {
   state = {
-    open: false
+    open: false,
   };
 
   handleClickOpen = () => {
@@ -38,9 +38,9 @@ class DeleteDraftButton extends Component {
 
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -54,7 +54,7 @@ class DeleteDraftButton extends Component {
       <Mutation
         mutation={DELETE_DRAFT}
         variables={{
-          id: this.props.id
+          id: this.props.id,
         }}
       >
         {(deleteDraft, data) => {
@@ -62,7 +62,7 @@ class DeleteDraftButton extends Component {
             this.handleClose();
             this.newNotification({
               success: data.data.deleteDraft.success,
-              message: data.data.deleteDraft.message
+              message: data.data.deleteDraft.message,
             });
             if (data.data.deleteDraft.success) {
               this.props.onDelete();
@@ -86,7 +86,7 @@ class DeleteDraftButton extends Component {
                 aria-describedby="alert-dialog-description"
               >
                 <DialogTitle id="alert-dialog-title">
-                  {"Delete Draft?"}
+                  {'Delete Draft?'}
                 </DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
@@ -120,7 +120,7 @@ class DeleteDraftButton extends Component {
 DeleteDraftButton.propTypes = {
   id: PropTypes.string,
   enqueueSnackbar: PropTypes.func,
-  onDelete: PropTypes.func
+  onDelete: PropTypes.func,
 };
 
 export default withSnackbar(DeleteDraftButton);

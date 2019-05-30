@@ -1,21 +1,22 @@
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import Router from "next/router";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import NotFound from "../components/General/NotFound";
-import Head from "../components/Header/Head";
-import Header from "../components/Header/Header";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Router from 'next/router';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import NotFound from '../components/General/NotFound';
+import Head from '../components/Header/Head';
+import Header from '../components/Header/Header';
 
 class Exit extends Component {
   static async getInitialProps({ req }) {
-    const url = req.query.url;
+    const { url } = req.query;
     return { url };
   }
+
   render() {
-    var content = (
+    let content = (
       <Grid item lg={7} md={8} sm={11} xs={12}>
         <NotFound statusCode={404} />
       </Grid>
@@ -69,11 +70,11 @@ class Exit extends Component {
 }
 
 Exit.defaultProps = {
-  url: undefined
+  url: undefined,
 };
 
 Exit.propTypes = {
-  url: PropTypes.string
+  url: PropTypes.string,
 };
 
 export default Exit;

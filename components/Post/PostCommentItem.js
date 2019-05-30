@@ -1,49 +1,54 @@
-import Avatar from "@material-ui/core/Avatar";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import parseBody from "../../helpers/parseBody";
-import { getUser } from "../../helpers/token";
-import CuratorMenu from "../CuratorMenu/CommentMenu";
-import CommentEditor from "../Editor/CommentEditor";
-import PostComments from "./PostComments";
-import SubHeader from "./SubHeader";
-import VoteSlider from "./VoteSlider";
+import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import parseBody from '../../helpers/parseBody';
+import { getUser } from '../../helpers/token';
+import CuratorMenu from '../CuratorMenu/CommentMenu';
+import CommentEditor from '../Editor/CommentEditor';
+import PostComments from './PostComments';
+import SubHeader from './SubHeader';
+import VoteSlider from './VoteSlider';
 
 class PostpostItem extends Component {
   state = {
     isEdit: false,
     showEditor: false,
     userComment: undefined,
-    body: undefined
+    body: undefined,
   };
+
   handleClick() {
     this.setState({
-      showEditor: true
+      showEditor: true,
     });
   }
+
   onCommentAdd(userComment) {
     this.setState({ userComment });
   }
+
   onCommentEdit(userComment) {
     this.setState({ body: userComment.body, showEditor: false });
   }
+
   componentDidMount() {
     const user = getUser();
     if (user === this.props.post.author) {
       this.setState({ isEdit: true });
     }
   }
+
   render() {
     // Prevent SSR
-    const BookmarkIcon = dynamic(() => import("./BookmarkIcon"), {
-      ssr: false
+    const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
+      ssr: false,
     });
-    let htmlBody = parseBody(this.state.body || this.props.post.body, {});
+    const htmlBody = parseBody(this.state.body || this.props.post.body, {});
     const bodyText = { __html: htmlBody };
     let children = <Fragment />;
     if (this.props.post.children !== 0 && this.props.loadreplies == true) {
@@ -64,7 +69,7 @@ class PostpostItem extends Component {
     // Set the caninical URL to travelfeed.io if the post was authored through the dApp
     if (
       this.props.post.app !== undefined &&
-      this.props.post.app.split("/")[0] === "travelfeed"
+      this.props.post.app.split('/')[0] === 'travelfeed'
     ) {
       appIcon = (
         <img
@@ -123,7 +128,7 @@ class PostpostItem extends Component {
     if (this.state.showEditor) {
       cardcontent = (
         <CommentEditor
-          editMode={true}
+          editMode
           permlink={this.props.post.permlink}
           parent_author={this.props.post.parent_author}
           parent_permlink={this.props.post.parent_permlink}
@@ -209,14 +214,14 @@ class PostpostItem extends Component {
               created_at: new Date(),
               children: 0,
               author: getUser(),
-              display_name: "",
+              display_name: '',
               permlink: this.state.userComment.permlink,
               depth: this.props.post.depth + 1,
               total_votes: 0,
-              votes: "",
-              parent_author: "",
-              parent_permlink: "",
-              root_title: ""
+              votes: '',
+              parent_author: '',
+              parent_permlink: '',
+              root_title: '',
             }}
           />
         )}
@@ -228,7 +233,7 @@ class PostpostItem extends Component {
 
 PostpostItem.defaultProps = {
   loadreplies: true,
-  title: false
+  title: false,
 };
 
 PostpostItem.propTypes = {
@@ -236,7 +241,7 @@ PostpostItem.propTypes = {
   loadreplies: PropTypes.bool,
   title: PropTypes.bool,
   orderby: PropTypes.string,
-  orderdir: PropTypes.string
+  orderdir: PropTypes.string,
 };
 
 export default PostpostItem;

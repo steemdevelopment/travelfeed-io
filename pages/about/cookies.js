@@ -1,36 +1,40 @@
-import Button from "@material-ui/core/Button";
-import { indigo } from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import React, { Component, Fragment } from "react";
-import AboutSelect from "../../components/About/AboutSelect";
-import Cookies from "../../components/About/Texts/Terms";
-import HeaderCard from "../../components/General/HeaderCard";
-import Head from "../../components/Header/Head";
-import Header from "../../components/Header/Header";
+import Button from '@material-ui/core/Button';
+import { indigo } from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid';
+import React, { Component, Fragment } from 'react';
+import AboutSelect from '../../components/About/AboutSelect';
+import Cookies from '../../components/About/Texts/Terms';
+import HeaderCard from '../../components/General/HeaderCard';
+import Head from '../../components/Header/Head';
+import Header from '../../components/Header/Header';
 import {
   deleteCookieConsent,
   hasCookieConsent,
-  setCookieConsent
-} from "../../helpers/token";
+  setCookieConsent,
+} from '../../helpers/token';
 
 class About extends Component {
   state = {
-    optin: false
+    optin: false,
   };
+
   decline() {
     this.setState({ optin: false });
     deleteCookieConsent();
   }
+
   accept() {
-    setCookieConsent("true");
+    setCookieConsent('true');
     this.setState({ optin: true });
   }
+
   componentDidMount() {
-    const cookie = hasCookieConsent() === "true";
+    const cookie = hasCookieConsent() === 'true';
     this.setState({ optin: cookie });
   }
+
   render() {
-    const title = "Cookies";
+    const title = 'Cookies';
     return (
       <Fragment>
         <Header subheader={title} />
@@ -57,18 +61,18 @@ class About extends Component {
               content={
                 <Fragment>
                   <p>
-                    {" "}
-                    Your current cookie Settings are:{" "}
+                    {' '}
+                    Your current cookie Settings are:{' '}
                     {(this.state.optin && (
                       <Fragment>
-                        <strong>You are opted in.</strong>{" "}
+                        <strong>You are opted in.</strong>{' '}
                         <Button
                           variant="contained"
                           color="secondary"
                           onClick={() => this.decline()}
                         >
                           Opt out
-                        </Button>{" "}
+                        </Button>{' '}
                         <br />
                         <em>
                           Cookies that are already set will not be revoked by
@@ -77,7 +81,7 @@ class About extends Component {
                       </Fragment>
                     )) || (
                       <Fragment>
-                        <strong>You are opted out.</strong>{" "}
+                        <strong>You are opted out.</strong>{' '}
                         <Button
                           variant="contained"
                           color="secondary"

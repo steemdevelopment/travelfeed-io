@@ -1,75 +1,75 @@
-import Chip from "@material-ui/core/Chip";
-import MenuItem from "@material-ui/core/MenuItem";
-import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Downshift from "downshift";
-import deburr from "lodash/deburr";
-import PropTypes from "prop-types";
-import React from "react";
-import { allSpecialChars } from "../../helpers/regex";
+import Chip from '@material-ui/core/Chip';
+import MenuItem from '@material-ui/core/MenuItem';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Downshift from 'downshift';
+import deburr from 'lodash/deburr';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { allSpecialChars } from '../../helpers/regex';
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250
+    height: 250,
   },
   container: {
     flexGrow: 1,
-    position: "relative",
-    zIndex: 2
+    position: 'relative',
+    zIndex: 2,
   },
   paper: {
-    position: "relative",
+    position: 'relative',
     zIndex: 1,
     marginTop: theme.spacing.unit,
     left: 0,
-    right: 0
+    right: 0,
   },
   chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`
+    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
   },
   inputRoot: {
-    flexWrap: "wrap"
+    flexWrap: 'wrap',
   },
   inputInput: {
-    width: "auto",
-    flexGrow: 1
+    width: 'auto',
+    flexGrow: 1,
   },
   divider: {
-    height: theme.spacing.unit * 2
-  }
+    height: theme.spacing.unit * 2,
+  },
 });
 
 const suggestions = [
-  { label: "roadtrip" },
-  { label: "beach" },
-  { label: "backpacking" },
-  { label: "mountains" },
-  { label: "wildlife" },
-  { label: "budgettravel" },
-  { label: "festivals" },
-  { label: "adventure" },
-  { label: "hiking" },
-  { label: "animals" },
-  { label: "hitchhiking" },
-  { label: "cyclefeed" },
-  { label: "digitalnomads" },
-  { label: "photography" },
-  { label: "foodoftheworld" },
-  { label: "traveladvice" },
-  { label: "photofeed" },
-  { label: "introduceyourself" },
-  { label: "birds" },
-  { label: "contest" },
-  { label: "culture" },
-  { label: "family" },
-  { label: "nature" },
-  { label: "news" },
-  { label: "video" },
-  { label: "walkwithme" },
-  { label: "wednesdaywalk" },
-  { label: "marketfriday" }
+  { label: 'roadtrip' },
+  { label: 'beach' },
+  { label: 'backpacking' },
+  { label: 'mountains' },
+  { label: 'wildlife' },
+  { label: 'budgettravel' },
+  { label: 'festivals' },
+  { label: 'adventure' },
+  { label: 'hiking' },
+  { label: 'animals' },
+  { label: 'hitchhiking' },
+  { label: 'cyclefeed' },
+  { label: 'digitalnomads' },
+  { label: 'photography' },
+  { label: 'foodoftheworld' },
+  { label: 'traveladvice' },
+  { label: 'photofeed' },
+  { label: 'introduceyourself' },
+  { label: 'birds' },
+  { label: 'contest' },
+  { label: 'culture' },
+  { label: 'family' },
+  { label: 'nature' },
+  { label: 'news' },
+  { label: 'video' },
+  { label: 'walkwithme' },
+  { label: 'wednesdaywalk' },
+  { label: 'marketfriday' },
 ];
 
 function renderInput(inputProps) {
@@ -81,9 +81,9 @@ function renderInput(inputProps) {
         inputRef: ref,
         classes: {
           root: classes.inputRoot,
-          input: classes.inputInput
+          input: classes.inputInput,
         },
-        ...InputProps
+        ...InputProps,
       }}
       {...other}
     />
@@ -95,10 +95,10 @@ function renderSuggestion({
   index,
   itemProps,
   highlightedIndex,
-  selectedItem
+  selectedItem,
 }) {
   const isHighlighted = highlightedIndex === index;
-  const isSelected = (selectedItem || "").indexOf(suggestion.label) > -1;
+  const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
   return (
     <MenuItem
@@ -107,7 +107,7 @@ function renderSuggestion({
       selected={isHighlighted}
       component="div"
       style={{
-        fontWeight: isSelected ? 500 : 400
+        fontWeight: isSelected ? 500 : 400,
       }}
     >
       {suggestion.label}
@@ -119,7 +119,7 @@ renderSuggestion.propTypes = {
   index: PropTypes.number,
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
-  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired
+  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
 };
 
 function getSuggestions(value) {
@@ -144,16 +144,17 @@ function getSuggestions(value) {
 
 class DownshiftMultiple extends React.Component {
   state = {
-    inputValue: "",
-    selectedItem: ["travelfeed"]
+    inputValue: '',
+    selectedItem: ['travelfeed'],
   };
+
   componentDidMount() {
-    let tags = ["travelfeed"];
+    let tags = ['travelfeed'];
     if (this.props.initialValue) {
       tags = this.props.initialValue;
     }
     this.setState({
-      selectedItem: tags
+      selectedItem: tags,
     });
   }
 
@@ -163,24 +164,24 @@ class DownshiftMultiple extends React.Component {
     if (
       selectedItem.length &&
       !inputValue.length &&
-      event.key === "Backspace" &&
-      selectedItem[selectedItem.length - 1] !== "travelfeed"
+      event.key === 'Backspace' &&
+      selectedItem[selectedItem.length - 1] !== 'travelfeed'
     ) {
       this.setState({
-        selectedItem: selectedItem.slice(0, selectedItem.length - 1)
+        selectedItem: selectedItem.slice(0, selectedItem.length - 1),
       });
       this.props.onChange({
-        tags: selectedItem.slice(0, selectedItem.length - 1)
+        tags: selectedItem.slice(0, selectedItem.length - 1),
       });
     }
     if (
-      event.key === " " &&
+      event.key === ' ' &&
       inputValue.length &&
       inputValue.length < 20 &&
-      inputValue.replace(/\s/g, "").match(allSpecialChars) === null &&
+      inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
       selectedItem.length < 5
     ) {
-      let item = this.state.inputValue.toLowerCase().replace(/\s/g, "");
+      const item = this.state.inputValue.toLowerCase().replace(/\s/g, '');
       let { selectedItem } = this.state;
 
       if (selectedItem.indexOf(item) === -1) {
@@ -188,11 +189,11 @@ class DownshiftMultiple extends React.Component {
       }
 
       this.setState({
-        inputValue: "",
-        selectedItem
+        inputValue: '',
+        selectedItem,
       });
       this.props.onChange({
-        tags: selectedItem
+        tags: selectedItem,
       });
     }
   };
@@ -210,22 +211,22 @@ class DownshiftMultiple extends React.Component {
       }
 
       this.setState({
-        inputValue: "",
-        selectedItem
+        inputValue: '',
+        selectedItem,
       });
       this.props.onChange({
-        tags: selectedItem
+        tags: selectedItem,
       });
     }
   };
 
   handleDelete = item => () => {
-    if (item !== "travelfeed") {
-      const selectedItem = this.state.selectedItem;
+    if (item !== 'travelfeed') {
+      const { selectedItem } = this.state;
       selectedItem.splice(selectedItem.indexOf(item), 1);
       this.setState({ selectedItem });
       this.props.onChange({
-        tags: selectedItem
+        tags: selectedItem,
       });
     }
   };
@@ -247,7 +248,7 @@ class DownshiftMultiple extends React.Component {
           isOpen,
           inputValue: inputValue2,
           selectedItem: selectedItem2,
-          highlightedIndex
+          highlightedIndex,
         }) => (
           <div className={classes.container}>
             {renderInput({
@@ -271,9 +272,9 @@ class DownshiftMultiple extends React.Component {
                 //     tags: selectedItem
                 //   });
                 // },
-                placeholder: "Add tags"
+                placeholder: 'Add tags',
               }),
-              label: "Tags"
+              label: 'Tags',
             })}
             {isOpen ? (
               <Paper className={classes.paper} square>
@@ -283,8 +284,8 @@ class DownshiftMultiple extends React.Component {
                     index,
                     itemProps: getItemProps({ item: suggestion.label }),
                     highlightedIndex,
-                    selectedItem: selectedItem2
-                  })
+                    selectedItem: selectedItem2,
+                  }),
                 )}
               </Paper>
             ) : null}
@@ -298,7 +299,7 @@ class DownshiftMultiple extends React.Component {
 DownshiftMultiple.propTypes = {
   classes: PropTypes.object.isRequired,
   initialValue: PropTypes.array,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };
 
 export default withStyles(styles)(DownshiftMultiple);

@@ -1,18 +1,19 @@
 /* eslint-disable react/no-unescaped-entities */
-import { indigo, teal } from "@material-ui/core/colors";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import ReactPiwik from "react-piwik";
-import Head from "../components/Header/Head";
-import Header from "../components/Header/Header";
-import { DEFAULT_META_DESCRIPTION } from "../config";
-import { imageProxy } from "../helpers/getImage";
-import { GET_TF_STATS } from "../helpers/graphql/stats";
+import { indigo, teal } from '@material-ui/core/colors';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import ReactPiwik from 'react-piwik';
+import Head from '../components/Header/Head';
+import Header from '../components/Header/Header';
+import { DEFAULT_META_DESCRIPTION } from '../config';
+import { imageProxy } from '../helpers/getImage';
+import { GET_TF_STATS } from '../helpers/graphql/stats';
 
 class Join extends Component {
   componentDidMount() {
-    ReactPiwik.push(["trackGoal", 1]);
+    ReactPiwik.push(['trackGoal', 1]);
   }
+
   render() {
     return (
       <Fragment>
@@ -28,15 +29,15 @@ class Join extends Component {
             }
             return (
               <Fragment>
-                {" "}
+                {' '}
                 <div
                   style={{
                     backgroundImage: `url(/img/header-1.jpg)`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center center",
-                    backgroundSize: "cover",
-                    width: "100%",
-                    height: "500px"
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    backgroundSize: 'cover',
+                    width: '100%',
+                    height: '500px',
                   }}
                 >
                   <div className="container text-center h-100">
@@ -45,7 +46,7 @@ class Join extends Component {
                         <h1 className="display-4">Join TravelFeed!</h1>
                         <p className="lead">
                           On TravelFeed, you can discover travel content created
-                          by a large community of likeminded travellers! With{" "}
+                          by a large community of likeminded travellers! With{' '}
                           <strong>{data.stats.posts} blog posts</strong>, you
                           will almost certainly discover insiders' tips about
                           your travel destination and find other travellers to
@@ -78,11 +79,11 @@ class Join extends Component {
                 <div
                   style={{
                     backgroundImage: `url(/img/header-2.jpg)`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center center",
-                    backgroundSize: "cover",
-                    width: "100%",
-                    height: "500px"
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    backgroundSize: 'cover',
+                    width: '100%',
+                    height: '500px',
                   }}
                 >
                   <div className="container text-center h-100">
@@ -125,17 +126,17 @@ class Join extends Component {
                 <div
                   style={{
                     backgroundImage: `url(/img/header-3.jpg)`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center right",
-                    backgroundSize: "cover",
-                    width: "100%",
-                    height: "500px"
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center right',
+                    backgroundSize: 'cover',
+                    width: '100%',
+                    height: '500px',
                   }}
                 >
                   <div className="container text-center h-100">
                     <div className="row justify-content-center align-items-center h-100">
                       <div className="col-xl-6 col-md-8 col-sm-11 col-xs-12">
-                        {" "}
+                        {' '}
                         <h1 className="display-4">Join the Community!</h1>
                         <p className="lead">
                           Join the TravelFeed Discord to become part of the
@@ -153,8 +154,8 @@ class Join extends Component {
                           <button type="button" className="btn btn-dark p-0">
                             <img
                               src={imageProxy(
-                                "https://cdn.steemitimages.com/DQmboc2XspF4neKbj8cN6WTuCrpADoehKxdXBgfiaWjFsFx/Discord-Logo+Wordmark-Color%20(1).png",
-                                130
+                                'https://cdn.steemitimages.com/DQmboc2XspF4neKbj8cN6WTuCrpADoehKxdXBgfiaWjFsFx/Discord-Logo+Wordmark-Color%20(1).png',
+                                130,
                               )}
                             />
                           </button>

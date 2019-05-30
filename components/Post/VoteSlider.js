@@ -1,24 +1,24 @@
 // Todo: Tooltip with individual voters over total miles
 
-import CardActions from "@material-ui/core/CardActions";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CommentIcon from "@material-ui/icons/AddComment";
-import CloseIcon from "@material-ui/icons/Close";
-import EditIcon from "@material-ui/icons/Edit";
-import FlightVotedIcon from "@material-ui/icons/Flight";
-import FlightIcon from "@material-ui/icons/FlightTakeoff";
-import LinkIcon from "@material-ui/icons/Link";
-import Slider from "@material-ui/lab/Slider";
-import Link from "next/link";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { vote } from "../../helpers/actions";
-import { GET_VOTE_WEIGHTS } from "../../helpers/graphql/settings";
-import { getUser } from "../../helpers/token";
+import CardActions from '@material-ui/core/CardActions';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import CommentIcon from '@material-ui/icons/AddComment';
+import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
+import FlightVotedIcon from '@material-ui/icons/Flight';
+import FlightIcon from '@material-ui/icons/FlightTakeoff';
+import LinkIcon from '@material-ui/icons/Link';
+import Slider from '@material-ui/lab/Slider';
+import Link from 'next/link';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { vote } from '../../helpers/actions';
+import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
+import { getUser } from '../../helpers/token';
 
 class VoteSlider extends Component {
   state = {
@@ -29,32 +29,39 @@ class VoteSlider extends Component {
     weight: 5,
     hasVoted: false,
     user: null,
-    totalmiles: null
+    totalmiles: null,
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
     }
   }
+
   setWeight = (event, value) => {
     this.setState({ weight: value });
   };
+
   expandVoteBar() {
     this.setState({ voteExpanded: true });
   }
+
   collapseVoteBar() {
     this.setState({ voteExpanded: false });
   }
+
   expandCommentBar() {
     this.setState({ commentExpanded: true });
   }
+
   collapseCommentBar() {
     this.setState({ commentExpanded: false });
   }
+
   votePost(author, permlink) {
     const weight = this.state.weight * 1000;
     this.setState({ loading: 0 });
@@ -64,13 +71,14 @@ class VoteSlider extends Component {
         else
           this.setState({
             hasVoted: true,
-            totalmiles: this.state.totalmiles + this.state.weight
+            totalmiles: this.state.totalmiles + this.state.weight,
           });
         this.setState({ loading: undefined });
         this.collapseVoteBar();
       }
     });
   }
+
   progress = () => {
     const { loading } = this.state;
     if (loading < 100) {
@@ -79,42 +87,44 @@ class VoteSlider extends Component {
       this.setState({ loading: 0 });
     }
   };
+
   async componentDidMount() {
     const user = getUser();
     this.setState({
-      user: user,
-      totalmiles: this.props.total_votes
+      user,
+      totalmiles: this.props.total_votes,
     });
-    if (this.props.votes !== "" && this.props.votes !== undefined) {
-      const vl = this.props.votes.split("\n");
+    if (this.props.votes !== '' && this.props.votes !== undefined) {
+      const vl = this.props.votes.split('\n');
       const votelist = [];
       vl.forEach(el => {
-        const details = el.split(",");
+        const details = el.split(',');
         votelist.push({
           voter: details[0],
           rshares: details[1],
-          weight: Math.round(details[2] / 1000)
+          weight: Math.round(details[2] / 1000),
         });
         if (details[0] === user) {
           this.setState({
             weight: Math.round(details[2] / 1000),
-            hasVoted: true
+            hasVoted: true,
           });
         }
       });
     }
   }
+
   render() {
-    var sliderstyle = {};
-    var rowitem1 = "col-5 p-0";
-    var rowitem2 = "col-7 text-right p-0 pt-2";
-    if (this.props.mode == "gridcard") {
-      sliderstyle = { fontSize: "0.6rem" };
-      rowitem1 = "col-6 p-0";
-      rowitem2 = "col-6 pt-2 p-0 text-right";
+    let sliderstyle = {};
+    let rowitem1 = 'col-5 p-0';
+    let rowitem2 = 'col-7 text-right p-0 pt-2';
+    if (this.props.mode == 'gridcard') {
+      sliderstyle = { fontSize: '0.6rem' };
+      rowitem1 = 'col-6 p-0';
+      rowitem2 = 'col-6 pt-2 p-0 text-right';
     }
-    var cardFooter = <Fragment />;
-    var voteButton = (
+    let cardFooter = <Fragment />;
+    let voteButton = (
       <Link href="/join" passHref>
         <Tooltip title="Log in to vote" placement="bottom">
           <IconButton aria-label="Upvote">
@@ -145,8 +155,8 @@ class VoteSlider extends Component {
         </Tooltip>
       );
     }
-    var commentButton = <Fragment />;
-    if (this.props.mode != "gridcard") {
+    let commentButton = <Fragment />;
+    if (this.props.mode != 'gridcard') {
       commentButton = (
         <Link href="/join" passHref>
           <Tooltip title="Login to reply" placement="bottom">
@@ -170,7 +180,7 @@ class VoteSlider extends Component {
       }
     }
     let linkButton = <Fragment />;
-    if (this.props.mode === "comment") {
+    if (this.props.mode === 'comment') {
       linkButton = (
         <Link
           as={`/@${this.props.author}/${this.props.permlink}`}
@@ -244,7 +254,7 @@ class VoteSlider extends Component {
         </CardActions>
       );
     }
-    var weightIndicator = (
+    let weightIndicator = (
       <span className="text-muted font-weight-bold">{this.state.weight}</span>
     );
     if (this.state.loading !== undefined) {
@@ -264,12 +274,12 @@ class VoteSlider extends Component {
               this.props.depth === 0 &&
                 this.setState({
                   loaded: true,
-                  weight: data.preferences.defaultVoteWeight
+                  weight: data.preferences.defaultVoteWeight,
                 });
               this.props.depth > 0 &&
                 this.setState({
                   loaded: true,
-                  weight: data.preferences.defaultCommentsVoteWeight
+                  weight: data.preferences.defaultCommentsVoteWeight,
                 });
             }
             return (
@@ -304,7 +314,7 @@ class VoteSlider extends Component {
         </Query>
       );
     }
-    if (this.props.mode != "gridcard" && this.state.commentExpanded == true) {
+    if (this.props.mode != 'gridcard' && this.state.commentExpanded == true) {
       // const CommentEditor = dynamic(() => import("./Editor/CommentEditor"), {
       //   loading: () => <p>Loading...</p>,
       //   ssr: false
@@ -342,7 +352,7 @@ VoteSlider.propTypes = {
   enqueueSnackbar: PropTypes.func,
   handleClick: PropTypes.func,
   isEdit: PropTypes.bool,
-  depth: PropTypes.number.isRequired
+  depth: PropTypes.number.isRequired,
 };
 
 export default withSnackbar(VoteSlider);

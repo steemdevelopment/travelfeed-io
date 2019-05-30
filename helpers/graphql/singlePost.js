@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const GET_POST = gql`
   query post($author: String!, $permlink: String!) {

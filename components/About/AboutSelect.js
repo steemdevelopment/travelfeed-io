@@ -1,15 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import AboutIcon from "@material-ui/icons/Info";
-import TermsIcon from "@material-ui/icons/Toc";
-import PrivacyIcon from "@material-ui/icons/Lock";
-import CookieIcon from "@material-ui/icons/GroupWork";
-import FAQIcon from "@material-ui/icons/QuestionAnswer";
-import SupportIcon from "@material-ui/icons/Favorite";
-import Link from "next/link";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import AboutIcon from '@material-ui/icons/Info';
+import TermsIcon from '@material-ui/icons/Toc';
+import PrivacyIcon from '@material-ui/icons/Lock';
+import CookieIcon from '@material-ui/icons/GroupWork';
+import FAQIcon from '@material-ui/icons/QuestionAnswer';
+import SupportIcon from '@material-ui/icons/Favorite';
+import Link from 'next/link';
 
 class IconLabelTabs extends React.Component {
   render() {
@@ -48,7 +48,7 @@ class IconLabelTabs extends React.Component {
 }
 
 IconLabelTabs.propTypes = {
-  selection: PropTypes.number
+  selection: PropTypes.number,
 };
 
 export default IconLabelTabs;

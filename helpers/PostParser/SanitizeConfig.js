@@ -8,38 +8,38 @@ This function is extracted from the source code of busy.org and condenser with s
  *
  */
 
-import sanitizeHtml from "sanitize-html";
-import URL from "url-parse";
-import { ownUrl } from "../regex";
+import sanitizeHtml from 'sanitize-html';
+import URL from 'url-parse';
+import { ownUrl } from '../regex';
 
 const ownDomains = [
-  "localhost",
-  "travelfeed.io",
-  "www.travelfeed.io",
-  "staging.travelfeed.io",
-  "beta.travelfeed.io"
+  'localhost',
+  'travelfeed.io',
+  'www.travelfeed.io',
+  'staging.travelfeed.io',
+  'beta.travelfeed.io',
 ];
 
 const knownDomains = [
-  "localhost",
-  "busy.org",
-  "steempeak.com",
-  "steemit.com",
-  "d.tube",
-  "youtube.com",
-  "instagram.com",
-  "facebook.com",
-  "discord.gg",
-  "steemitworldmap.com",
-  "www.busy.org",
-  "www.steempeak.com",
-  "www.steemit.com",
-  "www.d.tube",
-  "www.youtube.com",
-  "www.instagram.com",
-  "www.facebook.com",
-  "www.discord.gg",
-  "www.steemitworldmap.com"
+  'localhost',
+  'busy.org',
+  'steempeak.com',
+  'steemit.com',
+  'd.tube',
+  'youtube.com',
+  'instagram.com',
+  'facebook.com',
+  'discord.gg',
+  'steemitworldmap.com',
+  'www.busy.org',
+  'www.steempeak.com',
+  'www.steemit.com',
+  'www.d.tube',
+  'www.youtube.com',
+  'www.instagram.com',
+  'www.facebook.com',
+  'www.discord.gg',
+  'www.steemitworldmap.com',
 ];
 
 const iframeWhitelist = [
@@ -51,17 +51,17 @@ const iframeWhitelist = [
       const m = src.match(/https:\/\/player\.vimeo\.com\/video\/([0-9]+)/);
       if (!m || m.length !== 2) return null;
       return `https://player.vimeo.com/video/${m[1]}`;
-    }
+    },
   },
   {
     re: /^(https?:)?\/\/www.youtube.com\/embed\/.*/i,
-    fn: src => src.replace(/\?.+$/, "") // strip query string (yt: autoplay=1,controls=0,showinfo=0, etc)
+    fn: src => src.replace(/\?.+$/, ''), // strip query string (yt: autoplay=1,controls=0,showinfo=0, etc)
   },
   {
-    re: /^(https?:)?\/\/www\.google\.com\/maps\/embed.*/i
+    re: /^(https?:)?\/\/www\.google\.com\/maps\/embed.*/i,
   },
   {
-    re: /^(https?:)?\/\/(?:emb\.)?(?:d.tube\/\#\!\/(?:v\/)?)([a-zA-Z0-9\-\.\/]*)/i
+    re: /^(https?:)?\/\/(?:emb\.)?(?:d.tube\/\#\!\/(?:v\/)?)([a-zA-Z0-9\-\.\/]*)/i,
   },
   {
     re: /^(https?:)?\/\/w.soundcloud.com\/player\/.*/i,
@@ -74,16 +74,16 @@ const iframeWhitelist = [
         `https://w.soundcloud.com/player/?url=${
           m[1]
         }&auto_play=false&hide_related=false&show_comments=true` +
-        "&show_user=true&show_reposts=false&visual=true"
+        '&show_user=true&show_reposts=false&visual=true'
       );
-    }
+    },
   },
   {
     re: /^(https?:)?\/\/(?:www\.)?(?:(player.)?twitch.tv\/)(.*)?$/i,
-    fn: src => src // handled by embedjs
-  }
+    fn: src => src, // handled by embedjs
+  },
 ];
-export const noImageText = "(Image not shown due to low ratings)";
+export const noImageText = '(Image not shown due to low ratings)';
 export const allowedTags = `
     div, iframe, del,
     a, p, b, q, br, ul, li, ol, img, h1, h2, h3, h4, h5, h6, hr,
@@ -98,7 +98,7 @@ export default ({
   large = true,
   noImage = false,
   sanitizeErrors = [],
-  secureLinks = false
+  secureLinks = false,
 }) => ({
   allowedTags,
   // figure, figcaption,
@@ -107,26 +107,26 @@ export default ({
   allowedAttributes: {
     // "src" MUST pass a whitelist (below)
     iframe: [
-      "src",
-      "width",
-      "height",
-      "frameborder",
-      "allowfullscreen",
-      "webkitallowfullscreen",
-      "mozallowfullscreen"
+      'src',
+      'width',
+      'height',
+      'frameborder',
+      'allowfullscreen',
+      'webkitallowfullscreen',
+      'mozallowfullscreen',
     ],
 
     // class attribute is strictly whitelisted (below)
-    div: ["class"],
+    div: ['class'],
 
     // style is subject to attack, filtering more below
-    td: ["style"],
-    img: ["src", "alt"],
-    a: ["href", "rel", "target"]
+    td: ['style'],
+    img: ['src', 'alt'],
+    a: ['href', 'rel', 'target'],
   },
   allowedSchemes: sanitizeHtml.defaults.allowedSchemes.concat([
-    "byteball",
-    "bitcoin"
+    'byteball',
+    'bitcoin',
   ]),
   transformTags: {
     iframe: (tagName, attribs) => {
@@ -134,51 +134,51 @@ export default ({
       for (const item of iframeWhitelist) {
         if (item.re.test(srcAtty)) {
           const src =
-            typeof item.fn === "function" ? item.fn(srcAtty, item.re) : srcAtty;
+            typeof item.fn === 'function' ? item.fn(srcAtty, item.re) : srcAtty;
           if (!src) break;
           return {
-            tagName: "iframe",
+            tagName: 'iframe',
             attribs: {
-              frameborder: "0",
-              allowfullscreen: "allowfullscreen",
-              webkitallowfullscreen: "webkitallowfullscreen", // deprecated but required for vimeo : https://vimeo.com/forums/help/topic:278181
-              mozallowfullscreen: "mozallowfullscreen", // deprecated but required for vimeo
+              frameborder: '0',
+              allowfullscreen: 'allowfullscreen',
+              webkitallowfullscreen: 'webkitallowfullscreen', // deprecated but required for vimeo : https://vimeo.com/forums/help/topic:278181
+              mozallowfullscreen: 'mozallowfullscreen', // deprecated but required for vimeo
               src,
-              width: large ? "960" : "480",
-              height: large ? "540" : "270"
-            }
+              width: large ? '960' : '480',
+              height: large ? '540' : '270',
+            },
           };
         }
       }
       sanitizeErrors.push(`Invalid iframe URL: ${srcAtty}`);
-      return { tagName: "div", text: `(Unsupported ${srcAtty})` };
+      return { tagName: 'div', text: `(Unsupported ${srcAtty})` };
     },
     img: (tagName, attribs) => {
-      if (noImage) return { tagName: "div", text: noImageText };
+      if (noImage) return { tagName: 'div', text: noImageText };
       // See https://github.com/punkave/sanitize-html/issues/117
       let { src, alt } = attribs;
       if (!/^(https?:)?\/\//i.test(src)) {
-        sanitizeErrors.push("An image in this post did not save properly.");
-        return { tagName: "img", attribs: { src: "brokenimg.jpg" } };
+        sanitizeErrors.push('An image in this post did not save properly.');
+        return { tagName: 'img', attribs: { src: 'brokenimg.jpg' } };
       }
 
       // replace http:// with // to force https when needed
-      src = src.replace(/^http:\/\//i, "//");
+      src = src.replace(/^http:\/\//i, '//');
 
       const atts = { src };
-      if (alt && alt !== "") atts.alt = alt;
+      if (alt && alt !== '') atts.alt = alt;
       return { tagName, attribs: atts };
     },
     div: (tagName, attribs) => {
       const attys = {};
       const classWhitelist = [
-        "pull-right",
-        "pull-left",
-        "text-justify",
-        "text-rtl",
-        "text-center",
-        "text-right",
-        "videoWrapper"
+        'pull-right',
+        'pull-left',
+        'text-justify',
+        'text-rtl',
+        'text-center',
+        'text-right',
+        'videoWrapper',
       ];
       const validClass = classWhitelist.find(e => attribs.class === e);
       if (validClass) {
@@ -186,17 +186,17 @@ export default ({
       }
       return {
         tagName,
-        attribs: attys
+        attribs: attys,
       };
     },
     a: (tagName, attribs) => {
       let { href } = attribs;
-      if (!href) href = "#";
+      if (!href) href = '#';
       href = href.trim();
       const attys = {};
 
       const url = new URL(href);
-      const hostname = url.hostname || "localhost";
+      const hostname = url.hostname || 'localhost';
 
       if (
         secureLinks &&
@@ -204,22 +204,22 @@ export default ({
         ownDomains.indexOf(hostname) === -1
       ) {
         href = `/exit?url=${encodeURIComponent(href)}`;
-        attys.rel = "nofollow";
+        attys.rel = 'nofollow';
       } else if (
         (secureLinks &&
           ownDomains.indexOf(hostname) === -1 &&
-          ["https", "http"].indexOf(url.protocol)) ||
+          ['https', 'http'].indexOf(url.protocol)) ||
         !hostname.match(ownUrl)
       ) {
-        attys.target = "_blank";
-        attys.rel = "nofollow noopener noreferrer";
+        attys.target = '_blank';
+        attys.rel = 'nofollow noopener noreferrer';
       }
       attys.href = href;
 
       return {
         tagName,
-        attribs: attys
+        attribs: attys,
       };
-    }
-  }
+    },
+  },
 });

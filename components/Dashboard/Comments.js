@@ -1,8 +1,8 @@
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { getUser } from "../../helpers/token";
-import PostGrid from "../Grid/PostGrid";
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { getUser } from '../../helpers/token';
+import PostGrid from '../Grid/PostGrid';
 
 class Comments extends Component {
   render() {
@@ -32,7 +32,7 @@ class Comments extends Component {
 }
 
 Comments.propTypes = {
-  user: PropTypes.string
+  user: PropTypes.string,
 };
 
 export default Comments;

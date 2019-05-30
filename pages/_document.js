@@ -1,15 +1,15 @@
-import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
-import PropTypes from "prop-types";
-import flush from "styled-jsx/server";
-import * as Sentry from "@sentry/node";
-import { teal } from "@material-ui/core/colors";
-import { GMAPS_API_KEY } from "../config";
+import React from 'react';
+import Document, { Head, Main, NextScript } from 'next/document';
+import PropTypes from 'prop-types';
+import flush from 'styled-jsx/server';
+import * as Sentry from '@sentry/node';
+import { teal } from '@material-ui/core/colors';
+import { GMAPS_API_KEY } from '../config';
 
 export default class extends Document {
   render() {
     Sentry.init({
-      dsn: "https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776"
+      dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
     });
     return (
       <html lang="en">
@@ -95,7 +95,7 @@ Document.getInitialProps = ctx => {
     };
 
     WrappedComponent.propTypes = {
-      pageContext: PropTypes.object.isRequired
+      pageContext: PropTypes.object.isRequired,
     };
 
     return WrappedComponent;
@@ -111,11 +111,11 @@ Document.getInitialProps = ctx => {
           id="jss-server-side"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: pageContext.sheetsRegistry.toString()
+            __html: pageContext.sheetsRegistry.toString(),
           }}
         />
         {flush() || null}
       </React.Fragment>
-    )
+    ),
   };
 };

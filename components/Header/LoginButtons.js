@@ -1,16 +1,16 @@
-import Button from "@material-ui/core/Button";
-import { grey } from "@material-ui/core/colors";
-import { withStyles } from "@material-ui/core/styles";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { getLoginURL } from "../../helpers/token";
+import Button from '@material-ui/core/Button';
+import { grey } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core/styles';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { getLoginURL } from '../../helpers/token';
 
 const styles = theme => ({
   whitebutton: {
     color: grey[200],
-    borderColor: grey[200]
-  }
+    borderColor: grey[200],
+  },
 });
 
 class LoginButtons extends Component {
@@ -44,6 +44,6 @@ class LoginButtons extends Component {
 }
 
 LoginButtons.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 export default withStyles(styles)(LoginButtons);

@@ -1,29 +1,32 @@
-import Grid from "@material-ui/core/Grid";
-import Router from "next/router";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Mutation, Query } from "react-apollo";
-import NotFound from "../components/General/NotFound";
-import Header from "../components/Header/Header";
-import LoginDialog from "../components/Login/LoginDialog";
-import { ACCEPT_TOS, GET_LOGIN_TOKEN } from "../helpers/graphql/token";
-import { setAccessToken, setScToken } from "../helpers/token";
+import Grid from '@material-ui/core/Grid';
+import Router from 'next/router';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Mutation, Query } from 'react-apollo';
+import NotFound from '../components/General/NotFound';
+import Header from '../components/Header/Header';
+import LoginDialog from '../components/Login/LoginDialog';
+import { ACCEPT_TOS, GET_LOGIN_TOKEN } from '../helpers/graphql/token';
+import { setAccessToken, setScToken } from '../helpers/token';
 
 class Login extends Component {
   state = {
-    loaded: false
+    loaded: false,
   };
+
   static async getInitialProps({ req }) {
     return {
       sc: {
         sc_token: req.query.access_token,
-        expires_in: req.query.expires_in
-      }
+        expires_in: req.query.expires_in,
+      },
     };
   }
+
   componentDidMount() {
     this.setState({ loaded: true });
   }
+
   render() {
     return (
       <Fragment>
@@ -39,7 +42,7 @@ class Login extends Component {
                     alignItems="center"
                     justify="center"
                     className="pt-4 pb-4"
-                    style={{ paddingLeft: "75px" }}
+                    style={{ paddingLeft: '75px' }}
                   >
                     <Grid item lg={7} md={8} sm={11} xs={12} />
                   </Grid>
@@ -56,7 +59,7 @@ class Login extends Component {
                     alignItems="center"
                     justify="center"
                     className="pt-4 pb-4"
-                    style={{ paddingLeft: "75px" }}
+                    style={{ paddingLeft: '75px' }}
                   >
                     <Grid item lg={7} md={8} sm={11} xs={12}>
                       <NotFound statusCode={404} />
@@ -73,7 +76,7 @@ class Login extends Component {
                     mutation={ACCEPT_TOS}
                     variables={{
                       sc_token: this.props.sc.sc_token,
-                      acceptTos: true
+                      acceptTos: true,
                     }}
                   >
                     {(acceptTos, data) => {
@@ -81,13 +84,13 @@ class Login extends Component {
                       if (data && data.data && data.data.login.hasAcceptedTos) {
                         setAccessToken(
                           data.data.login.jwt,
-                          this.props.sc.expires_in
+                          this.props.sc.expires_in,
                         );
                         setScToken(
                           this.props.sc.sc_token,
-                          this.props.sc.expires_in
+                          this.props.sc.expires_in,
                         );
-                        Router.replace("/dashboard");
+                        Router.replace('/dashboard');
                       }
                       return <LoginDialog acceptTos={acceptTos} />;
                     }}
@@ -96,8 +99,8 @@ class Login extends Component {
               }
               setScToken(this.props.sc.sc_token, this.props.sc.expires_in);
               setAccessToken(data.login.jwt, this.props.sc.expires_in);
-              Router.replace("/dashboard");
-              return "";
+              Router.replace('/dashboard');
+              return '';
             }
           }}
         </Query>
@@ -107,7 +110,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  sc: PropTypes.object
+  sc: PropTypes.object,
 };
 
 export default Login;

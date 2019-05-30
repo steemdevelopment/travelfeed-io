@@ -1,10 +1,10 @@
-import CircularProgress from "@material-ui/core/CircularProgress";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_NOTIFICATIONS } from "../../helpers/graphql/posts";
-import { getUser } from "../../helpers/token";
-import CustomSnackbar from "./Notifications/CustomSnackbar";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { GET_NOTIFICATIONS } from '../../helpers/graphql/posts';
+import { getUser } from '../../helpers/token';
+import CustomSnackbar from './Notifications/CustomSnackbar';
 
 class Notifications extends Component {
   render() {
@@ -15,7 +15,7 @@ class Notifications extends Component {
           variables={{
             author: getUser(),
             min_curation_score: 5000,
-            limit: 10
+            limit: 10,
           }}
         >
           {({ data, loading, error }) => {
@@ -73,7 +73,7 @@ class Notifications extends Component {
 }
 
 Notifications.propTypes = {
-  user: PropTypes.string
+  user: PropTypes.string,
 };
 
 export default Notifications;

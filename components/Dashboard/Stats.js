@@ -7,28 +7,28 @@ import {
   orange,
   pink,
   purple,
-  teal
-} from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import TotalPayoutIcon from "@material-ui/icons/AttachMoney";
-import QualityIcon from "@material-ui/icons/CheckCircle";
-import TotalPostsIcon from "@material-ui/icons/Create";
-import TotalFeaturedIcon from "@material-ui/icons/Star";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
+  teal,
+} from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid';
+import TotalPayoutIcon from '@material-ui/icons/AttachMoney';
+import QualityIcon from '@material-ui/icons/CheckCircle';
+import TotalPostsIcon from '@material-ui/icons/Create';
+import TotalFeaturedIcon from '@material-ui/icons/Star';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
 import {
   GET_DASHBOARD_POSTS,
-  GET_NOTIFICATIONS
-} from "../../helpers/graphql/posts";
-import { GET_USER_STATS } from "../../helpers/graphql/stats";
-import { getUser } from "../../helpers/token";
-import HeaderCard from "../General/HeaderCard";
-import CustomSnackbar from "./Notifications/CustomSnackbar";
-import PostsTable from "./Stats/PostsTable";
-import RecentEarnings from "./Stats/RecentEarningsChart";
-import SmallBox from "./Stats/SmallBox";
+  GET_NOTIFICATIONS,
+} from '../../helpers/graphql/posts';
+import { GET_USER_STATS } from '../../helpers/graphql/stats';
+import { getUser } from '../../helpers/token';
+import HeaderCard from '../General/HeaderCard';
+import CustomSnackbar from './Notifications/CustomSnackbar';
+import PostsTable from './Stats/PostsTable';
+import RecentEarnings from './Stats/RecentEarningsChart';
+import SmallBox from './Stats/SmallBox';
 
 class Stats extends Component {
   render() {
@@ -77,7 +77,7 @@ class Stats extends Component {
                       value={Math.floor(
                         (data.userstats.total_featured /
                           data.userstats.total_posts) *
-                          100
+                          100,
                       )}
                       prefix="%"
                       iconColor={pink[600]}
@@ -133,7 +133,7 @@ class Stats extends Component {
                           <p>
                             To return to TravelFeed and discover other travel
                             blogs, you can always click on your profile icon on
-                            the top right and select &quot;TravelFeed&quot; to{" "}
+                            the top right and select &quot;TravelFeed&quot; to{' '}
                             <Link href="/" passHref>
                               <a>return to the feed.</a>
                             </Link>
@@ -181,7 +181,7 @@ class Stats extends Component {
               variables={{
                 author: getUser(),
                 min_curation_score: 5000,
-                limit: 3
+                limit: 3,
               }}
             >
               {({ data, loading, error }) => {
@@ -196,7 +196,7 @@ class Stats extends Component {
                       content={
                         (data.posts &&
                           data.posts.length === 0 &&
-                          "No notifications.") ||
+                          'No notifications.') ||
                         data.posts.map((post, index) => {
                           return post.curation_score === 10000 ? (
                             <div
@@ -238,7 +238,7 @@ class Stats extends Component {
 }
 
 Stats.propTypes = {
-  user: PropTypes.string
+  user: PropTypes.string,
 };
 
 export default Stats;

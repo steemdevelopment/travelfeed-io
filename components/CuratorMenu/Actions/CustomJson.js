@@ -1,18 +1,18 @@
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React from "react";
-import { customJson } from "../../../helpers/actions";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { customJson } from '../../../helpers/actions';
 
 class AlertDialog extends React.Component {
   state = {
-    open: false
+    open: false,
   };
 
   handleClickOpen = () => {
@@ -22,11 +22,12 @@ class AlertDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -34,17 +35,19 @@ class AlertDialog extends React.Component {
       }
     }
   }
+
   handleConfirm = () => {
     this.setState({ open: false });
-    let payload = {
+    const payload = {
       author: this.props.author,
       permlink: this.props.permlink,
-      action: this.props.action
+      action: this.props.action,
     };
     customJson(payload).then(result => {
       this.newNotification(result);
     });
   };
+
   render() {
     return (
       <div>
@@ -86,7 +89,7 @@ AlertDialog.propTypes = {
   desc: PropTypes.string,
   author: PropTypes.string,
   permlink: PropTypes.string,
-  action: PropTypes.string
+  action: PropTypes.string,
 };
 
 export default withSnackbar(AlertDialog);

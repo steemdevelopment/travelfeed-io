@@ -1,15 +1,15 @@
-import { teal } from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import React, { Component, Fragment } from "react";
-import AboutSelect from "../../components/About/AboutSelect";
-import Privacy from "../../components/About/Texts/Terms";
-import HeaderCard from "../../components/General/HeaderCard";
-import Head from "../../components/Header/Head";
-import Header from "../../components/Header/Header";
+import { teal } from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid';
+import React, { Component, Fragment } from 'react';
+import AboutSelect from '../../components/About/AboutSelect';
+import Privacy from '../../components/About/Texts/Terms';
+import HeaderCard from '../../components/General/HeaderCard';
+import Head from '../../components/Header/Head';
+import Header from '../../components/Header/Header';
 
 class About extends Component {
   render() {
-    const title = "Privacy";
+    const title = 'Privacy';
     return (
       <Fragment>
         <Header subheader={title} />
@@ -36,7 +36,7 @@ class About extends Component {
               content={
                 <div>
                   <iframe
-                    style={{ border: 0, height: "100%", width: "100%" }}
+                    style={{ border: 0, height: '100%', width: '100%' }}
                     src="https://matomo.travelfeed.io/index.php?module=CoreAdminHome&action=optOut&language=en&backgroundColor=ffffff&fontColor=212121&fontSize=1.2rem&fontFamily=Roboto"
                   />
                 </div>

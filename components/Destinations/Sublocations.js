@@ -1,8 +1,8 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
-import Link from "next/link";
-import { Query } from "react-apollo";
-import { GET_SUBLOCATIONS } from "../../helpers/graphql/locations";
+import React, { Fragment, Component } from 'react';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import { Query } from 'react-apollo';
+import { GET_SUBLOCATIONS } from '../../helpers/graphql/locations';
 
 class Sublocations extends Component {
   render() {
@@ -16,7 +16,7 @@ class Sublocations extends Component {
                   <div className="container">
                     <div
                       className="row p-2 justify-content-md-center"
-                      style={{ backgroundColor: "rgba(52, 58, 64, 0.6)" }}
+                      style={{ backgroundColor: 'rgba(52, 58, 64, 0.6)' }}
                     >
                       {data.location.map((location, index) => (
                         <div
@@ -65,7 +65,7 @@ class Sublocations extends Component {
 
 Sublocations.propTypes = {
   query: PropTypes.object,
-  country_slug: PropTypes.string
+  country_slug: PropTypes.string,
 };
 
 export default Sublocations;

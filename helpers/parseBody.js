@@ -6,20 +6,20 @@ This function is extracted from the source code of busy.org and Condenser with s
  */
 //
 
-import Remarkable from "remarkable";
-import sanitizeHtml from "sanitize-html";
-import { ROOTURL } from "../config";
-import { imageProxy } from "./getImage";
-import htmlReady from "./PostParser/htmlReady";
-import sanitizeConfig from "./PostParser/sanitizeConfig";
+import Remarkable from 'remarkable';
+import sanitizeHtml from 'sanitize-html';
+import { ROOTURL } from '../config';
+import { imageProxy } from './getImage';
+import htmlReady from './PostParser/htmlReady';
+import sanitizeConfig from './PostParser/sanitizeConfig';
 import {
   dtubeImageRegex,
   dtubeLinkRegex,
   htmlComment,
   imgFullSize,
   markdownComment,
-  swmregex
-} from "./regex";
+  swmregex,
+} from './regex';
 
 // Initialise Markdown parser
 const remarkable = new Remarkable({
@@ -27,44 +27,44 @@ const remarkable = new Remarkable({
   breaks: true,
   linkify: false, // linkify is done locally
   typographer: false, // https://github.com/jonschlinkert/remarkable/issues/142#issuecomment-221546793
-  quotes: "“”‘’"
+  quotes: '“”‘’',
 });
 
 const parseBody = (body, options) => {
   // Remove HTML comments
-  let parsedBody = body.replace(htmlComment, "");
-  //remove markdown comment
-  parsedBody = parsedBody.replace(markdownComment, "");
-  //Remove partiko ads
-  parsedBody = parsedBody.replace(/Posted using \[Partiko .*]\(.*\)/g, "");
+  let parsedBody = body.replace(htmlComment, '');
+  // remove markdown comment
+  parsedBody = parsedBody.replace(markdownComment, '');
+  // Remove partiko ads
+  parsedBody = parsedBody.replace(/Posted using \[Partiko .*]\(.*\)/g, '');
   // Remove travelfeed ads
   parsedBody = parsedBody.replace(
     /<hr \/><center>View this post <a href="https:\/\/travelfeed\.io\/@.*">on the TravelFeed dApp<\/a> for the best experience\.<\/center>/g,
-    ""
+    '',
   );
   // Remove dclick ads
-  parsedBody = parsedBody.replace(/\[!\[dclick-imagead]\(h.*\)]\(.*\)/g, "");
+  parsedBody = parsedBody.replace(/\[!\[dclick-imagead]\(h.*\)]\(.*\)/g, '');
   parsedBody = parsedBody.replace(
     /#####.*<sub>.*\*\*Sponsored \( Powered by \[dclick]\(https:\/\/www\.dclick\.io\) \)\*\* <\/sub>/g,
-    ""
+    '',
   );
   // Remove tripsteem ads
   parsedBody = parsedBody.replace(
     /<a href='https:\/\/.*tripsteem\.com\/post\/.*'>.*<\/a>/g,
-    ""
+    '',
   );
   parsedBody = parsedBody.replace(
     /This is posted on <a href='https:\/\/en\.tripsteem\.com\/'><b>trips\.teem/g,
-    ""
+    '',
   );
   parsedBody = parsedBody.replace(
     /<a href='https:\/\/en\.tripsteem\.com\/'>!\[image]\(https:\/\/cdn\.steemitimages\.com\/DQmUjAKXsageaSrVo4CgqvDGePsw7CbVFRfNv91fQrW9kuL\/banner_en\.jpg\)<\/a>/g,
-    ""
+    '',
   );
   // Remove SWM snippets with description
   parsedBody = parsedBody.replace(
     /!\bsteemitworldmap\b\s((?:[-+]?(?:[1-8]?\d(?:\.\d+)?|90(?:\.0+)?)))\s\blat\b\s((?:[-+]?(?:180(?:\.0+)?|(?:(?:1[0-7]\d)|(?:[1-9]?\d))(?:\.\d+)?)))\s\blong.*d3scr/gi,
-    ""
+    '',
   );
   // Remove preview images in dtube posts with dtube embeds
   const dtubeMatch = dtubeImageRegex.exec(parsedBody);
@@ -79,7 +79,7 @@ const parseBody = (body, options) => {
         allowtransparency="true"
         allowfullscreen
         style="width: 100%;"
-      />`
+      />`,
     );
   // Replace dtube links with dtube embeds
   parsedBody = parsedBody.replace(
@@ -92,11 +92,11 @@ const parseBody = (body, options) => {
     allowtransparency="true"
     allowfullscreen
     style="width: 100%;"
-  />\n`
+  />\n`,
   );
-  //remove remaining SWM snippets
-  parsedBody = parsedBody.replace(swmregex, "");
-  //Replace Steemit links with Travelfeed
+  // remove remaining SWM snippets
+  parsedBody = parsedBody.replace(swmregex, '');
+  // Replace Steemit links with Travelfeed
   parsedBody = parsedBody.replace(/https:\/\/steemit\.com/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
@@ -109,8 +109,8 @@ const parseBody = (body, options) => {
     parsedBody = sanitizeHtml(
       parsedBody,
       sanitizeConfig({
-        secureLinks: true
-      })
+        secureLinks: true,
+      }),
     );
   } else {
     parsedBody = parsedBody.replace(/"\.\.\//g, `"${ROOTURL}`);
@@ -130,13 +130,13 @@ const parseBody = (body, options) => {
                   options.cardWidth,
                   undefined,
                   undefined,
-                  "webp"
+                  'webp',
                 )}"
                 data-sizes="100w">
-            <img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ""} class="lazy"
-                src="${imageProxy(imgMatches[1], undefined, 10, "fit")}"
+            <img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} class="lazy"
+                src="${imageProxy(imgMatches[1], undefined, 10, 'fit')}"
                 data-sizes="100w">
-        </picture>`
+        </picture>`,
       );
     }
   }

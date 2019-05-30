@@ -1,63 +1,69 @@
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { grey } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import Grow from "@material-ui/core/Grow";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import DownIcon from "@material-ui/icons/ArrowDropDown";
-import PublishIcon from "@material-ui/icons/Create";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import DestinationsIcon from "@material-ui/icons/Explore";
-import CookieIcon from "@material-ui/icons/GroupWork";
-import FeedIcon from "@material-ui/icons/Home";
-import PrivacyIcon from "@material-ui/icons/Lock";
-import MapIcon from "@material-ui/icons/Map";
-import MenuIcon from "@material-ui/icons/Menu";
-import MoreVert from "@material-ui/icons/MoreVert";
-import ProfileIcon from "@material-ui/icons/Person";
-import SignUpIcon from "@material-ui/icons/PersonAdd";
-import TermsIcon from "@material-ui/icons/Toc";
-import LoginIcon from "@material-ui/icons/VpnKey";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { getLoginURL, getUser, logout } from "../../helpers/token";
-import Logout from "../Login/LogoutButton";
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { grey } from '@material-ui/core/colors';
+import Divider from '@material-ui/core/Divider';
+import Grow from '@material-ui/core/Grow';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import DownIcon from '@material-ui/icons/ArrowDropDown';
+import PublishIcon from '@material-ui/icons/Create';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import DestinationsIcon from '@material-ui/icons/Explore';
+import CookieIcon from '@material-ui/icons/GroupWork';
+import FeedIcon from '@material-ui/icons/Home';
+import PrivacyIcon from '@material-ui/icons/Lock';
+import MapIcon from '@material-ui/icons/Map';
+import MenuIcon from '@material-ui/icons/Menu';
+import MoreVert from '@material-ui/icons/MoreVert';
+import ProfileIcon from '@material-ui/icons/Person';
+import SignUpIcon from '@material-ui/icons/PersonAdd';
+import TermsIcon from '@material-ui/icons/Toc';
+import LoginIcon from '@material-ui/icons/VpnKey';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { getLoginURL, getUser, logout } from '../../helpers/token';
+import Logout from '../Login/LogoutButton';
 
 class HeaderMenu extends Component {
   state = {
-    user: "",
-    menuopen: false
+    user: '',
+    menuopen: false,
   };
+
   getUser() {
     this.setState({ user: getUser() });
   }
+
   componentDidMount() {
     this.getUser();
   }
+
   handleToggle = () => {
     this.setState(state => ({ menuopen: !state.menuopen }));
   };
+
   handleLogout = () => {
     logout();
     this.setState({ user: null });
     this.props.handleLogout();
   };
+
   handleClose = event => {
     if (this.anchorEl.contains(event.target)) {
       return;
     }
     this.setState({ menuopen: false });
   };
+
   render() {
     const { menuopen } = this.state;
-    var me = <Fragment />;
+    let me = <Fragment />;
     if (this.state.user == null) {
       me = (
         <Fragment>
@@ -65,7 +71,7 @@ class HeaderMenu extends Component {
             buttonRef={node => {
               this.anchorEl = node;
             }}
-            aria-owns={menuopen ? "menu-list-grow" : undefined}
+            aria-owns={menuopen ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
             onClick={this.handleToggle}
           >
@@ -94,7 +100,7 @@ class HeaderMenu extends Component {
                 id="menu-list-grow"
                 style={{
                   transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
+                    placement === 'bottom' ? 'center top' : 'center bottom',
                 }}
               >
                 <Paper>
@@ -183,14 +189,14 @@ class HeaderMenu extends Component {
         </Fragment>
       );
     }
-    if (this.state.user != null && this.state.user != "") {
+    if (this.state.user != null && this.state.user != '') {
       me = (
         <Fragment>
           <Button
             buttonRef={node => {
               this.anchorEl = node;
             }}
-            aria-owns={menuopen ? "menu-list-grow" : undefined}
+            aria-owns={menuopen ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
             onClick={this.handleToggle}
             className="p-0s"
@@ -215,7 +221,7 @@ class HeaderMenu extends Component {
                 id="menu-list-grow"
                 style={{
                   transformOrigin:
-                    placement === "bottom" ? "center top" : "center bottom"
+                    placement === 'bottom' ? 'center top' : 'center bottom',
                 }}
               >
                 <Paper>
@@ -313,7 +319,7 @@ class HeaderMenu extends Component {
 }
 
 HeaderMenu.propTypes = {
-  isDashboard: PropTypes.bool
+  isDashboard: PropTypes.bool,
 };
 
 export default HeaderMenu;

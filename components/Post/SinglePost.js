@@ -1,56 +1,60 @@
-import Avatar from "@material-ui/core/Avatar";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import dynamic from "next/dynamic";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import LazyLoad from "vanilla-lazyload";
-import { GET_SETTINGS } from "../../helpers/graphql/settings";
-import { GET_POST } from "../../helpers/graphql/singlePost";
-import parseBody from "../../helpers/parseBody";
-import { getUser } from "../../helpers/token";
-import CuratorMenu from "../CuratorMenu/PostMenu";
-import InvalidPost from "../General/InvalidPost";
-import NotFound from "../General/NotFound";
-import Head from "../Header/Head";
-import Header from "../Header/Header";
-import PostMap from "../Maps/PostMap";
-import PostAuthorProfile from "../Profile/PostAuthorProfile";
-import OrderBySelect from "./OrderBySelect";
-import PostCommentItem from "./PostCommentItem";
-import PostComments from "./PostComments";
-import PostImageHeader from "./PostImageHeader";
-import SubHeader from "./SubHeader";
-import VoteSlider from "./VoteSlider";
+import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import readingTime from 'reading-time';
+import sanitize from 'sanitize-html';
+import LazyLoad from 'vanilla-lazyload';
+import { GET_SETTINGS } from '../../helpers/graphql/settings';
+import { GET_POST } from '../../helpers/graphql/singlePost';
+import parseBody from '../../helpers/parseBody';
+import { getUser } from '../../helpers/token';
+import CuratorMenu from '../CuratorMenu/PostMenu';
+import InvalidPost from '../General/InvalidPost';
+import NotFound from '../General/NotFound';
+import Head from '../Header/Head';
+import Header from '../Header/Header';
+import PostMap from '../Maps/PostMap';
+import PostAuthorProfile from '../Profile/PostAuthorProfile';
+import OrderBySelect from './OrderBySelect';
+import PostCommentItem from './PostCommentItem';
+import PostComments from './PostComments';
+import PostImageHeader from './PostImageHeader';
+import SubHeader from './SubHeader';
+import VoteSlider from './VoteSlider';
 
 export class SinglePost extends Component {
   constructor(props) {
     super(props);
     this.myInput = React.createRef();
   }
+
   state = {
-    title: "Most miles",
-    orderby: "total_votes",
-    orderdir: "DESC",
-    bgpos: "fixed",
-    bgheight: "100%",
-    bgmargin: "0px",
+    title: 'Most miles',
+    orderby: 'total_votes',
+    orderdir: 'DESC',
+    bgpos: 'fixed',
+    bgheight: '100%',
+    bgmargin: '0px',
     userComment: undefined,
-    cardWidth: 800
+    cardWidth: 800,
   };
+
   onCommentAdd(userComment) {
     this.setState({ userComment });
   }
+
   handleClick(op) {
     this.setState(op);
   }
+
   componentDidMount() {
     if (this.myInput.current) {
       const cardWidth =
@@ -59,22 +63,24 @@ export class SinglePost extends Component {
     }
     if (!document.lazyLoadInstance) {
       document.lazyLoadInstance = new LazyLoad({
-        elements_selector: ".lazy",
-        threshold: 1200
+        elements_selector: '.lazy',
+        threshold: 1200,
       });
     }
     this.setState({ parent_id: this.props.post_id });
     // Update lazyLoad after first rendering of every image
     document.lazyLoadInstance.update();
   }
+
   // Update lazyLoad after rerendering of every image
   componentDidUpdate() {
     document.lazyLoadInstance.update();
   }
+
   render() {
     // Prevent SSR
-    const BookmarkIcon = dynamic(() => import("./BookmarkIcon"), {
-      ssr: false
+    const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
+      ssr: false,
     });
     return (
       <Fragment>
@@ -118,26 +124,24 @@ export class SinglePost extends Component {
             // Don't render invalid posts but return Steempeak link
             // Todo: Display NSFW posts for logged in users based on prefererences
             if (!data.post.is_travelfeed && data.post.depth === 0) {
-              const url =
-                "https://steempeak.com/@" +
-                data.post.author +
-                "/" +
-                data.post.permlink;
+              const url = `https://steempeak.com/@${data.post.author}/${
+                data.post.permlink
+              }`;
               return <InvalidPost url={url} />;
             }
             // If comment, render comment component
             let card = <Fragment />;
             let head = <Fragment />;
             // Render post
-            let htmlBody = parseBody(data.post.body, {
-              cardWidth: this.state.cardWidth
+            const htmlBody = parseBody(data.post.body, {
+              cardWidth: this.state.cardWidth,
             });
             const bodyText = { __html: htmlBody };
             let bodycontent = (
               <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
             );
-            let isBacklisted = data.post.is_blacklisted;
-            let isNSFW = data.post.is_nsfw;
+            const isBacklisted = data.post.is_blacklisted;
+            const isNSFW = data.post.is_nsfw;
             if (data.post.is_blacklisted || data.post.is_nsfw) {
               bodycontent = (
                 <Query query={GET_SETTINGS}>
@@ -194,9 +198,9 @@ export class SinglePost extends Component {
                     parent_permlink: data.post.parent_permlink,
                     root_author: data.post.parent_author,
                     root_permlink: data.post.root_permlink,
-                    root_title: data.post.root_title
+                    root_title: data.post.root_title,
                   }}
-                  title={true}
+                  title
                 />
               );
             } else {
@@ -252,7 +256,7 @@ export class SinglePost extends Component {
                             <a className="text-dark cpointer">
                               <strong>{data.post.display_name}</strong>
                               <span className="text-muted">
-                                {" "}
+                                {' '}
                                 @{data.post.author}
                               </span>
                             </a>
@@ -280,8 +284,8 @@ export class SinglePost extends Component {
                             location={{
                               coordinates: {
                                 lat: data.post.latitude,
-                                lng: data.post.longitude
-                              }
+                                lng: data.post.longitude,
+                              },
                             }}
                           />
                           <hr />
@@ -317,32 +321,28 @@ export class SinglePost extends Component {
                   <Grid item lg={12} md={12} sm={12} xs={12}>
                     <OrderBySelect
                       handleClick={this.handleClick.bind(this)}
-                      selection={this.state.title || "Most miles"}
+                      selection={this.state.title || 'Most miles'}
                     />
                   </Grid>
                   <PostComments
                     post_id={data.post.post_id}
-                    orderby={this.state.orderby || "total_votes"}
-                    orderdir={this.state.orderdir || "DESC"}
-                    ismain={true}
+                    orderby={this.state.orderby || 'total_votes'}
+                    orderdir={this.state.orderdir || 'DESC'}
+                    ismain
                   />
                 </Fragment>
               );
             }
             // Set the canonical URL to steemit.com by default to avoid duplicate content SEO problems
-            let canonicalUrl =
-              "https://steemit.com/travelfeed/@" +
-              data.post.author +
-              "/" +
-              data.post.permlink;
+            let canonicalUrl = `https://steemit.com/travelfeed/@${
+              data.post.author
+            }/${data.post.permlink}`;
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored through the dApp
-            if (data.post.app.split("/")[0] === "travelfeed") {
-              canonicalUrl =
-                "https://travelfeed.io/@" +
-                data.post.author +
-                "/" +
-                data.post.permlink;
+            if (data.post.app.split('/')[0] === 'travelfeed') {
+              canonicalUrl = `https://travelfeed.io/@${data.post.author}/${
+                data.post.permlink
+              }`;
               appIcon = (
                 <img
                   width="25"
@@ -351,8 +351,9 @@ export class SinglePost extends Component {
                 />
               );
             }
-            const excerpt =
-              sanitized.substring(0, 180) + `[...] by ${data.post.author}`;
+            const excerpt = `${sanitized.substring(0, 180)}[...] by ${
+              data.post.author
+            }`;
             return (
               <Fragment>
                 <Head>
@@ -360,11 +361,11 @@ export class SinglePost extends Component {
                 </Head>
                 {head}
                 <Header subheader={data.post.display_name} />
-                <div style={{ position: "relative" }}>
+                <div style={{ position: 'relative' }}>
                   {data.post.depth === 0 && (
                     <PostImageHeader backgroundImage={data.post.img_url} />
                   )}
-                  <div className="w-100" style={{ position: "relative" }}>
+                  <div className="w-100" style={{ position: 'relative' }}>
                     <Grid
                       container
                       spacing={0}
@@ -377,7 +378,7 @@ export class SinglePost extends Component {
                             <div
                               className="row"
                               style={{
-                                height: "500px"
+                                height: '500px',
                               }}
                             >
                               <div className="text-center col my-auto">
@@ -385,7 +386,7 @@ export class SinglePost extends Component {
                                   variant="h3"
                                   className="text-light font-weight-bold"
                                   style={{
-                                    textShadow: "1px 1px 20px #343A40"
+                                    textShadow: '1px 1px 20px #343A40',
                                   }}
                                 >
                                   {data.post.title}
@@ -399,7 +400,7 @@ export class SinglePost extends Component {
                             <div
                               className="row"
                               style={{
-                                height: "50px"
+                                height: '50px',
                               }}
                             />
                           </div>
@@ -423,14 +424,14 @@ export class SinglePost extends Component {
                                 created_at: new Date(),
                                 children: 0,
                                 author: getUser(),
-                                display_name: "",
+                                display_name: '',
                                 permlink: this.state.userComment.permlink,
                                 depth: this.props.post.depth + 1,
                                 total_votes: 0,
-                                votes: "",
-                                parent_author: "",
-                                parent_permlink: "",
-                                root_title: ""
+                                votes: '',
+                                parent_author: '',
+                                parent_permlink: '',
+                                root_title: '',
                               }}
                             />
                           </Grid>
@@ -451,5 +452,5 @@ export class SinglePost extends Component {
 
 SinglePost.propTypes = {
   post: PropTypes.object,
-  post_id: PropTypes.number
+  post_id: PropTypes.number,
 };

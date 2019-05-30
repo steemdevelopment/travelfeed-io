@@ -1,50 +1,54 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { imageProxy } from "../../helpers/getImage";
-import { supportsWebp } from "../../helpers/webp";
-import detectIt from "detect-it";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import detectIt from 'detect-it';
+import { imageProxy } from '../../helpers/getImage';
+import { supportsWebp } from '../../helpers/webp';
 
 class PostImageHeader extends Component {
   state = {
-    bgpos: "fixed",
-    bgheight: "100%",
-    bgmargin: "0px",
+    bgpos: 'fixed',
+    bgheight: '100%',
+    bgmargin: '0px',
     windowWidth: 10,
     opacity: 0,
-    webpSupport: undefined
+    webpSupport: undefined,
   };
+
   listenScrollEvent = () => {
     if (window.scrollY > 500) {
       this.setState({
-        bgpos: "absolute",
+        bgpos: 'absolute',
         bgheight: window.innerHeight,
-        bgmargin: "500px"
+        bgmargin: '500px',
       });
     } else {
       this.setState({
-        bgpos: "fixed",
+        bgpos: 'fixed',
         bgheight: window.innerHeight,
-        bgmargin: "0px"
+        bgmargin: '0px',
       });
     }
   };
+
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.listenScrollEvent);
+    window.removeEventListener('scroll', this.listenScrollEvent);
   }
+
   async componentDidMount() {
     window.addEventListener(
-      "scroll",
+      'scroll',
       this.listenScrollEvent,
       // better scroll performance: https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md
-      detectIt.passiveEvents ? { passive: true } : false
+      detectIt.passiveEvents ? { passive: true } : false,
     );
     const webpSupport = await supportsWebp();
     this.setState({
       windowWidth: (Math.ceil(window.innerWidth / 640) + 1) * 640,
       opacity: 1,
-      webpSupport
+      webpSupport,
     });
   }
+
   render() {
     return (
       <div
@@ -57,31 +61,31 @@ class PostImageHeader extends Component {
             this.props.backgroundImage,
             undefined,
             10,
-            "fit"
+            'fit',
           )}")`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center center",
-          backgroundSize: "cover"
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: 'cover',
         }}
       >
         <div
           className="w-100"
           style={{
-            height: "100%",
-            position: "absolute",
-            marginTop: "0px",
+            height: '100%',
+            position: 'absolute',
+            marginTop: '0px',
             backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.3)), url("${imageProxy(
               this.props.backgroundImage,
               this.state.windowWidth,
               undefined,
               undefined,
-              this.state.webpSupport ? "webp" : undefined
+              this.state.webpSupport ? 'webp' : undefined,
             )}")`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center center",
-            backgroundSize: "cover",
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover',
             opacity: this.state.opacity,
-            transition: "opacity 2s linear"
+            transition: 'opacity 2s linear',
           }}
         />
       </div>
@@ -90,7 +94,7 @@ class PostImageHeader extends Component {
 }
 
 PostImageHeader.propTypes = {
-  backgroundImage: PropTypes.string
+  backgroundImage: PropTypes.string,
 };
 
 export default PostImageHeader;

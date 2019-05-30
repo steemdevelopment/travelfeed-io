@@ -1,10 +1,10 @@
-import Typography from "@material-ui/core/Typography";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import PostGrid from "../components/Grid/PostGrid";
-import TagsOrderBySelect from "../components/Grid/TagsOrderBySelect";
-import Head from "../components/Header/Head";
-import Header from "../components/Header/Header";
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import PostGrid from '../components/Grid/PostGrid';
+import TagsOrderBySelect from '../components/Grid/TagsOrderBySelect';
+import Head from '../components/Header/Head';
+import Header from '../components/Header/Header';
 
 class Tag extends Component {
   static async getInitialProps(props) {
@@ -12,25 +12,26 @@ class Tag extends Component {
     const { tags } = props.query;
     let min_curation_score = 0;
     let selection = 0;
-    let title = "Taking Off";
-    if (orderby === "featured") {
+    let title = 'Taking Off';
+    if (orderby === 'featured') {
       selection = 1;
-      orderby = "sc_trend";
+      orderby = 'sc_trend';
       min_curation_score = 5000;
-      title = "Featured";
-    } else if (orderby === "total_votes") {
+      title = 'Featured';
+    } else if (orderby === 'total_votes') {
       selection = 2;
       min_curation_score = 10000;
-      title = "Favorites";
+      title = 'Favorites';
     }
     return {
       orderby,
       tags,
       min_curation_score,
       selection,
-      title
+      title,
     };
   }
+
   render() {
     return (
       <Fragment>
@@ -45,7 +46,7 @@ class Tag extends Component {
         <Typography
           variant="h4"
           align="center"
-          gutterBottom={true}
+          gutterBottom
           className="pt-5 pb-3"
         >
           {this.props.tags.charAt(0).toUpperCase() + this.props.tags.slice(1)}
@@ -59,7 +60,7 @@ class Tag extends Component {
             tags: this.props.tags,
             orderby: this.props.orderby,
             min_curation_score: this.props.min_curation_score,
-            limit: 8
+            limit: 8,
           }}
           grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
           cardHeight={200}
@@ -75,7 +76,7 @@ Tag.propTypes = {
   title: PropTypes.string,
   orderby: PropTypes.string,
   min_curation_score: PropTypes.number,
-  selection: PropTypes.number
+  selection: PropTypes.number,
 };
 
 export default Tag;

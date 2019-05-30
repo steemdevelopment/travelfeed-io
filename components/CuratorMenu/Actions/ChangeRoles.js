@@ -1,28 +1,31 @@
-import React, { Fragment } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import { Mutation } from "react-apollo";
-import { CHANGE_CURATOR_ROLE } from "../../../helpers/graphql/roles";
+import React, { Fragment } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import { Mutation } from 'react-apollo';
+import { CHANGE_CURATOR_ROLE } from '../../../helpers/graphql/roles';
 
 class AlertDialog extends React.Component {
   state = {
-    reason: "",
+    reason: '',
     open: false,
-    isOnlyCommentBlacklisted: false
+    isOnlyCommentBlacklisted: false,
   };
+
   handleCheckboxChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
+
   handleTextFieldChange(content) {
     this.setState({ reason: content.target.value });
   }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -30,11 +33,12 @@ class AlertDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -42,6 +46,7 @@ class AlertDialog extends React.Component {
       }
     }
   }
+
   render() {
     if (this.props.isCurator) {
       return (
@@ -49,7 +54,7 @@ class AlertDialog extends React.Component {
           mutation={CHANGE_CURATOR_ROLE}
           variables={{
             user: this.props.author,
-            isCurator: false
+            isCurator: false,
           }}
         >
           {(removeCurator, data) => {
@@ -61,7 +66,7 @@ class AlertDialog extends React.Component {
             ) {
               this.newNotification({
                 success: data.data.updateUserRoles.success,
-                message: data.data.updateUserRoles.message
+                message: data.data.updateUserRoles.message,
               });
               this.setState({ open: false });
             }
@@ -104,73 +109,72 @@ class AlertDialog extends React.Component {
           }}
         </Mutation>
       );
-    } else {
-      return (
-        <Mutation
-          mutation={CHANGE_CURATOR_ROLE}
-          variables={{
-            user: this.props.author,
-            isCurator: true
-          }}
-        >
-          {(makeCurator, data) => {
-            if (
-              data &&
-              data.data &&
-              data.data.updateUserRoles &&
-              this.state.open === true
-            ) {
-              this.newNotification({
-                success: data.data.updateUserRoles.success,
-                message: data.data.updateUserRoles.message
-              });
-              this.setState({ open: false });
-            }
-            return (
-              <Fragment>
-                <MenuItem onClick={this.handleClickOpen}>Make curator</MenuItem>
-                <Dialog
-                  open={this.state.open}
-                  onClose={this.handleClose}
-                  aria-labelledby="alert-dialog-title"
-                  aria-describedby="alert-dialog-description"
-                >
-                  <DialogTitle id="alert-dialog-title">
-                    Promote user to curator?
-                  </DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                      Are you sure that you want to give the user @
-                      {this.props.author} curator rights?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={this.handleClose} color="primary">
-                      Cancel
-                    </Button>
-                    <Button
-                      onClick={makeCurator}
-                      color="primary"
-                      variant="contained"
-                      autoFocus
-                    >
-                      Promote to Curator
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </Fragment>
-            );
-          }}
-        </Mutation>
-      );
     }
+    return (
+      <Mutation
+        mutation={CHANGE_CURATOR_ROLE}
+        variables={{
+          user: this.props.author,
+          isCurator: true,
+        }}
+      >
+        {(makeCurator, data) => {
+          if (
+            data &&
+            data.data &&
+            data.data.updateUserRoles &&
+            this.state.open === true
+          ) {
+            this.newNotification({
+              success: data.data.updateUserRoles.success,
+              message: data.data.updateUserRoles.message,
+            });
+            this.setState({ open: false });
+          }
+          return (
+            <Fragment>
+              <MenuItem onClick={this.handleClickOpen}>Make curator</MenuItem>
+              <Dialog
+                open={this.state.open}
+                onClose={this.handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  Promote user to curator?
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Are you sure that you want to give the user @
+                    {this.props.author} curator rights?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="primary">
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={makeCurator}
+                    color="primary"
+                    variant="contained"
+                    autoFocus
+                  >
+                    Promote to Curator
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </Fragment>
+          );
+        }}
+      </Mutation>
+    );
   }
 }
 
 AlertDialog.propTypes = {
   author: PropTypes.string.isRequired,
   isCurator: PropTypes.bool.isRequired,
-  enqueueSnackbar: PropTypes.func
+  enqueueSnackbar: PropTypes.func,
 };
 
 export default withSnackbar(AlertDialog);

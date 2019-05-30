@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { SinglePost } from "../components/Post/SinglePost";
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { SinglePost } from '../components/Post/SinglePost';
 
 class Post extends Component {
   static async getInitialProps(props) {
@@ -8,6 +8,7 @@ class Post extends Component {
     const { permlink } = props.query;
     return { author, permlink };
   }
+
   render() {
     return (
       <SinglePost
@@ -18,7 +19,7 @@ class Post extends Component {
 }
 Post.propTypes = {
   author: PropTypes.string,
-  permlink: PropTypes.string
+  permlink: PropTypes.string,
 };
 
 export default Post;

@@ -1,28 +1,30 @@
 /* eslint-disable react/no-unescaped-entities */
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import InfiniteScroll from "react-infinite-scroller";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import { imageProxy } from "../../helpers/getImage";
-import { GET_BOOKMARKS } from "../../helpers/graphql/bookmarks";
-import parseBody from "../../helpers/parseBody";
-import { regExcerpt } from "../../helpers/regex";
-import GridPostCard from "../Grid/GridPostCard";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import InfiniteScroll from 'react-infinite-scroller';
+import readingTime from 'reading-time';
+import sanitize from 'sanitize-html';
+import { imageProxy } from '../../helpers/getImage';
+import { GET_BOOKMARKS } from '../../helpers/graphql/bookmarks';
+import parseBody from '../../helpers/parseBody';
+import { regExcerpt } from '../../helpers/regex';
+import GridPostCard from '../Grid/GridPostCard';
 
 class PostGrid extends Component {
   state = {
     hasMore: true,
-    postslength: 9
+    postslength: 9,
   };
+
   noMore() {
     this.setState({ hasMore: false });
   }
+
   render() {
     return (
       <Fragment>
@@ -55,7 +57,7 @@ class PostGrid extends Component {
                   if (this.state.postslength === data.bookmarks.length) {
                     fetchMore({
                       variables: {
-                        offset: data.bookmarks.length
+                        offset: data.bookmarks.length,
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (fetchMoreResult.bookmarks.length < 9) {
@@ -65,10 +67,10 @@ class PostGrid extends Component {
                         return Object.assign({}, prev, {
                           bookmarks: [
                             ...prev.bookmarks,
-                            ...fetchMoreResult.bookmarks
-                          ]
+                            ...fetchMoreResult.bookmarks,
+                          ],
                         });
-                      }
+                      },
                     });
                     this.setState({ postslength: this.state.postslength + 9 });
                   }
@@ -99,17 +101,17 @@ class PostGrid extends Component {
                       const image = imageProxy(
                         post.img_url,
                         undefined,
-                        imgHeight
+                        imgHeight,
                       );
-                      let title = post.title;
+                      let { title } = post;
                       title =
                         title.length > 85
-                          ? title.substring(0, 81) + "[...]"
+                          ? `${title.substring(0, 81)}[...]`
                           : title;
                       const tags =
                         post.tags && post.tags.length > 1
                           ? [post.tags[1]]
-                          : ["travelfeed"];
+                          : ['travelfeed'];
                       const excerpt = regExcerpt(sanitized);
                       return (
                         <Grid
@@ -121,23 +123,23 @@ class PostGrid extends Component {
                           key={post.permlink}
                         >
                           <GridPostCard
-                            isBookmark={true}
+                            isBookmark
                             cardHeight={250}
                             post={{
                               author: post.author,
                               display_name: post.display_name,
                               permlink: post.permlink,
-                              title: title,
+                              title,
                               img_url: image,
                               created_at: post.created_at,
-                              readtime: readtime,
-                              excerpt: excerpt,
+                              readtime,
+                              excerpt,
                               votes: post.votes,
                               total_votes: post.total_votes,
-                              tags: tags,
+                              tags,
                               curation_score: post.curation_score,
                               app: post.app,
-                              depth: post.depth
+                              depth: post.depth,
                             }}
                           />
                         </Grid>
@@ -160,7 +162,7 @@ class PostGrid extends Component {
   }
 }
 PostGrid.propTypes = {
-  query: PropTypes.array.isRequired
+  query: PropTypes.array.isRequired,
 };
 
 export default PostGrid;

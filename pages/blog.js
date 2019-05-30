@@ -1,13 +1,14 @@
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import PostGrid from "../components/Grid/PostGrid";
-import AuthorProfile from "../components/Profile/AuthorProfile";
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import PostGrid from '../components/Grid/PostGrid';
+import AuthorProfile from '../components/Profile/AuthorProfile';
 
 class Blog extends Component {
   static async getInitialProps(props) {
-    let { author } = props.query;
+    const { author } = props.query;
     return { author };
   }
+
   render() {
     return (
       <Fragment>
@@ -23,7 +24,7 @@ class Blog extends Component {
 }
 
 Blog.propTypes = {
-  author: PropTypes.string
+  author: PropTypes.string,
 };
 
 export default Blog;

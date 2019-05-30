@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import FeaturedIcon from "@material-ui/icons/Star";
-import HotIcon from "@material-ui/icons/FlightTakeoff";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import Link from "next/link";
+import Paper from '@material-ui/core/Paper';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import HotIcon from '@material-ui/icons/FlightTakeoff';
+import FeaturedIcon from '@material-ui/icons/Star';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 class IconLabelTabs extends React.Component {
   render() {
@@ -49,7 +49,7 @@ class IconLabelTabs extends React.Component {
 
 IconLabelTabs.propTypes = {
   selection: PropTypes.number,
-  tags: PropTypes.string
+  tags: PropTypes.string,
 };
 
 export default IconLabelTabs;

@@ -1,11 +1,11 @@
-import { indigo } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import Link from "next/link";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_BLOG_POSTS } from "../../helpers/graphql/posts";
-import HeaderCard from "../General/HeaderCard";
+import { indigo } from '@material-ui/core/colors';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import Link from 'next/link';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { GET_BLOG_POSTS } from '../../helpers/graphql/posts';
+import HeaderCard from '../General/HeaderCard';
 
 class BlogGridList extends Component {
   render() {
@@ -13,7 +13,7 @@ class BlogGridList extends Component {
       <Fragment>
         <Query
           query={GET_BLOG_POSTS}
-          variables={{ author: "travelfeed", limit: 5 }}
+          variables={{ author: 'travelfeed', limit: 5 }}
         >
           {({ data, loading, error }) => {
             if (loading || error || data.post === null) {

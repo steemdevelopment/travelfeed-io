@@ -1,25 +1,29 @@
-import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
-import React, { Component, Fragment } from "react";
-import { hasCookieConsent, setCookieConsent } from "../../helpers/token";
-import CookiePopup from "./CookiePopup";
+import Typography from '@material-ui/core/Typography';
+import Link from 'next/link';
+import React, { Component, Fragment } from 'react';
+import { hasCookieConsent, setCookieConsent } from '../../helpers/token';
+import CookiePopup from './CookiePopup';
 
 class CookieConsent extends Component {
   state = {
     open: false,
-    optin: false
+    optin: false,
   };
+
   componentDidMount() {
-    const cookie = hasCookieConsent() !== "true";
+    const cookie = hasCookieConsent() !== 'true';
     this.setState({ open: cookie, optin: !cookie });
   }
+
   decline() {
     this.setState({ open: false });
   }
+
   accept() {
-    setCookieConsent("true");
+    setCookieConsent('true');
     this.setState({ open: false, optin: true });
   }
+
   render() {
     if (this.state.open === false) return <Fragment />;
     return (
@@ -35,7 +39,7 @@ class CookieConsent extends Component {
             We use cookies to improve your experience and to analyze how our
             site is used.
             <br />
-            <Link href={`/about/cookies`} passHref>
+            <Link href="/about/cookies" passHref>
               <a className="text-light text-decoration-underline">Learn more</a>
             </Link>
           </Typography>

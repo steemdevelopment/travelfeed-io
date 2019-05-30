@@ -1,18 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
-import Button from "@material-ui/core/Button";
-import { indigo } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Link from "next/link";
-import React, { Component, Fragment } from "react";
-import AboutSelect from "../../components/About/AboutSelect";
-import HeaderCard from "../../components/General/HeaderCard";
-import Head from "../../components/Header/Head";
-import Header from "../../components/Header/Header";
+import Button from '@material-ui/core/Button';
+import { indigo } from '@material-ui/core/colors';
+import Divider from '@material-ui/core/Divider';
+import Grid from '@material-ui/core/Grid';
+import Link from 'next/link';
+import React, { Component, Fragment } from 'react';
+import AboutSelect from '../../components/About/AboutSelect';
+import HeaderCard from '../../components/General/HeaderCard';
+import Head from '../../components/Header/Head';
+import Header from '../../components/Header/Header';
 
 class About extends Component {
   render() {
-    const title = "Support Us";
+    const title = 'Support Us';
     return (
       <Fragment>
         <Header subheader={title} />
@@ -43,7 +43,7 @@ class About extends Component {
                   <div className="text-center pb-3">
                     <a
                       className="p-1"
-                      href={`https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us`}
+                      href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=100.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us"
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                     >
@@ -53,7 +53,7 @@ class About extends Component {
                     </a>
                     <a
                       className="p-1"
-                      href={`https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us`}
+                      href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=250.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us"
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                     >
@@ -63,7 +63,7 @@ class About extends Component {
                     </a>
                     <a
                       className="p-1"
-                      href={`https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us`}
+                      href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=500.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us"
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                     >
@@ -73,7 +73,7 @@ class About extends Component {
                     </a>
                     <a
                       className="p-1"
-                      href={`https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us`}
+                      href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=1000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us"
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                     >
@@ -83,7 +83,7 @@ class About extends Component {
                     </a>
                     <a
                       className="p-1"
-                      href={`https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us`}
+                      href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=5000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us"
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                     >
@@ -93,7 +93,7 @@ class About extends Component {
                     </a>
                     <a
                       className="p-1"
-                      href={`https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us`}
+                      href="https://app.steemconnect.com/sign/delegate_vesting_shares?delegatee=travelfeed&vesting_shares=10000.000%20SP&redirect_uri=https%3A%2F%2Ftravelfeed.io%2F%40about%2Fsupport-us"
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                     >
@@ -109,14 +109,14 @@ class About extends Component {
                   <p>
                     By following our curation trail, you automatically upvote
                     all posts that we curate and help to reward quality content
-                    creators. We have made{" "}
+                    creators. We have made{' '}
                     <Link
                       as="/@travelfeed/tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
-                      href={`/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto`}
+                      href="/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
                       passHref
                     >
                       <a>a simple tutorial</a>
-                    </Link>{" "}
+                    </Link>{' '}
                     explaining how to follow our curation trail.
                   </p>
                   <Divider />
@@ -143,16 +143,16 @@ class About extends Component {
                   </p>
                   <p>
                     We are also looking for developers to help to improve
-                    TravelFeed. Please ping @jpphotography{" "}
+                    TravelFeed. Please ping @jpphotography{' '}
                     <a
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                       href="https://discord.gg/jWWu73H"
                     >
                       on our Discord server
-                    </a>{" "}
+                    </a>{' '}
                     if you are interested! TravelFeed is fully open-source, open
-                    issues are listed{" "}
+                    issues are listed{' '}
                     <a
                       target="_blank"
                       rel="nofollow noreferrer noopener"
@@ -174,16 +174,16 @@ class About extends Component {
                   <h4 className="text-center pt-4">Report Bugs</h4>
                   <p>
                     TravelFeed is still in Beta. If you encounter any bugs,
-                    please report them{" "}
+                    please report them{' '}
                     <a
                       target="_blank"
                       rel="nofollow noreferrer noopener"
                       href="https://discord.gg/jWWu73H"
                     >
                       on our Discord server
-                    </a>{" "}
+                    </a>{' '}
                     in the channel #travelfeed. If you have a Github account,
-                    you can also{" "}
+                    you can also{' '}
                     <a
                       target="_blank"
                       rel="nofollow noreferrer noopener"

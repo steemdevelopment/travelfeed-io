@@ -1,27 +1,29 @@
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import InfiniteScroll from "react-infinite-scroller";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import { GET_DRAFTS } from "../../helpers/graphql/drafts";
-import json2Html from "../../helpers/json2Html";
-import parseBody from "../../helpers/parseBody";
-import { regExcerpt } from "../../helpers/regex";
-import { getUser } from "../../helpers/token";
-import PostListItem from "../Grid/PostListItem";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import InfiniteScroll from 'react-infinite-scroller';
+import readingTime from 'reading-time';
+import sanitize from 'sanitize-html';
+import { GET_DRAFTS } from '../../helpers/graphql/drafts';
+import json2Html from '../../helpers/json2Html';
+import parseBody from '../../helpers/parseBody';
+import { regExcerpt } from '../../helpers/regex';
+import { getUser } from '../../helpers/token';
+import PostListItem from '../Grid/PostListItem';
 
 class PostGrid extends Component {
   state = {
     hasMore: true,
-    postslength: 10
+    postslength: 10,
   };
+
   noMore() {
     this.setState({ hasMore: false });
   }
+
   render() {
     const user = getUser();
     return (
@@ -49,7 +51,7 @@ class PostGrid extends Component {
                   if (this.state.postslength === data.drafts.length) {
                     fetchMore({
                       variables: {
-                        offset: data.drafts.length
+                        offset: data.drafts.length,
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (fetchMoreResult.drafts.length < 10) {
@@ -57,9 +59,9 @@ class PostGrid extends Component {
                         }
                         if (!fetchMoreResult) return prev;
                         return Object.assign({}, prev, {
-                          drafts: [...prev.drafts, ...fetchMoreResult.drafts]
+                          drafts: [...prev.drafts, ...fetchMoreResult.drafts],
                         });
-                      }
+                      },
                     });
                     this.setState({ postslength: this.state.postslength + 10 });
                   }
@@ -80,7 +82,7 @@ class PostGrid extends Component {
                           ? parseBody(draft.body, {})
                           : json2Html(JSON.parse(draft.body));
                         const sanitized = sanitize(htmlBody, {
-                          allowedTags: []
+                          allowedTags: [],
                         });
                         const readtime = readingTime(sanitized);
                         const excerpt = regExcerpt(sanitized);
@@ -97,13 +99,13 @@ class PostGrid extends Component {
                                 title: draft.title,
                                 json: draft.json,
                                 created_at: draft.savedate,
-                                readtime: readtime,
-                                excerpt: excerpt,
+                                readtime,
+                                excerpt,
                                 id: draft.id,
-                                isCodeEditor: draft.isCodeEditor
+                                isCodeEditor: draft.isCodeEditor,
                               }}
                               id={draft.id}
-                              isDraftMode={true}
+                              isDraftMode
                             />
                           </div>
                         );
@@ -126,7 +128,7 @@ class PostGrid extends Component {
   }
 }
 PostGrid.propTypes = {
-  query: PropTypes.array.isRequired
+  query: PropTypes.array.isRequired,
 };
 
 export default PostGrid;

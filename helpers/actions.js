@@ -1,5 +1,5 @@
-import api from "./steemConnectAPI";
-import { getScToken, getUser } from "./token";
+import api from './steemConnectAPI';
+import { getScToken, getUser } from './token';
 
 export const vote = async (author, permlink, weight) => {
   api.setAccessToken(getScToken());
@@ -9,8 +9,8 @@ export const vote = async (author, permlink, weight) => {
       if (err) {
         resolve({
           success: false,
-          message: `Could not vote${(typeof err === "string" && `: ${err}`) ||
-            (err.error_description && `: ${err.error_description}`)}`
+          message: `Could not vote${(typeof err === 'string' && `: ${err}`) ||
+            (err.error_description && `: ${err.error_description}`)}`,
         });
       }
       if (res) {
@@ -27,11 +27,11 @@ export const comment = async (
   title,
   body,
   jsonMetadata,
-  type
+  type,
 ) => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  return await api.comment(
+  return api.comment(
     parentAuthor,
     parentPermlink,
     author,
@@ -40,17 +40,17 @@ export const comment = async (
     body,
     jsonMetadata,
     await function(err) {
-      if (type === "comment") {
+      if (type === 'comment') {
         if (err != undefined) {
-          return { success: false, message: "Comment could not be published" };
+          return { success: false, message: 'Comment could not be published' };
         }
-        return { success: true, message: "Comment was published successfully" };
+        return { success: true, message: 'Comment was published successfully' };
       }
       if (err != undefined) {
-        return { success: false, message: "Post could not be published" };
+        return { success: false, message: 'Post could not be published' };
       }
-      return { success: true, message: "Post was published successfully" };
-    }
+      return { success: true, message: 'Post was published successfully' };
+    },
   );
 };
 
@@ -62,9 +62,9 @@ export const follow = async following => {
       if (err) {
         resolve({
           success: false,
-          message: `Could not follow user${(typeof err === "string" &&
+          message: `Could not follow user${(typeof err === 'string' &&
             `: ${err}`) ||
-            (err.error_description && `: ${err.error_description}`)}`
+            (err.error_description && `: ${err.error_description}`)}`,
         });
       }
       if (res) {
@@ -82,9 +82,9 @@ export const unfollow = async unfollowing => {
       if (err) {
         resolve({
           success: false,
-          message: `Could not unfollow user${(typeof err === "string" &&
+          message: `Could not unfollow user${(typeof err === 'string' &&
             `: ${err}`) ||
-            (err.error_description && `: ${err.error_description}`)}`
+            (err.error_description && `: ${err.error_description}`)}`,
         });
       }
       if (res) {
@@ -97,7 +97,7 @@ export const unfollow = async unfollowing => {
 export const customJson = async payload => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  const id = "travelfeed";
+  const id = 'travelfeed';
   const requiredAuths = [];
   const requiredPostingAuths = [author];
   const json = JSON.stringify(payload);
@@ -112,18 +112,18 @@ export const customJson = async payload => {
           resolve({
             success: false,
             message: `Could not write custom_json to Blockchain${(typeof err ===
-              "string" &&
+              'string' &&
               `: ${err}`) ||
-              (err.error_description && `: ${err.error_description}`)}`
+              (err.error_description && `: ${err.error_description}`)}`,
           });
         }
         if (res) {
           resolve({
             success: true,
-            message: "Curation action was broadcasted sucessfully"
+            message: 'Curation action was broadcasted sucessfully',
           });
         }
-      }
+      },
     );
   });
 };
@@ -131,9 +131,9 @@ export const customJson = async payload => {
 export const broadcastActiveUser = async () => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  const id = "active_user";
+  const id = 'active_user';
   const requiredAuths = [];
   const requiredPostingAuths = [author];
-  const json = JSON.stringify({ app: "travelfeed" });
+  const json = JSON.stringify({ app: 'travelfeed' });
   return api.customJson(requiredAuths, requiredPostingAuths, id, json);
 };

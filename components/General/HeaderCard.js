@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import Typography from "@material-ui/core/Typography";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
 
 class HeaderCard extends Component {
   render() {
@@ -29,8 +29,8 @@ class HeaderCard extends Component {
 }
 
 HeaderCard.defaultProps = {
-  titlesize: "h4",
-  noborder: false
+  titlesize: 'h4',
+  noborder: false,
 };
 
 HeaderCard.propTypes = {
@@ -38,7 +38,7 @@ HeaderCard.propTypes = {
   titlesize: PropTypes.string,
   title: PropTypes.string,
   content: PropTypes.any,
-  noborder: PropTypes.bool
+  noborder: PropTypes.bool,
 };
 
 export default HeaderCard;

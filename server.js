@@ -1,89 +1,89 @@
-const express = require("express");
-const next = require("next");
-var { join } = require("path");
-const LRUCache = require("lru-cache");
+const express = require('express');
+const next = require('next');
+const { join } = require('path');
+const LRUCache = require('lru-cache');
 
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 
 const handleNextRequests = app.getRequestHandler();
 
 // https://gist.github.com/henrik/1688572
 const euCountries = [
-  "AT",
-  "BE",
-  "BG",
-  "HR",
-  "CY",
-  "CZ",
-  "DK",
-  "EE",
-  "FI",
-  "FR",
-  "DE",
-  "GR",
-  "HU",
-  "IE",
-  "IT",
-  "LV",
-  "LT",
-  "LU",
-  "MT",
-  "NL",
-  "PL",
-  "PT",
-  "RO",
-  "SK",
-  "SI",
-  "ES",
-  "SE",
-  "GB",
-  "GF",
-  "GP",
-  "MQ",
-  "ME",
-  "YT",
-  "RE",
-  "MF",
-  "GI",
-  "AX",
-  "PM",
-  "GL",
-  "BL",
-  "SX",
-  "AW",
-  "CW",
-  "WF",
-  "PF",
-  "NC",
-  "TF",
-  "AI",
-  "BM",
-  "IO",
-  "VG",
-  "KY",
-  "FK",
-  "MS",
-  "PN",
-  "SH",
-  "GS",
-  "TC",
-  "AD",
-  "LI",
-  "MC",
-  "SM",
-  "VA",
-  "JE",
-  "GG",
-  "GI",
-  "IM"
+  'AT',
+  'BE',
+  'BG',
+  'HR',
+  'CY',
+  'CZ',
+  'DK',
+  'EE',
+  'FI',
+  'FR',
+  'DE',
+  'GR',
+  'HU',
+  'IE',
+  'IT',
+  'LV',
+  'LT',
+  'LU',
+  'MT',
+  'NL',
+  'PL',
+  'PT',
+  'RO',
+  'SK',
+  'SI',
+  'ES',
+  'SE',
+  'GB',
+  'GF',
+  'GP',
+  'MQ',
+  'ME',
+  'YT',
+  'RE',
+  'MF',
+  'GI',
+  'AX',
+  'PM',
+  'GL',
+  'BL',
+  'SX',
+  'AW',
+  'CW',
+  'WF',
+  'PF',
+  'NC',
+  'TF',
+  'AI',
+  'BM',
+  'IO',
+  'VG',
+  'KY',
+  'FK',
+  'MS',
+  'PN',
+  'SH',
+  'GS',
+  'TC',
+  'AD',
+  'LI',
+  'MC',
+  'SM',
+  'VA',
+  'JE',
+  'GG',
+  'GI',
+  'IM',
 ];
 
 const handle = (req, res) => {
   // Check country code of user IP as supplied by Cloudflare
-  const country_code = req.header("CF-IPCountry");
+  const country_code = req.header('CF-IPCountry');
   // Set session cookie for cookie consent for non-EU users to not annoy them with a cookie consent popup that is nor legally required for their country
-  if (!euCountries.includes(country_code)) res.cookie("cookie_consent", true);
+  if (!euCountries.includes(country_code)) res.cookie('cookie_consent', true);
   handleNextRequests(req, res);
 };
 
@@ -95,7 +95,7 @@ const port = process.env.PORT || 3000;
 // https://medium.com/@az/i18n-next-js-app-with-server-side-rendering-and-user-language-aware-caching-part-1-ae1fce25a693
 const ssrCache = new LRUCache({
   max: 100,
-  maxAge: 1000 * 60 * 60 // 1hour
+  maxAge: 1000 * 60 * 60, // 1hour
 });
 
 app
@@ -104,165 +104,165 @@ app
     const server = express();
     // https://github.com/zeit/next.js/wiki/Getting-ready-for-production
 
-    server.use(express.static("public"));
+    server.use(express.static('public'));
 
-    server.get("/service-worker.js", (req, res) => {
-      const filePath = join(__dirname, ".next", "/service-worker.js");
+    server.get('/service-worker.js', (req, res) => {
+      const filePath = join(__dirname, '.next', '/service-worker.js');
       app.serveStatic(req, res, filePath);
     });
 
-    server.get("/@:author/:permlink", (req, res) => {
-      const actualPage = "/post";
+    server.get('/@:author/:permlink', (req, res) => {
+      const actualPage = '/post';
       const queryParams = {
         author: req.params.author,
-        permlink: req.params.permlink
+        permlink: req.params.permlink,
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/:tag/@:author/:permlink", (req, res) => {
-      const author = req.params.author;
-      const permlink = req.params.permlink;
+    server.get('/:tag/@:author/:permlink', (req, res) => {
+      const { author } = req.params;
+      const { permlink } = req.params;
       res.redirect(`/@${author}/${permlink}`);
     });
 
-    server.get("/featured", (req, res) => {
-      const actualPage = "/";
+    server.get('/featured', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        orderby: "featured"
+        orderby: 'featured',
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/feed", (req, res) => {
-      const actualPage = "/";
+    server.get('/feed', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        orderby: "feed"
+        orderby: 'feed',
       };
       // Personal, so no caching
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/discover", (req, res) => {
-      const actualPage = "/";
+    server.get('/discover', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        orderby: "random"
+        orderby: 'random',
       };
       // No cache for randomness
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/created", (req, res) => {
-      const actualPage = "/";
+    server.get('/created', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        orderby: "created_at"
+        orderby: 'created_at',
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/hot", (req, res) => {
-      const actualPage = "/";
+    server.get('/hot', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        orderby: "sc_hot"
+        orderby: 'sc_hot',
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/created/:tag", (req, res) => {
-      const tag = req.params.tag;
+    server.get('/created/:tag', (req, res) => {
+      const { tag } = req.params;
       res.redirect(`/hot/${tag}`);
     });
 
-    server.get("/trending/:tag", (req, res) => {
-      const tag = req.params.tag;
+    server.get('/trending/:tag', (req, res) => {
+      const { tag } = req.params;
       res.redirect(`/favorites/${tag}`);
     });
 
-    server.get("/hot/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/hot/:tag', (req, res) => {
+      const actualPage = '/tag';
       const queryParams = {
-        orderby: "sc_hot",
-        tags: req.params.tag
+        orderby: 'sc_hot',
+        tags: req.params.tag,
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/favorites/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/favorites/:tag', (req, res) => {
+      const actualPage = '/tag';
       const queryParams = {
-        orderby: "total_votes",
-        tags: req.params.tag
+        orderby: 'total_votes',
+        tags: req.params.tag,
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/featured/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/featured/:tag', (req, res) => {
+      const actualPage = '/tag';
       const queryParams = {
-        orderby: "featured",
-        tags: req.params.tag
+        orderby: 'featured',
+        tags: req.params.tag,
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/destinations/:country", (req, res) => {
-      const actualPage = "/destinations";
-      const queryParams = {
-        country: req.params.country
-      };
-      renderAndCache(req, res, actualPage, queryParams);
-    });
-
-    server.get("/destinations/:country/:subdivision", (req, res) => {
-      const actualPage = "/destinations";
+    server.get('/destinations/:country', (req, res) => {
+      const actualPage = '/destinations';
       const queryParams = {
         country: req.params.country,
-        subdivision: req.params.subdivision
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/destinations/:country/:subdivision/:city", (req, res) => {
-      const actualPage = "/destinations";
+    server.get('/destinations/:country/:subdivision', (req, res) => {
+      const actualPage = '/destinations';
       const queryParams = {
         country: req.params.country,
         subdivision: req.params.subdivision,
-        city: req.params.city
+      };
+      renderAndCache(req, res, actualPage, queryParams);
+    });
+
+    server.get('/destinations/:country/:subdivision/:city', (req, res) => {
+      const actualPage = '/destinations';
+      const queryParams = {
+        country: req.params.country,
+        subdivision: req.params.subdivision,
+        city: req.params.city,
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
     server.get(
-      "/destinations/:country/:subdivision/:city/:suburb",
+      '/destinations/:country/:subdivision/:city/:suburb',
       (req, res) => {
-        const actualPage = "/destinations";
+        const actualPage = '/destinations';
         const queryParams = {
           country: req.params.country,
           subdivision: req.params.subdivision,
           city: req.params.city,
-          suburb: req.params.suburb
+          suburb: req.params.suburb,
         };
         renderAndCache(req, res, actualPage, queryParams);
-      }
+      },
     );
 
-    server.get("/blog", (req, res) => {
-      const actualPage = "/blog";
+    server.get('/blog', (req, res) => {
+      const actualPage = '/blog';
       const queryParams = {
-        author: "travelfeed"
+        author: 'travelfeed',
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/@:author", (req, res) => {
-      const actualPage = "/blog";
+    server.get('/@:author', (req, res) => {
+      const actualPage = '/blog';
       const queryParams = {
-        author: req.params.author
+        author: req.params.author,
       };
       renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("*", (req, res) => {
+    server.get('*', (req, res) => {
       return handle(req, res);
     });
 
@@ -277,17 +277,17 @@ app
   });
 
 function getCacheKey(req) {
-  //TODO clean-up, standardize an url to maximize cache hits
+  // TODO clean-up, standardize an url to maximize cache hits
   return req.url;
 }
 
 async function renderAndCache(req, res, pagePath, queryParams) {
-  //TODO add a way to purge cache for a specific url
+  // TODO add a way to purge cache for a specific url
   const key = getCacheKey(req);
 
   // If we have a page in the cache, let's serve it
   if (ssrCache.has(key)) {
-    res.setHeader("x-cache", "HIT");
+    res.setHeader('x-cache', 'HIT');
     res.send(ssrCache.get(key));
     return;
   }
@@ -299,14 +299,14 @@ async function renderAndCache(req, res, pagePath, queryParams) {
     // Send the generated content as is for further inspection
 
     if (dev || res.statusCode !== 200) {
-      res.setHeader("x-cache", "SKIP");
+      res.setHeader('x-cache', 'SKIP');
       res.send(html);
       return;
     }
 
     // Everything seems OK... let's cache
     ssrCache.set(key, html);
-    res.setHeader("x-cache", "MISS");
+    res.setHeader('x-cache', 'MISS');
     res.send(html);
   } catch (err) {
     app.renderError(err, req, res, pagePath, queryParams);

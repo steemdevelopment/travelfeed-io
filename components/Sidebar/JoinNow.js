@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Link from "next/link";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Link from 'next/link';
+import React, { Component } from 'react';
 
 class LegalNotice extends Component {
   render() {
@@ -14,13 +14,13 @@ class LegalNotice extends Component {
             <Typography
               variant="h6"
               align="center"
-              gutterBottom={true}
+              gutterBottom
               className="p-2 text-dark"
             >
               Never miss another story!
             </Typography>
             <div>
-              <Link as={`/join`} passHref>
+              <Link as="/join" passHref>
                 <Button
                   variant="contained"
                   color="primary"

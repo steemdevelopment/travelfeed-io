@@ -1,10 +1,10 @@
-import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { nameFromSlug } from "../../helpers/countryCodes";
-import { GET_LOCATION_DETAILS } from "../../helpers/graphql/locations";
+import Typography from '@material-ui/core/Typography';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { nameFromSlug } from '../../helpers/countryCodes';
+import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
 
 class Sublocations extends Component {
   render() {
@@ -20,18 +20,18 @@ class Sublocations extends Component {
                     style={{
                       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0,0.5)),
                       url("${data.locationDetails.image}")`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center center",
-                      backgroundSize: "cover"
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center center',
+                      backgroundSize: 'cover',
                     }}
                   >
                     <div className="container h-100">
-                      <div className="row h-100" style={{ minHeight: "500px" }}>
+                      <div className="row h-100" style={{ minHeight: '500px' }}>
                         <div className="col-12 my-auto">
                           <h5
                             className="text-center"
                             style={{
-                              textShadow: "1px 1px 10px #343A40"
+                              textShadow: '1px 1px 10px #343A40',
                             }}
                           >
                             {// For cities, display breadcrumbs to Country and Subdivison. Else, display Knowledge Graph subtitle, if unavailable country name
@@ -51,8 +51,8 @@ class Sublocations extends Component {
                                   </a>
                                 </Link>
                                 <span className="text-light">
-                                  {" "}
-                                  &raquo;{" "}
+                                  {' '}
+                                  &raquo;{' '}
                                   <Link
                                     as={`/destinations/${
                                       this.props.country_slug
@@ -68,7 +68,7 @@ class Sublocations extends Component {
                                       {this.props.query.subdivision}
                                     </a>
                                   </Link>
-                                </span>{" "}
+                                </span>{' '}
                               </span>
                             )) ||
                               (((this.props.query.search &&
@@ -96,7 +96,7 @@ class Sublocations extends Component {
                             variant="h2"
                             className="text-light font-weight-bold text-center"
                             style={{
-                              textShadow: "1px 1px 10px #343A40"
+                              textShadow: '1px 1px 10px #343A40',
                             }}
                           >
                             {this.props.title}
@@ -104,7 +104,7 @@ class Sublocations extends Component {
                           <p
                             className="lead text-light text-center"
                             style={{
-                              textShadow: "1px 1px 10px black"
+                              textShadow: '1px 1px 10px black',
                             }}
                           >
                             <em>{data.locationDetails.description}</em>
@@ -116,7 +116,7 @@ class Sublocations extends Component {
                                   <h4
                                     className="text-center text-light"
                                     style={{
-                                      textShadow: "1px 1px 10px #343A40"
+                                      textShadow: '1px 1px 10px #343A40',
                                     }}
                                   >
                                     Popular destinations:
@@ -157,7 +157,7 @@ class Sublocations extends Component {
                                           <a
                                             className="text-light"
                                             style={{
-                                              textShadow: "1px 1px 10px black"
+                                              textShadow: '1px 1px 10px black',
                                             }}
                                           >
                                             {location.city
@@ -167,7 +167,7 @@ class Sublocations extends Component {
                                         </Link>
                                       </div>
                                     );
-                                  }
+                                  },
                                 )}
                               </div>
                             )}
@@ -176,11 +176,11 @@ class Sublocations extends Component {
                     </div>
                     <div
                       className="text-mutedlight text-right pr-1"
-                      style={{ fontSize: "0.8rem" }}
+                      style={{ fontSize: '0.8rem' }}
                     >
                       {data.locationDetails.url && (
                         <span>
-                          Description by{" "}
+                          Description by{' '}
                           <a
                             className="text-mutedlight text-decoration-underline"
                             target="_blank"
@@ -188,8 +188,8 @@ class Sublocations extends Component {
                             href={data.locationDetails.url}
                           >
                             Wikipedia
-                          </a>{" "}
-                          under{" "}
+                          </a>{' '}
+                          under{' '}
                           <a
                             className="text-mutedlight text-decoration-underline"
                             target="_blank"
@@ -198,12 +198,12 @@ class Sublocations extends Component {
                           >
                             CC BY-SA 3.0
                           </a>
-                          .{" "}
+                          .{' '}
                         </span>
                       )}
                       {data.locationDetails.attribution && (
                         <span>
-                          Photo:{" "}
+                          Photo:{' '}
                           {(data.locationDetails.unsplashUser && (
                             <a
                               className="text-mutedlight text-decoration-underline"
@@ -227,10 +227,10 @@ class Sublocations extends Component {
                                 @{data.locationDetails.attribution}
                               </a>
                             </Link>
-                          )}{" "}
+                          )}{' '}
                           {data.locationDetails.unsplashUser && (
                             <span>
-                              /{" "}
+                              /{' '}
                               <a
                                 target="_blank"
                                 rel="nofollow noreferrer noopener"
@@ -258,7 +258,7 @@ class Sublocations extends Component {
 
 Sublocations.propTypes = {
   query: PropTypes.object,
-  country_slug: PropTypes.string
+  country_slug: PropTypes.string,
 };
 
 export default Sublocations;

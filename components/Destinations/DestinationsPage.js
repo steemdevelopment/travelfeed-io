@@ -1,11 +1,11 @@
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Typography from "@material-ui/core/Typography";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
 import {
   featured_cc_asia,
   featured_cc_europe,
@@ -14,23 +14,26 @@ import {
   featured_places_europe,
   featured_places_world,
   popular_countries,
-  slugFromCC
-} from "../../helpers/countryCodes";
-import DestinationCityColumn from "./DestinationCityColumn";
-import DestinationCountryColumn from "./DestinationCountryColumn";
+  slugFromCC,
+} from '../../helpers/countryCodes';
+import DestinationCityColumn from './DestinationCityColumn';
+import DestinationCountryColumn from './DestinationCountryColumn';
 
 class DestinationsNav extends Component {
   state = {
     selection: undefined,
-    random: undefined
+    random: undefined,
   };
+
   onMenuClick = selection => {
     this.setState({ selection });
   };
+
   newRandom = () => {
     this.setState({ random: undefined });
     this.props.closeDest();
   };
+
   render() {
     if (this.state.random === undefined) {
       const random_country =
@@ -70,7 +73,7 @@ class DestinationsNav extends Component {
                           country_codes={featured_cc_asia}
                         />
                       </MenuList>
-                    </div>{" "}
+                    </div>{' '}
                     <div className="col-4">
                       <MenuList>
                         <MenuItem>
@@ -136,7 +139,7 @@ class DestinationsNav extends Component {
 
 DestinationsNav.propTypes = {
   closeDest: PropTypes.func,
-  showDest: PropTypes.bool
+  showDest: PropTypes.bool,
 };
 
 export default DestinationsNav;

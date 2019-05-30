@@ -1,40 +1,45 @@
-import Button from "@material-ui/core/Button";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { grey } from "@material-ui/core/colors";
-import IconButton from "@material-ui/core/IconButton";
-import { withStyles } from "@material-ui/core/styles";
-import DownIcon from "@material-ui/icons/ArrowDropDown";
-import DestinationsIcon from "@material-ui/icons/Explore";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { popular_countries, slugFromCC } from "../../helpers/countryCodes";
-import PopupNav from "../Header/HeaderPopupNav";
+import Button from '@material-ui/core/Button';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import { grey } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+import DownIcon from '@material-ui/icons/ArrowDropDown';
+import DestinationsIcon from '@material-ui/icons/Explore';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { popular_countries, slugFromCC } from '../../helpers/countryCodes';
+import PopupNav from '../Header/HeaderPopupNav';
 
 const styles = () => ({
   whitebutton: {
-    color: grey[200]
-  }
+    color: grey[200],
+  },
 });
 
 class DestinationsNav extends Component {
   state = {
     selection: undefined,
     random: undefined,
-    showDest: false
+    showDest: false,
   };
+
   toggleDest() {
     this.setState(state => ({ showDest: !state.showDest }));
   }
+
   closeDest() {
     this.setState({ showDest: false });
   }
+
   onMenuClick = selection => {
     this.setState({ selection });
   };
+
   newRandom = () => {
     this.setState({ random: undefined });
     this.toggleDest();
   };
+
   render() {
     const { classes } = this.props;
     if (this.state.random === undefined) {
@@ -74,12 +79,12 @@ class DestinationsNav extends Component {
 }
 
 DestinationsNav.defaultProps = {
-  isSmall: false
+  isSmall: false,
 };
 
 DestinationsNav.propTypes = {
   isSmall: PropTypes.bool,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(DestinationsNav);

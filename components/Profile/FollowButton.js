@@ -1,36 +1,39 @@
 // no ssr since current user is essential to determine follow status
 
-import Button from "@material-ui/core/Button";
-import Link from "next/link";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { follow, unfollow } from "../../helpers/actions";
-import { GET_IS_FOLLOWED } from "../../helpers/graphql/profile";
+import Button from '@material-ui/core/Button';
+import Link from 'next/link';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { follow, unfollow } from '../../helpers/actions';
+import { GET_IS_FOLLOWED } from '../../helpers/graphql/profile';
 
 class followButton extends Component {
   state = {
     isFollowed: null,
     isMounted: false,
     isLoaded: false,
-    changing: false
+    changing: false,
   };
+
   componentDidMount() {
     this.setState({
       isFollowed: this.props.isFollowed,
-      isMounted: true
+      isMounted: true,
     });
   }
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
     }
   }
+
   followAuthor = async author => {
     this.setState({ changing: true });
     return follow(author).then(res => {
@@ -41,6 +44,7 @@ class followButton extends Component {
       }
     });
   };
+
   unfollowAuthor = async author => {
     this.setState({ changing: true });
     return unfollow(author).then(res => {
@@ -51,13 +55,14 @@ class followButton extends Component {
       }
     });
   };
+
   render() {
     if (this.state.isMounted === false) {
       return <Fragment />;
     }
-    var btnclass = "m-1";
-    if (this.props.style == "whiteborder") {
-      btnclass = "m-1 border-light";
+    let btnclass = 'm-1';
+    if (this.props.style == 'whiteborder') {
+      btnclass = 'm-1 border-light';
     }
     return (
       <Fragment>
@@ -72,7 +77,7 @@ class followButton extends Component {
             if (data && data.profile && !this.state.isLoaded) {
               this.setState({
                 isLoaded: true,
-                isFollowed: data.profile.isFollowed
+                isFollowed: data.profile.isFollowed,
               });
             }
             if (this.state.isFollowed === true) {
@@ -90,7 +95,8 @@ class followButton extends Component {
                   </Button>
                 </Fragment>
               );
-            } else if (this.state.isFollowed === false) {
+            }
+            if (this.state.isFollowed === false) {
               return (
                 <Fragment>
                   <Button
@@ -107,7 +113,7 @@ class followButton extends Component {
               );
             }
             return (
-              <Link href={"/join"} passHref>
+              <Link href="/join" passHref>
                 <Button
                   variant="outlined"
                   size="small"
@@ -126,7 +132,7 @@ class followButton extends Component {
 }
 
 followButton.defaultProps = {
-  btnstyle: "default"
+  btnstyle: 'default',
 };
 
 followButton.propTypes = {
@@ -134,7 +140,7 @@ followButton.propTypes = {
   style: PropTypes.string,
   enqueueSnackbar: PropTypes.func,
   isFollowed: PropTypes.bool,
-  isIgnored: PropTypes.bool
+  isIgnored: PropTypes.bool,
 };
 
 export default withSnackbar(followButton);

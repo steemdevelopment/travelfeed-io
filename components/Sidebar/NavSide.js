@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Link from "next/link";
-import PublishIcon from "@material-ui/icons/Create";
-import BookmarkIcon from "@material-ui/icons/Bookmarks";
-import RepliesIcon from "@material-ui/icons/Reply";
-import DraftIcon from "@material-ui/icons/FileCopy";
-import ProfileIcon from "@material-ui/icons/Person";
-import PropTypes from "prop-types";
-import Divider from "@material-ui/core/Divider";
+import React, { Component } from 'react';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Link from 'next/link';
+import PublishIcon from '@material-ui/icons/Create';
+import BookmarkIcon from '@material-ui/icons/Bookmarks';
+import RepliesIcon from '@material-ui/icons/Reply';
+import DraftIcon from '@material-ui/icons/FileCopy';
+import ProfileIcon from '@material-ui/icons/Person';
+import PropTypes from 'prop-types';
+import Divider from '@material-ui/core/Divider';
 
 class NavSide extends Component {
   render() {
@@ -82,7 +82,7 @@ class NavSide extends Component {
 }
 
 NavSide.propTypes = {
-  user: PropTypes.string
+  user: PropTypes.string,
 };
 
 export default NavSide;

@@ -1,8 +1,8 @@
-import React, { Fragment, Component } from "react";
-import IconButton from "@material-ui/core/IconButton";
-import PropTypes from "prop-types";
-import CurateIcon from "@material-ui/icons/Star";
-import HonourIcon from "@material-ui/icons/StarHalf";
+import React, { Fragment, Component } from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import PropTypes from 'prop-types';
+import CurateIcon from '@material-ui/icons/Star';
+import HonourIcon from '@material-ui/icons/StarHalf';
 
 class IsCurated extends Component {
   render() {
@@ -14,7 +14,8 @@ class IsCurated extends Component {
           </IconButton>
         </Fragment>
       );
-    } else if (this.props.curation_score > 4000) {
+    }
+    if (this.props.curation_score > 4000) {
       return (
         <Fragment>
           <IconButton>
@@ -28,7 +29,7 @@ class IsCurated extends Component {
 }
 
 IsCurated.propTypes = {
-  curation_score: PropTypes.number
+  curation_score: PropTypes.number,
 };
 
 export default IsCurated;

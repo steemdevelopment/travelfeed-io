@@ -1,15 +1,15 @@
-import React, { Fragment, Component } from "react";
-import PropTypes from "prop-types";
-import IconButton from "@material-ui/core/IconButton";
-import BookmarkIconBorder from "@material-ui/icons/BookmarkBorder";
-import BookmarkIconFilled from "@material-ui/icons/Bookmark";
-import { Mutation, Query } from "react-apollo";
+import React, { Fragment, Component } from 'react';
+import PropTypes from 'prop-types';
+import IconButton from '@material-ui/core/IconButton';
+import BookmarkIconBorder from '@material-ui/icons/BookmarkBorder';
+import BookmarkIconFilled from '@material-ui/icons/Bookmark';
+import { Mutation, Query } from 'react-apollo';
+import Tooltip from '@material-ui/core/Tooltip';
 import {
   ADD_BOOKMARK,
   DELETE_BOOKMARK,
-  IS_BOOKMARKED
-} from "../../helpers/graphql/bookmarks";
-import Tooltip from "@material-ui/core/Tooltip";
+  IS_BOOKMARKED,
+} from '../../helpers/graphql/bookmarks';
 
 class BookmarkIcon extends Component {
   render() {
@@ -19,7 +19,7 @@ class BookmarkIcon extends Component {
           query={IS_BOOKMARKED}
           variables={{
             author: this.props.author,
-            permlink: this.props.permlink
+            permlink: this.props.permlink,
           }}
         >
           {({ data, loading, error }) => {
@@ -56,7 +56,7 @@ class IsBookmarked extends Component {
         mutation={DELETE_BOOKMARK}
         variables={{
           author: this.props.author,
-          permlink: this.props.permlink
+          permlink: this.props.permlink,
         }}
       >
         {(deleteBookmark, data) => {
@@ -92,7 +92,7 @@ class IsNotBookmarked extends Component {
         mutation={ADD_BOOKMARK}
         variables={{
           author: this.props.author,
-          permlink: this.props.permlink
+          permlink: this.props.permlink,
         }}
       >
         {(addBookmark, data) => {
@@ -124,19 +124,19 @@ class IsNotBookmarked extends Component {
 BookmarkIcon.propTypes = {
   author: PropTypes.string,
   permlink: PropTypes.string,
-  onBmChange: PropTypes.func
+  onBmChange: PropTypes.func,
 };
 
 IsNotBookmarked.propTypes = {
   author: PropTypes.string,
   permlink: PropTypes.string,
-  onBmChange: PropTypes.func
+  onBmChange: PropTypes.func,
 };
 
 IsBookmarked.propTypes = {
   author: PropTypes.string,
   permlink: PropTypes.string,
-  onBmChange: PropTypes.func
+  onBmChange: PropTypes.func,
 };
 
 export default BookmarkIcon;

@@ -1,127 +1,135 @@
-import AppBar from "@material-ui/core/AppBar";
-import { blueGrey } from "@material-ui/core/colors";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import { withStyles } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import WalletIcon from "@material-ui/icons/AttachMoney";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import PostsIcon from "@material-ui/icons/ChromeReaderMode";
-import CommentsIcon from "@material-ui/icons/Comment";
-import PublishIcon from "@material-ui/icons/Create";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import DraftIcon from "@material-ui/icons/FileCopy";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import ProfileIcon from "@material-ui/icons/Person";
-import RepliesIcon from "@material-ui/icons/Reply";
-import SettingsIcon from "@material-ui/icons/Settings";
-import classNames from "classnames";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { getUser } from "../../helpers/token";
-import HeaderMenu from "./HeaderMenu";
+import AppBar from '@material-ui/core/AppBar';
+import { blueGrey } from '@material-ui/core/colors';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { withStyles } from '@material-ui/core/styles';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import WalletIcon from '@material-ui/icons/AttachMoney';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import PostsIcon from '@material-ui/icons/ChromeReaderMode';
+import CommentsIcon from '@material-ui/icons/Comment';
+import PublishIcon from '@material-ui/icons/Create';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import DraftIcon from '@material-ui/icons/FileCopy';
+import MenuIcon from '@material-ui/icons/Menu';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ProfileIcon from '@material-ui/icons/Person';
+import RepliesIcon from '@material-ui/icons/Reply';
+import SettingsIcon from '@material-ui/icons/Settings';
+import classNames from 'classnames';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { getUser } from '../../helpers/token';
+import HeaderMenu from './HeaderMenu';
 
 const drawerWidth = 200;
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: 'flex',
   },
   paper: {
-    background: blueGrey[50]
+    background: blueGrey[50],
   },
   appBar: {
     zIndex: 201,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36
+    marginRight: 36,
   },
   hide: {
-    display: "none"
+    display: 'none',
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    zIndex: 200, //smaller zIndex than default in order to display editor tooltips over drawer
-    whiteSpace: "nowrap"
+    zIndex: 200, // smaller zIndex than default in order to display editor tooltips over drawer
+    whiteSpace: 'nowrap',
   },
   drawerOpen: {
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerClose: {
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: "hidden",
+    overflowX: 'hidden',
     width: theme.spacing.unit * 7 + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing.unit * 9 + 1
-    }
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9 + 1,
+    },
   },
   toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 class Dashboard extends Component {
-  state = { user: "", open: true, active: "" };
+  state = { user: '', open: true, active: '' };
+
   static async getInitialProps(props) {
     const { page } = props.query;
     return { page };
   }
+
   handleLogout() {
-    this.setState({ user: "" });
+    this.setState({ user: '' });
   }
+
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
+
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+
   getUser() {
     this.setState({ user: getUser() });
   }
+
   setActive = item => {
     this.setState({ active: item });
   };
+
   componentDidMount() {
     this.getUser();
     if (window.innerWidth < 750) {
       this.setState({ open: false });
     }
   }
+
   render() {
     const { classes } = this.props;
     const appbar = (
@@ -129,7 +137,7 @@ class Dashboard extends Component {
         color="inherit"
         position="fixed"
         className={classNames(classes.appBar, {
-          [classes.appBarShift]: this.state.open
+          [classes.appBarShift]: this.state.open,
         })}
       >
         <Toolbar disableGutters={!this.state.open}>
@@ -138,7 +146,7 @@ class Dashboard extends Component {
             aria-label="Open drawer"
             onClick={this.handleDrawerOpen}
             className={classNames(classes.menuButton, {
-              [classes.hide]: this.state.open
+              [classes.hide]: this.state.open,
             })}
           >
             <MenuIcon />
@@ -150,17 +158,14 @@ class Dashboard extends Component {
                 className="font-weight-bold cpointer"
                 noWrap
               >
-                TravelBlog |{" "}
+                TravelBlog |{' '}
                 {// capitalize
                 this.props.active.charAt(0).toUpperCase() +
                   this.props.active.slice(1)}
               </Typography>
             </a>
           </Link>
-          <HeaderMenu
-            isDashboard={true}
-            handleLogout={this.handleLogout.bind(this)}
-          />
+          <HeaderMenu isDashboard handleLogout={this.handleLogout.bind(this)} />
         </Toolbar>
       </AppBar>
     );
@@ -169,13 +174,13 @@ class Dashboard extends Component {
         variant="permanent"
         className={classNames(classes.drawer, {
           [classes.drawerOpen]: this.state.open,
-          [classes.drawerClose]: !this.state.open
+          [classes.drawerClose]: !this.state.open,
         })}
         classes={{
           paper: classNames(classes.paper, {
             [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open
-          })
+            [classes.drawerClose]: !this.state.open,
+          }),
         }}
         open={this.state.open}
       >
@@ -188,10 +193,7 @@ class Dashboard extends Component {
         <List>
           <Link href="/dashboard" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "stats" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'stats'} button>
                 <ListItemIcon className={classNames(classes.listitem)}>
                   <DashboardIcon />
                 </ListItemIcon>
@@ -201,10 +203,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/publish" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "publish" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'publish'} button>
                 <ListItemIcon>
                   <PublishIcon />
                 </ListItemIcon>
@@ -214,10 +213,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/drafts" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "drafts" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'drafts'} button>
                 <ListItemIcon>
                   <DraftIcon />
                 </ListItemIcon>
@@ -227,10 +223,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/posts" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "posts" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'posts'} button>
                 <ListItemIcon>
                   <PostsIcon />
                 </ListItemIcon>
@@ -240,10 +233,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/comments" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "comments" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'comments'} button>
                 <ListItemIcon>
                   <CommentsIcon />
                 </ListItemIcon>
@@ -253,10 +243,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/replies" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "replies" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'replies'} button>
                 <ListItemIcon>
                   <RepliesIcon />
                 </ListItemIcon>
@@ -266,10 +253,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/notifications" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "notifications" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'notifications'} button>
                 <ListItemIcon>
                   <NotificationsIcon />
                 </ListItemIcon>
@@ -282,10 +266,7 @@ class Dashboard extends Component {
         <List>
           <Link href="/dashboard/profile" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "profile" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'profile'} button>
                 <ListItemIcon>
                   <ProfileIcon />
                 </ListItemIcon>
@@ -295,10 +276,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/wallet" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "wallet" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'wallet'} button>
                 <ListItemIcon>
                   <WalletIcon />
                 </ListItemIcon>
@@ -308,10 +286,7 @@ class Dashboard extends Component {
           </Link>
           <Link href="/dashboard/settings" passHref>
             <a>
-              <ListItem
-                selected={this.props.active == "settings" ? true : false}
-                button
-              >
+              <ListItem selected={this.props.active == 'settings'} button>
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
@@ -334,7 +309,7 @@ class Dashboard extends Component {
 
 Dashboard.propTypes = {
   classes: PropTypes.object,
-  page: PropTypes.string
+  page: PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(Dashboard);

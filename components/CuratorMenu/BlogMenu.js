@@ -1,28 +1,30 @@
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import CuratorIcon from "@material-ui/icons/MoreVert";
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import CuratorIcon from '@material-ui/icons/MoreVert';
 import PopupState, {
   bindMenu,
-  bindTrigger
-} from "material-ui-popup-state/index";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { getRoles } from "../../helpers/token";
-import AuthorBlacklist from "./Actions/AuthorBlacklist";
-import ChangeRoles from "./Actions/ChangeRoles";
+  bindTrigger,
+} from 'material-ui-popup-state/index';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { getRoles } from '../../helpers/token';
+import AuthorBlacklist from './Actions/AuthorBlacklist';
+import ChangeRoles from './Actions/ChangeRoles';
 
 class PostMenu extends Component {
   state = {
-    roles: []
+    roles: [],
   };
+
   componentDidMount() {
     const roles = getRoles();
     this.setState({
-      roles
+      roles,
     });
   }
+
   render() {
-    if (this.state.roles && this.state.roles.indexOf("curator") !== -1) {
+    if (this.state.roles && this.state.roles.indexOf('curator') !== -1) {
       return (
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (
@@ -32,7 +34,7 @@ class PostMenu extends Component {
               </IconButton>
               <Menu {...bindMenu(popupState)}>
                 <AuthorBlacklist author={this.props.author} />
-                {this.state.roles.indexOf("admin") !== -1 && (
+                {this.state.roles.indexOf('admin') !== -1 && (
                   <ChangeRoles
                     author={this.props.author}
                     isCurator={this.props.isCurator}
@@ -50,7 +52,7 @@ class PostMenu extends Component {
 
 PostMenu.propTypes = {
   author: PropTypes.string,
-  isCurator: PropTypes.bool
+  isCurator: PropTypes.bool,
 };
 
 export default PostMenu;

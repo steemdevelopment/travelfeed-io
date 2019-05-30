@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const CHANGE_CURATOR_ROLE = gql`
   mutation updateUserRoles($user: String!, $isCurator: Boolean!) {

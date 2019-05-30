@@ -1,33 +1,36 @@
 // https://medium.com/@alfianlosari/graphql-cursor-infinite-scroll-pagination-with-react-apollo-client-and-github-api-fafbc510b667
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import InfiniteScroll from "react-infinite-scroller";
-import readingTime from "reading-time";
-import sanitize from "sanitize-html";
-import { GET_POSTS } from "../../helpers/graphql/posts";
-import parseBody from "../../helpers/parseBody";
-import { regExcerpt } from "../../helpers/regex";
-import PostCommentItem from "../Post/PostCommentItem";
-import GridPostCard from "./GridPostCard";
-import PostListItem from "./PostListItem";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import InfiniteScroll from 'react-infinite-scroller';
+import readingTime from 'reading-time';
+import sanitize from 'sanitize-html';
+import { GET_POSTS } from '../../helpers/graphql/posts';
+import parseBody from '../../helpers/parseBody';
+import { regExcerpt } from '../../helpers/regex';
+import PostCommentItem from '../Post/PostCommentItem';
+import GridPostCard from './GridPostCard';
+import PostListItem from './PostListItem';
 
 class PostGrid extends Component {
   state = {
     hasMore: true,
-    postslength: this.props.query.limit
+    postslength: this.props.query.limit,
   };
+
   noMore() {
     this.setState({ hasMore: false });
   }
+
   // When switching between different props, e.g. feed/featured/created/ the count needs to be reset
   UNSAFE_componentWillReceiveProps() {
     this.setState({ postslength: this.props.query.limit });
   }
+
   render() {
     return (
       <Fragment>
@@ -57,7 +60,7 @@ class PostGrid extends Component {
                     fetchMore({
                       variables: {
                         offset: data.posts ? data.posts.length : 0,
-                        limit: this.props.query.limit
+                        limit: this.props.query.limit,
                       },
                       updateQuery: (prev, { fetchMoreResult }) => {
                         if (
@@ -67,13 +70,13 @@ class PostGrid extends Component {
                         }
                         if (!fetchMoreResult) return prev;
                         return Object.assign({}, prev, {
-                          posts: [...prev.posts, ...fetchMoreResult.posts]
+                          posts: [...prev.posts, ...fetchMoreResult.posts],
                         });
-                      }
+                      },
                     });
                     this.setState({
                       postslength:
-                        this.state.postslength + this.props.query.limit
+                        this.state.postslength + this.props.query.limit,
                     });
                   } else if (
                     this.state.postslength !==
@@ -81,7 +84,7 @@ class PostGrid extends Component {
                   ) {
                     // When switching between different props, e.g. feed/featured/created/ and switching back, this fix is needed. There should be a better way though..
                     this.setState({
-                      postslength: data.posts.length
+                      postslength: data.posts.length,
                     });
                   }
                 }}
@@ -108,18 +111,18 @@ class PostGrid extends Component {
                       const htmlBody = parseBody(post.preview, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
-                      let title = post.title;
+                      let { title } = post;
                       title =
                         title.length > 85
-                          ? title.substring(0, 81) + "[...]"
+                          ? `${title.substring(0, 81)}[...]`
                           : title;
                       const tags =
                         post.tags && post.tags.length > 1
                           ? [post.tags[1]]
-                          : ["travelfeed"];
+                          : ['travelfeed'];
                       const excerpt = regExcerpt(sanitized);
                       let card = <Fragment />;
-                      if (this.props.poststyle === "list") {
+                      if (this.props.poststyle === 'list') {
                         card = (
                           <PostListItem
                             post={{
@@ -131,7 +134,7 @@ class PostGrid extends Component {
                               img_url: post.img_url,
                               created_at: post.created_at,
                               readtime: post.readtime,
-                              excerpt: excerpt,
+                              excerpt,
                               votes: post.votes,
                               total_votes: post.total_votes,
                               tags: post.tags,
@@ -141,13 +144,13 @@ class PostGrid extends Component {
                               parent_permlink: post.parent_permlink,
                               payout: post.payout,
                               country_code: post.country_code,
-                              subdivision: post.subdivision
+                              subdivision: post.subdivision,
                             }}
-                            id={post.author + "-" + post.permlink}
+                            id={`${post.author}-${post.permlink}`}
                             mode="edit"
                           />
                         );
-                      } else if (this.props.poststyle === "comment") {
+                      } else if (this.props.poststyle === 'comment') {
                         card = (
                           <PostCommentItem
                             post={{
@@ -166,10 +169,10 @@ class PostGrid extends Component {
                               root_author: post.parent_author,
                               root_permlink: post.root_permlink,
                               root_title: post.root_title,
-                              tags: "travelfeed"
+                              tags: 'travelfeed',
                             }}
                             loadreplies={false}
-                            title={true}
+                            title
                           />
                         );
                       } else {
@@ -180,19 +183,19 @@ class PostGrid extends Component {
                               author: post.author,
                               display_name: post.display_name,
                               permlink: post.permlink,
-                              title: title,
+                              title,
                               img_url: post.img_url,
                               created_at: post.created_at,
-                              readtime: readtime,
-                              excerpt: excerpt,
+                              readtime,
+                              excerpt,
                               votes: post.votes,
                               total_votes: post.total_votes,
-                              tags: tags,
+                              tags,
                               curation_score: post.curation_score,
                               app: post.app,
                               depth: post.depth,
                               country_code: post.country_code,
-                              subdivision: post.subdivision
+                              subdivision: post.subdivision,
                             }}
                           />
                         );
@@ -212,7 +215,7 @@ class PostGrid extends Component {
                     })}
                   {data.posts &&
                     data.posts.length === 0 &&
-                    this.props.poststyle === "grid" && (
+                    this.props.poststyle === 'grid' && (
                       <Card className="mt-5">
                         <CardContent>No posts found</CardContent>
                       </Card>
@@ -230,7 +233,7 @@ PostGrid.propTypes = {
   query: PropTypes.object.isRequired,
   cardHeight: PropTypes.number,
   poststyle: PropTypes.string,
-  grid: PropTypes.object
+  grid: PropTypes.object,
 };
 
 export default PostGrid;

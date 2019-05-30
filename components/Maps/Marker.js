@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const MapMarker = () => (
   <div>
@@ -20,7 +20,7 @@ const MapMarker = () => (
         animation-duration: 1s;
       }
       .pin:after {
-        content: "";
+        content: '';
         width: 14px;
         height: 14px;
         margin: 8px 0 0 8px;
@@ -41,7 +41,7 @@ const MapMarker = () => (
         z-index: -2;
       }
       .pulse:after {
-        content: "";
+        content: '';
         border-radius: 50%;
         height: 40px;
         width: 40px;

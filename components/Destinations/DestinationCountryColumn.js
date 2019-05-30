@@ -1,14 +1,15 @@
-import ListItemText from "@material-ui/core/ListItemText";
-import MenuItem from "@material-ui/core/MenuItem";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { nameFromSlug, slugFromCC } from "../../helpers/countryCodes";
+import ListItemText from '@material-ui/core/ListItemText';
+import MenuItem from '@material-ui/core/MenuItem';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { nameFromSlug, slugFromCC } from '../../helpers/countryCodes';
 
 class DestinationCountryColumn extends Component {
   state = {
-    active: false
+    active: false,
   };
+
   render() {
     const slugs = [];
     this.props.country_codes.forEach(cc => slugs.push(slugFromCC(cc)));
@@ -40,7 +41,7 @@ class DestinationCountryColumn extends Component {
 DestinationCountryColumn.propTypes = {
   onClick: PropTypes.func,
   text: PropTypes.string,
-  country_codes: PropTypes.arrayOf(PropTypes.string)
+  country_codes: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default DestinationCountryColumn;

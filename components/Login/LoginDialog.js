@@ -1,22 +1,22 @@
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import MuiDialogActions from "@material-ui/core/DialogActions";
-import MuiDialogContent from "@material-ui/core/DialogContent";
-import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
-import React, { Component, Fragment } from "react";
-import Cookies from "../About/Texts/Cookies";
-import Privacy from "../About/Texts/Privacy";
-import Terms from "../About/Texts/Terms";
-import Header from "../Header/Header";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import Link from 'next/link';
+import React, { Component, Fragment } from 'react';
+import Cookies from '../About/Texts/Cookies';
+import Privacy from '../About/Texts/Privacy';
+import Terms from '../About/Texts/Terms';
+import Header from '../Header/Header';
 
 class LoginDialog extends Component {
   render() {
     return (
       <Fragment>
         <Header />
-        <Dialog aria-labelledby="customized-dialog-title" open={true}>
+        <Dialog aria-labelledby="customized-dialog-title" open>
           <MuiDialogTitle
             id="customized-dialog-title"
             onClose={this.handleClose}

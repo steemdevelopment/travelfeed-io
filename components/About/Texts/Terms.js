@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import Typography from "@material-ui/core/Typography";
+import React, { Component, Fragment } from 'react';
+import Typography from '@material-ui/core/Typography';
 
 class Text extends Component {
   render() {

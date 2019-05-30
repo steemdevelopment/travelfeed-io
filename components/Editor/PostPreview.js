@@ -1,21 +1,24 @@
-import React, { Fragment } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import PropTypes from "prop-types";
-import dynamic from "next/dynamic";
-import AddLocationIcon from "@material-ui/icons/AddLocation";
-import EditLocationIcon from "@material-ui/icons/EditLocation";
+import React, { Fragment } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
+import AddLocationIcon from '@material-ui/icons/AddLocation';
+import EditLocationIcon from '@material-ui/icons/EditLocation';
 
 class PostPreview extends React.Component {
   state = {
-    open: false
+    open: false,
   };
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
+
   handleClose = () => {
     this.setState({ open: false });
   };
+
   render() {
     return (
       <div>
@@ -28,7 +31,7 @@ class PostPreview extends React.Component {
           Preview
         </Button>
         <Dialog
-          fullWidth={true}
+          fullWidth
           maxWidth="md"
           open={this.state.open}
           onClose={this.handleClose}

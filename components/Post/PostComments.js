@@ -1,21 +1,23 @@
 // https://sysgears.com/articles/how-to-implement-infinite-scroll-with-graphql-and-react/
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import InfiniteScroll from "react-infinite-scroller";
-import { commentQuery } from "../../helpers/graphql/comments";
-import PostCommentItem from "./PostCommentItem";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import InfiniteScroll from 'react-infinite-scroller';
+import { commentQuery } from '../../helpers/graphql/comments';
+import PostCommentItem from './PostCommentItem';
 
 class PostComments extends Component {
   state = {
     hasMore: true,
-    postslength: 10
+    postslength: 10,
   };
+
   noMore() {
     this.setState({ hasMore: false });
   }
+
   render() {
     return (
       <Fragment>
@@ -25,7 +27,7 @@ class PostComments extends Component {
             parent_id: this.props.post_id,
             orderby: this.props.orderby,
             orderdir: this.props.orderdir,
-            limit: 10
+            limit: 10,
           }}
         >
           {({ data, fetchMore }) => {
@@ -40,7 +42,7 @@ class PostComments extends Component {
                       fetchMore({
                         variables: {
                           offset: data.posts.length,
-                          limit: 10
+                          limit: 10,
                         },
                         updateQuery: (prev, { fetchMoreResult }) => {
                           if (fetchMoreResult.posts.length < 10) {
@@ -48,12 +50,12 @@ class PostComments extends Component {
                           }
                           if (!fetchMoreResult) return prev;
                           return Object.assign({}, prev, {
-                            posts: [...prev.posts, ...fetchMoreResult.posts]
+                            posts: [...prev.posts, ...fetchMoreResult.posts],
                           });
-                        }
+                        },
                       });
                       this.setState({
-                        postslength: this.state.postslength + 10
+                        postslength: this.state.postslength + 10,
                       });
                     }
                   }}
@@ -95,7 +97,7 @@ class PostComments extends Component {
                             total_votes: post.total_votes,
                             votes: post.votes,
                             parent_author: post.parent_author,
-                            parent_permlink: post.parent_permlink
+                            parent_permlink: post.parent_permlink,
                           }}
                           orderby={this.props.orderby}
                           orderdir={this.props.orderdir}
@@ -114,14 +116,14 @@ class PostComments extends Component {
 }
 
 PostComments.defaultProps = {
-  ismain: false
+  ismain: false,
 };
 
 PostComments.propTypes = {
   post_id: PropTypes.number.isRequired,
   orderby: PropTypes.string,
   orderdir: PropTypes.string,
-  ismain: PropTypes.bool
+  ismain: PropTypes.bool,
 };
 
 export default PostComments;

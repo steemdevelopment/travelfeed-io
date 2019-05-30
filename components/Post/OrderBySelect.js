@@ -1,13 +1,13 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import SortIcon from "@material-ui/icons/Sort";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import SortIcon from '@material-ui/icons/Sort';
 
 class SimpleMenu extends React.Component {
   state = {
-    anchorEl: null
+    anchorEl: null,
   };
 
   handleClick = event => {
@@ -24,7 +24,7 @@ class SimpleMenu extends React.Component {
     return (
       <div className="text-right pb-2">
         <Button
-          aria-owns={anchorEl ? "simple-menu" : undefined}
+          aria-owns={anchorEl ? 'simple-menu' : undefined}
           aria-haspopup="true"
           onClick={this.handleClick}
         >
@@ -39,9 +39,9 @@ class SimpleMenu extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: "Newest",
-                orderby: "created_at",
-                orderdir: "DESC"
+                title: 'Newest',
+                orderby: 'created_at',
+                orderdir: 'DESC',
               });
               this.handleClose();
             }}
@@ -51,9 +51,9 @@ class SimpleMenu extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: "Oldest",
-                orderby: "created_at",
-                orderdir: "ASC"
+                title: 'Oldest',
+                orderby: 'created_at',
+                orderdir: 'ASC',
               });
               this.handleClose();
             }}
@@ -63,9 +63,9 @@ class SimpleMenu extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: "Most Miles",
-                orderby: "total_votes",
-                orderdir: "DESC"
+                title: 'Most Miles',
+                orderby: 'total_votes',
+                orderdir: 'DESC',
               });
               this.handleClose();
             }}
@@ -75,9 +75,9 @@ class SimpleMenu extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: "Least Miles",
-                orderby: "total_votes",
-                orderdir: "ASC"
+                title: 'Least Miles',
+                orderby: 'total_votes',
+                orderdir: 'ASC',
               });
               this.handleClose();
             }}
@@ -87,9 +87,9 @@ class SimpleMenu extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: "Hot",
-                orderby: "sc_hot",
-                orderdir: "DESC"
+                title: 'Hot',
+                orderby: 'sc_hot',
+                orderdir: 'DESC',
               });
               this.handleClose();
             }}
@@ -99,9 +99,9 @@ class SimpleMenu extends React.Component {
           <MenuItem
             onClick={() => {
               this.props.handleClick({
-                title: "Trending",
-                orderby: "sc_trend",
-                orderdir: "DESC"
+                title: 'Trending',
+                orderby: 'sc_trend',
+                orderdir: 'DESC',
               });
               this.handleClose();
             }}
@@ -116,7 +116,7 @@ class SimpleMenu extends React.Component {
 
 SimpleMenu.propTypes = {
   selection: PropTypes.string,
-  handleClick: PropTypes.func
+  handleClick: PropTypes.func,
 };
 
 export default SimpleMenu;

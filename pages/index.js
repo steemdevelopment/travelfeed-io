@@ -1,58 +1,59 @@
-//https://codepen.io/ncerminara/pen/eKNROb
-import dynamic from "next/dynamic";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import StickyBox from "react-sticky-box";
-import HomeOrderBySelect from "../components/Grid/HomeOrderBySelect";
-import PostGrid from "../components/Grid/PostGrid";
-import Head from "../components/Header/Head";
-import Header from "../components/Header/Header";
+// https://codepen.io/ncerminara/pen/eKNROb
+import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import StickyBox from 'react-sticky-box';
+import HomeOrderBySelect from '../components/Grid/HomeOrderBySelect';
+import PostGrid from '../components/Grid/PostGrid';
+import Head from '../components/Header/Head';
+import Header from '../components/Header/Header';
 // import FrontPageHeader from "../components/FrontPageHeader";
-import BlogGridList from "../components/Sidebar/BlogGridList";
-import JoinNow from "../components/Sidebar/JoinNow";
-import LegalNotice from "../components/Sidebar/LegalNotice";
-import NavSide from "../components/Sidebar/NavSide";
-import { getUser } from "../helpers/token";
+import BlogGridList from '../components/Sidebar/BlogGridList';
+import JoinNow from '../components/Sidebar/JoinNow';
+import LegalNotice from '../components/Sidebar/LegalNotice';
+import NavSide from '../components/Sidebar/NavSide';
+import { getUser } from '../helpers/token';
 
 class Tag extends Component {
   state = {
     user: undefined,
-    position: "absolute",
-    marginTop: "-500px"
+    position: 'absolute',
+    marginTop: '-500px',
   };
+
   static async getInitialProps(props) {
     let { orderby } = props.query;
     let min_curation_score = 0;
     let selection = 0;
-    let title = "TravelFeed";
+    let title = 'TravelFeed';
     let isFeed = false;
-    if (orderby === "created_at") {
+    if (orderby === 'created_at') {
       selection = 0;
       min_curation_score = 0;
-      title = "Created";
+      title = 'Created';
       isFeed = false;
-    } else if (orderby === "sc_hot") {
+    } else if (orderby === 'sc_hot') {
       selection = 1;
       min_curation_score = 0;
-      title = "Taking Off";
+      title = 'Taking Off';
       isFeed = false;
-    } else if (orderby === "random") {
+    } else if (orderby === 'random') {
       selection = 2;
       min_curation_score = 10000;
-      title = "Discover";
+      title = 'Discover';
       isFeed = false;
-    } else if (orderby === "feed") {
+    } else if (orderby === 'feed') {
       selection = 4;
-      orderby = "created_at";
+      orderby = 'created_at';
       min_curation_score = 0;
-      title = "Feed";
+      title = 'Feed';
       isFeed = true;
     } else {
-      //featured
-      orderby = "created_at";
+      // featured
+      orderby = 'created_at';
       selection = 3;
       min_curation_score = 10000;
-      title = "Featured";
+      title = 'Featured';
       isFeed = false;
     }
     return {
@@ -60,26 +61,28 @@ class Tag extends Component {
       min_curation_score,
       selection,
       title,
-      isFeed
+      isFeed,
     };
   }
+
   componentDidMount() {
     this.setState({
-      user: getUser()
+      user: getUser(),
     });
   }
+
   render() {
     const DiscoverCountry = dynamic(
-      () => import("../components/Sidebar/DiscoverCountry"),
+      () => import('../components/Sidebar/DiscoverCountry'),
       {
-        ssr: false
-      }
+        ssr: false,
+      },
     );
     return (
       <Fragment>
         <Head
-          title={this.props.title + " - TravelFeed: The Travel Community"}
-          description={`Discover the best travel content on TravelFeed, the world-wide travel community!`}
+          title={`${this.props.title} - TravelFeed: The Travel Community`}
+          description="Discover the best travel content on TravelFeed, the world-wide travel community!"
         />
         <Header />
         {
@@ -108,7 +111,7 @@ class Tag extends Component {
                   min_curation_score: this.props.min_curation_score,
                   limit: 8,
                   feed: this.props.isFeed ? this.state.user : undefined,
-                  exclude_authors: ["travelfeed", "steemitworldmap"]
+                  exclude_authors: ['travelfeed', 'steemitworldmap'],
                 }}
                 grid={{ lg: 12, md: 12, sm: 12, xs: 12 }}
                 cardHeight={350}
@@ -138,7 +141,7 @@ Tag.propTypes = {
   orderby: PropTypes.string,
   min_curation_score: PropTypes.number,
   selection: PropTypes.number,
-  isFeed: PropTypes.bool
+  isFeed: PropTypes.bool,
 };
 
 export default Tag;

@@ -1,20 +1,20 @@
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Error from "next/error";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import Head from "../Header/Head";
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Error from 'next/error';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import Head from '../Header/Head';
 
 class NotFound extends Component {
   render() {
-    var helmet = "Error | TravelFeed";
+    let helmet = 'Error | TravelFeed';
     if (this.props.statusCode == 404) {
-      helmet = "404 - Not Found | TravelFeed";
-    } else if (this.props.statusCode == "logged_out") {
-      helmet = "Logged Out | TravelFeed";
+      helmet = '404 - Not Found | TravelFeed';
+    } else if (this.props.statusCode == 'logged_out') {
+      helmet = 'Logged Out | TravelFeed';
     }
-    var content = <Error statusCode={404} />;
-    if (this.props.statusCode == "logged_out") {
+    let content = <Error statusCode={404} />;
+    if (this.props.statusCode == 'logged_out') {
       content = (
         <Fragment>
           <h1>Error: Logged Out</h1>
@@ -37,7 +37,7 @@ class NotFound extends Component {
 }
 
 NotFound.propTypes = {
-  statusCode: PropTypes.number
+  statusCode: PropTypes.number,
 };
 
 export default NotFound;

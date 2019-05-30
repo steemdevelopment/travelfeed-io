@@ -1,11 +1,11 @@
-import Button from "@material-ui/core/Button";
-import { indigo, teal } from "@material-ui/core/colors";
-import Grid from "@material-ui/core/Grid";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_USER_STATS } from "../../helpers/graphql/stats";
-import HeaderCard from "../General/HeaderCard";
-import RecentEarnings from "./Stats/RecentEarningsChart";
+import Button from '@material-ui/core/Button';
+import { indigo, teal } from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { GET_USER_STATS } from '../../helpers/graphql/stats';
+import HeaderCard from '../General/HeaderCard';
+import RecentEarnings from './Stats/RecentEarningsChart';
 
 class Wallet extends Component {
   render() {
@@ -26,7 +26,7 @@ class Wallet extends Component {
                       content={
                         <Fragment>
                           <p>
-                            You have earned{" "}
+                            You have earned{' '}
                             <strong>${data.userstats.total_payout}</strong> with
                             your TravelBlog so far.
                           </p>

@@ -1,19 +1,19 @@
 // https://github.com/stfy/react-editor.js Copyright (c) 2019 Semenyuk Timofey
 
-import EditorJS from "@editorjs/editorjs";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import commonTools from "./CommonTools";
+import EditorJS from '@editorjs/editorjs';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import commonTools from './CommonTools';
 
 class Editor extends Component {
   static defaultProps = {
-    holder: "editorjs-holder",
+    holder: 'editorjs-holder',
     customTools: {},
     excludeDefaultTools: [],
     onChange: () => {},
     onReady: () => {},
     data: {},
-    autofocus: true
+    autofocus: true,
   };
 
   static propTypes = {
@@ -23,7 +23,7 @@ class Editor extends Component {
     onChange: PropTypes.func,
     onReady: PropTypes.func,
     data: PropTypes.object,
-    autofocus: PropTypes.bool
+    autofocus: PropTypes.bool,
   };
 
   constructor(props) {
@@ -54,7 +54,7 @@ class Editor extends Component {
       data,
       tools,
       onChange: this._handleChange,
-      onReady: this._handleReady
+      onReady: this._handleReady,
     });
   };
 
@@ -94,10 +94,10 @@ class Editor extends Component {
 
   render() {
     const { holder } = this.props;
-    return React.createElement("div", {
+    return React.createElement('div', {
       id: holder,
-      className: "border",
-      ref: this._el
+      className: 'border',
+      ref: this._el,
     });
   }
 }

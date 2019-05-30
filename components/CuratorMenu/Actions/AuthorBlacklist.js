@@ -1,35 +1,38 @@
-import React, { Fragment } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import { Mutation, Query } from "react-apollo";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import React, { Fragment } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import { Mutation, Query } from 'react-apollo';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import {
   BLACKLIST_AUTHOR,
   UNBLACKLIST_AUTHOR,
-  IS_BLACKLISTED_AUTHOR
-} from "../../../helpers/graphql/blacklist";
+  IS_BLACKLISTED_AUTHOR,
+} from '../../../helpers/graphql/blacklist';
 
 class AlertDialog extends React.Component {
   state = {
-    reason: "",
+    reason: '',
     open: false,
-    isOnlyCommentBlacklisted: false
+    isOnlyCommentBlacklisted: false,
   };
+
   handleCheckboxChange = name => event => {
     this.setState({ [name]: event.target.checked });
   };
+
   handleTextFieldChange(content) {
     this.setState({ reason: content.target.value });
   }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -37,11 +40,12 @@ class AlertDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -49,13 +53,14 @@ class AlertDialog extends React.Component {
       }
     }
   }
+
   render() {
     return (
       <div>
         <Query
           query={IS_BLACKLISTED_AUTHOR}
           variables={{
-            author: this.props.author
+            author: this.props.author,
           }}
         >
           {({ data, loading, error }) => {
@@ -66,14 +71,13 @@ class AlertDialog extends React.Component {
               data.isBlacklistedAuthor.isBlacklisted ||
               data.isBlacklistedAuthor.isOnlyCommentBlacklisted
             ) {
-              const reason = data.isBlacklistedAuthor.reason;
-              const isOnlyCommentBlacklisted =
-                data.isBlacklistedAuthor.isOnlyCommentBlacklisted;
+              const { reason } = data.isBlacklistedAuthor;
+              const { isOnlyCommentBlacklisted } = data.isBlacklistedAuthor;
               return (
                 <Mutation
                   mutation={UNBLACKLIST_AUTHOR}
                   variables={{
-                    author: this.props.author
+                    author: this.props.author,
                   }}
                 >
                   {(unblacklistAuthor, data) => {
@@ -85,7 +89,7 @@ class AlertDialog extends React.Component {
                     ) {
                       this.newNotification({
                         success: data.data.unblacklistAuthor.success,
-                        message: data.data.unblacklistAuthor.message
+                        message: data.data.unblacklistAuthor.message,
                       });
                       this.setState({ open: false });
                     }
@@ -141,7 +145,8 @@ class AlertDialog extends React.Component {
                   }}
                 </Mutation>
               );
-            } else if (data.isBlacklistedAuthor.isBlacklisted === false) {
+            }
+            if (data.isBlacklistedAuthor.isBlacklisted === false) {
               return (
                 <Mutation
                   mutation={BLACKLIST_AUTHOR}
@@ -149,7 +154,7 @@ class AlertDialog extends React.Component {
                     author: this.props.author,
                     reason: `Author blacklist: ${this.state.reason}`,
                     isOnlyCommentBlacklisted: this.state
-                      .isOnlyCommentBlacklisted
+                      .isOnlyCommentBlacklisted,
                   }}
                 >
                   {(blacklistAuthor, data) => {
@@ -161,7 +166,7 @@ class AlertDialog extends React.Component {
                     ) {
                       this.newNotification({
                         success: data.data.blacklistAuthor.success,
-                        message: data.data.blacklistAuthor.message
+                        message: data.data.blacklistAuthor.message,
                       });
                       this.setState({ open: false });
                     }
@@ -201,7 +206,7 @@ class AlertDialog extends React.Component {
                                 <Switch
                                   checked={this.state.isOnlyCommentBlacklisted}
                                   onChange={this.handleCheckboxChange(
-                                    "isOnlyCommentBlacklisted"
+                                    'isOnlyCommentBlacklisted',
                                   )}
                                   color="primary"
                                 />
@@ -238,7 +243,7 @@ class AlertDialog extends React.Component {
 
 AlertDialog.propTypes = {
   author: PropTypes.string,
-  enqueueSnackbar: PropTypes.func
+  enqueueSnackbar: PropTypes.func,
 };
 
 export default withSnackbar(AlertDialog);

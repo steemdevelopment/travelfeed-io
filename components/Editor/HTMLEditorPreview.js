@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import parseBody from "../../helpers/parseBody";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import parseBody from '../../helpers/parseBody';
 
 class HtmlEditorPreview extends Component {
   render() {
-    let htmlBody = "";
+    let htmlBody = '';
     console.log(this.props.preview);
     if (this.props.preview) {
       htmlBody = parseBody(this.props.preview, {});

@@ -1,10 +1,10 @@
-import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { Query } from "react-apollo";
-import { GET_SHORT_PROFILE } from "../../helpers/graphql/profile";
-import FollowButton from "./FollowButton";
+import Typography from '@material-ui/core/Typography';
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
+import FollowButton from './FollowButton';
 
 class PostAuthorProfile extends Component {
   render() {
@@ -28,7 +28,7 @@ class PostAuthorProfile extends Component {
                   >
                     <a>
                       <img
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: 'pointer' }}
                         src={`https://steemitimages.com/u/${
                           data.profile.name
                         }/avatar/medium`}
@@ -80,7 +80,7 @@ class PostAuthorProfile extends Component {
 }
 
 PostAuthorProfile.propTypes = {
-  author: PropTypes.string
+  author: PropTypes.string,
 };
 
 export default PostAuthorProfile;

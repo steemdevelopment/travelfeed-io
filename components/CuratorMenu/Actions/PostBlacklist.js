@@ -1,30 +1,32 @@
-import React, { Fragment } from "react";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withSnackbar } from "notistack";
-import PropTypes from "prop-types";
-import { Mutation, Query } from "react-apollo";
-import TextField from "@material-ui/core/TextField";
+import React, { Fragment } from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
+import { Mutation, Query } from 'react-apollo';
+import TextField from '@material-ui/core/TextField';
 
 import {
   BLACKLIST_POST,
   UNBLACKLIST_POST,
-  IS_BLACKLISTED_POST
-} from "../../../helpers/graphql/blacklist";
+  IS_BLACKLISTED_POST,
+} from '../../../helpers/graphql/blacklist';
 
 class AlertDialog extends React.Component {
   state = {
-    reason: "",
-    open: false
+    reason: '',
+    open: false,
   };
+
   handleTextFieldChange(content) {
     this.setState({ reason: content.target.value });
   }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
@@ -32,11 +34,12 @@ class AlertDialog extends React.Component {
   handleClose = () => {
     this.setState({ open: false });
   };
+
   newNotification(notification) {
     if (notification != undefined) {
-      let variant = "success";
+      let variant = 'success';
       if (notification.success === false) {
-        variant = "error";
+        variant = 'error';
       }
       this.props.enqueueSnackbar(notification.message, { variant });
       if (notification.success === true) {
@@ -44,6 +47,7 @@ class AlertDialog extends React.Component {
       }
     }
   }
+
   render() {
     return (
       <div>
@@ -51,7 +55,7 @@ class AlertDialog extends React.Component {
           query={IS_BLACKLISTED_POST}
           variables={{
             author: this.props.author,
-            permlink: this.props.permlink
+            permlink: this.props.permlink,
           }}
         >
           {({ data, loading, error }) => {
@@ -59,13 +63,13 @@ class AlertDialog extends React.Component {
               return <Fragment />;
             }
             if (data.isBlacklistedPost.isBlacklisted) {
-              const reason = data.isBlacklistedPost.reason;
+              const { reason } = data.isBlacklistedPost;
               return (
                 <Mutation
                   mutation={UNBLACKLIST_POST}
                   variables={{
                     author: this.props.author,
-                    permlink: this.props.permlink
+                    permlink: this.props.permlink,
                   }}
                 >
                   {(unblacklistPost, data) => {
@@ -77,7 +81,7 @@ class AlertDialog extends React.Component {
                     ) {
                       this.newNotification({
                         success: data.data.unblacklistPost.success,
-                        message: data.data.unblacklistPost.message
+                        message: data.data.unblacklistPost.message,
                       });
                       this.setState({ open: false });
                     }
@@ -127,14 +131,15 @@ class AlertDialog extends React.Component {
                   }}
                 </Mutation>
               );
-            } else if (data.isBlacklistedPost.isBlacklisted === false) {
+            }
+            if (data.isBlacklistedPost.isBlacklisted === false) {
               return (
                 <Mutation
                   mutation={BLACKLIST_POST}
                   variables={{
                     author: this.props.author,
                     permlink: this.props.permlink,
-                    reason: this.state.reason
+                    reason: this.state.reason,
                   }}
                 >
                   {(blacklistPost, data) => {
@@ -146,7 +151,7 @@ class AlertDialog extends React.Component {
                     ) {
                       this.newNotification({
                         success: data.data.blacklistPost.success,
-                        message: data.data.blacklistPost.message
+                        message: data.data.blacklistPost.message,
                       });
                       this.setState({ open: false });
                     }
@@ -209,7 +214,7 @@ class AlertDialog extends React.Component {
 AlertDialog.propTypes = {
   author: PropTypes.string,
   permlink: PropTypes.string,
-  enqueueSnackbar: PropTypes.func
+  enqueueSnackbar: PropTypes.func,
 };
 
 export default withSnackbar(AlertDialog);

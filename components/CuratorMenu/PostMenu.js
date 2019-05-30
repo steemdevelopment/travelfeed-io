@@ -1,30 +1,32 @@
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import CuratorIcon from "@material-ui/icons/MoreVert";
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import CuratorIcon from '@material-ui/icons/MoreVert';
 import PopupState, {
   bindMenu,
-  bindTrigger
-} from "material-ui-popup-state/index";
-import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
-import { getRoles } from "../../helpers/token";
-import AuthorBlacklist from "./Actions/AuthorBlacklist";
-import CustomJson from "./Actions/CustomJson";
-import JsonAndMutate from "./Actions/JsonAndMutate";
-import PostBlacklist from "./Actions/PostBlacklist";
+  bindTrigger,
+} from 'material-ui-popup-state/index';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import { getRoles } from '../../helpers/token';
+import AuthorBlacklist from './Actions/AuthorBlacklist';
+import CustomJson from './Actions/CustomJson';
+import JsonAndMutate from './Actions/JsonAndMutate';
+import PostBlacklist from './Actions/PostBlacklist';
 
 class PostMenu extends Component {
   state = {
-    roles: []
+    roles: [],
   };
+
   componentDidMount() {
     const roles = getRoles();
     this.setState({
-      roles
+      roles,
     });
   }
+
   render() {
-    if (this.state.roles && this.state.roles.indexOf("curator") !== -1) {
+    if (this.state.roles && this.state.roles.indexOf('curator') !== -1) {
       return (
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (
@@ -88,7 +90,7 @@ class PostMenu extends Component {
 
 PostMenu.propTypes = {
   author: PropTypes.string,
-  permlink: PropTypes.string
+  permlink: PropTypes.string,
 };
 
 export default PostMenu;

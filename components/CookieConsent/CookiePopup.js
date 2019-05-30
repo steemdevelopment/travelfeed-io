@@ -1,28 +1,29 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import { teal, indigo } from "@material-ui/core/colors";
-import Typography from "@material-ui/core/Typography";
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { teal, indigo } from '@material-ui/core/colors';
+import Typography from '@material-ui/core/Typography';
 
 class CookiePopup extends Component {
   state = {
     acceptColor: 700,
-    declineColor: 700
+    declineColor: 700,
   };
+
   render() {
     if (this.props.open === false) return <Fragment />;
     return (
       <div
         style={{
-          position: "fixed",
-          bottom: "0px",
-          left: "0px",
-          zIndex: 99999999999
+          position: 'fixed',
+          bottom: '0px',
+          left: '0px',
+          zIndex: 99999999999,
         }}
       >
         <div className="container" id={this.props.containerid}>
           <div className="row">
             <div
-              style={{ width: "20px" }}
+              style={{ width: '20px' }}
               className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
             />
             <div
@@ -34,7 +35,7 @@ class CookiePopup extends Component {
           </div>
           <div className="row">
             <div
-              style={{ width: "20px" }}
+              style={{ width: '20px' }}
               className="d-none d-xl-block d-lg-block d-md-block d-sm-block"
             />
             <div
@@ -60,7 +61,7 @@ class CookiePopup extends Component {
               </Typography>
             </div>
             <div
-              style={{ height: "20px" }}
+              style={{ height: '20px' }}
               className="d-none d-xl-block d-lg-block d-md-block d-sm-block col-12 text-light"
             />
           </div>
@@ -71,7 +72,7 @@ class CookiePopup extends Component {
 }
 
 CookiePopup.defaultProps = {
-  id: ""
+  id: '',
 };
 
 CookiePopup.propTypes = {
@@ -80,7 +81,7 @@ CookiePopup.propTypes = {
   allowtext: PropTypes.string,
   content: PropTypes.string,
   accept: PropTypes.func,
-  decline: PropTypes.func
+  decline: PropTypes.func,
 };
 
 export default CookiePopup;

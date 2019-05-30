@@ -1,16 +1,16 @@
 // https://material-ui.com/demos/tables/#tables
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Tooltip from "@material-ui/core/Tooltip";
-import Link from "next/link";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Tooltip from '@material-ui/core/Tooltip';
+import Link from 'next/link';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -33,21 +33,21 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  return order === "desc"
+  return order === 'desc'
     ? (a, b) => desc(a, b, orderBy)
     : (a, b) => -desc(a, b, orderBy);
 }
 
 const rows = [
   {
-    id: "title",
+    id: 'title',
     numeric: false,
     disablePadding: true,
-    label: "Title"
+    label: 'Title',
   },
-  { id: "created_at", numeric: true, disablePadding: false, label: "Created" },
-  { id: "total_votes", numeric: true, disablePadding: false, label: "Miles" },
-  { id: "payout", numeric: true, disablePadding: false, label: "Earnings" }
+  { id: 'created_at', numeric: true, disablePadding: false, label: 'Created' },
+  { id: 'total_votes', numeric: true, disablePadding: false, label: 'Miles' },
+  { id: 'payout', numeric: true, disablePadding: false, label: 'Earnings' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -65,13 +65,13 @@ class EnhancedTableHead extends React.Component {
             row => (
               <TableCell
                 key={row.id}
-                align={row.numeric ? "right" : "left"}
-                padding={row.disablePadding ? "none" : "default"}
+                align={row.numeric ? 'right' : 'left'}
+                padding={row.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === row.id ? order : false}
               >
                 <Tooltip
                   title="Sort"
-                  placement={row.numeric ? "bottom-end" : "bottom-start"}
+                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
                   <TableSortLabel
@@ -84,7 +84,7 @@ class EnhancedTableHead extends React.Component {
                 </Tooltip>
               </TableCell>
             ),
-            this
+            this,
           )}
         </TableRow>
       </TableHead>
@@ -98,38 +98,38 @@ EnhancedTableHead.propTypes = {
   onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired
+  rowCount: PropTypes.number.isRequired,
 };
 
 const styles = theme => ({
   root: {
-    width: "100%",
-    marginTop: theme.spacing.unit * 3
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
   },
   table: {
-    minWidth: 200
+    minWidth: 200,
   },
   tableWrapper: {
-    overflowX: "auto"
-  }
+    overflowX: 'auto',
+  },
 });
 
 class EnhancedTable extends React.Component {
   state = {
-    order: "desc",
-    orderBy: "created_at",
+    order: 'desc',
+    orderBy: 'created_at',
     selected: [],
     data: this.props.data,
     page: 0,
-    rowsPerPage: 5
+    rowsPerPage: 5,
   };
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
-    let order = "desc";
+    let order = 'desc';
 
-    if (this.state.orderBy === property && this.state.order === "desc") {
-      order = "asc";
+    if (this.state.orderBy === property && this.state.order === 'desc') {
+      order = 'asc';
     }
 
     this.setState({ order, orderBy });
@@ -157,7 +157,7 @@ class EnhancedTable extends React.Component {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -222,7 +222,7 @@ class EnhancedTable extends React.Component {
                       <TableCell align="right">{n.total_votes}</TableCell>
                       <TableCell align="right">
                         {(n.is_paidout && `$${n.payout.toFixed(2)}`) ||
-                          "Pending"}
+                          'Pending'}
                       </TableCell>
                     </TableRow>
                   );
@@ -242,10 +242,10 @@ class EnhancedTable extends React.Component {
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            "aria-label": "Previous Page"
+            'aria-label': 'Previous Page',
           }}
           nextIconButtonProps={{
-            "aria-label": "Next Page"
+            'aria-label': 'Next Page',
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -257,7 +257,7 @@ class EnhancedTable extends React.Component {
 
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
-  data: PropTypes.array
+  data: PropTypes.array,
 };
 
 export default withStyles(styles)(EnhancedTable);

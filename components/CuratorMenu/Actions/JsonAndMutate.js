@@ -13,12 +13,24 @@ import { customJson } from '../../../helpers/actions';
 import { BLACKLIST_POST } from '../../../helpers/graphql/blacklist';
 
 class JsonAndMutate extends React.Component {
+  state = {
+    open: false,
+  };
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
   handleConfirm = () => {
-    const { author, permlink, action } = this.props;
+    this.setState({ open: false });
     const payload = {
-      author,
-      permlink,
-      action,
+      author: this.props.author,
+      permlink: this.props.permlink,
+      action: this.props.action,
     };
     customJson(payload).then(result => {
       this.newNotification(result);
@@ -37,21 +49,19 @@ class JsonAndMutate extends React.Component {
   }
 
   render() {
-    const { action, title, desc, author, permlink, reason } = this.props;
-    const open = this.state;
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>{action}</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>{this.props.action}</MenuItem>
         <Dialog
-          open={open}
+          open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {desc}
+              {this.props.desc}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -61,9 +71,9 @@ class JsonAndMutate extends React.Component {
             <Mutation
               mutation={BLACKLIST_POST}
               variables={{
-                author,
-                permlink,
-                reason,
+                author: this.props.author,
+                permlink: this.props.permlink,
+                reason: this.props.reason,
               }}
             >
               {(blacklistPost, data) => {
@@ -71,7 +81,7 @@ class JsonAndMutate extends React.Component {
                   data &&
                   data.data &&
                   data.data.blacklistPost &&
-                  open === true
+                  this.state.open === true
                 ) {
                   this.newNotification({
                     success: data.data.blacklistPost.success,

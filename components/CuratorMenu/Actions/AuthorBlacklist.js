@@ -63,8 +63,12 @@ class AuthorBlacklist extends React.Component {
         >
           {({ data }) => {
             if (
-              data.isBlacklistedAuthor.isBlacklisted ||
-              data.isBlacklistedAuthor.isOnlyCommentBlacklisted
+              (data &&
+                data.isBlacklistedAuthor &&
+                data.isBlacklistedAuthor.isBlacklisted) ||
+              (data &&
+                data.isBlacklistedAuthor &&
+                data.isBlacklistedAuthor.isOnlyCommentBlacklisted)
             ) {
               const { reason } = data.isBlacklistedAuthor;
               const { isOnlyCommentBlacklisted } = data.isBlacklistedAuthor;
@@ -145,7 +149,11 @@ class AuthorBlacklist extends React.Component {
                 </Mutation>
               );
             }
-            if (data.isBlacklistedAuthor.isBlacklisted === false) {
+            if (
+              data &&
+              data.isBlacklistedAuthor &&
+              data.isBlacklistedAuthor.isBlacklisted === false
+            ) {
               return (
                 <Mutation
                   mutation={BLACKLIST_AUTHOR}

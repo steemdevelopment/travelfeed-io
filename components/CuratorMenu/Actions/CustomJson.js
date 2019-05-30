@@ -11,45 +11,57 @@ import React from 'react';
 import { customJson } from '../../../helpers/actions';
 
 class CustomJson extends React.Component {
+  state = {
+    open: false,
+  };
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  newNotification(notification) {
+    if (notification != undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      this.props.enqueueSnackbar(notification.message, { variant });
+      if (notification.success === true) {
+        this.setState({ success: true });
+      }
+    }
+  }
+
   handleConfirm = () => {
-    const { author, permlink, action } = this.props;
+    this.setState({ open: false });
     const payload = {
-      author,
-      permlink,
-      action,
+      author: this.props.author,
+      permlink: this.props.permlink,
+      action: this.props.action,
     };
     customJson(payload).then(result => {
       this.newNotification(result);
     });
   };
 
-  newNotification(notification) {
-    if (notification !== undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      const { enqueueSnackbar } = this.props;
-      enqueueSnackbar(notification.message, { variant });
-    }
-  }
-
   render() {
-    const { action, title, desc } = this.props;
-    const open = this.state;
     return (
       <div>
-        <MenuItem onClick={this.handleClickOpen}>{action}</MenuItem>
+        <MenuItem onClick={this.handleClickOpen}>{this.props.action}</MenuItem>
         <Dialog
-          open={open}
+          open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              {desc}
+              {this.props.desc}
             </DialogContentText>
           </DialogContent>
           <DialogActions>

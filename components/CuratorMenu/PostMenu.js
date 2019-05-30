@@ -1,10 +1,10 @@
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
+import MenuList from '@material-ui/core/MenuList';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
 import CuratorIcon from '@material-ui/icons/MoreVert';
-import PopupState, {
-  bindMenu,
-  bindTrigger,
-} from 'material-ui-popup-state/index';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { getRoles } from '../../helpers/token';
@@ -16,6 +16,7 @@ import PostBlacklist from './Actions/PostBlacklist';
 class PostMenu extends Component {
   state = {
     roles: [],
+    menuopen: false,
   };
 
   componentDidMount() {
@@ -25,62 +26,88 @@ class PostMenu extends Component {
     });
   }
 
+  handleToggle = () => {
+    this.setState(state => ({ menuopen: !state.menuopen }));
+  };
+
+  handleClose = () => {
+    this.setState({ menuopen: false });
+  };
+
   render() {
-    const { roles } = this.state;
+    const { roles, menuopen } = this.state;
     const { author, permlink } = this.props;
     if (roles && roles.indexOf('curator') !== -1) {
       return (
-        <PopupState variant="popover" popupId="demo-popup-menu">
-          {popupState => (
-            <React.Fragment>
-              <IconButton {...bindTrigger(popupState)}>
-                <CuratorIcon />
-              </IconButton>
-              <Menu {...bindMenu(popupState)}>
-                <CustomJson
-                  author={author}
-                  permlink={permlink}
-                  action="curate"
-                  title="Are you sure that you want to curate this post?"
-                  desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
-                />
-                <CustomJson
-                  author={author}
-                  permlink={permlink}
-                  action="honour"
-                  title="Are you sure that you want to honour this post?"
-                  desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
-                />
-                <JsonAndMutate
-                  author={author}
-                  permlink={permlink}
-                  action="short"
-                  title="Are you sure that you want to mark this post as too short?"
-                  desc="This post will be blacklisted and receive a comment."
-                  reason="Post is under the threshold of 250 words."
-                />
-                <JsonAndMutate
-                  author={author}
-                  permlink={permlink}
-                  action="language"
-                  title="Are you sure that you want to mark this post as having less than 250 words in English?"
-                  desc="This post will be blacklisted and receive a comment."
-                  reason="Post is under the threshold of 250 English words."
-                />
-                <JsonAndMutate
-                  author={author}
-                  permlink={permlink}
-                  action="copyright"
-                  title="Are you sure that you want to mark this post as violating copyright?"
-                  desc="This post will be blacklisted and receive a comment."
-                  reason="Post is violating copyright."
-                />
-                <PostBlacklist author={author} permlink={permlink} />
-                <AuthorBlacklist author={author} />
-              </Menu>
-            </React.Fragment>
-          )}
-        </PopupState>
+        <Fragment>
+          <IconButton onClick={this.handleToggle}>
+            <CuratorIcon />
+          </IconButton>
+          <Popper
+            open={menuopen}
+            anchorEl={this.anchorEl}
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                id="menu-list-grow"
+                style={{
+                  transformOrigin:
+                    placement === 'bottom' ? 'center top' : 'center bottom',
+                }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={this.handleClose}>
+                    <MenuList>
+                      <CustomJson
+                        author={author}
+                        permlink={permlink}
+                        action="curate"
+                        title="Are you sure that you want to curate this post?"
+                        desc="This post will be upvoted with 100% by @travelfeed and it's curation trail, resteemed and will receive a congratulation comment."
+                      />
+                      <CustomJson
+                        author={author}
+                        permlink={permlink}
+                        action="honour"
+                        title="Are you sure that you want to honour this post?"
+                        desc="This post will be upvoted with 50% by @travelfeed and will receive a congratulation comment."
+                      />
+                      <JsonAndMutate
+                        author={author}
+                        permlink={permlink}
+                        action="short"
+                        title="Are you sure that you want to mark this post as too short?"
+                        desc="This post will be blacklisted and receive a comment."
+                        reason="Post is under the threshold of 250 words."
+                      />
+                      <JsonAndMutate
+                        author={author}
+                        permlink={permlink}
+                        action="language"
+                        title="Are you sure that you want to mark this post as having less than 250 words in English?"
+                        desc="This post will be blacklisted and receive a comment."
+                        reason="Post is under the threshold of 250 English words."
+                      />
+                      <JsonAndMutate
+                        author={author}
+                        permlink={permlink}
+                        action="copyright"
+                        title="Are you sure that you want to mark this post as violating copyright?"
+                        desc="This post will be blacklisted and receive a comment."
+                        reason="Post is violating copyright."
+                      />
+                      <PostBlacklist author={author} permlink={permlink} />
+                      <AuthorBlacklist author={author} />
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
+        </Fragment>
       );
     }
     return <Fragment />;

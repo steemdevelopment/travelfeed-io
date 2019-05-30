@@ -58,7 +58,11 @@ class PostBlacklist extends React.Component {
           }}
         >
           {({ data }) => {
-            if (data.isBlacklistedPost.isBlacklisted) {
+            if (
+              data &&
+              data.isBlacklistedPost &&
+              data.isBlacklistedPost.isBlacklisted
+            ) {
               const { reason } = data.isBlacklistedPost;
               return (
                 <Mutation
@@ -128,7 +132,11 @@ class PostBlacklist extends React.Component {
                 </Mutation>
               );
             }
-            if (data.isBlacklistedPost.isBlacklisted === false) {
+            if (
+              data &&
+              data.isBlacklistedPost &&
+              data.isBlacklistedPost.isBlacklisted === false
+            ) {
               return (
                 <Mutation
                   mutation={BLACKLIST_POST}

@@ -76,7 +76,10 @@ class GridPostCard extends Component {
       );
     } else {
       let appIcon = <Fragment />;
-      if (this.props.post.app.split('/')[0] === 'travelfeed') {
+      if (
+        this.props.post.app &&
+        this.props.post.app.split('/')[0] === 'travelfeed'
+      ) {
         appIcon = (
           <img
             width="25"

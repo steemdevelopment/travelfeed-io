@@ -69,7 +69,7 @@ class PostCommentItem extends Component {
     // Set the caninical URL to travelfeed.io if the post was authored through
     // the dApp
     if (
-      this.props.post.app !== undefined &&
+      this.props.post.app &&
       this.props.post.app.split('/')[0] === 'travelfeed'
     ) {
       appIcon = (

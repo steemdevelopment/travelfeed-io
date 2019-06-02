@@ -4,7 +4,6 @@ import Document, { Head, Main, NextScript } from 'next/document';
 import PropTypes from 'prop-types';
 import React from 'react';
 import flush from 'styled-jsx/server';
-import { GMAPS_API_KEY } from '../config';
 
 process.on('unhandledRejection', err => {
   Sentry.captureException(err);
@@ -58,10 +57,6 @@ export default class extends Document {
               src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1"
             />
           </noscript>
-          <script
-            type="text/javascript"
-            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
-          />
         </body>
       </html>
     );

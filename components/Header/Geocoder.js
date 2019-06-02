@@ -11,9 +11,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import MUIPlacesAutocomplete, {
   geocodeBySuggestion,
 } from 'mui-places-autocomplete';
+import NextHead from 'next/head';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import { GMAPS_API_KEY } from '../../config';
 
 // https://stackoverflow.com/questions/49040092/material-ui-v1-input-focus-style-override
 const styles = theme => ({
@@ -86,6 +88,12 @@ class Geocoder extends Component {
     const { classes } = this.props;
     return (
       <Fragment>
+        <NextHead>
+          <script
+            type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
+          />
+        </NextHead>
         <MUIPlacesAutocomplete
           textFieldProps={{
             InputProps: {

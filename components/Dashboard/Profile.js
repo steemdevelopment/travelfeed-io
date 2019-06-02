@@ -11,56 +11,24 @@ import { getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loaded: false,
-      author: getUser(),
-      profile_image: '',
-      cover_image: '',
-      name: '',
-      about: '',
-      location: '',
-      website: '',
-      facebook: '',
-      twitter: '',
-      instagram: '',
-      youtube: '',
-      couchsurfing: '',
-      changed: [],
-    };
-    this.handleEditorChange_profile_image = this.handleEditorChange_profile_image.bind(
-      this,
-    );
-    this.handleEditorChange_cover_image = this.handleEditorChange_cover_image.bind(
-      this,
-    );
-    this.handleEditorChange_name = this.handleEditorChange_name.bind(this);
-    this.handleEditorChange_about = this.handleEditorChange_about.bind(this);
-    this.handleEditorChange_location = this.handleEditorChange_location.bind(
-      this,
-    );
-    this.handleEditorChange_website = this.handleEditorChange_website.bind(
-      this,
-    );
-    this.handleEditorChange_facebook = this.handleEditorChange_facebook.bind(
-      this,
-    );
-    this.handleEditorChange_twitter = this.handleEditorChange_twitter.bind(
-      this,
-    );
-    this.handleEditorChange_instagram = this.handleEditorChange_instagram.bind(
-      this,
-    );
-    this.handleEditorChange_youtube = this.handleEditorChange_youtube.bind(
-      this,
-    );
-    this.handleEditorChange_couchsurfing = this.handleEditorChange_couchsurfing.bind(
-      this,
-    );
-  }
+  state = {
+    loaded: false,
+    author: getUser(),
+    profile_image: '',
+    cover_image: '',
+    name: '',
+    about: '',
+    location: '',
+    website: '',
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    youtube: '',
+    couchsurfing: '',
+    changed: [],
+  };
 
-  handleEditorChange_profile_image(profile_image) {
+  handleEditorChange_profile_image = profile_image => {
     let { changed } = this.state;
     if (changed.indexOf('profile_image') > -1 === false) {
       changed = this.state.changed.concat('profile_image');
@@ -69,9 +37,9 @@ class Profile extends Component {
       profile_image: profile_image.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_cover_image(cover_image) {
+  handleEditorChange_cover_image = cover_image => {
     let { changed } = this.state;
     if (changed.indexOf('cover_image') > -1 === false) {
       changed = this.state.changed.concat('cover_image');
@@ -80,9 +48,9 @@ class Profile extends Component {
       cover_image: cover_image.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_name(name) {
+  handleEditorChange_name = name => {
     let { changed } = this.state;
     if (changed.indexOf('name') > -1 === false) {
       changed = this.state.changed.concat('name');
@@ -91,9 +59,9 @@ class Profile extends Component {
       name: name.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_about(about) {
+  handleEditorChange_about = about => {
     let { changed } = this.state;
     if (changed.indexOf('about') > -1 === false) {
       changed = this.state.changed.concat('about');
@@ -102,9 +70,9 @@ class Profile extends Component {
       about: about.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_location(location) {
+  handleEditorChange_location = location => {
     let { changed } = this.state;
     if (changed.indexOf('location') > -1 === false) {
       changed = this.state.changed.concat('location');
@@ -113,9 +81,9 @@ class Profile extends Component {
       location: location.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_website(website) {
+  handleEditorChange_website = website => {
     let { changed } = this.state;
     if (changed.indexOf('website') > -1 === false) {
       changed = this.state.changed.concat('website');
@@ -124,9 +92,9 @@ class Profile extends Component {
       website: website.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_facebook(facebook) {
+  handleEditorChange_facebook = facebook => {
     let { changed } = this.state;
     if (changed.indexOf('facebook') > -1 === false) {
       changed = this.state.changed.concat('facebook');
@@ -135,9 +103,9 @@ class Profile extends Component {
       facebook: facebook.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_twitter(twitter) {
+  handleEditorChange_twitter = twitter => {
     let { changed } = this.state;
     if (changed.indexOf('twitter') > -1 === false) {
       changed = this.state.changed.concat('twitter');
@@ -146,9 +114,9 @@ class Profile extends Component {
       twitter: twitter.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_instagram(instagram) {
+  handleEditorChange_instagram = instagram => {
     let { changed } = this.state;
     if (changed.indexOf('instagram') > -1 === false) {
       changed = this.state.changed.concat('instagram');
@@ -157,9 +125,9 @@ class Profile extends Component {
       instagram: instagram.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_youtube(youtube) {
+  handleEditorChange_youtube = youtube => {
     let { changed } = this.state;
     if (changed.indexOf('youtube') > -1 === false) {
       changed = this.state.changed.concat('youtube');
@@ -168,9 +136,9 @@ class Profile extends Component {
       youtube: youtube.target.value,
       changed,
     });
-  }
+  };
 
-  handleEditorChange_couchsurfing(couchsurfing) {
+  handleEditorChange_couchsurfing = couchsurfing => {
     let { changed } = this.state;
     if (changed.indexOf('couchsurfing') > -1 === false) {
       changed = this.state.changed.concat('couchsurfing');
@@ -179,23 +147,23 @@ class Profile extends Component {
       couchsurfing: couchsurfing.target.value,
       changed,
     });
-  }
+  };
 
-  linkBuilder() {
-    if (this.state.changed.length == 0) {
-      return '#';
+  linkBuilder = () => {
+    if (this.state.changed.length === 0) {
+      return;
     }
     let link = 'https://steemconnect.com/sign/profile-update?';
     let count = 0;
-    for (const info of this.state.changed) {
+    this.state.changed.forEach(info => {
       if (count > 0) {
         link += '&';
       }
       link += `${info}=${this.state[info]}`;
-      ++count;
-    }
+      count += 1;
+    });
     window.open(link, '_blank');
-  }
+  };
 
   render() {
     let updatebtn = (
@@ -250,7 +218,8 @@ class Profile extends Component {
                     background={indigo[600]}
                     content={
                       <Fragment>
-                        {/* Todo: Find out what the blockchain imposed length limits are for each field */}
+                        {/* Todo: Find out what the blockchain imposed 
+                        length limits are for each field */}
                         <TextField
                           label="Name"
                           inputProps={{

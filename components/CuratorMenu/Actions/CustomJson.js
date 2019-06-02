@@ -23,19 +23,6 @@ class CustomJson extends React.Component {
     this.setState({ open: false });
   };
 
-  newNotification(notification) {
-    if (notification != undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
-    }
-  }
-
   handleConfirm = () => {
     this.setState({ open: false });
     const payload = {
@@ -47,6 +34,16 @@ class CustomJson extends React.Component {
       this.newNotification(result);
     });
   };
+
+  newNotification(notification) {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      this.props.enqueueSnackbar(notification.message, { variant });
+    }
+  }
 
   render() {
     return (

@@ -17,6 +17,10 @@ import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
 
+Sentry.init({
+  dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
+});
+
 // eslint-disable-next-line no-unused-vars
 const Piwik = new ReactPiwik({
   url: 'https://matomo.travelfeed.io',
@@ -50,9 +54,6 @@ class MyApp extends App {
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-    Sentry.init({
-      dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
-    });
     if (process.env.NODE_ENV === 'production') register();
     ReactPiwik.push(['requireConsent']);
     if (hasCookieConsent === 'true') ReactPiwik.push(['setConsentGiven']);
@@ -63,6 +64,18 @@ class MyApp extends App {
 
   componentWillUnmount() {
     if (process.env.NODE_ENV === 'production') unregister();
+  }
+
+  componentDidCatch(error, errorInfo) {
+    Sentry.withScope(scope => {
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+
+      Sentry.captureException(error);
+    });
+
+    super.componentDidCatch(error, errorInfo);
   }
 
   render() {

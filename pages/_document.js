@@ -6,11 +6,16 @@ import React from 'react';
 import flush from 'styled-jsx/server';
 import { GMAPS_API_KEY } from '../config';
 
+process.on('unhandledRejection', err => {
+  Sentry.captureException(err);
+});
+
+process.on('uncaughtException', err => {
+  Sentry.captureException(err);
+});
+
 export default class extends Document {
   render() {
-    Sentry.init({
-      dsn: 'https://599c03493c8248a992f0d4c2eface5be@sentry.io/1457776',
-    });
     return (
       <html lang="en">
         <Head>
@@ -47,20 +52,17 @@ export default class extends Document {
         <body>
           <Main />
           <NextScript />
-          {
-            // Geocoder
-          }
+          <noscript>
+            <img
+              alt=""
+              src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1"
+            />
+          </noscript>
           <script
             type="text/javascript"
             src={`https://maps.googleapis.com/maps/api/js?key=${GMAPS_API_KEY}&libraries=places`}
           />
         </body>
-        <noscript>
-          <img
-            alt=""
-            src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1"
-          />
-        </noscript>
       </html>
     );
   }

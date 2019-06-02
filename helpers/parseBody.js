@@ -11,8 +11,8 @@ import Remarkable from 'remarkable';
 import sanitizeHtml from 'sanitize-html';
 import { ROOTURL } from '../config';
 import { imageProxy } from './getImage';
-import htmlReady from './PostParser/htmlReady';
-import sanitizeConfig from './PostParser/sanitizeConfig';
+import htmlReady from './PostParser/HtmlReady';
+import sanitizeConfig from './PostParser/SanitizeConfig';
 import {
   dtubeImageRegex,
   dtubeLinkRegex,

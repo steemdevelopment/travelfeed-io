@@ -12,8 +12,8 @@ This function is extracted from the source code of steemhunt and condenser with 
  */
 import embedjs from 'embedjs';
 import xmldom from 'xmldom';
-import { validateAccountName } from './chainValidation';
-import linksRe from './links';
+import { validateAccountName } from './ChainValidation';
+import linksRe from './Links';
 
 const noop = () => {};
 const DOMParser = new xmldom.DOMParser({

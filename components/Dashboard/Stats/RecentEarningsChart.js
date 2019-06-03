@@ -11,7 +11,7 @@ import {
   YAxis,
 } from 'recharts';
 
-const data = [];
+let data = [];
 
 export default class RecentEarningsChart extends PureComponent {
   render() {
@@ -31,6 +31,7 @@ export default class RecentEarningsChart extends PureComponent {
       'Nov',
       'Dec',
     ];
+    data = [];
     recentPayouts.forEach(d => {
       data.push({ name: months[d.month], earnings: d.earnings });
     });

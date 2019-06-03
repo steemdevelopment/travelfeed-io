@@ -1,8 +1,8 @@
 import Grid from '@material-ui/core/Grid';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import Comments from '../../components/Dashboard/Comments';
-import DashboardHeader from '../../components/Dashboard/DashboardMenu';
 import NotFound from '../../components/General/NotFound';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
@@ -15,6 +15,12 @@ class CommentsPage extends Component {
   }
 
   render() {
+    const DashboardHeader = dynamic(
+      () => import('../../components/Dashboard/DashboardMenu'),
+      {
+        ssr: false,
+      },
+    );
     const { open } = this.props;
     if (getUser() === null || !getUser()) {
       return (

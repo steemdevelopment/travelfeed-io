@@ -79,9 +79,6 @@ const styles = theme => ({
     }),
     overflowX: 'hidden',
     width: theme.spacing.unit * 7 + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9 + 1,
-    },
   },
   toolbar: {
     display: 'flex',
@@ -183,7 +180,7 @@ class Dashboard extends Component {
         <List>
           <Link
             href={`/dashboard?open=${this.state.open}`}
-            // as="/dashboard"
+            as="/dashboard"
             passHref
           >
             <a>
@@ -197,7 +194,7 @@ class Dashboard extends Component {
           </Link>
           <Link
             href={`/dashboard/publish?open=${this.state.open}`}
-            // as="/dashboard/publish"
+            as="/dashboard/publish"
             passHref
           >
             <a>

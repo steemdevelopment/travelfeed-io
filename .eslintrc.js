@@ -12,7 +12,7 @@ module.exports = {
     // disable camel case beacause API has queries without
     // camel case because of Hivemind table names
     camelcase: [0, { ignoreDestructuring: true }],
-    'react/destructuring-assignment': [1, 'always'],
+    'react/destructuring-assignment': [0, 'always'],
     // Next js needs empty <a> inside Link
     'jsx-a11y/anchor-is-valid': ['off'],
     'jsx-a11y/href-no-hash': ['off'],

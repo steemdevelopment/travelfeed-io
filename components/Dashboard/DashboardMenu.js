@@ -25,7 +25,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import classNames from 'classnames';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
@@ -95,7 +95,7 @@ const styles = theme => ({
   },
 });
 class Dashboard extends Component {
-  state = { open: true };
+  state = { open: this.props.open === 'true' };
 
   static async getInitialProps(props) {
     const { page } = props.query;
@@ -103,8 +103,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    if (window.innerWidth < 750) {
-      this.setState({ open: false });
+    if (this.props.open === undefined) {
+      if (window.innerWidth < 750) {
+        this.setState({ open: false });
+      } else {
+        this.setState({ open: true });
+      }
     }
   }
 
@@ -177,7 +181,11 @@ class Dashboard extends Component {
         </div>
         <Divider />
         <List>
-          <Link href="/dashboard" passHref>
+          <Link
+            href={`/dashboard?open=${this.state.open}`}
+            // as="/dashboard"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'stats'} button>
                 <ListItemIcon className={classNames(classes.listitem)}>
@@ -187,7 +195,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/publish" passHref>
+          <Link
+            href={`/dashboard/publish?open=${this.state.open}`}
+            // as="/dashboard/publish"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'publish'} button>
                 <ListItemIcon>
@@ -197,7 +209,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/drafts" passHref>
+          <Link
+            href={`/dashboard/drafts?open=${this.state.open}`}
+            as="/dashboard/drafts"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'drafts'} button>
                 <ListItemIcon>
@@ -207,7 +223,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/posts" passHref>
+          <Link
+            href={`/dashboard/posts?open=${this.state.open}`}
+            as="/dashboard/posts"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'posts'} button>
                 <ListItemIcon>
@@ -217,7 +237,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/comments" passHref>
+          <Link
+            href={`/dashboard/comments?open=${this.state.open}`}
+            as="/dashboard/comments"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'comments'} button>
                 <ListItemIcon>
@@ -227,7 +251,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/replies" passHref>
+          <Link
+            href={`/dashboard/replies?open=${this.state.open}`}
+            as="/dashboard/replies"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'replies'} button>
                 <ListItemIcon>
@@ -237,7 +265,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/notifications" passHref>
+          <Link
+            href={`/dashboard/notifications?open=${this.state.open}`}
+            as="/dashboard/notifications"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'notifications'} button>
                 <ListItemIcon>
@@ -250,7 +282,11 @@ class Dashboard extends Component {
         </List>
         <Divider />
         <List>
-          <Link href="/dashboard/profile" passHref>
+          <Link
+            href={`/dashboard/profile?open=${this.state.open}`}
+            as="/dashboard/profile"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'profile'} button>
                 <ListItemIcon>
@@ -260,7 +296,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/wallet" passHref>
+          <Link
+            href={`/dashboard/wallet?open=${this.state.open}`}
+            as="/dashboard/wallet"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'wallet'} button>
                 <ListItemIcon>
@@ -270,7 +310,11 @@ class Dashboard extends Component {
               </ListItem>
             </a>
           </Link>
-          <Link href="/dashboard/settings" passHref>
+          <Link
+            href={`/dashboard/settings?open=${this.state.open}`}
+            as="/dashboard/settings"
+            passHref
+          >
             <a>
               <ListItem selected={this.props.active === 'settings'} button>
                 <ListItemIcon>
@@ -285,10 +329,11 @@ class Dashboard extends Component {
     );
 
     return (
-      <Fragment>
+      <div className={classes.root}>
         {appbar}
         {drawer}
-      </Fragment>
+        <main className={classes.content}>{this.props.content}</main>
+      </div>
     );
   }
 }
@@ -296,6 +341,7 @@ class Dashboard extends Component {
 Dashboard.defaultProps = {
   query: undefined,
   page: undefined,
+  open: undefined,
 };
 
 Dashboard.propTypes = {
@@ -304,6 +350,8 @@ Dashboard.propTypes = {
   query: PropTypes.objectOf(PropTypes.string),
   page: PropTypes.string,
   active: PropTypes.string.isRequired,
+  content: PropTypes.element.isRequired,
+  open: PropTypes.string,
 };
 
 export default withStyles(styles, { withTheme: true })(Dashboard);

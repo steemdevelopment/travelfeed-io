@@ -2,15 +2,15 @@ import Grid from '@material-ui/core/Grid';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import NotFound from '../../components/General/NotFound';
 import DashboardHeader from '../../components/Dashboard/DashboardMenu';
+import NotFound from '../../components/General/NotFound';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import { getUser } from '../../helpers/token';
 
 class PublishPage extends Component {
   static async getInitialProps(props) {
-    const { id, savedate, title, body, json, isCodeEditor } = props.query;
+    const { id, savedate, title, body, json, isCodeEditor, open } = props.query;
     return {
       edit: {
         id,
@@ -20,11 +20,12 @@ class PublishPage extends Component {
         json,
         isCodeEditor,
       },
+      open,
     };
   }
 
   render() {
-    const { edit } = this.props;
+    const { edit, open } = this.props;
 
     if (getUser() === null || !getUser()) {
       return (
@@ -54,21 +55,25 @@ class PublishPage extends Component {
     return (
       <Fragment>
         <Head title="TravelBlog: Publish - TravelFeed: The Travel Community" />
-        <div style={{ display: 'flex' }}>
-          <DashboardHeader active="publish" />
-          <main style={{ flexGrow: 1 }}>
-            <Publish edit={edit} />
-          </main>
-        </div>
+        <DashboardHeader
+          active="publish"
+          content={<Publish edit={edit} />}
+          open={open}
+        />
       </Fragment>
     );
   }
 }
 
+PublishPage.defaultProps = {
+  open: undefined,
+};
+
 PublishPage.propTypes = {
   edit: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.objectOf(PropTypes.string).isRequired,
+  open: PropTypes.string,
 };
 
 export default PublishPage;

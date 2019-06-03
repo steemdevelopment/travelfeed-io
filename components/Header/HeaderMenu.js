@@ -207,7 +207,11 @@ class HeaderMenu extends Component {
                 this.state.user
               }/avatar/small`}
             />
-            <DownIcon className="text-light" />
+            <DownIcon
+              className={
+                (this.props.isDashboard && 'text-dark') || 'text-light'
+              }
+            />
           </Button>
           <Popper
             open={menuopen}

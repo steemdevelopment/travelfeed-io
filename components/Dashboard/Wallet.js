@@ -10,7 +10,7 @@ import RecentEarnings from './Stats/RecentEarningsChart';
 const Wallet = () => {
   return (
     <Fragment>
-      <Grid container spacing={0} justify="center" className="p-1">
+      <Grid container spacing={0} justify="center">
         <Query query={GET_USER_STATS}>
           {({ data, loading, error }) => {
             if (loading || error || data.userstats === null) {
@@ -18,7 +18,7 @@ const Wallet = () => {
             }
             return (
               <Fragment>
-                <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
+                <Grid item className="pt-4 p-1" lg={6} md={6} sm={11} xs={12}>
                   <HeaderCard
                     title="Wallet"
                     background={indigo[600]}
@@ -46,7 +46,7 @@ const Wallet = () => {
                     }
                   />
                 </Grid>
-                <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
+                <Grid item className="pt-4 p-1" lg={6} md={6} sm={11} xs={12}>
                   <HeaderCard
                     title="Monthly Earnings"
                     background={teal[600]}

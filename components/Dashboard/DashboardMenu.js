@@ -101,7 +101,8 @@ class Dashboard extends Component {
 
   componentDidMount() {
     if (this.props.open === undefined) {
-      if (window.innerWidth < 750) {
+      // 961 = bootstrap lg
+      if (window.innerWidth < 992) {
         this.setState({ open: false });
       } else {
         this.setState({ open: true });

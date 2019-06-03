@@ -15,7 +15,7 @@ const Posts = () => {
       >
         <Grid item lg={8} md={10} sm={11} xs={12} className="pb-4">
           <div className="text-center">
-            <h1>Your Published Posts</h1>
+            <h1>Published Posts</h1>
           </div>
         </Grid>
         <PostGrid

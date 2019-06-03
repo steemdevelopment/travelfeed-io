@@ -1,6 +1,7 @@
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -74,51 +75,58 @@ class Drafts extends Component {
                   </div>
                 }
               >
-                <div className="container">
-                  <div className="row justify-content-center">
-                    {data.drafts.length > 0 &&
-                      data.drafts.map(draft => {
-                        const htmlBody = draft.isCodeEditor
-                          ? parseBody(draft.body, {})
-                          : json2Html(JSON.parse(draft.body));
-                        const sanitized = sanitize(htmlBody, {
-                          allowedTags: [],
-                        });
-                        const readtime = readingTime(sanitized);
-                        const excerpt = regExcerpt(sanitized);
-                        return (
-                          <div
-                            className="col-xl-6 col-lg-6 col-md-9 col-12"
-                            key={draft.id}
-                          >
-                            <PostListItem
-                              post={{
-                                author: user,
-                                body: draft.body,
-                                display_name: user,
-                                title: draft.title,
-                                json: draft.json,
-                                created_at: draft.savedate,
-                                readtime,
-                                excerpt,
-                                id: draft.id,
-                                isCodeEditor: draft.isCodeEditor,
-                              }}
-                              id={draft.id}
-                              isDraftMode
-                            />
-                          </div>
-                        );
-                      })}
-                    {data.drafts && data.drafts.length === 0 && (
-                      <Card className="mt-5">
-                        <CardContent>
-                          You don&apos;t have any drafts yet.
-                        </CardContent>
-                      </Card>
-                    )}
-                  </div>
-                </div>
+                <Grid
+                  container
+                  spacing={0}
+                  alignItems="center"
+                  justify="center"
+                >
+                  {data.drafts.length > 0 &&
+                    data.drafts.map(draft => {
+                      const htmlBody = draft.isCodeEditor
+                        ? parseBody(draft.body, {})
+                        : json2Html(JSON.parse(draft.body));
+                      const sanitized = sanitize(htmlBody, {
+                        allowedTags: [],
+                      });
+                      const readtime = readingTime(sanitized);
+                      const excerpt = regExcerpt(sanitized);
+                      return (
+                        <Grid
+                          item
+                          lg={8}
+                          md={10}
+                          sm={11}
+                          xs={12}
+                          key={draft.id}
+                        >
+                          <PostListItem
+                            post={{
+                              author: user,
+                              body: draft.body,
+                              display_name: user,
+                              title: draft.title,
+                              json: draft.json,
+                              created_at: draft.savedate,
+                              readtime,
+                              excerpt,
+                              id: draft.id,
+                              isCodeEditor: draft.isCodeEditor,
+                            }}
+                            id={draft.id}
+                            isDraftMode
+                          />{' '}
+                        </Grid>
+                      );
+                    })}
+                  {data.drafts && data.drafts.length === 0 && (
+                    <Card className="mt-5">
+                      <CardContent>
+                        You don&apos;t have any drafts yet.
+                      </CardContent>
+                    </Card>
+                  )}
+                </Grid>
               </InfiniteScroll>
             );
           }}

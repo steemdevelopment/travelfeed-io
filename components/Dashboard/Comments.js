@@ -15,15 +15,17 @@ const Comments = () => {
       >
         <Grid item lg={8} md={10} sm={11} xs={12}>
           <div className="text-center">
-            <h1>Your Comments</h1>
+            <h1>Comments</h1>
           </div>
         </Grid>
       </Grid>
-      <PostGrid
-        query={{ author: getUser(), is_comment: true, limit: 8 }}
-        grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}
-        poststyle="comment"
-      />
+      <div className="p-1">
+        <PostGrid
+          query={{ author: getUser(), is_comment: true, limit: 8 }}
+          grid={{ lg: 8, md: 10, sm: 11, xs: 12 }}
+          poststyle="comment"
+        />
+      </div>
     </Fragment>
   );
 };

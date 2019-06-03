@@ -32,7 +32,7 @@ import SmallBox from './Stats/SmallBox';
 const Stats = () => {
   return (
     <Fragment>
-      <Grid container spacing={0} justify="center" className="p-1">
+      <Grid container spacing={0} justify="center">
         <Query query={GET_USER_STATS}>
           {({ data, loading, error }) => {
             if (loading || error || data.userstats === null) {

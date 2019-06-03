@@ -160,11 +160,9 @@ class PostListItem extends Component {
       </div>
     );
     return (
-      <Fragment>
-        <Card key={this.props.post.permlink} className="m-2">
-          {content}
-        </Card>
-      </Fragment>
+      <div className="p-1 pb-3">
+        <Card key={this.props.post.permlink}>{content}</Card>
+      </div>
     );
   }
 }

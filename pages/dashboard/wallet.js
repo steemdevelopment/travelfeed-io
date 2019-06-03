@@ -2,7 +2,7 @@ import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
 import Wallet from '../../components/Dashboard/Wallet';
 import NotFound from '../../components/General/NotFound';
-import DashboardHeader from '../../components/Header/DashboardHeader';
+import DashboardHeader from '../../components/Dashboard/DashboardMenu';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import { getUser } from '../../helpers/token';

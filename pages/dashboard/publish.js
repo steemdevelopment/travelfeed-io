@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import NotFound from '../../components/General/NotFound';
-import DashboardHeader from '../../components/Header/DashboardHeader';
+import DashboardHeader from '../../components/Dashboard/DashboardMenu';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import { getUser } from '../../helpers/token';

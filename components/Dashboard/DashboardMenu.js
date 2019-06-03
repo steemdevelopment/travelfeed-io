@@ -26,7 +26,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import HeaderMenu from './HeaderMenu';
+import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
 

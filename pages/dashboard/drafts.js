@@ -1,8 +1,8 @@
 import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
+import DashboardHeader from '../../components/Dashboard/DashboardMenu';
 import Drafts from '../../components/Dashboard/Drafts';
 import NotFound from '../../components/General/NotFound';
-import DashboardHeader from '../../components/Header/DashboardHeader';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 import { getUser } from '../../helpers/token';

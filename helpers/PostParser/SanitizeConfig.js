@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /**
 This function is extracted from the source code of busy.org and condenser with 
 some slight adjustments to meet our needs. Refer to the main one in case of 
@@ -132,11 +133,11 @@ export default ({
   transformTags: {
     iframe: (tagName, attribs) => {
       const srcAtty = decodeURIComponent(attribs.src);
-      iframeWhitelist.forEach(item => {
+      for (const item of iframeWhitelist) {
         if (item.re.test(srcAtty)) {
           const src =
             typeof item.fn === 'function' ? item.fn(srcAtty, item.re) : srcAtty;
-          if (!src) return {};
+          if (!src) break;
           return {
             tagName: 'iframe',
             attribs: {
@@ -150,8 +151,7 @@ export default ({
             },
           };
         }
-        return {};
-      });
+      }
       sanitizeErrors.push(`Invalid iframe URL: ${srcAtty}`);
       return { tagName: 'div', text: `(Unsupported ${srcAtty})` };
     },

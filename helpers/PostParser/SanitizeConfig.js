@@ -159,14 +159,11 @@ export default ({
       if (noImage) return { tagName: 'div', text: noImageText };
       // See https://github.com/punkave/sanitize-html/issues/117
       const { alt } = attribs;
-      let { src } = attribs;
+      const { src } = attribs;
       if (!/^(https?:)?\/\//i.test(src)) {
         sanitizeErrors.push('An image in this post did not save properly.');
         return { tagName: 'img', attribs: { src: 'brokenimg.jpg' } };
       }
-
-      // replace http:// with // to force https when needed
-      src = src.replace(/^http:\/\//i, '//');
 
       const atts = { src };
       if (alt && alt !== '') atts.alt = alt;

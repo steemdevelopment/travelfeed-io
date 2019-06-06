@@ -99,11 +99,14 @@ class PostListItem extends Component {
                     <Link
                       href={`/dashboard/publish?id=${
                         this.props.post.id
-                      }&title=${this.props.post.title}&body=${
-                        this.props.post.body
-                      }&json=${this.props.post.json}&isCodeEditor=${
-                        this.props.post.isCodeEditor
-                      }`}
+                      }&title=${
+                        this.props.post.title
+                      }&body=${encodeURIComponent(
+                        this.props.post.body,
+                      )}&json=${this.props.post.json ||
+                        JSON.stringify({
+                          tags: this.props.post.tags,
+                        })}&editmode=true`}
                       as="/dashboard/publish"
                       passHref
                     >

@@ -1,7 +1,14 @@
+/* Editor inline menu */
+.duDjGM {
+  padding-bottom: 14px !important;
+}
+
+/* Progress bar */
 #nprogress .bar {
   background: #3849ab !important;
 }
 
+/* Image lazy loading fade effect */
 .lazy {
   transition: opacity 0.5s;
   opacity: 0.2;
@@ -36,10 +43,6 @@
     height: -webkit-calc(100% - 55px); /* Chrome, Safari */
     height: calc(100% - 55px); /* IE9+ and future browsers */
   }
-}
-/* Fix Editor toolbar */
-.hUYGJp {
-  padding-bottom: 20px !important;
 }
 
 body {
@@ -81,14 +84,14 @@ a:hover {
 #editorjs-container {
   font-size: 1.2rem;
   font-weight: 400;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
 .postcontent {
   color: rgba(0, 0, 0, 0.87);
   font-size: 1.2rem;
   font-weight: 400;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1.46429em;
 }
 .postcontent h1 {
@@ -136,7 +139,7 @@ a:hover {
   letter-spacing: -0.012em;
   color: #525252;
   padding: 0 50px 0 50px;
-  quotes: "\201C""\201D""\2018""\2019";
+  quotes: '\201C''\201D''\2018''\2019';
 }
 .postcontent blockquote:before {
   content: open-quote;

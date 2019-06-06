@@ -23,21 +23,11 @@ const uploadFile = (file, user) => {
         // File uploaded successfully
         const response = JSON.parse(xhr.responseText);
         const uploadUrl = response.secure_url;
-        resolve({
-          success: 1,
-          file: {
-            uploadUrl,
-          },
-        });
+        resolve(uploadUrl);
       } else {
         // If failed
         // eslint-disable-next-line prefer-promise-reject-errors
-        reject({
-          success: 0,
-          file: {
-            url: '',
-          },
-        });
+        reject('brokenimg');
       }
     };
   });

@@ -1,29 +1,36 @@
 // FIXME: Implement new comment editor
 /* eslint-disable */
-
-// import Editor from "rich-markdown-editor";
-import { debounce } from 'lodash.debounce';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import Editor from 'rich-markdown-editor';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import { comment } from '../../helpers/actions';
 import { getImageList } from '../../helpers/getImage';
+import uploadFile from '../../helpers/imageUpload';
+import { getUser } from '../../helpers/token';
 
 class CommentEditor extends Component {
   state = {
     content: '',
-    completed: 0,
+    loading: undefined,
   };
 
-  handleEditorChange = debounce(value => {
-    this.setState({ content: value() });
-  }, 250);
+  handleEditorChange = value => {
+    const content = value();
+    this.setState({ content });
+  };
 
   progress = () => {
-    const { completed } = this.state;
-    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
+    const { loading } = this.state;
+    if (loading < 100) {
+      this.setState({ loading: loading + 1 });
+    } else {
+      this.setState({ loading: 0 });
+    }
   };
 
   newNotification(notification) {
@@ -37,6 +44,7 @@ class CommentEditor extends Component {
   }
 
   publish() {
+    this.setState({ loading: 0 });
     const title = '';
     const parentAuthor = this.props.parent_author;
     const parentPermlink = this.props.parent_permlink;
@@ -54,9 +62,8 @@ class CommentEditor extends Component {
     if (imageList !== null) {
       metadata.image = imageList;
     }
-    this.timer = setInterval(this.progress, 60);
     // Steemconnect broadcast
-    comment(
+    return comment(
       parentAuthor,
       parentPermlink,
       permlink,
@@ -64,56 +71,66 @@ class CommentEditor extends Component {
       body,
       metadata,
       'comment',
-    ).then(result => {
-      this.newNotification(result);
+    ).then(res => {
+      if (res) {
+        this.newNotification(res);
+        this.setState({ loading: undefined });
+        if (!res.success) this.setState({ content: body });
+        else this.props.onCommentEdit({ body });
+      }
     });
   }
 
   render() {
-    return <Fragment />;
-    // if (this.state.success) {
-    //   this.props.editMode
-    //     ? this.props.onCommentEdit({
-    //         body: this.state.content
-    //       })
-    //     : this.props.onCommentAdd({
-    //         body: this.state.content,
-    //         permlink: this.state.permlink
-    //       });
-    //   !this.props.editMode && this.props.onClose();
-    //   clearInterval(this.timer);
-    //   this.setState({ completed: 0, success: false });
-    // }
-    // return (
-    //   <Fragment>
-    //     <Editor
-    //       style={{ minHeight: "100px" }}
-    //       defaultValue={this.props.defaultValue}
-    //       autofocus={true}
-    //       placeholder="Reply"
-    //       onChange={this.handleEditorChange}
-    //       className="border postcontent pl-2"
-    //     />
-    //     <Button
-    //       className="mt-1"
-    //       variant="contained"
-    //       color="primary"
-    //       onClick={() => this.publish()}
-    //       disabled={this.state.content.length < 1}
-    //     >
-    //       {(this.props.editMode && "Edit") || "Reply"}
-    //     </Button>
-    //     {this.state.completed !== 0 && (
-    //       <CircularProgress
-    //         variant="determinate"
-    //         value={this.state.completed}
-    //         className="p-1"
-    //         size={35}
-    //         thickness={5}
-    //       />
-    //     )}
-    //   </Fragment>
-    // );
+    if (this.state.success) {
+      this.props.editMode
+        ? this.props.onCommentEdit({
+            body: this.state.content,
+          })
+        : this.props.onCommentAdd({
+            body: this.state.content,
+            permlink: this.state.permlink,
+          });
+      !this.props.editMode && this.props.onClose();
+      clearInterval(this.timer);
+      this.setState({ completed: 0, success: false });
+    }
+    return (
+      <Fragment>
+        <Editor
+          uploadImage={file => {
+            return uploadFile(file, getUser()).then(res => {
+              return res;
+            });
+          }}
+          data={this.state.content}
+          style={{ minHeight: '100px' }}
+          defaultValue={this.props.defaultValue}
+          autofocus
+          placeholder="Reply"
+          onChange={this.handleEditorChange}
+          className="border postcontent pl-2"
+        />
+        <Button
+          className="mt-1"
+          variant="contained"
+          color="primary"
+          onClick={() => this.publish()}
+          disabled={this.state.content.length < 1}
+        >
+          {(this.props.editMode && 'Edit') || 'Reply'}
+        </Button>
+        {this.state.loading !== undefined && (
+          <CircularProgress
+            // variant="determinate"
+            value={this.state.loading}
+            className="p-1"
+            size={35}
+            thickness={5}
+          />
+        )}
+      </Fragment>
+    );
   }
 }
 

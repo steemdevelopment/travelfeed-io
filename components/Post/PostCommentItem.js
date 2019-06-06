@@ -9,7 +9,6 @@ import React, { Component, Fragment } from 'react';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
-import CommentEditor from '../Editor/CommentEditor';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
@@ -129,6 +128,9 @@ class PostCommentItem extends Component {
       <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
     );
     if (this.state.showEditor) {
+      const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
+        ssr: false,
+      });
       cardcontent = (
         <CommentEditor
           editMode

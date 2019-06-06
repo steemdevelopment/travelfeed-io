@@ -11,6 +11,7 @@ import FlightVotedIcon from '@material-ui/icons/Flight';
 import FlightIcon from '@material-ui/icons/FlightTakeoff';
 import LinkIcon from '@material-ui/icons/Link';
 import Slider from '@material-ui/lab/Slider';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -315,27 +316,27 @@ class VoteSlider extends Component {
       );
     }
     if (this.props.mode !== 'gridcard' && this.state.commentExpanded === true) {
-      // const CommentEditor = dynamic(() => import("./Editor/CommentEditor"), {
-      //   loading: () => <p>Loading...</p>,
-      //   ssr: false
-      // });
-      // cardFooter = (
-      //   <CardActions>
-      //     <div className="w-100">
-      //       <CommentEditor
-      //         parent_author={this.props.author}
-      //         parent_permlink={this.props.permlink}
-      //         onClose={() => this.collapseCommentBar()}
-      //         onCommentAdd={this.props.onCommentAdd}
-      //       />
-      //     </div>
-      //     <Tooltip title="Close" placement="bottom">
-      //       <IconButton onClick={() => this.collapseCommentBar()}>
-      //         <CloseIcon />
-      //       </IconButton>
-      //     </Tooltip>
-      //   </CardActions>
-      // );
+      const CommentEditor = dynamic(() => import('../Editor/CommentEditor'), {
+        ssr: false,
+      });
+      cardFooter = (
+        <CardActions>
+          <div className="w-100">
+            <CommentEditor
+              parent_author={this.props.author}
+              parent_permlink={this.props.permlink}
+              onClose={() => this.collapseCommentBar()}
+              onCommentEdit={this.props.onCommentAdd}
+              // TODO: Collapse comment editor: commentExpand: false
+            />
+          </div>
+          <Tooltip title="Close" placement="bottom">
+            <IconButton onClick={() => this.collapseCommentBar()}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
+        </CardActions>
+      );
     }
     return <Fragment>{cardFooter}</Fragment>;
   }
@@ -347,6 +348,7 @@ VoteSlider.defaultProps = {
 };
 
 VoteSlider.propTypes = {
+  onCommentAdd: PropTypes.func.isRequired,
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
   votes: PropTypes.string.isRequired,

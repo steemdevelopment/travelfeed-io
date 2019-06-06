@@ -106,9 +106,13 @@ class LocationPicker extends React.Component {
   }
 }
 
+LocationPicker.defaultProps = {
+  isChange: false,
+};
+
 LocationPicker.propTypes = {
   onPick: PropTypes.func.isRequired,
-  isChange: PropTypes.bool.isRequired,
+  isChange: PropTypes.bool,
 };
 
 export default LocationPicker;

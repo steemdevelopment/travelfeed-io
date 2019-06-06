@@ -72,12 +72,14 @@ class PublishPage extends Component {
 
 PublishPage.defaultProps = {
   open: undefined,
+  edit: {},
+  query: {},
 };
 
 PublishPage.propTypes = {
-  edit: PropTypes.bool.isRequired,
+  edit: PropTypes.objectOf(PropTypes.any),
   // eslint-disable-next-line react/no-unused-prop-types
-  query: PropTypes.objectOf(PropTypes.string).isRequired,
+  query: PropTypes.objectOf(PropTypes.string),
   open: PropTypes.string,
 };
 

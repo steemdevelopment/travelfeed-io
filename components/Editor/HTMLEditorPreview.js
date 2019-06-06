@@ -20,8 +20,12 @@ const HtmlEditorPreview = props => {
   );
 };
 
+HtmlEditorPreview.defaultProps = {
+  preview: '',
+};
+
 HtmlEditorPreview.propTypes = {
-  preview: PropTypes.string.isRequired,
+  preview: PropTypes.string,
 };
 
 export default HtmlEditorPreview;

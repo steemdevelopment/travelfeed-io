@@ -58,7 +58,7 @@ class LocationPickerDialog extends Component {
     window.removeEventListener('resize', this.resize);
   }
 
-  updateViewport = event => {
+  onMarkerDragEnd = event => {
     this.logDragEvent('onDragEnd', event);
     this.setState({
       marker: {
@@ -88,7 +88,9 @@ class LocationPickerDialog extends Component {
         },
       });
     }
-    this.setState(prevState => ({ ...prevState.viewport, ...viewport }));
+    this.setState(prevState => ({
+      viewport: { ...prevState.viewport, ...viewport },
+    }));
   };
 
   //   Faster speed
@@ -154,7 +156,7 @@ class LocationPickerDialog extends Component {
                 offsetTop={-20}
                 offsetLeft={-10}
                 draggable
-                onDragEnd={this.updateViewport}
+                onDragEnd={this.onMarkerDragEnd}
               >
                 <MapMarker />
               </Marker>

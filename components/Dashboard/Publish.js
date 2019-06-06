@@ -1,13 +1,9 @@
-// FIXME: Working editor
-/* eslint-disable */
-// Todo: Image upload.
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
-// import { UPLOAD_IMAGE } from "../../helpers/graphql/upload";
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Router from 'next/router';
@@ -16,18 +12,19 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
+import Editor from 'rich-markdown-editor';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
+import { comment } from '../../helpers/actions';
 import { getImageList } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
-import json2Html from '../../helpers/json2Html';
+import uploadFile from '../../helpers/imageUpload';
 import { getUser } from '../../helpers/token';
-import Editor from '../Editor/Editor';
 import HtmlEditor from '../Editor/HTMLEditor';
 import HtmlEditorPreview from '../Editor/HTMLEditorPreview';
 import LocationPicker from '../Editor/LocationPickerButton';
-import PostPreview from '../Editor/PostPreview';
+import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
 import PostMap from '../Maps/PostMap';
 
@@ -35,7 +32,6 @@ class PostEditor extends Component {
   state = {
     title: '',
     content: undefined,
-    htmlContent: undefined,
     tags: undefined,
     completed: 0,
     location: undefined,
@@ -43,6 +39,130 @@ class PostEditor extends Component {
     saved: true,
     // codeEditor: true
   };
+
+  componentDidMount() {
+    const json =
+      this.props.edit.json && this.props.edit.json !== 'undefined'
+        ? JSON.parse(this.props.edit.json)
+        : undefined;
+    const title = this.props.edit.title ? this.props.edit.title : '';
+    const content = this.props.edit.body ? this.props.edit.body : '';
+    const codeEditor = this.props.edit.body !== undefined;
+    const tags = json && json.tags ? json.tags : ['travelfeed'];
+    const location = json && json.location ? json.location : undefined;
+    const id = this.props.edit.id
+      ? this.props.edit.id
+      : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
+    this.setState({
+      title,
+      content,
+      tags,
+      location,
+      id,
+      mounted: true,
+      codeEditor,
+    });
+    // Save draft every 20 seconds
+    this.interval = setInterval(() => this.setState({ saved: false }), 20000);
+  }
+
+  componentWillUnmount() {
+    // Stop saving drafts
+    clearInterval(this.interval);
+  }
+
+  handleTagClick = op => {
+    this.setState(op);
+  };
+
+  handleTitleEditorChange = title => {
+    this.setState({ title: title.target.value });
+  };
+
+  handleEditorChange = value => {
+    const content = value();
+    this.setState({ content });
+  };
+
+  handleHtmlEditorChange = content => {
+    this.setState({ content });
+  };
+
+  onLocationPick = ({ latitude, longitude }) => {
+    this.setState({ location: { latitude, longitude } });
+  };
+
+  progress = () => {
+    const { loading } = this.state;
+    if (loading < 100) {
+      this.setState({ loading: loading + 1 });
+    } else {
+      this.setState({ loading: 0 });
+    }
+  };
+
+  changeEditorMode() {
+    this.setState(prevState => ({
+      codeEditor: !prevState.codeEditor,
+    }));
+  }
+
+  handleTagsEditorChange(tags) {
+    this.setState({ tags: tags.target.value });
+  }
+
+  publishPost() {
+    const username = getUser();
+    const parentAuthor = '';
+    const parentPermlink = 'travelfeed';
+    const { title } = this.state;
+    let permlink = getSlug(title);
+    let body = this.state.content;
+    const { location } = this.state;
+    const imageList = getImageList(body);
+    const metadata = {};
+    metadata.tags = this.state.tags;
+    metadata.app = APP_VERSION;
+    metadata.community = 'travelfeed';
+    if (imageList !== null) {
+      metadata.image = imageList;
+    }
+    if (!this.props.edit.editmode === 'true') {
+      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
+    }
+    if (location !== undefined) {
+      metadata.coordinates = [location.latitude, location.longitude];
+      if (
+        !this.props.edit.editmode === 'true' ||
+        location !== this.props.edit.location
+      ) {
+        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${
+          location.longitude
+        } long  d3scr)`;
+      }
+    }
+    // Todo: Parse body for images and links and include them
+    // in the json_metadata
+    if (this.props.edit.editmode === 'true') {
+      ({ permlink } = this.props.edit);
+    }
+    this.setState({ user: username, permlink });
+    // Steemconnect broadcast
+    return comment(
+      parentAuthor,
+      parentPermlink,
+      permlink,
+      title,
+      body,
+      metadata,
+      'comment',
+    ).then(res => {
+      if (res) {
+        this.newNotification(res);
+        this.setState({ loading: undefined });
+      }
+    });
+  }
 
   newNotification(notification) {
     if (notification !== undefined) {
@@ -57,213 +177,23 @@ class PostEditor extends Component {
     }
   }
 
-  changeToHtmlEditor() {
-    let htmlContent = '';
-    if (this.state.content) {
-      htmlContent = json2Html(this.state.content);
-    }
-    // Generate new ID to not overwrite the current draft
-    const id = `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
-    this.setState({ htmlContent, codeEditor: true, id });
-  }
-
-  handleTitleEditorChange = title => {
-    this.setState({ title: title.target.value });
-  };
-
-  // onEditorChange = content => {
-  //   this.setState({ content });
-  //   console.log(content)
-  // };
-  handleEditorChange = content => {
-    // console.log(content);
-    this.setState({ content });
-  };
-
-  handleHtmlEditorChange = htmlContent => {
-    // console.log(htmlContent);
-    this.setState({ htmlContent });
-  };
-
-  handleTagsEditorChange(tags) {
-    this.setState({ tags: tags.target.value });
-  }
-
-  onLocationPick = ({ latitude, longitude }) => {
-    // console.log({ latitude, longitude });
-    this.setState({ location: { latitude, longitude } });
-  };
-
-  componentDidMount() {
-    const json = this.props.edit.json
-      ? JSON.parse(this.props.edit.json)
-      : undefined;
-    const title = this.props.edit.title ? this.props.edit.title : '';
-    const content =
-      this.props.edit.body && this.props.edit.isCodeEditor === false
-        ? this.props.edit.body
-        : {
-            time: 1554920381017,
-            blocks: [
-              {
-                type: 'header',
-                data: {
-                  text: 'Hello Editor.js',
-                  level: 2,
-                },
-              },
-            ],
-            version: '2.12.4',
-          };
-    const htmlContent =
-      this.props.edit.body && this.props.edit.isCodeEditor === true
-        ? this.props.edit.body
-        : undefined;
-    const tags = json && json.tags ? json.tags : ['travelfeed'];
-    const location = json && json.location ? json.location : undefined;
-    const id = this.props.edit.id
-      ? this.props.edit.id
-      : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
-    const mounted = true;
-    const codeEditor = this.props.edit.isCodeEditor
-      ? this.props.edit.isCodeEditor
-      : false;
-    this.setState({
-      title,
-      content,
-      htmlContent,
-      tags,
-      location,
-      id,
-      mounted,
-      codeEditor,
-    });
-    // Save draft every 20 seconds
-    this.interval = setInterval(() => this.setState({ saved: false }), 20000);
-  }
-
-  componentWillUnmount() {
-    // Stop saving drafts
-    clearInterval(this.interval);
-  }
-
-  progress = () => {
-    // Publish animation
-    const { completed } = this.state;
-    this.setState({ completed: completed >= 100 ? 0 : completed + 1 });
-  };
-
-  async success() {
-    const sleep = milliseconds => {
-      // eslint-disable-next-line no-undef
-      return new Promise(resolve => setTimeout(resolve, milliseconds));
-    };
-    await sleep(10000);
-    clearInterval(this.timer);
-    this.setState({ completed: 0 });
-  }
-
-  handleTagClick = op => {
-    this.setState(op);
-  };
-
-  publishPost() {
-    let parentAuthor = '';
-    let parentPermlink = 'travelfeed';
-    const { title } = this.state;
-    let permlink = getSlug(title);
-    let body = this.state.content;
-    const { location } = this.state;
-    const imageList = getImageList(body);
-    const metadata = {};
-    metadata.tags = this.state.tags;
-    metadata.app = APP_VERSION;
-    metadata.community = 'travelfeed';
-    if (imageList !== null) {
-      metadata.image = imageList;
-    }
-    if (!this.props.editMode) {
-      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
-    }
-    if (location !== undefined) {
-      metadata.coordinates = [location.latitude, location.longitude];
-      if (!this.props.editMode || location !== this.props.edit.location) {
-        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${
-          location.longitude
-        } long  d3scr)`;
-      }
-    }
-    // Todo: Parse body for images and links and include them in the json_metadata
-    let username = getUser();
-    if (this.props.type == 'comment') {
-      const commenttime = getSlug(new Date().toJSON()).replace(/-/g, '');
-      permlink = `re-${this.props.parent_permlink}-${commenttime}`;
-      parentAuthor = this.props.parent_author;
-      parentPermlink = this.props.parent_permlink;
-    }
-    if (this.props.editMode) {
-      permlink = this.props.edit.permlink;
-    }
-    this.timer = setInterval(this.progress, 60);
-    this.setState({ user: username, permlink });
-    console.log(
-      parentAuthor,
-      parentPermlink,
-      permlink,
-      title,
-      body,
-      JSON.stringify(metadata),
-      'post',
-    );
-    // comment(
-    // parentAuthor,
-    // parentPermlink,
-    // permlink,
-    // title,
-    // body,
-    // metadata,
-    // this.props.type
-    // ).then(result => {
-    //   this.newNotification(result);
-    // });
-  }
-
   render() {
-    const bodyText = 'aaaa';
-    const sanitized = sanitize(bodyText, { allowedTags: [] });
+    const sanitized = this.state.content
+      ? sanitize(this.state.content, { allowedTags: [] })
+      : '';
     let wordCount = '';
     let readTime = '';
-    if (this.state.codeEditor) {
-      const readingtime = this.state.htmlContent
-        ? readingTime(this.state.htmlContent)
-        : { words: 0, text: '0 min' };
-      wordCount = readingtime.words;
-      readTime = readingtime.text;
-    } else {
-      let html = '';
-      this.state.content &&
-        this.state.content.blocks &&
-        this.state.content.blocks.forEach(b => {
-          if (b.type === 'paragraph' || b.type === 'header') {
-            html += `${b.data.text} `;
-          }
-        });
-      const readingtime = readingTime(html);
-      wordCount = readingtime.words;
-      readTime = readingtime.text;
-    }
+    const readingtime = this.state.content
+      ? readingTime(sanitized)
+      : { words: 0, text: '0 min' };
+    wordCount = readingtime.words;
+    readTime = readingtime.text;
     const { location } = this.state;
-    if (this.state.completed == 100 && this.state.success == true) {
+    if (this.state.completed === 100 && this.state.success === true) {
       this.success();
       const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
       Router.push(url);
     }
-
-    // else if (this.state.mounted == true) {
-    //   // Todo: If no id  is provided, make fresh id (constant!). Or work with own ID format (author-jsonstring) instead of mongo IDs?
-    //   editor = (
-    //   );
-    // }
     const publishTooltip =
       wordCount < 250 || this.state.title === ''
         ? 'You need to write at least 250 words and set a title before you can publish your post'
@@ -310,65 +240,53 @@ class PostEditor extends Component {
                     variables={{
                       id: this.state.id,
                       title: this.state.title,
-                      body:
-                        (this.state.codeEditor && this.state.htmlContent) ||
-                        JSON.stringify(this.state.content),
+                      body: this.state.content,
                       json: JSON.stringify({
                         tags: this.state.tags,
                         location: this.state.location,
                       }),
-                      isCodeEditor: this.state.codeEditor,
                     }}
                   >
                     {saveDraft => {
                       if (!this.state.saved) {
                         if (wordCount > 1) saveDraft();
-                        console.log('saving');
                         this.setState({ saved: true });
                       }
                       return (
                         <div>
-                          {(this.state.codeEditor && (
+                          {(this.state.codeEditor && this.state.mounted && (
                             <Fragment>
                               <HtmlEditor
-                                data={this.state.htmlContent}
+                                data={this.state.content}
                                 onChange={this.handleHtmlEditorChange}
-                              />
-                              {(this.state.htmlContent && (
-                                <Tooltip title="Once you start typing, the only way to switch back for this post is to restore a previous draft">
-                                  <span className="font-weight-bold font-size-8 cpointer text-muted">
-                                    Switch to TravelFeed editor
-                                  </span>
-                                </Tooltip>
-                              )) || (
-                                <span
-                                  className="font-weight-bold font-size-8 cpointer"
-                                  onClick={() =>
-                                    this.setState({ codeEditor: false })
-                                  }
-                                >
-                                  Switch to TravelFeed editor
-                                </span>
-                              )}
-                              <HtmlEditorPreview
-                                preview={this.state.htmlContent}
                               />
                             </Fragment>
                           )) || (
                             <div>
-                              <Editor
-                                holder="editorjs-container"
-                                onChange={this.handleEditorChange}
-                                data={this.state.content}
-                              />
-                              <span
-                                className="font-weight-bold font-size-8 cpointer"
-                                onClick={() => this.changeToHtmlEditor()}
-                              >
-                                Switch to HTML+Markdown editor
-                              </span>
+                              {this.state.mounted && (
+                                <Editor
+                                  style={{ minHeight: '300px' }}
+                                  className="border postcontent pl-2"
+                                  uploadImage={file => {
+                                    return uploadFile(file, getUser()).then(
+                                      res => {
+                                        return res;
+                                      },
+                                    );
+                                  }}
+                                  placeholder="Start writing your next awesome travel blog!"
+                                  onChange={this.handleEditorChange}
+                                  defaultValue={this.state.content}
+                                  autoFocus
+                                />
+                              )}
                             </div>
                           )}
+                          <SwitchEditorModeButton
+                            switchMode={() => this.changeEditorMode()}
+                            codeEditor={this.state.codeEditor}
+                          />
+                          <HtmlEditorPreview preview={this.state.content} />
                         </div>
                       );
                     }}
@@ -393,15 +311,13 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
-                      <label htmlFor="raised-button-file">
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          component="span"
-                        >
-                          Upload
-                        </Button>
-                      </label>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        component="span"
+                      >
+                        Upload
+                      </Button>
                       <TextField label="Featured image" margin="normal" />
                     </CardContent>
                   </Card>
@@ -438,7 +354,6 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
                   <Card>
                     <CardContent>
-                      <PostPreview />
                       <Tooltip title={publishTooltip}>
                         <div>
                           <Button
@@ -449,7 +364,8 @@ class PostEditor extends Component {
                               wordCount < 250 || this.state.title === ''
                             }
                           >
-                            {(this.props.editMode && 'Edit') || 'Publish'}
+                            {(this.props.edit.editmode === 'true' && 'Edit') ||
+                              'Publish'}
                           </Button>
                         </div>
                       </Tooltip>
@@ -475,19 +391,12 @@ class PostEditor extends Component {
 }
 
 PostEditor.defaultProps = {
-  initialValue: '',
   edit: {},
 };
 
 PostEditor.propTypes = {
-  id: PropTypes.string,
-  editMode: PropTypes.bool,
-  comment: PropTypes.object,
-  initialValue: PropTypes.string,
-  edit: PropTypes.object,
-  mode: PropTypes.string,
-  type: PropTypes.string,
-  enqueueSnackbar: PropTypes.func,
+  edit: PropTypes.objectOf(PropTypes.any),
+  enqueueSnackbar: PropTypes.func.isRequired,
 };
 
 export default withSnackbar(PostEditor);

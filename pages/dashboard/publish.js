@@ -9,7 +9,7 @@ import { getUser } from '../../helpers/token';
 
 class PublishPage extends Component {
   static async getInitialProps(props) {
-    const { id, savedate, title, body, json, isCodeEditor, open } = props.query;
+    const { id, savedate, title, body, json, open, editmode } = props.query;
     return {
       edit: {
         id,
@@ -17,7 +17,7 @@ class PublishPage extends Component {
         title,
         body,
         json,
-        isCodeEditor,
+        editmode,
       },
       open,
     };

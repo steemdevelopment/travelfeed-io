@@ -8,7 +8,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import { GET_DRAFTS } from '../../helpers/graphql/drafts';
-import json2Html from '../../helpers/json2Html';
 import parseBody from '../../helpers/parseBody';
 import { regExcerpt } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
@@ -83,9 +82,7 @@ class Drafts extends Component {
                 >
                   {data.drafts.length > 0 &&
                     data.drafts.map(draft => {
-                      const htmlBody = draft.isCodeEditor
-                        ? parseBody(draft.body, {})
-                        : json2Html(JSON.parse(draft.body));
+                      const htmlBody = parseBody(draft.body, {});
                       const sanitized = sanitize(htmlBody, {
                         allowedTags: [],
                       });
@@ -111,7 +108,6 @@ class Drafts extends Component {
                               readtime,
                               excerpt,
                               id: draft.id,
-                              isCodeEditor: draft.isCodeEditor,
                             }}
                             id={draft.id}
                             isDraftMode

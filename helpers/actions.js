@@ -31,29 +31,35 @@ export const comment = async (
 ) => {
   api.setAccessToken(getScToken());
   const author = getUser();
-  return api.comment(
-    parentAuthor,
-    parentPermlink,
-    author,
-    permlink,
-    title,
-    body,
-    jsonMetadata,
-    // FIXME: Add support for sc3
-    // eslint-disable-next-line func-names
-    await function(err) {
-      if (type === 'comment') {
-        if (err !== undefined) {
-          return { success: false, message: 'Comment could not be published' };
+  return new Promise(resolve => {
+    api.comment(
+      parentAuthor,
+      parentPermlink,
+      author,
+      permlink,
+      title,
+      body,
+      jsonMetadata,
+      (err, res) => {
+        if (err) {
+          resolve({
+            success: false,
+            message: `${(type === 'comment' && 'Comment') ||
+              'Post'} could not be published ${(typeof err === 'string' &&
+              `: ${err}`) ||
+              (err.error_description && `: ${err.error_description}`)}`,
+          });
         }
-        return { success: true, message: 'Comment was published successfully' };
-      }
-      if (err !== undefined) {
-        return { success: false, message: 'Post could not be published' };
-      }
-      return { success: true, message: 'Post was published successfully' };
-    },
-  );
+        if (res) {
+          resolve({
+            success: true,
+            message: `${(type === 'comment' && 'Comment') ||
+              'Post'} was published successfully`,
+          });
+        }
+      },
+    );
+  });
 };
 
 export const follow = async following => {

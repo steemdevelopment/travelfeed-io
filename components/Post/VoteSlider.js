@@ -345,10 +345,11 @@ class VoteSlider extends Component {
 VoteSlider.defaultProps = {
   handleClick: undefined,
   isEdit: undefined,
+  onCommentAdd: undefined,
 };
 
 VoteSlider.propTypes = {
-  onCommentAdd: PropTypes.func.isRequired,
+  onCommentAdd: PropTypes.func,
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
   votes: PropTypes.string.isRequired,

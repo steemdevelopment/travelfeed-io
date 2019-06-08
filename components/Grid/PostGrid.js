@@ -39,7 +39,7 @@ class PostGrid extends Component {
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (
-                <Grid item lg={12} md={12} sm={12} xs={12}>
+                <Grid item lg={12} md={12} sm={12} xs={12} key={0}>
                   <div className="p-5 text-center">
                     <CircularProgress />
                   </div>
@@ -111,7 +111,8 @@ class PostGrid extends Component {
                   {data.posts &&
                     data.posts.length > 0 &&
                     data.posts.map(post => {
-                      if (post.is_blacklisted) return <Fragment />;
+                      if (post.is_blacklisted)
+                        return <Fragment key={post.id} />;
                       const htmlBody = parseBody(post.preview, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);

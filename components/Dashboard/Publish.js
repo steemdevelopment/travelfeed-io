@@ -310,7 +310,8 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
-                      {console.log(getImageList(this.state.content))}
+                      {this.state.content &&
+                        console.log(getImageList(this.state.content))}
                       <input
                         accept="image/*"
                         className="d-none"

@@ -1,4 +1,3 @@
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
 import MenuList from '@material-ui/core/MenuList';
@@ -57,14 +56,12 @@ class BlogMenu extends Component {
                 }}
               >
                 <Paper>
-                  <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList>
-                      <AuthorBlacklist author={author} />
-                      {roles.indexOf('admin') !== -1 && (
-                        <ChangeRoles author={author} isCurator={isCurator} />
-                      )}
-                    </MenuList>
-                  </ClickAwayListener>
+                  <MenuList>
+                    <AuthorBlacklist author={author} />
+                    {roles.indexOf('admin') !== -1 && (
+                      <ChangeRoles author={author} isCurator={isCurator} />
+                    )}
+                  </MenuList>
                 </Paper>
               </Grow>
             )}

@@ -1,4 +1,3 @@
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import IconButton from '@material-ui/core/IconButton';
 import MenuList from '@material-ui/core/MenuList';
@@ -57,12 +56,10 @@ class CommentMenu extends Component {
                 }}
               >
                 <Paper>
-                  <ClickAwayListener onClickAway={this.handleClose}>
-                    <MenuList>
-                      <PostBlacklist author={author} permlink={permlink} />
-                      <AuthorBlacklist author={author} />
-                    </MenuList>
-                  </ClickAwayListener>
+                  <MenuList>
+                    <PostBlacklist author={author} permlink={permlink} />
+                    <AuthorBlacklist author={author} />
+                  </MenuList>
                 </Paper>
               </Grow>
             )}

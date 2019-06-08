@@ -99,9 +99,9 @@ class PostListItem extends Component {
                     <Link
                       href={`/dashboard/publish?id=${
                         this.props.post.id
-                      }&title=${
-                        this.props.post.title
-                      }&body=${encodeURIComponent(
+                      }&title=${encodeURIComponent(
+                        this.props.post.title,
+                      )}&body=${encodeURIComponent(
                         this.props.post.body,
                       )}&json=${this.props.post.json ||
                         JSON.stringify({

@@ -4,7 +4,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
-import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
@@ -311,14 +310,28 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
                     <CardContent>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        component="span"
-                      >
-                        Upload
-                      </Button>
-                      <TextField label="Featured image" margin="normal" />
+                      {console.log(getImageList(this.state.content))}
+                      <input
+                        accept="image/*"
+                        className="d-none"
+                        id="contained-button-file"
+                        multiple
+                        type="file"
+                        uploadImage={file => {
+                          return uploadFile(file, getUser()).then(res => {
+                            return res;
+                          });
+                        }}
+                      />
+                      <label htmlFor="contained-button-file">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          component="span"
+                        >
+                          Upload
+                        </Button>
+                      </label>
                     </CardContent>
                   </Card>
                 </div>

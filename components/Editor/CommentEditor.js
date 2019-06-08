@@ -1,5 +1,3 @@
-// FIXME: Implement new comment editor
-/* eslint-disable */
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withSnackbar } from 'notistack';
@@ -83,17 +81,17 @@ class CommentEditor extends Component {
 
   render() {
     if (this.state.success) {
-      this.props.editMode
-        ? this.props.onCommentEdit({
-            body: this.state.content,
-          })
-        : this.props.onCommentAdd({
-            body: this.state.content,
-            permlink: this.state.permlink,
-          });
-      !this.props.editMode && this.props.onClose();
-      clearInterval(this.timer);
-      this.setState({ completed: 0, success: false });
+      if (this.props.editMode) {
+        this.props.onCommentEdit({
+          body: this.state.content,
+        });
+      } else {
+        this.props.onCommentAdd({
+          body: this.state.content,
+          permlink: this.state.permlink,
+        });
+      }
+      if (!this.props.editMode) this.props.onClose();
     }
     return (
       <Fragment>
@@ -136,18 +134,21 @@ class CommentEditor extends Component {
 
 CommentEditor.defaultProps = {
   editMode: false,
+  onCommentAdd: undefined,
+  onClose: undefined,
+  defaultValue: '',
+  permlink: '',
 };
 
 CommentEditor.propTypes = {
-  permlink: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string.isRequired,
-  onCommentAdd: PropTypes.func.isRequired,
+  permlink: PropTypes.string,
+  defaultValue: PropTypes.string,
+  onCommentAdd: PropTypes.func,
   onCommentEdit: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-  editMode: PropTypes.bool.isRequired,
+  onClose: PropTypes.func,
+  editMode: PropTypes.bool,
   parent_author: PropTypes.string.isRequired,
   parent_permlink: PropTypes.string.isRequired,
-  edit: PropTypes.object.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
 };
 

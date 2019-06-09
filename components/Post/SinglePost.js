@@ -184,7 +184,7 @@ class SinglePost extends Component {
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored
             // through the dApp
-            if (data.post.app.split('/')[0] === 'travelfeed') {
+            if (data.post.app && data.post.app.split('/')[0] === 'travelfeed') {
               canonicalUrl = `https://travelfeed.io/@${data.post.author}/${
                 data.post.permlink
               }`;

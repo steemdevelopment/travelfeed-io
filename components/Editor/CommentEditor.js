@@ -7,8 +7,8 @@ import Editor from 'rich-markdown-editor';
 import getSlug from 'speakingurl';
 import { APP_VERSION } from '../../config';
 import { comment } from '../../helpers/actions';
-import { getImageList } from '../../helpers/getImage';
 import uploadFile from '../../helpers/imageUpload';
+import { getImageList } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
 
 class CommentEditor extends Component {

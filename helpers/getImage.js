@@ -1,17 +1,4 @@
-// Gets the image from the json_metadata if they are defined, if not it crawls
-// the body for an image, if none is found it returns a placeholder
-import { imageRegex } from './regex';
-
 const bs58 = require('bs58');
-
-export const getImageList = body => {
-  const bodytext = body.replace(
-    /(https:\/\/steemitimages\.com\/1000x0\/)/g,
-    '',
-  );
-  const image = bodytext.match(imageRegex);
-  return image;
-};
 
 export const imageProxy = (imgUrl, width, height, mode, format) => {
   if (imgUrl === '') {

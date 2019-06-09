@@ -114,20 +114,21 @@ const parseBody = (body, options) => {
   );
 
   // Proxify image urls and add lazyload and conditional webp
-  let imgMatches = imgFullSize.exec(parsedBody);
-  while (imgMatches != null) {
-    imgMatches = imgFullSize.exec(parsedBody);
-    if (imgMatches != null) {
-      if (options.lazy === false) {
-        parsedBody = parsedBody.replace(
-          imgMatches[0],
-          `<img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
+  if (options.parseImages !== false) {
+    let imgMatches = imgFullSize.exec(parsedBody);
+    while (imgMatches != null) {
+      imgMatches = imgFullSize.exec(parsedBody);
+      if (imgMatches != null) {
+        if (options.lazy === false) {
+          parsedBody = parsedBody.replace(
+            imgMatches[0],
+            `<img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
               src="${imageProxy(imgMatches[1], 1800, undefined, 'fit')}">`,
-        );
-      } else {
-        parsedBody = parsedBody.replace(
-          imgMatches[0],
-          `<picture>
+          );
+        } else {
+          parsedBody = parsedBody.replace(
+            imgMatches[0],
+            `<picture>
             <source type="image/webp"
                 data-srcset="${imageProxy(
                   imgMatches[1],
@@ -141,11 +142,11 @@ const parseBody = (body, options) => {
                 src="${imageProxy(imgMatches[1], undefined, 10, 'fit')}"
                 data-sizes="100w">
         </picture>`,
-        );
+          );
+        }
       }
     }
   }
-
   return parsedBody;
 };
 

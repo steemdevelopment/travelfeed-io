@@ -6,7 +6,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
 import Tooltip from '@material-ui/core/Tooltip';
+import PublishIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Update';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -300,10 +302,13 @@ class PostEditor extends Component {
                               )}
                             </div>
                           )}
-                          <SwitchEditorModeButton
-                            switchMode={() => this.changeEditorMode()}
-                            codeEditor={this.state.codeEditor}
-                          />
+                          <div className="text-right">
+                            <SwitchEditorModeButton
+                              switchMode={() => this.changeEditorMode()}
+                              codeEditor={this.state.codeEditor}
+                            />
+                          </div>
+                          <h5 className="pt-2">Preview</h5>
                           <HtmlEditorPreview preview={this.state.content} />
                         </div>
                       );
@@ -387,11 +392,7 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
                   <Card>
                     <CardContent>
-                      <h5>
-                        {' '}
-                        {(this.props.edit.editmode === 'true' && 'Edit') ||
-                          'Publish'}
-                      </h5>
+                      <h5>Publish</h5>
                       <Tooltip title={publishTooltip}>
                         <div>
                           <Button
@@ -402,9 +403,16 @@ class PostEditor extends Component {
                               wordCount < 250 || this.state.title === ''
                             }
                           >
-                            {(this.props.edit.editmode === 'true' &&
-                              'Publish edit now') ||
-                              'Publish Now'}
+                            {(this.props.edit.editmode === 'true' && (
+                              <span>
+                                Update Post <EditIcon />
+                              </span>
+                            )) || (
+                              <span>
+                                Publish Now
+                                <PublishIcon />
+                              </span>
+                            )}
                           </Button>
                         </div>
                       </Tooltip>

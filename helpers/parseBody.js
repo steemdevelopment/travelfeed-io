@@ -139,7 +139,16 @@ const parseBody = (body, options) => {
                 )}"
                 data-sizes="100w">
             <img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} class="lazy"
-                src="${imageProxy(imgMatches[1], undefined, 10, 'fit')}"
+                src="${imageProxy(
+                  imgMatches[1],
+                  undefined,
+                  10,
+                  'fit',
+                )}" data-src="${imageProxy(
+              imgMatches[1],
+              options.cardWidth,
+              undefined,
+            )}"
                 data-sizes="100w">
         </picture>`,
           );

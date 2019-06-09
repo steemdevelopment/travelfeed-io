@@ -47,8 +47,8 @@ class DestinationsMobile extends Component {
                 </Typography>
                 <div className="container-fluid">
                   <div className="row">
-                    <div className="col-4">
-                      <MenuList>
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
+                      <MenuList className="text-center">
                         <MenuItem>
                           <h4>Europe</h4>
                         </MenuItem>
@@ -58,7 +58,7 @@ class DestinationsMobile extends Component {
                         />
                       </MenuList>
                     </div>
-                    <div className="col-4">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
                           <h4>Asia</h4>
@@ -69,7 +69,7 @@ class DestinationsMobile extends Component {
                         />
                       </MenuList>
                     </div>{' '}
-                    <div className="col-4">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
                           <h4>World</h4>
@@ -87,7 +87,7 @@ class DestinationsMobile extends Component {
                 </Typography>
                 <div className="container-fluid">
                   <div className="row">
-                    <div className="col-4">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
                           <h4>Europe</h4>
@@ -98,7 +98,7 @@ class DestinationsMobile extends Component {
                         />
                       </MenuList>
                     </div>
-                    <div className="col-4">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
                           <h4>Asia</h4>
@@ -109,7 +109,7 @@ class DestinationsMobile extends Component {
                         />
                       </MenuList>
                     </div>
-                    <div className="col-4">
+                    <div className="col-xl-4 col-lg-4 col-md-4 col-6">
                       <MenuList>
                         <MenuItem>
                           <h4>World</h4>

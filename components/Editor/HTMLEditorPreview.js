@@ -5,7 +5,7 @@ import parseBody from '../../helpers/parseBody';
 const HtmlEditorPreview = props => {
   let htmlBody = '';
   if (props.preview) {
-    htmlBody = parseBody(props.preview, {});
+    htmlBody = parseBody(props.preview, { lazy: false });
   }
   const bodyText = { __html: htmlBody };
   return (

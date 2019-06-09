@@ -106,25 +106,28 @@ const parseBody = (body, options) => {
   const htmlReadyOptions = { mutate: true, resolveIframe: true };
   parsedBody = htmlReady(parsedBody, htmlReadyOptions).html;
   // Sanitize
-  if (options.editor !== true) {
-    parsedBody = sanitizeHtml(
-      parsedBody,
-      sanitizeConfig({
-        secureLinks: true,
-      }),
-    );
-  } else {
-    parsedBody = parsedBody.replace(/"\.\.\//g, `"${ROOTURL}`);
-  }
+  parsedBody = sanitizeHtml(
+    parsedBody,
+    sanitizeConfig({
+      secureLinks: true,
+    }),
+  );
 
   // Proxify image urls and add lazyload and conditional webp
   let imgMatches = imgFullSize.exec(parsedBody);
   while (imgMatches != null) {
     imgMatches = imgFullSize.exec(parsedBody);
     if (imgMatches != null) {
-      parsedBody = parsedBody.replace(
-        imgMatches[0],
-        `<picture>
+      if (options.lazy === false) {
+        parsedBody = parsedBody.replace(
+          imgMatches[0],
+          `<img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
+              src="${imageProxy(imgMatches[1], 1800, undefined, 'fit')}">`,
+        );
+      } else {
+        parsedBody = parsedBody.replace(
+          imgMatches[0],
+          `<picture>
             <source type="image/webp"
                 data-srcset="${imageProxy(
                   imgMatches[1],
@@ -138,7 +141,8 @@ const parseBody = (body, options) => {
                 src="${imageProxy(imgMatches[1], undefined, 10, 'fit')}"
                 data-sizes="100w">
         </picture>`,
-      );
+        );
+      }
     }
   }
 

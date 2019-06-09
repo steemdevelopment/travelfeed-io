@@ -319,7 +319,7 @@ class PostEditor extends Component {
                     {this.state.featuredImage && (
                       <CardMedia
                         className="h-100"
-                        style={{ minHeight: '150px' }}
+                        style={{ minHeight: '200px' }}
                         image={this.state.featuredImage}
                       />
                     )}
@@ -387,6 +387,11 @@ class PostEditor extends Component {
                 <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
                   <Card>
                     <CardContent>
+                      <h5>
+                        {' '}
+                        {(this.props.edit.editmode === 'true' && 'Edit') ||
+                          'Publish'}
+                      </h5>
                       <Tooltip title={publishTooltip}>
                         <div>
                           <Button
@@ -397,8 +402,9 @@ class PostEditor extends Component {
                               wordCount < 250 || this.state.title === ''
                             }
                           >
-                            {(this.props.edit.editmode === 'true' && 'Edit') ||
-                              'Publish'}
+                            {(this.props.edit.editmode === 'true' &&
+                              'Publish edit now') ||
+                              'Publish Now'}
                           </Button>
                         </div>
                       </Tooltip>

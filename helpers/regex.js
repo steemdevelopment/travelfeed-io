@@ -1,5 +1,10 @@
 export const imgFullSize = /<img src="([^"]*)"(?:| alt="([^"]*)") \/>/;
 
+export const allLinks = /href="([^"]*)"/;
+
+// Valid steem usernames
+export const allMentions = /\s@([a-z0-9-]{3,16})/;
+
 export const ownUrl = /^(localhost|travelfeed\.io|travelfeedio\.herokuapp.com)$/;
 
 export const allowedTitleChars = /[^\sa-zA-Z0-9(?)(')(/)(`)(,)(\-)(’)(#)(!)(´)(:)(()())(\])([)]+/g;

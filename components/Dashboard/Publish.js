@@ -22,7 +22,11 @@ import { APP_VERSION, ROOTURL } from '../../config';
 import { comment } from '../../helpers/actions';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import uploadFile from '../../helpers/imageUpload';
-import { getImageList } from '../../helpers/parsePostContents';
+import {
+  getImageList,
+  getLinkList,
+  getMentionList,
+} from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HtmlEditor from '../Editor/HTMLEditor';
@@ -139,13 +143,15 @@ class PostEditor extends Component {
       ? [this.state.featuredImage]
       : [];
     const imageList = featuredImage.concat(getImageList(body));
+    const linkList = getLinkList(body);
+    const mentionList = getMentionList(body);
     const metadata = {};
     metadata.tags = this.state.tags;
     metadata.app = APP_VERSION;
     metadata.community = 'travelfeed';
-    if (imageList !== null) {
-      metadata.image = imageList;
-    }
+    if (imageList !== null) metadata.image = imageList;
+    if (linkList !== null) metadata.links = linkList;
+    if (mentionList !== null) metadata.users = mentionList;
     if (!this.props.edit.editmode === 'true') {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
     }

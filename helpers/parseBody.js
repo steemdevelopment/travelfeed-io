@@ -109,7 +109,7 @@ const parseBody = (body, options) => {
   parsedBody = sanitizeHtml(
     parsedBody,
     sanitizeConfig({
-      secureLinks: true,
+      secureLinks: options.secureLinks !== false,
     }),
   );
 

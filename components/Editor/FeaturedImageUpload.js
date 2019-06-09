@@ -43,18 +43,19 @@ const FeaturedImageUpload = props => {
   } = useDropzone({
     accept: 'image/*',
     multiple: false,
+    onDropAccepted: files => {
+      files.map(file => {
+        return uploadFile(file, getUser()).then(res => {
+          props.setFeaturedImage(res);
+        });
+      });
+    },
   });
 
   const text =
     acceptedFiles && acceptedFiles.length > 0
       ? acceptedFiles.map(file => `Uploading ${file.path}...`)
       : "By default, the first image in your post is used. To choose a custom featured image, drag 'n' drop an image here, or click to select one!";
-
-  acceptedFiles.map(file => {
-    return uploadFile(file, getUser()).then(res => {
-      props.setFeaturedImage(res);
-    });
-  });
 
   const style = useMemo(
     () => ({

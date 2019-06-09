@@ -2,9 +2,11 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
 import Tooltip from '@material-ui/core/Tooltip';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -20,6 +22,7 @@ import { getImageList } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import uploadFile from '../../helpers/imageUpload';
 import { getUser } from '../../helpers/token';
+import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HtmlEditor from '../Editor/HTMLEditor';
 import HtmlEditorPreview from '../Editor/HTMLEditorPreview';
 import LocationPicker from '../Editor/LocationPickerButton';
@@ -36,6 +39,7 @@ class PostEditor extends Component {
     location: undefined,
     codeEditor: false,
     saved: true,
+    featuredImage: undefined,
     // codeEditor: true
   };
 
@@ -49,6 +53,8 @@ class PostEditor extends Component {
     const codeEditor = this.props.edit.body !== undefined;
     const tags = json && json.tags ? json.tags : ['travelfeed'];
     const location = json && json.location ? json.location : undefined;
+    const featuredImage =
+      json && json.featuredImage ? json.featuredImage : undefined;
     const id = this.props.edit.id
       ? this.props.edit.id
       : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
@@ -60,6 +66,7 @@ class PostEditor extends Component {
       id,
       mounted: true,
       codeEditor,
+      featuredImage,
     });
     // Save draft every 20 seconds
     this.interval = setInterval(() => this.setState({ saved: false }), 20000);
@@ -91,6 +98,14 @@ class PostEditor extends Component {
     this.setState({ location: { latitude, longitude } });
   };
 
+  setFeaturedImage = featuredImage => {
+    this.setState({ featuredImage });
+  };
+
+  removeFeaturedImage = () => {
+    this.setState({ featuredImage: undefined });
+  };
+
   progress = () => {
     const { loading } = this.state;
     if (loading < 100) {
@@ -118,7 +133,10 @@ class PostEditor extends Component {
     let permlink = getSlug(title);
     let body = this.state.content;
     const { location } = this.state;
-    const imageList = getImageList(body);
+    const featuredImage = this.state.featuredImage
+      ? [this.state.featuredImage]
+      : [];
+    const imageList = featuredImage.concat(getImageList(body));
     const metadata = {};
     metadata.tags = this.state.tags;
     metadata.app = APP_VERSION;
@@ -243,6 +261,7 @@ class PostEditor extends Component {
                       json: JSON.stringify({
                         tags: this.state.tags,
                         location: this.state.location,
+                        featuredImage: this.state.featuredImage,
                       }),
                     }}
                   >
@@ -297,42 +316,29 @@ class PostEditor extends Component {
               <div className="row">
                 <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                   <Card>
-                    <CardContent>
-                      {this.state.tags && (
-                        <TagPicker
-                          initialValue={this.state.tags}
-                          onChange={this.handleTagClick}
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                  <Card>
-                    <CardContent>
-                      {this.state.content &&
-                        console.log(getImageList(this.state.content))}
-                      <input
-                        accept="image/*"
-                        className="d-none"
-                        id="contained-button-file"
-                        multiple
-                        type="file"
-                        uploadImage={file => {
-                          return uploadFile(file, getUser()).then(res => {
-                            return res;
-                          });
-                        }}
+                    {this.state.featuredImage && (
+                      <CardMedia
+                        className="h-100"
+                        style={{ minHeight: '150px' }}
+                        image={this.state.featuredImage}
                       />
-                      <label htmlFor="contained-button-file">
+                    )}
+                    <CardContent className="text-center">
+                      <h5>Featured Image</h5>
+                      {(this.state.featuredImage && (
                         <Button
                           variant="contained"
                           color="secondary"
                           component="span"
+                          onClick={this.removeFeaturedImage}
                         >
-                          Upload
+                          Remove Image <DeleteIcon />
                         </Button>
-                      </label>
+                      )) || (
+                        <FeaturedImageUpload
+                          setFeaturedImage={this.setFeaturedImage}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </div>
@@ -362,6 +368,19 @@ class PostEditor extends Component {
                           isChange={this.state.location}
                         />
                       </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                  <Card>
+                    <CardContent>
+                      <h5 className="text-center">Tags</h5>
+                      {this.state.tags && (
+                        <TagPicker
+                          initialValue={this.state.tags}
+                          onChange={this.handleTagClick}
+                        />
+                      )}
                     </CardContent>
                   </Card>
                 </div>

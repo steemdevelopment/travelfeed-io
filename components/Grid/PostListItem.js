@@ -106,7 +106,8 @@ class PostListItem extends Component {
                       )}&json=${this.props.post.json ||
                         JSON.stringify({
                           tags: this.props.post.tags,
-                        })}&editmode=true`}
+                        })}&editmode=${(this.props.isDraftMode && 'false') ||
+                        'true'}`}
                       as="/dashboard/publish"
                       passHref
                     >

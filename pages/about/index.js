@@ -2,6 +2,7 @@ import { teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
+import Team from '../../components/About/Team';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
@@ -30,6 +31,9 @@ const AboutPage = () => {
               </div>
             }
           />
+        </Grid>
+        <Grid item lg={7} md={8} sm={11} xs={12} className="pt-3">
+          <HeaderCard title="Team" background={teal[600]} content={<Team />} />
         </Grid>
       </Grid>
     </Fragment>

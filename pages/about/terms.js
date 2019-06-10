@@ -1,4 +1,4 @@
-import { teal } from '@material-ui/core/colors';
+import { indigo } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
@@ -24,7 +24,7 @@ const TermsPage = () => {
         <Grid item lg={7} md={8} sm={11} xs={12}>
           <HeaderCard
             title={title}
-            background={teal[600]}
+            background={indigo[600]}
             content={<TermsText />}
           />
         </Grid>

@@ -24,7 +24,7 @@ class AboutSelect extends React.Component {
           textColor="secondary"
           centered
         >
-          <Link href="/about/" passHref>
+          <Link href="/about" passHref>
             <Tab icon={<AboutIcon />} label="ABOUT" />
           </Link>
           <Link href="/about/terms" passHref>

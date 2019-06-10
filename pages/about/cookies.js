@@ -3,7 +3,7 @@ import { indigo } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Component, Fragment } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
-import CookiesText from '../../components/About/Texts/Terms';
+import CookiesText from '../../components/About/Texts/Cookies';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
@@ -76,8 +76,8 @@ class CookiesPage extends Component {
                         </Button>{' '}
                         <br />
                         <em>
-                          Cookies that are already set will not be revoked by
-                          this.
+                          Cookies that are already set will not be removed by
+                          changing this setting.
                         </em>
                       </Fragment>
                     )) || (
@@ -97,7 +97,7 @@ class CookiesPage extends Component {
                     These option only applies to EU-users. If you are accessing
                     this page from outside the EU, pressing the &quot;opt
                     out&quot; button will have no effect since you are opted in
-                    by default on every page load. You can change this by
+                    by default on every page load. Instead, you can opt-out by
                     updating your browser&apos;s cookie settings.
                   </p>
                 </Fragment>

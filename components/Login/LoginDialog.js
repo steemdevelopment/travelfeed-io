@@ -22,21 +22,28 @@ class LoginDialog extends Component {
             id="customized-dialog-title"
             onClose={this.handleClose}
           >
-            Terms and Privacy
+            Terms of Service and Privacy
           </MuiDialogTitle>
           <MuiDialogContent>
-            <Typography variant="h5" align="center">
+            <Typography variant="h3" gutterBottom>
               Terms of Service
             </Typography>
-            <Terms />
-            <Typography variant="h5" align="center">
+            <Typography>
+              <Terms />
+            </Typography>
+            <Typography variant="h3" gutterBottom>
               Privacy Policy
             </Typography>
-            <Privacy />
-            <Typography variant="h5" align="center">
-              Cookies
+            <Typography>
+              <Privacy />
             </Typography>
-            <Cookies />
+            <Typography variant="h3" gutterBottom>
+              Cookie Policy
+            </Typography>
+            <Typography>
+              {' '}
+              <Cookies />
+            </Typography>
           </MuiDialogContent>
           <MuiDialogActions>
             <Link href="/" passHref>

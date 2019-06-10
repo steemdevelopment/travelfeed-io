@@ -28,7 +28,7 @@ const PrivacyPage = () => {
             content={<PrivacyText />}
           />
         </Grid>
-        <Grid item lg={7} md={8} sm={11} xs={12} className="pt-3">
+        <Grid id="matomo" item lg={7} md={8} sm={11} xs={12} className="pt-3">
           <HeaderCard
             title="Opt Out of Matomo Analytics"
             background={teal[600]}

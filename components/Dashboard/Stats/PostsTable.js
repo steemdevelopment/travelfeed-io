@@ -50,6 +50,11 @@ const styles = theme => ({
 });
 
 class PostsTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fullWidth = React.createRef();
+  }
+
   state = {
     order: 'desc',
     orderBy: 'created_at',
@@ -57,7 +62,16 @@ class PostsTable extends React.Component {
     data: this.props.data,
     page: 0,
     rowsPerPage: 5,
+    cardWidth: undefined,
   };
+
+  componentDidMount() {
+    if (this.fullWidth.current && !this.state.cardWidth) {
+      const cardWidth =
+        Math.floor(this.fullWidth.current.offsetWidth / 10) * 10;
+      this.setState({ cardWidth });
+    }
+  }
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -117,74 +131,81 @@ class PostsTable extends React.Component {
 
     return (
       <Fragment>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <PostsTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.post_id}
-                      selected={isSelected}
-                    >
-                      <TableCell component="th" scope="row" padding="none">
-                        <Link
-                          as={`/@${n.author}/${n.permlink}`}
-                          href={`/post?author=${n.author}&permlink=${
-                            n.permlink
-                          }`}
-                          passHref
+        <div ref={this.fullWidth} className="w-100">
+          {this.state.cardWidth && (
+            <div
+              className={classes.tableWrapper}
+              style={{ width: this.state.cardWidth }}
+            >
+              <Table className={classes.table} aria-labelledby="tableTitle">
+                <PostsTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={this.handleSelectAllClick}
+                  onRequestSort={this.handleRequestSort}
+                  rowCount={data.length}
+                />
+                <TableBody>
+                  {stableSort(data, getSorting(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(n => {
+                      const isSelected = this.isSelected(n.id);
+                      return (
+                        <TableRow
+                          hover
+                          onClick={event => this.handleClick(event, n.id)}
+                          role="checkbox"
+                          aria-checked={isSelected}
+                          tabIndex={-1}
+                          key={n.post_id}
+                          selected={isSelected}
                         >
-                          <a>{n.title}</a>
-                        </Link>
-                      </TableCell>
-                      <TableCell align="right">{n.created_at}</TableCell>
-                      <TableCell align="right">{n.total_votes}</TableCell>
-                      <TableCell align="right">
-                        {(n.is_paidout && `$${n.payout.toFixed(2)}`) ||
-                          'Pending'}
-                      </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            <Link
+                              as={`/@${n.author}/${n.permlink}`}
+                              href={`/post?author=${n.author}&permlink=${
+                                n.permlink
+                              }`}
+                              passHref
+                            >
+                              <a>{n.title}</a>
+                            </Link>
+                          </TableCell>
+                          <TableCell align="right">{n.created_at}</TableCell>
+                          <TableCell align="right">{n.total_votes}</TableCell>
+                          <TableCell align="right">
+                            {(n.is_paidout && `$${n.payout.toFixed(2)}`) ||
+                              'Pending'}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 49 * emptyRows }}>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            backIconButtonProps={{
+              'aria-label': 'Previous Page',
+            }}
+            nextIconButtonProps={{
+              'aria-label': 'Next Page',
+            }}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
         </div>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
       </Fragment>
     );
   }

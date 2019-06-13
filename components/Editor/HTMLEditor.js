@@ -9,11 +9,12 @@ import CodeMirror from 'react-codemirror';
 const HtmlEditor = props => {
   const { data, onChange } = props;
   return (
-    <div className="border">
+    <div className="border w-100">
       <CodeMirror
         defaultValue={data}
         options={{
           mode: 'markdown',
+          lineWrapping: true,
         }}
         onChange={onChange}
       />

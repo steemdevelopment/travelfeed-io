@@ -1,3 +1,7 @@
+.CodeMirror {
+  height: 100% !important;
+  min-height: 300px;
+}
 /* Editor inline menu */
 .duDjGM {
   padding-bottom: 14px !important;

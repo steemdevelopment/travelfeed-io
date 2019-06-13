@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
@@ -26,6 +27,18 @@ class PostCommentItem extends Component {
     if (user === this.props.post.author) {
       this.setState({ isEdit: true });
     }
+    if (!document.lazyLoadInstance) {
+      document.lazyLoadInstance = new LazyLoad({
+        elements_selector: '.lazy',
+        threshold: 1200,
+      });
+    }
+    document.lazyLoadInstance.update();
+  }
+
+  // Update lazyLoad after rerendering of every image
+  componentDidUpdate() {
+    document.lazyLoadInstance.update();
   }
 
   onCommentEdit = userComment => {

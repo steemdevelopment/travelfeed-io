@@ -62,12 +62,14 @@ class LoginPage extends Component {
                       acceptTos: true,
                     }}
                   >
-                    {acceptTos => {
+                    {// eslint-disable-next-line no-shadow
+                    (acceptTos, data) => {
                       // If successful
                       if (data && data.data && data.data.login.hasAcceptedTos) {
                         setAccessToken(data.data.login.jwt, sc.expires_in);
                         setScToken(sc.sc_token, sc.expires_in);
                         Router.replace('/dashboard');
+                        return <Fragment />;
                       }
                       return <LoginDialog acceptTos={acceptTos} />;
                     }}

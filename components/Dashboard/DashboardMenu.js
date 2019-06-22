@@ -26,6 +26,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import ReactPiwik from 'react-piwik';
 import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
@@ -109,6 +110,10 @@ class Dashboard extends Component {
       }
     }
   }
+
+  handleLogout = () => {
+    ReactPiwik.push(['resetUserId']);
+  };
 
   handleDrawerOpen = () => {
     this.setState({ open: true });

@@ -14,6 +14,8 @@ const HtmlEditor = props => {
         defaultValue={data}
         options={{
           mode: 'markdown',
+          spellcheck: true,
+          autocorrect: true,
           lineWrapping: true,
         }}
         onChange={onChange}

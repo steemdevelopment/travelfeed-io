@@ -40,7 +40,7 @@ const Stats = () => {
             }
             return (
               <Fragment>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={TotalPostsIcon}
                     title="Total Posts"
@@ -49,7 +49,7 @@ const Stats = () => {
                     boxColor={purple[400]}
                   />
                 </Grid>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={TotalPayoutIcon}
                     title="Total Earnings"
@@ -59,7 +59,7 @@ const Stats = () => {
                     boxColor={cyan[600]}
                   />
                 </Grid>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={TotalFeaturedIcon}
                     title="Featured Posts"
@@ -68,7 +68,7 @@ const Stats = () => {
                     boxColor={orange[400]}
                   />
                 </Grid>
-                <Grid item className="p-1" lg={3} md={3} sm={6} xs={6}>
+                <Grid item className="p-1" lg={3} md={3} sm={6} xs={12}>
                   <SmallBox
                     Icon={QualityIcon}
                     title="Quality Score"

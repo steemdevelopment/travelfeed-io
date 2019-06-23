@@ -123,6 +123,9 @@ class VoteSlider extends Component {
       sliderstyle = { fontSize: '0.6rem' };
       rowitem1 = 'col-6 p-0';
       rowitem2 = 'col-6 pt-2 p-0 text-right';
+    } else if (this.props.mode === 'comment') {
+      rowitem1 = 'col-12';
+      rowitem2 = 'd-none';
     }
     let cardFooter = <Fragment />;
     let voteButton = (

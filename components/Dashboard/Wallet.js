@@ -1,35 +1,70 @@
-import React, { Fragment, Component } from "react";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Helmet from "react-helmet";
+import Button from '@material-ui/core/Button';
+import { indigo, teal } from '@material-ui/core/colors';
+import Grid from '@material-ui/core/Grid';
+import React, { Fragment } from 'react';
+import { Query } from 'react-apollo';
+import { GET_USER_STATS } from '../../helpers/graphql/stats';
+import HeaderCard from '../General/HeaderCard';
+import RecentEarnings from './Stats/RecentEarningsChart';
 
-class Wallet extends Component {
-  render() {
-    return (
-      <Fragment>
-        <Helmet>
-          <title>{"Wallet | TravelFeed: The Travel Community"}</title>
-        </Helmet>
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justify="center"
-          className="pt-4 pb-4"
-        >
-          <Grid item lg={7} md={8} sm={11} xs={12}>
-            <Card>
-              <CardContent>
-                <h1>Wallet</h1>
-                <p>The wallet will be available soon.</p>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Fragment>
-    );
-  }
-}
+const Wallet = () => {
+  return (
+    <Fragment>
+      <Grid container spacing={0} justify="center">
+        <Query query={GET_USER_STATS}>
+          {({ data, loading, error }) => {
+            if (loading || error || data.userstats === null) {
+              return <Fragment />;
+            }
+            return (
+              <Fragment>
+                <Grid item className="pt-4 p-1" lg={6} md={6} sm={11} xs={12}>
+                  <HeaderCard
+                    title="Wallet"
+                    background={indigo[600]}
+                    content={
+                      <Fragment>
+                        <p>
+                          You have earned{' '}
+                          <strong>${data.userstats.total_payout}</strong> with
+                          your TravelBlog so far.
+                        </p>
+                        <p>
+                          For now, you need to use steemit wallet to transfer
+                          and power up your earnings.
+                        </p>
+                        <a
+                          href="https://steemitwallet.com/"
+                          target="_blank"
+                          rel="nofollow noreferrer noopener"
+                        >
+                          <Button variant="contained" color="secondary">
+                            Go to steemit wallet
+                          </Button>
+                        </a>
+                      </Fragment>
+                    }
+                  />
+                </Grid>
+                <Grid item className="pt-4 p-1" lg={6} md={6} sm={11} xs={12}>
+                  <HeaderCard
+                    title="Monthly Earnings"
+                    background={teal[600]}
+                    content={
+                      <RecentEarnings
+                        color={teal[400]}
+                        recentPayouts={data.userstats.recent_payouts}
+                      />
+                    }
+                  />
+                </Grid>
+              </Fragment>
+            );
+          }}
+        </Query>
+      </Grid>
+    </Fragment>
+  );
+};
 
 export default Wallet;

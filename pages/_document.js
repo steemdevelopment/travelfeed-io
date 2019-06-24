@@ -1,60 +1,23 @@
-import React from "react";
-import Document, { Head, Main, NextScript } from "next/document";
-import Helmet from "react-helmet";
-import PropTypes from "prop-types";
-import flush from "styled-jsx/server";
-import getPageContext from "../src/getPageContext";
-const pageContext = getPageContext();
+import { teal } from '@material-ui/core/colors';
+import * as Sentry from '@sentry/node';
+import Document, { Head, Main, NextScript } from 'next/document';
+import PropTypes from 'prop-types';
+import React from 'react';
+import flush from 'styled-jsx/server';
+
+process.on('unhandledRejection', err => {
+  Sentry.captureException(err);
+});
+
+process.on('uncaughtException', err => {
+  Sentry.captureException(err);
+});
+
 export default class extends Document {
-  static async getInitialProps(...args) {
-    const documentProps = await super.getInitialProps(...args);
-    // see https://github.com/nfl/react-helmet#server-usage for more information
-    // 'head' was occupied by 'renderPage().head', we cannot use it
-    return { ...documentProps, helmet: Helmet.renderStatic() };
-  }
-
-  // should render on <html>
-  get helmetHtmlAttrComponents() {
-    return this.props.helmet.htmlAttributes.toComponent();
-  }
-
-  // should render on <body>
-  get helmetBodyAttrComponents() {
-    return this.props.helmet.bodyAttributes.toComponent();
-  }
-
-  // should render on <head>
-  get helmetHeadComponents() {
-    return Object.keys(this.props.helmet)
-      .filter(el => el !== "htmlAttributes" && el !== "bodyAttributes")
-      .map(el => this.props.helmet[el].toComponent());
-  }
-
-  get helmetJsx() {
-    return (
-      <Helmet
-        htmlAttributes={{ lang: "en" }}
-        title="TravelFeed"
-        meta={[
-          {
-            name: "viewport",
-            content:
-              "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-          },
-          { property: "og:site_name", content: "TravelFeed" },
-          { property: "article:tag", content: "travel" },
-          { themeColor: pageContext.theme.palette.primary.main }
-        ]}
-      />
-    );
-  }
-
   render() {
     return (
-      <html {...this.helmetHtmlAttrComponents}>
+      <html lang="en">
         <Head>
-          {this.helmetJsx}
-          {this.helmetHeadComponents}
           <link
             rel="apple-touch-icon"
             sizes="180x180"
@@ -73,23 +36,27 @@ export default class extends Document {
             href="/favicon-16x16.png"
           />
           <link rel="manifest" href="/site.webmanifest" />
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-          <meta name="msapplication-TileColor" content="#2d89ef" />
           <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+            rel="mask-icon"
+            href="/safari-pinned-tab.svg"
+            color={teal[800]}
           />
-          <link
-            rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-            crossOrigin="anonymous"
-          />
-          <link rel="stylesheet" href="/style.css" />
+          <meta name="msapplication-TileColor" content={teal[800]} />
+          <meta name="theme-color" content={teal[800]} />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://steemitimages.com" />
+          <link rel="preconnect" href="https://maps.googleapis.com" />
+          <link rel="preconnect" href="https://matomo.travelfeed.io" />
         </Head>
-        <body {...this.helmetBodyAttrComponents}>
+        <body>
           <Main />
           <NextScript />
+          <noscript>
+            <img
+              alt=""
+              src="https://matomo.travelfeed.io/matomo.php?idsite=1&amp;rec=1"
+            />
+          </noscript>
         </body>
       </html>
     );
@@ -119,16 +86,18 @@ Document.getInitialProps = ctx => {
   // 3. app.render
   // 4. page.render
 
-  // Render app and page and get the context of the page with collected side effects.
+  // Render app and page and get the context of the page
+  // with collected side effects.
+
   let pageContext;
   const page = ctx.renderPage(Component => {
     const WrappedComponent = props => {
-      pageContext = props.pageContext;
+      ({ pageContext } = props);
       return <Component {...props} />;
     };
 
     WrappedComponent.propTypes = {
-      pageContext: PropTypes.object.isRequired
+      pageContext: PropTypes.objectOf(PropTypes.any).isRequired,
     };
 
     return WrappedComponent;
@@ -144,11 +113,11 @@ Document.getInitialProps = ctx => {
           id="jss-server-side"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
-            __html: pageContext.sheetsRegistry.toString()
+            __html: pageContext.sheetsRegistry.toString(),
           }}
         />
         {flush() || null}
       </React.Fragment>
-    )
+    ),
   };
 };

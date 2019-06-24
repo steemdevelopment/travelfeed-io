@@ -10,14 +10,14 @@ This function is extracted from the source code of steemhunt and condenser with 
  *
  *
  */
-import xmldom from "xmldom";
-import embedjs from "embedjs";
-import linksRe from "./Links";
-import { validateAccountName } from "./ChainValidation";
+import embedjs from 'embedjs';
+import xmldom from 'xmldom';
+import { validateAccountName } from './ChainValidation';
+import linksRe from './Links';
 
 const noop = () => {};
 const DOMParser = new xmldom.DOMParser({
-  errorHandler: { warning: noop, error: noop }
+  errorHandler: { warning: noop, error: noop },
 });
 const XMLSerializer = new xmldom.XMLSerializer();
 
@@ -91,14 +91,13 @@ export default function(html, { mutate = true, resolveIframe } = {}) {
   state.images = new Set();
   state.links = new Set();
   try {
-    const doc = DOMParser.parseFromString(html, "text/html");
+    const doc = DOMParser.parseFromString(html, 'text/html');
     traverse(doc, state);
     // console.log('state', state)
     if (!mutate) return state;
-    return { html: doc ? XMLSerializer.serializeToString(doc) : "", ...state };
+    return { html: doc ? XMLSerializer.serializeToString(doc) : '', ...state };
   } catch (error) {
     // Not Used, parseFromString might throw an error in the future
-    console.error(error);
     return { html };
   }
 }
@@ -110,23 +109,23 @@ function traverse(node, state, depth = 0) {
     const tag = child.tagName ? child.tagName.toLowerCase() : null;
     if (tag) state.htmltags.add(tag);
 
-    if (tag === "img") img(state, child);
-    else if (tag === "iframe") iframe(state, child);
-    else if (tag === "a") link(state, child);
-    else if (child.nodeName === "#text") linkifyNode(child, state);
+    if (tag === 'img') img(state, child);
+    else if (tag === 'iframe') iframe(state, child);
+    else if (tag === 'a') link(state, child);
+    else if (child.nodeName === '#text') linkifyNode(child, state);
 
     traverse(child, state, depth + 1);
   });
 }
 
 function link(state, child) {
-  const url = child.getAttribute("href");
+  const url = child.getAttribute('href');
   if (url) {
     state.links.add(url);
     if (state.mutate) {
       // If this link is not relative, http, or https -- add https.
       if (!/^\/(?!\/)|(https?:)?\/\//.test(url)) {
-        child.setAttribute("href", `https://${url}`);
+        child.setAttribute('href', `https://${url}`);
       }
     }
   }
@@ -134,9 +133,9 @@ function link(state, child) {
 
 // wrap iframes in div.videoWrapper to control size/aspect ratio
 function iframe(state, child) {
-  const url = child.getAttribute("src");
+  const url = child.getAttribute('src');
   let domString;
-  const embed = embedjs.get(url || "", { width: "100%", height: 400 });
+  const embed = embedjs.get(url || '', { width: '100%', height: 400 });
   if (embed && embed.id) {
     const { images, links } = state;
     links.add(embed.url);
@@ -154,8 +153,8 @@ function iframe(state, child) {
     ? child.parentNode.tagName.toLowerCase()
     : child.parentNode.tagName;
   if (
-    tag === "div" &&
-    child.parentNode.getAttribute("class") === "videoWrapper"
+    tag === 'div' &&
+    child.parentNode.getAttribute('class') === 'videoWrapper'
   )
     return;
   const html = XMLSerializer.serializeToString(child);
@@ -164,19 +163,19 @@ function iframe(state, child) {
 }
 
 function img(state, child) {
-  const url = child.getAttribute("src");
+  const url = child.getAttribute('src');
   if (url) {
     state.images.add(url);
-    if (state.mutate) {
-      let url2 = url;
-      if (/^\/\//.test(url2)) {
-        // Change relative protocol imgs to https
-        url2 = `https:${url2}`;
-      }
-      if (url2 !== url) {
-        child.setAttribute("src", url2);
-      }
-    }
+    // if (state.mutate) {
+    //   let url2 = url;
+    //   if (/^\/\//.test(url2)) {
+    //     // Change relative protocol imgs to https
+    //     url2 = `https:${url2}`;
+    //   }
+    //   if (url2 !== url) {
+    //     child.setAttribute("src", url2);
+    //   }
+    // }
   }
 }
 
@@ -185,8 +184,8 @@ function linkifyNode(child, state) {
     const tag = child.parentNode.tagName
       ? child.parentNode.tagName.toLowerCase()
       : child.parentNode.tagName;
-    if (tag === "code") return;
-    if (tag === "a") return;
+    if (tag === 'code') return;
+    if (tag === 'a') return;
 
     const { mutate } = state;
     if (!child.data) return;
@@ -201,7 +200,7 @@ function linkifyNode(child, state) {
       state.hashtags,
       state.usertags,
       state.images,
-      state.links
+      state.links,
     );
     if (mutate && content !== data) {
       const newChild = DOMParser.parseFromString(`<span>${content}</span>`);
@@ -209,6 +208,7 @@ function linkifyNode(child, state) {
       return newChild;
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log(error);
   }
 }
@@ -224,14 +224,14 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
 
       if (valid && usertags) usertags.add(userLower);
 
-      const preceedings = (preceeding1 || "") + (preceeding2 || ""); // include the preceeding matches if they exist
+      const preceedings = (preceeding1 || '') + (preceeding2 || ''); // include the preceeding matches if they exist
 
       if (!mutate) return `${preceedings}${user}`;
 
       return valid
         ? `${preceedings}<a href="/@${userLower}">@${user}</a>`
         : `${preceedings}@${user}`;
-    }
+    },
   );
 
   content = content.replace(linksRe.any, ln => {
@@ -250,12 +250,12 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
   // hashtag
   content = content.replace(/(^|\s)(#[-a-z\d]+)/gi, tag => {
     if (/#[\d]+$/.test(tag)) return tag; // Don't allow numbers to be tags
-    const space = /^\s/.test(tag) ? tag[0] : "";
+    const space = /^\s/.test(tag) ? tag[0] : '';
     const tag2 = tag.trim().substring(1);
     const tagLower = tag2.toLowerCase();
     if (hashtags) hashtags.add(tagLower);
     if (!mutate) return tag;
-    return space + `<a href="/created/${tagLower}">${tag}</a>`;
+    return `${space}<a href="/created/${tagLower}">${tag}</a>`;
   });
 
   return content;
@@ -264,12 +264,12 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
 function isEmbedable(child, links, images, resolveIframe) {
   try {
     if (!child.data) return false;
-    const data = child.data;
+    const { data } = child;
     const foundLinks = data.match(linksRe.any);
     if (!foundLinks) return false;
-    const embed = embedjs.get(foundLinks[0] || "", {
-      width: "100%",
-      height: 400
+    const embed = embedjs.get(foundLinks[0] || '', {
+      width: '100%',
+      height: 400,
     });
     if (embed && embed.id) {
       const domString = resolveIframe
@@ -284,13 +284,12 @@ function isEmbedable(child, links, images, resolveIframe) {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
 
 /** @return {id, url} or <b>null</b> */
-/*function youTubeId(data) {
+/* function youTubeId(data) {
   if (!data) return null;
 
   const m1 = data.match(linksRe.youTube);
@@ -302,4 +301,4 @@ function isEmbedable(child, links, images, resolveIframe) {
   if (!id) return null;
 
   return { id, url };
-}*/
+} */

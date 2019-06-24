@@ -1,6 +1,7 @@
 /**
- * This function is extracted from steemit.com source code and does the same tasks with some slight-
- * adjustments to meet our needs. Refer to the main one in case of future problems:
+ * This function is extracted from steemit.com source code and does the same
+ * tasks with some slight adjustments to meet our needs. Refer to the main
+ * one in case of future problems:
  * https://github.com/steemit/steemit.com/blob/06c90aa8260f09c4ae061e652d884f68b8a6a409/app/utils/ChainValidation.js
  */
 
@@ -8,11 +9,11 @@ export function validateAccountName(value) {
   let label;
   let suffix;
 
-  suffix = "Account name should ";
+  suffix = 'Account name should ';
   if (!value) {
     return `${suffix}not be empty.`;
   }
-  const length = value.length;
+  const { length } = value;
   if (length < 3) {
     return `${suffix}be longer.`;
   }
@@ -20,9 +21,9 @@ export function validateAccountName(value) {
     return `${suffix}be shorter.`;
   }
   if (/\./.test(value)) {
-    suffix = "Each account segment should ";
+    suffix = 'Each account segment should ';
   }
-  const ref = value.split(".");
+  const ref = value.split('.');
   for (let i = 0, len = ref.length; i < len; i += 1) {
     label = ref[i];
     if (!/^[a-z]/.test(label)) {

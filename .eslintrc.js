@@ -1,10 +1,35 @@
 module.exports = {
-  "parser": "babel-eslint",
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
-  "plugins": ["react"],
-  "env": {
-    "browser": true,
-    "node": true,
-    "jasmine": true
+  parser: 'babel-eslint',
+  extends: ['airbnb', 'plugin:prettier/recommended', 'prettier/react'],
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
+    jest: true,
+    node: true,
   },
-}
+  rules: {
+    // disable camel case beacause API has queries without
+    // camel case because of Hivemind table names
+    camelcase: [0, { ignoreDestructuring: true }],
+    'react/destructuring-assignment': [0, 'always'],
+    // Next js needs empty <a> inside Link
+    'jsx-a11y/anchor-is-valid': ['off'],
+    'jsx-a11y/href-no-hash': ['off'],
+    'react/jsx-filename-extension': ['warn', { extensions: ['.js', '.jsx'] }],
+    'max-len': [
+      'warn',
+      {
+        code: 80,
+        tabWidth: 2,
+        comments: 80,
+        ignoreComments: false,
+        ignoreTrailingComments: true,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
+      },
+    ],
+  },
+};

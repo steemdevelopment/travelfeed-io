@@ -1,189 +1,320 @@
-const express = require("express");
-const next = require("next");
+const express = require('express');
+const next = require('next');
+const { join } = require('path');
+const LRUCache = require('lru-cache');
 
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
-const handle = app.getRequestHandler();
+
+const handleNextRequests = app.getRequestHandler();
+
+// https://gist.github.com/henrik/1688572
+const euCountries = [
+  'AT',
+  'BE',
+  'BG',
+  'HR',
+  'CY',
+  'CZ',
+  'DK',
+  'EE',
+  'FI',
+  'FR',
+  'DE',
+  'GR',
+  'HU',
+  'IE',
+  'IT',
+  'LV',
+  'LT',
+  'LU',
+  'MT',
+  'NL',
+  'PL',
+  'PT',
+  'RO',
+  'SK',
+  'SI',
+  'ES',
+  'SE',
+  'GB',
+  'GF',
+  'GP',
+  'MQ',
+  'ME',
+  'YT',
+  'RE',
+  'MF',
+  'GI',
+  'AX',
+  'PM',
+  'GL',
+  'BL',
+  'SX',
+  'AW',
+  'CW',
+  'WF',
+  'PF',
+  'NC',
+  'TF',
+  'AI',
+  'BM',
+  'IO',
+  'VG',
+  'KY',
+  'FK',
+  'MS',
+  'PN',
+  'SH',
+  'GS',
+  'TC',
+  'AD',
+  'LI',
+  'MC',
+  'SM',
+  'VA',
+  'JE',
+  'GG',
+  'GI',
+  'IM',
+];
+
+const handle = (req, res) => {
+  // Check country code of user IP as supplied by Cloudflare
+  const country_code = req.header('CF-IPCountry');
+  // Set session cookie for cookie consent for non-EU users to not annoy
+  // them with a cookie consent popup that is nor legally required for
+  // their country
+  if (!euCountries.includes(country_code)) res.cookie('cookie_consent', true);
+  handleNextRequests(req, res);
+};
 
 const port = process.env.PORT || 3000;
+
+// Don't use compression: "Node is awfully bad at doing CPU intensive
+// tasks like gzipping, SSL termination, etc. Instead, use a ‘real’
+// middleware services like nginx"
+// https://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/
+
+// https://medium.com/@az/i18n-next-js-app-with-server-side-rendering-and-user-language-aware-caching-part-1-ae1fce25a693
+const ssrCache = new LRUCache({
+  max: 100,
+  maxAge: 1000 * 60 * 60, // 1hour
+});
+
+function getCacheKey(req) {
+  // TODO clean-up, standardize an url to maximize cache hits
+  return req.url;
+}
+
+async function renderAndCache(req, res, pagePath, queryParams) {
+  // TODO add a way to purge cache for a specific url
+  const key = getCacheKey(req);
+
+  // If we have a page in the cache, let's serve it
+  if (ssrCache.has(key)) {
+    res.setHeader('x-cache', 'HIT');
+    res.send(ssrCache.get(key));
+    return;
+  }
+
+  // No cache present for specific key? let's try to render and cache
+  try {
+    const html = await app.renderToHTML(req, res, pagePath, queryParams);
+    // If something is wrong with the request, let's not cache
+    // Send the generated content as is for further inspection
+
+    if (dev || res.statusCode !== 200) {
+      res.setHeader('x-cache', 'SKIP');
+      res.send(html);
+      return;
+    }
+
+    // Everything seems OK... let's cache
+    ssrCache.set(key, html);
+    res.setHeader('x-cache', 'MISS');
+    res.send(html);
+  } catch (err) {
+    app.renderError(err, req, res, pagePath, queryParams);
+  }
+}
 
 app
   .prepare()
   .then(() => {
     const server = express();
+    // https://github.com/zeit/next.js/wiki/Getting-ready-for-production
 
-    server.use(express.static("public"));
+    server.use(express.static('public'));
 
-    server.get("/@:user/feed", (req, res) => {
-      const actualPage = "/tag";
-      const queryParams = {
-        sortby: "feed",
-        tag: req.params.user
-      };
-      app.render(req, res, actualPage, queryParams);
+    server.get('/service-worker.js', (req, res) => {
+      const filePath = join(__dirname, '.next', '/service-worker.js');
+      app.serveStatic(req, res, filePath);
     });
 
-    server.get("/@:author/:permlink", (req, res) => {
-      const actualPage = "/post";
+    server.get('/@:author/:permlink', (req, res) => {
+      const actualPage = '/post';
       const queryParams = {
         author: req.params.author,
-        permlink: req.params.permlink
+        permlink: req.params.permlink,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/:tag/@:author/:permlink", (req, res) => {
-      const author = req.params.author;
-      const permlink = req.params.permlink;
+    server.get('/:tag/@:author/:permlink', (req, res) => {
+      const { author } = req.params;
+      const { permlink } = req.params;
       res.redirect(`/@${author}/${permlink}`);
     });
 
-    server.get("/created/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/featured', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        sortby: "created",
-        tag: req.params.tag
+        orderby: 'featured',
       };
+      renderAndCache(req, res, actualPage, queryParams);
+    });
+
+    server.get('/feed', (req, res) => {
+      const actualPage = '/';
+      const queryParams = {
+        orderby: 'feed',
+      };
+      // Personal, so no caching
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/hot/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/discover', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        sortby: "hot",
-        tag: req.params.tag
+        orderby: 'random',
       };
+      // No cache for randomness
       app.render(req, res, actualPage, queryParams);
     });
 
-    server.get("/trending/:tag", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/created', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        sortby: "trending",
-        tag: req.params.tag
+        orderby: 'created_at',
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/featured/travelfeed", (req, res) => {
-      const actualPage = "/tag";
+    server.get('/hot', (req, res) => {
+      const actualPage = '/';
       const queryParams = {
-        sortby: "featured",
-        tag: "travelfeed"
+        orderby: 'sc_hot',
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/blog", (req, res) => {
-      const actualPage = "/blog";
+    server.get('/created/:tag', (req, res) => {
+      const { tag } = req.params;
+      res.redirect(`/hot/${tag}`);
+    });
+
+    server.get('/trending/:tag', (req, res) => {
+      const { tag } = req.params;
+      res.redirect(`/favorites/${tag}`);
+    });
+
+    server.get('/hot/:tag', (req, res) => {
+      const actualPage = '/tag';
       const queryParams = {
-        author: "travelfeed"
+        orderby: 'sc_hot',
+        tags: req.params.tag,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/@travelfeed", (req, res) => {
-      res.redirect("/blog");
-    });
-
-    server.get("/@:author", (req, res) => {
-      const actualPage = "/blog";
+    server.get('/favorites/:tag', (req, res) => {
+      const actualPage = '/tag';
       const queryParams = {
-        author: req.params.author
+        orderby: 'total_votes',
+        tags: req.params.tag,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/publish", (req, res) => {
-      const actualPage = "/dashboard";
+    server.get('/featured/:tag', (req, res) => {
+      const actualPage = '/tag';
       const queryParams = {
-        page: "publish"
+        orderby: 'featured',
+        tags: req.params.tag,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/drafts", (req, res) => {
-      const actualPage = "/dashboard";
+    server.get('/destinations/:country', (req, res) => {
+      const actualPage = '/destinations';
       const queryParams = {
-        page: "drafts"
+        country: req.params.country,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/posts", (req, res) => {
-      const actualPage = "/dashboard";
+    server.get('/destinations/:country/:subdivision', (req, res) => {
+      const actualPage = '/destinations';
       const queryParams = {
-        page: "posts"
+        country: req.params.country,
+        subdivision: req.params.subdivision,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/comments", (req, res) => {
-      const actualPage = "/dashboard";
+    server.get('/destinations/:country/:subdivision/:city', (req, res) => {
+      const actualPage = '/destinations';
       const queryParams = {
-        page: "comments"
+        country: req.params.country,
+        subdivision: req.params.subdivision,
+        city: req.params.city,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/replies", (req, res) => {
-      const actualPage = "/dashboard";
+    server.get(
+      '/destinations/:country/:subdivision/:city/:suburb',
+      (req, res) => {
+        const actualPage = '/destinations';
+        const queryParams = {
+          country: req.params.country,
+          subdivision: req.params.subdivision,
+          city: req.params.city,
+          suburb: req.params.suburb,
+        };
+        renderAndCache(req, res, actualPage, queryParams);
+      },
+    );
+
+    server.get('/blog', (req, res) => {
+      const actualPage = '/blog';
       const queryParams = {
-        page: "replies"
+        author: 'travelfeed',
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/notifications", (req, res) => {
-      const actualPage = "/dashboard";
+    server.get('/@:author', (req, res) => {
+      const actualPage = '/blog';
       const queryParams = {
-        page: "notifications"
+        author: req.params.author,
       };
-      app.render(req, res, actualPage, queryParams);
+      renderAndCache(req, res, actualPage, queryParams);
     });
 
-    server.get("/dashboard/bookmarks", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "bookmarks"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/profile", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "profile"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/wallet", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "stats"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("/dashboard/settings", (req, res) => {
-      const actualPage = "/dashboard";
-      const queryParams = {
-        page: "settings"
-      };
-      app.render(req, res, actualPage, queryParams);
-    });
-
-    server.get("*", (req, res) => {
+    server.get('*', (req, res) => {
       return handle(req, res);
     });
 
     server.listen(port, err => {
       if (err) throw err;
+      // eslint-disable-next-line no-console
       console.log(`Listening on Port ${port}`);
     });
   })
   .catch(ex => {
+    // eslint-disable-next-line no-console
     console.error(ex.stack);
     process.exit(1);
   });

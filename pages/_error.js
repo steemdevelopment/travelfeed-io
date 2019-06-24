@@ -1,16 +1,19 @@
-import React, { Fragment } from "react";
-import NotFound from "../components/NotFound";
-import Header from "../components/Header";
-import Grid from "@material-ui/core/Grid";
-import PropTypes from "prop-types";
+import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+import NotFound from '../components/General/NotFound';
+import Header from '../components/Header/Header';
 
 export default class Error extends React.Component {
   static getInitialProps({ res, err }) {
-    const statusCode = res ? res.statusCode : err ? err.statusCode : null;
+    let statusCode = null;
+    if (res) ({ statusCode } = res);
+    else if (err) ({ statusCode } = err);
     return { statusCode };
   }
 
   render() {
+    const { statusCode } = this.props;
     return (
       <Fragment>
         <Header />
@@ -22,7 +25,7 @@ export default class Error extends React.Component {
           className="pt-4 pb-4"
         >
           <Grid item lg={7} md={8} sm={11} xs={12}>
-            <NotFound statusCode={this.props.statusCode} />
+            <NotFound statusCode={statusCode} />
           </Grid>
         </Grid>
       </Fragment>
@@ -31,5 +34,5 @@ export default class Error extends React.Component {
 }
 
 Error.propTypes = {
-  statusCode: PropTypes.number
+  statusCode: PropTypes.number.isRequired,
 };

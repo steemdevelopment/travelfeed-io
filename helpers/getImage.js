@@ -1,30 +1,16 @@
-//Gets the image from the json_metadata if they are defined, if not it crawls the body for an image, if none is found it returns a placeholder
-import { imageRegex } from "../utils/regex";
+const bs58 = require('bs58');
 
-export const getImageList = body => {
-  body = body.replace(/(https:\/\/steemitimages\.com\/1000x0\/)/g, "");
-  const image = body.match(imageRegex);
-  return image;
-};
-
-const getImage = (json_metadata, body, size) => {
-  const json = JSON.parse(json_metadata);
-  let image = "";
-  if (
-    typeof json.image != "undefined" &&
-    json.image.length > 0 &&
-    json.image[0] !== ""
-  ) {
-    image = `https://steemitimages.com/${size}/` + json.image[0];
-  } else {
-    const imatch = body.match(imageRegex);
-    if (imatch !== null) {
-      image = `https://steemitimages.com/${size}/` + imatch[0];
-    } else {
-      image = `https://steemitimages.com/${size}/https://cdn.steemitimages.com/DQmPmEJ5NudyR5Vhh5X36U1qY8FgM5iuaN1Smc5N55cr363/default-header.png`;
-    }
+export const imageProxy = (imgUrl, width, height, mode, format) => {
+  if (imgUrl === '') {
+    return undefined;
   }
-  return image;
+  // Base58 encode image url
+  // https://github.com/steemit/imagehoster
+  const bytes = Buffer.from(imgUrl);
+  const address = bs58.encode(bytes);
+  // Use webp as format for best compression if supported
+  // Get the cropped steemitimages URL for an image
+  return `https://steemitimages.com/p/${address}/?format=${format || 'match'}${
+    width ? `&width=${width}` : ''
+  }${height ? `&height=${height}` : ''}${mode ? `&mode=${mode}` : ''}`;
 };
-
-export default getImage;

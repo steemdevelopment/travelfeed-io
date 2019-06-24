@@ -1,26 +1,28 @@
-import React, { Fragment, Component } from "react";
-import Header from "../components/Header";
-import PropTypes from "prop-types";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import NotFound from "../components/NotFound";
-import Button from "@material-ui/core/Button";
-import Router from "next/router";
-import Helmet from "react-helmet";
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Router from 'next/router';
+import PropTypes from 'prop-types';
+import React, { Component, Fragment } from 'react';
+import NotFound from '../components/General/NotFound';
+import Head from '../components/Header/Head';
+import Header from '../components/Header/Header';
 
-class Exit extends Component {
+class ExitPage extends Component {
   static async getInitialProps({ req }) {
-    const url = req.query.url;
+    const { url } = req.query;
     return { url };
   }
+
   render() {
-    var content = (
+    const { url } = this.props;
+    let content = (
       <Grid item lg={7} md={8} sm={11} xs={12}>
         <NotFound statusCode={404} />
       </Grid>
     );
-    if (this.props.url != undefined) {
+    if (url !== undefined) {
       content = (
         <Grid item lg={7} md={8} sm={11} xs={12}>
           <Card className="text-center">
@@ -30,17 +32,16 @@ class Exit extends Component {
                 Warning: This is an external link. Please check it carefully
                 before proceeding.
               </p>
-              <p>{this.props.url}</p>
-              <a onClick={() => Router.back()}>
-                <Button color="primary" variant="outlined" className="m-1">
-                  Go back
-                </Button>
-              </a>
-              <a
-                rel="nofollow noopener noreferrer"
-                target="_blank"
-                href={this.props.url}
+              <p>{url}</p>
+              <Button
+                onClick={() => Router.back()}
+                color="primary"
+                variant="outlined"
+                className="m-1"
               >
+                Go back
+              </Button>
+              <a rel="nofollow noopener noreferrer" target="_blank" href={url}>
                 <Button color="primary" variant="contained" className="m-1">
                   Visit this Website
                 </Button>
@@ -52,9 +53,7 @@ class Exit extends Component {
     }
     return (
       <Fragment>
-        <Helmet>
-          <title>{"External Link | TravelFeed"}</title>
-        </Helmet>
+        <Head title="External Link | TravelFeed" />
         <Header />
         <Grid
           container
@@ -70,12 +69,12 @@ class Exit extends Component {
   }
 }
 
-Exit.defaultProps = {
-  url: undefined
+ExitPage.defaultProps = {
+  url: undefined,
 };
 
-Exit.propTypes = {
-  url: PropTypes.string
+ExitPage.propTypes = {
+  url: PropTypes.string,
 };
 
-export default Exit;
+export default ExitPage;

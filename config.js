@@ -12,10 +12,10 @@ export const APP_VERSION = 'travelfeed/1.0.0';
 
 let url = 'http://localhost:3000/login';
 let rooturl = 'http://localhost:3000';
-// TODO: When merging to master remove beta from URL
+
 if (process.env.NODE_ENV === 'production') {
-  url = 'https://beta.travelfeed.io/login';
-  rooturl = 'https://beta.travelfeed.io';
+  url = 'https://travelfeed.io/login';
+  rooturl = 'https://travelfeed.io';
 }
 
 export const GRAPHQL_URL =

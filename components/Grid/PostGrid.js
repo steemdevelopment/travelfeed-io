@@ -113,7 +113,7 @@ class PostGrid extends Component {
                     data.posts.map(post => {
                       if (post.is_blacklisted)
                         return <Fragment key={post.id} />;
-                      const htmlBody = parseBody(post.preview, {});
+                      const htmlBody = parseBody(post.body, {});
                       const sanitized = sanitize(htmlBody, { allowedTags: [] });
                       const readtime = readingTime(sanitized);
                       let { title } = post;

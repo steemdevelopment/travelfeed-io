@@ -161,9 +161,7 @@ class PostEditor extends Component {
         !this.props.edit.editmode === 'true' ||
         location !== this.props.edit.location
       ) {
-        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${
-          location.longitude
-        } long  d3scr)`;
+        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
       }
     }
     // Todo: Parse body for images and links and include them
@@ -180,7 +178,7 @@ class PostEditor extends Component {
       title,
       body,
       metadata,
-      'comment',
+      'post',
     ).then(res => {
       if (res) {
         this.newNotification(res);
@@ -359,9 +357,7 @@ class PostEditor extends Component {
                       <h5 className="text-center">
                         Location
                         {this.state.location &&
-                          `: ${this.state.location.latitude}, ${
-                            this.state.location.longitude
-                          }`}
+                          `: ${this.state.location.latitude}, ${this.state.location.longitude}`}
                       </h5>
                       {location && (
                         <PostMap

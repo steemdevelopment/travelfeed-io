@@ -86,7 +86,7 @@
     "xmldom": "^0.1.27"
   },
   "devDependencies": {
-    "babel-eslint": "10.0.1",
+    "babel-eslint": "10.0.2",
     "dotenv": "6.2.0",
     "eslint": "5.16.0",
     "eslint-config-airbnb": "17.1.0",

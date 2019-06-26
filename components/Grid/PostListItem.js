@@ -46,9 +46,7 @@ class PostListItem extends Component {
     let button2 = (
       <Link
         as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-        href={`/post?author=${this.props.post.author}&permlink=${
-          this.props.post.permlink
-        }`}
+        href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
         passHref
       >
         <a className="text-light">
@@ -99,7 +97,9 @@ class PostListItem extends Component {
                     <Link
                       href={`/dashboard/publish?id=${
                         this.props.post.id
-                      }&title=${encodeURIComponent(
+                      }&permlink=${encodeURIComponent(
+                        this.props.post.permlink,
+                      )}&title=${encodeURIComponent(
                         this.props.post.title,
                       )}&body=${encodeURIComponent(
                         this.props.post.body,

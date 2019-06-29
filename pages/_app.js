@@ -34,8 +34,7 @@ NProgress.configure({ showSpinner: false });
 
 Router.events.on('routeChangeStart', () => {
   NProgress.start();
-  ReactPiwik.push(['requireConsent']);
-  if (hasCookieConsent === 'true') ReactPiwik.push(['setConsentGiven']);
+  if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
   ReactPiwik.push(['setDocumentTitle', document.title]);
   ReactPiwik.push(['trackPageView']);
 });
@@ -55,8 +54,7 @@ class MyApp extends App {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     if (process.env.NODE_ENV === 'production') register();
-    ReactPiwik.push(['requireConsent']);
-    if (hasCookieConsent === 'true') ReactPiwik.push(['setConsentGiven']);
+    if (!hasCookieConsent === 'true') ReactPiwik.push(['requireConsent']);
     const user = getUser();
     if (user) ReactPiwik.push(['setUserId', user]);
     ReactPiwik.push(['trackPageView']);

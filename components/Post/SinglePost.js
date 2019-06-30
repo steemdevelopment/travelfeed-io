@@ -123,9 +123,7 @@ class SinglePost extends Component {
             // Todo: Display NSFW posts for logged in users based on
             // prefererences
             if (!data.post.is_travelfeed && data.post.depth === 0) {
-              const url = `https://steempeak.com/@${data.post.author}/${
-                data.post.permlink
-              }`;
+              const url = `https://steempeak.com/@${data.post.author}/${data.post.permlink}`;
               return <InvalidPost url={url} />;
             }
             // If comment, render comment component
@@ -178,16 +176,12 @@ class SinglePost extends Component {
             }`;
             // Set the canonical URL to steemit.com by default to avoid
             // duplicate content SEO problems
-            let canonicalUrl = `https://steemit.com/travelfeed/@${
-              data.post.author
-            }/${data.post.permlink}`;
+            let canonicalUrl = `https://steemit.com/travelfeed/@${data.post.author}/${data.post.permlink}`;
             let appIcon = <Fragment />;
             // Set the caninical URL to travelfeed.io if the post was authored
             // through the dApp
             if (data.post.app && data.post.app.split('/')[0] === 'travelfeed') {
-              canonicalUrl = `https://travelfeed.io/@${data.post.author}/${
-                data.post.permlink
-              }`;
+              canonicalUrl = `https://travelfeed.io/@${data.post.author}/${data.post.permlink}`;
               appIcon = (
                 <img
                   alt="TravelFeed"
@@ -203,6 +197,12 @@ class SinglePost extends Component {
                   title={`Re: ${data.post.root_title} - TravelFeed`}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}
+                  type={{
+                    type: 'article',
+                    published_time: data.post.created_at,
+                    author: data.post.display_name,
+                    tags: data.post.tags,
+                  }}
                 />
               );
               card = (
@@ -235,6 +235,12 @@ class SinglePost extends Component {
                   image={data.post.img_url}
                   description={excerpt}
                   canonicalUrl={canonicalUrl}
+                  type={{
+                    type: 'article',
+                    published_time: data.post.created_at,
+                    author: data.post.display_name,
+                    tags: data.post.tags,
+                  }}
                 />
               );
               card = (
@@ -250,9 +256,7 @@ class SinglePost extends Component {
                           <a>
                             <Avatar
                               className="cpointer"
-                              src={`https://steemitimages.com/u/${
-                                data.post.author
-                              }/avatar/small`}
+                              src={`https://steemitimages.com/u/${data.post.author}/avatar/small`}
                               alt={data.post.author}
                             />
                           </a>

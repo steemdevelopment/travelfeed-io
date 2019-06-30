@@ -128,9 +128,7 @@ const AuthorProfile = props => {
           const couchsurfing =
             data.profile.couchsurfing !== '' ? (
               <a
-                href={`https://couchsurfing.com/people/${
-                  data.profile.couchsurfing
-                }`}
+                href={`https://couchsurfing.com/people/${data.profile.couchsurfing}`}
                 target="_blank"
                 rel="nofollow noreferrer noopener"
                 className="text-light h1"
@@ -150,11 +148,14 @@ const AuthorProfile = props => {
           return (
             <Fragment>
               <Head
-                title={`${
-                  data.profile.display_name
-                }'s Blog on TravelFeed: The Travel Community`}
+                title={`${data.profile.display_name}'s Blog on TravelFeed: The Travel Community`}
                 image={data.profile.img_url}
                 description={`${data.profile.display_name}'s Blog: ${about}`}
+                type={{
+                  type: 'profile',
+                  display_name: data.profile.display_name,
+                  username: data.profile.name,
+                }}
               />
               <Header subheader={data.profile.display_name} />
               <div className="text-center p-4 mb-3" style={divStyle}>
@@ -168,9 +169,7 @@ const AuthorProfile = props => {
                         <div className="pb-2">
                           <img
                             style={{ cursor: 'pointer' }}
-                            src={`https://steemitimages.com/u/${
-                              data.profile.name
-                            }/avatar/medium`}
+                            src={`https://steemitimages.com/u/${data.profile.name}/avatar/medium`}
                             alt={data.profile.name}
                             width="80"
                             height="80"

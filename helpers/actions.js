@@ -42,10 +42,15 @@ export const comment = async (
       jsonMetadata,
       (err, res) => {
         if (err) {
+          console.log(err);
+          if (err === 'incomplete') {
+            err =
+              'Steem Keychain is causing this problem. Please uninstall/deactivate Steem Keychain or publish from a browser without Steem Keychain installed.';
+          }
           resolve({
             success: false,
             message: `${(type === 'comment' && 'Comment') ||
-              'Post'} could not be published ${(typeof err === 'string' &&
+              'Post'} could not be published${(typeof err === 'string' &&
               `: ${err}`) ||
               (err.error_description && `: ${err.error_description}`)}`,
           });

@@ -300,7 +300,9 @@ app
       const queryParams = {
         author: req.params.author,
       };
-      renderAndCache(req, res, actualPage, queryParams);
+      // No cache since users are confused if their new posts/
+      // profile updates don't show up instantly
+      app.render(req, res, actualPage, queryParams);
     });
 
     server.get('*', (req, res) => {

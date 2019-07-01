@@ -122,13 +122,24 @@ const parseBody = (body, options) => {
         if (options.lazy === false) {
           parsedBody = parsedBody.replace(
             imgMatches[0],
-            `<img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
-              src="${imageProxy(imgMatches[1], 1800, undefined, 'fit')}">`,
+            `<figure><img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
+              src="${imageProxy(
+                imgMatches[1],
+                1800,
+                undefined,
+                'fit',
+              )}"><figcaption>${
+              imgMatches[2] === undefined ||
+              // ignore alt texts with image name
+              imgMatches[2].match(/(\.gif|\.jpg|\.png)/i)
+                ? ''
+                : imgMatches[2]
+            }</figcaption></figure>`,
           );
         } else {
           parsedBody = parsedBody.replace(
             imgMatches[0],
-            `<picture>
+            `<figure><picture>
             <source type="image/webp"
                 data-srcset="${imageProxy(
                   imgMatches[1],
@@ -149,8 +160,15 @@ const parseBody = (body, options) => {
               options.cardWidth,
               undefined,
             )}"
-                data-sizes="100w">
-        </picture>`,
+            data-sizes="100w">
+            </picture>
+         <figcaption>${
+           imgMatches[2] === undefined ||
+           // ignore alt texts with image name
+           imgMatches[2].match(/(\.gif|\.jpeg|\.jpg|\.png)/i)
+             ? ''
+             : imgMatches[2]
+         }</figcaption></figure>`,
           );
         }
       }

@@ -12,6 +12,13 @@
   background: #3849ab !important;
 }
 
+figcaption {
+  text-align: center;
+  font-style: italic;
+  margin-top: -15px;
+  font-size: 0.8em;
+}
+
 /* Image lazy loading fade effect */
 .lazy {
   transition: opacity 0.5s;

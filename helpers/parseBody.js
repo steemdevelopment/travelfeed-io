@@ -149,7 +149,7 @@ const parseBody = (body, options) => {
                   'webp',
                 )}"
                 data-sizes="100w">
-            <img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} class="lazy"
+            <img ${imgMatches[2] ? `alt="${imgMatches[2]}"` : ''} class="lazy"
                 src="${imageProxy(
                   imgMatches[1],
                   undefined,

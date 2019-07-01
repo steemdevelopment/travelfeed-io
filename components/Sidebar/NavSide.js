@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import BookmarkIcon from '@material-ui/icons/Bookmarks';
 import PublishIcon from '@material-ui/icons/Create';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import DraftIcon from '@material-ui/icons/FileCopy';
 import ProfileIcon from '@material-ui/icons/Person';
 import RepliesIcon from '@material-ui/icons/Reply';
@@ -19,6 +20,16 @@ const NavSide = props => {
       <div className="col-4" />
       <div className="col-8">
         <MenuList>
+          <Link href="/dashboard" passHref>
+            <a>
+              <MenuItem>
+                <ListItemIcon>
+                  <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText inset primary="Dashboard" />
+              </MenuItem>
+            </a>
+          </Link>
           <Link href="/dashboard/publish" passHref>
             <a>
               <MenuItem>

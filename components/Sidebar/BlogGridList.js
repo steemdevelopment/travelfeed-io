@@ -12,7 +12,7 @@ const BlogGridList = () => {
     <Fragment>
       <Query
         query={GET_BLOG_POSTS}
-        variables={{ author: 'travelfeed', limit: 5 }}
+        variables={{ author: 'travelfeed', limit: 4 }}
       >
         {({ data, loading, error }) => {
           if (loading || error || data.post === null) {
@@ -24,24 +24,39 @@ const BlogGridList = () => {
                 title="From Our Blog"
                 titlesize="h5"
                 background={indigo[600]}
-                content={data.posts.map((post, index) => {
-                  return (
-                    <div key={post.author + post.permlink}>
-                      {index !== 0 && <Divider className="mt-2 mb-2" />}
+                content={
+                  <Fragment>
+                    <div key="@travelfeedintroducing-travelfeed-beta">
                       <Link
-                        as={`/@${post.author}/${post.permlink}`}
-                        href={`/post?author=${post.author}&permlink=${
-                          post.permlink
-                        }`}
+                        as="/@travelfeed/introducing-travelfeed-beta"
+                        href="/post?author=travelfeed&permlink=introducing-travelfeed-beta"
                         passHref
                       >
                         <a>
-                          <ListItemText primary={post.title} />
+                          <ListItemText primary="Introducing TravelFeed Beta" />
                         </a>
                       </Link>
                     </div>
-                  );
-                })}
+                    {data.posts.map(post => {
+                      return (
+                        <Fragment>
+                          <div key={post.author + post.permlink}>
+                            <Divider className="mt-2 mb-2" />
+                            <Link
+                              as={`/@${post.author}/${post.permlink}`}
+                              href={`/post?author=${post.author}&permlink=${post.permlink}`}
+                              passHref
+                            >
+                              <a>
+                                <ListItemText primary={post.title} />
+                              </a>
+                            </Link>
+                          </div>
+                        </Fragment>
+                      );
+                    })}
+                  </Fragment>
+                }
               />
             </Fragment>
           );

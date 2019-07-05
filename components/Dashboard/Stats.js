@@ -22,6 +22,7 @@ import {
   GET_NOTIFICATIONS,
 } from '../../helpers/graphql/posts';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
+import calculateQualityScore from '../../helpers/calculateQualityScore';
 import { getUser } from '../../helpers/token';
 import HeaderCard from '../General/HeaderCard';
 import CustomSnackbar from './Notifications/CustomSnackbar';
@@ -72,12 +73,10 @@ const Stats = () => {
                   <SmallBox
                     Icon={QualityIcon}
                     title="Quality Score"
-                    value={Math.floor(
-                      (data.userstats.total_featured /
-                        data.userstats.total_posts) *
-                        100,
+                    value={calculateQualityScore(
+                      data.userstats.total_featured,
+                      data.userstats.total_posts,
                     )}
-                    prefix="%"
                     iconColor={pink[600]}
                     boxColor={pink[400]}
                   />

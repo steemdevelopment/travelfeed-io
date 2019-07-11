@@ -53,8 +53,8 @@ class LogoutButton extends Component {
             <MenuItem onClick={revokeToken}>
               <ListItemIcon>
                 <LogoutIcon />
-                <ListItemText inset primary="Logout" />
               </ListItemIcon>
+              <ListItemText primary="Logout" />
             </MenuItem>
           );
         }}

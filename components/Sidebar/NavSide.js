@@ -26,7 +26,7 @@ const NavSide = props => {
                 <ListItemIcon>
                   <DashboardIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Dashboard" />
+                <ListItemText primary="Dashboard" />
               </MenuItem>
             </a>
           </Link>
@@ -36,7 +36,7 @@ const NavSide = props => {
                 <ListItemIcon>
                   <PublishIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Publish" />
+                <ListItemText primary="Publish" />
               </MenuItem>
             </a>
           </Link>
@@ -46,7 +46,7 @@ const NavSide = props => {
                 <ListItemIcon>
                   <RepliesIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Replies" />
+                <ListItemText primary="Replies" />
               </MenuItem>
             </a>
           </Link>
@@ -56,7 +56,7 @@ const NavSide = props => {
                 <ListItemIcon>
                   <DraftIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Drafts" />
+                <ListItemText primary="Drafts" />
               </MenuItem>
             </a>
           </Link>
@@ -67,7 +67,7 @@ const NavSide = props => {
                 <ListItemIcon>
                   <BookmarkIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Bookmarks" />
+                <ListItemText primary="Bookmarks" />
               </MenuItem>
             </a>
           </Link>
@@ -82,7 +82,7 @@ const NavSide = props => {
                 <ListItemIcon>
                   <ProfileIcon />
                 </ListItemIcon>
-                <ListItemText inset primary="Profile" />
+                <ListItemText primary="Profile" />
               </MenuItem>
             </a>
           </Link>

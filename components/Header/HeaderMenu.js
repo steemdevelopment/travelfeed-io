@@ -112,8 +112,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <DestinationsIcon />
-                                <ListItemText inset primary="Destinations" />
                               </ListItemIcon>
+                              <ListItemText primary="Destinations" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -122,8 +122,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <MapIcon />
-                                <ListItemText inset primary="Map" />
                               </ListItemIcon>
+                              <ListItemText primary="Map" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -134,8 +134,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <LoginIcon />
-                              <ListItemText inset primary="Login" />
                             </ListItemIcon>
+                            <ListItemText primary="Login" />
                           </MenuItem>
                         </a>
                         <Link color="textPrimary" href="/join" passHref>
@@ -143,8 +143,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <SignUpIcon />
-                                <ListItemText inset primary="Join Now" />
                               </ListItemIcon>
+                              <ListItemText primary="Join Now" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -155,8 +155,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <PrivacyIcon />
-                              <ListItemText inset primary="Privacy" />
                             </ListItemIcon>
+                            <ListItemText primary="Privacy" />
                           </MenuItem>
                         </a>
                       </Link>
@@ -165,8 +165,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <TermsIcon />
-                              <ListItemText inset primary="Terms" />
                             </ListItemIcon>
+                            <ListItemText primary="Terms" />
                           </MenuItem>
                         </a>
                       </Link>
@@ -175,8 +175,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <CookieIcon />
-                              <ListItemText inset primary="Cookies" />
                             </ListItemIcon>
+                            <ListItemText primary="Cookies" />
                           </MenuItem>
                         </a>
                       </Link>
@@ -207,7 +207,7 @@ class HeaderMenu extends Component {
             />
             <DownIcon
               className={
-                (this.props.isDashboard && 'textPrimary') || 'text-light'
+                (this.props.isDashboard && 'text-dark') || 'text-light'
               }
             />
           </Button>
@@ -235,8 +235,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <DestinationsIcon />
-                                <ListItemText inset primary="Destinations" />
                               </ListItemIcon>
+                              <ListItemText primary="Destinations" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -245,8 +245,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <MapIcon />
-                                <ListItemText inset primary="Map" />
                               </ListItemIcon>
+                              <ListItemText primary="Map" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -258,8 +258,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <FeedIcon />
-                                <ListItemText inset primary="TravelFeed" />
                               </ListItemIcon>
+                              <ListItemText primary="TravelFeed" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -269,8 +269,8 @@ class HeaderMenu extends Component {
                             <MenuItem>
                               <ListItemIcon>
                                 <DashboardIcon />
-                                <ListItemText inset primary="TravelBlog" />
                               </ListItemIcon>
+                              <ListItemText primary="TravelBlog" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -284,8 +284,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <PublishIcon />
-                              <ListItemText inset primary="New Post" />
                             </ListItemIcon>
+                            <ListItemText primary="New Post" />
                           </MenuItem>
                         </a>
                       </Link>
@@ -294,8 +294,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <ProfileIcon />
-                              <ListItemText inset primary="Bookmarks" />
                             </ListItemIcon>
+                            <ListItemText primary="Bookmarks" />
                           </MenuItem>
                         </a>
                       </Link>
@@ -305,8 +305,8 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <PrivacyIcon />
-                              <ListItemText inset primary="Privacy" />
                             </ListItemIcon>
+                            <ListItemText primary="Privacy" />
                           </MenuItem>
                         </a>
                       </Link>

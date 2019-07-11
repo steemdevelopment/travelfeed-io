@@ -3,7 +3,7 @@
 import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
@@ -37,7 +37,7 @@ const styles1 = theme => ({
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   message: {
     display: 'flex',

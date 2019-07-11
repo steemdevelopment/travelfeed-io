@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import { grey } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
 import DestinationsIcon from '@material-ui/icons/Explore';
 import PropTypes from 'prop-types';

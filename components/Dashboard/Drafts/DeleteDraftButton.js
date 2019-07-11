@@ -18,9 +18,6 @@ const theme = createMuiTheme({
   palette: {
     primary: red,
   },
-  typography: {
-    useNextVariants: true,
-  },
 });
 
 class DeleteDraftButton extends Component {

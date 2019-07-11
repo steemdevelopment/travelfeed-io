@@ -1,7 +1,7 @@
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import { grey, teal } from '@material-ui/core/colors';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
 import dynamic from 'next/dynamic';

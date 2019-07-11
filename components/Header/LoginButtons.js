@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import { grey } from '@material-ui/core/colors';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';

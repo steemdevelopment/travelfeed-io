@@ -3,12 +3,12 @@ import Button from '@material-ui/core/Button';
 import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
-import Link from 'next/link';
 import React, { Fragment } from 'react';
 import AboutSelect from '../../components/About/AboutSelect';
 import HeaderCard from '../../components/General/HeaderCard';
 import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
+import Link from '../../lib/Link';
 
 const SupportUsPage = () => {
   const title = 'Support Us';
@@ -29,7 +29,7 @@ const SupportUsPage = () => {
             title={title}
             background={indigo[600]}
             content={
-              <div className="postcontent">
+              <div className="textPrimary postcontent">
                 <h4 className="text-center pt-2">Delegate to @travelfeed</h4>
                 <p>
                   Delegations help us give higher rewards to content creators.
@@ -110,6 +110,7 @@ const SupportUsPage = () => {
                   posts that we curate and help to reward quality content
                   creators. We have made{' '}
                   <Link
+                    color="textPrimary"
                     as="/@travelfeed/tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
                     href="/post?author=travelfeed&permlink=tutorial-follow-the-travelfeed-curation-trail-on-steemauto"
                     passHref

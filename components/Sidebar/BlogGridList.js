@@ -1,10 +1,10 @@
 import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { GET_BLOG_POSTS } from '../../helpers/graphql/posts';
+import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 
 const BlogGridList = () => {
@@ -28,6 +28,7 @@ const BlogGridList = () => {
                   <Fragment>
                     <div key="@travelfeedintroducing-travelfeed-beta">
                       <Link
+                        color="textPrimary"
                         as="/@travelfeed/introducing-travelfeed-beta"
                         href="/post?author=travelfeed&permlink=introducing-travelfeed-beta"
                         passHref
@@ -43,6 +44,7 @@ const BlogGridList = () => {
                           <div key={post.author + post.permlink}>
                             <Divider className="mt-2 mb-2" />
                             <Link
+                              color="textPrimary"
                               as={`/@${post.author}/${post.permlink}`}
                               href={`/post?author=${post.author}&permlink=${post.permlink}`}
                               passHref

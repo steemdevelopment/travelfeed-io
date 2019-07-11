@@ -6,9 +6,9 @@ import FeedIcon from '@material-ui/icons/Favorite';
 import HotIcon from '@material-ui/icons/FlightTakeoff';
 import NewIcon from '@material-ui/icons/Restore';
 import FeaturedIcon from '@material-ui/icons/Star';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Link from '../../lib/Link';
 
 class HomeOrderBySelect extends React.Component {
   render() {

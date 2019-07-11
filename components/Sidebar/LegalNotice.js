@@ -1,33 +1,33 @@
-import Link from 'next/link';
 import React from 'react';
+import Link from '../../lib/Link';
 
 const LegalNotice = () => {
   return (
     <div className="pt-4 p-2">
-      <Link href="/about" passHref>
-        <a className="text-muted">About</a>
+      <Link color="textPrimary" href="/about" passHref>
+        <a className="textSecondary">About</a>
       </Link>
       {'　'}
-      <Link href="/about/faq" passHref>
-        <a className="text-muted">FAQ</a>
+      <Link color="textPrimary" href="/about/faq" passHref>
+        <a className="textSecondary">FAQ</a>
       </Link>
       {'　'}
-      <Link href="/about/support-us" passHref>
-        <a className="text-muted">Support Us</a>
+      <Link color="textPrimary" href="/about/support-us" passHref>
+        <a className="textSecondary">Support Us</a>
       </Link>
       {'　'}
-      <Link href="/about/terms" passHref>
-        <a className="text-muted">Terms</a>
+      <Link color="textPrimary" href="/about/terms" passHref>
+        <a className="textSecondary">Terms</a>
       </Link>
       {'　'}
-      <Link href="/about/privacy" passHref>
-        <a className="text-muted">Privacy</a>
+      <Link color="textPrimary" href="/about/privacy" passHref>
+        <a className="textSecondary">Privacy</a>
       </Link>
       {'　'}
-      <Link href="/about/cookies" passHref>
-        <a className="text-muted">Cookies</a>
+      <Link color="textPrimary" href="/about/cookies" passHref>
+        <a className="textSecondary">Cookies</a>
       </Link>
-      <p className="text-muted pt-1">
+      <p className="textSecondary pt-1">
         &copy; {new Date().getFullYear()} TravelFeed
       </p>
     </div>

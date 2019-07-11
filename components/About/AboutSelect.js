@@ -7,9 +7,9 @@ import AboutIcon from '@material-ui/icons/Info';
 import PrivacyIcon from '@material-ui/icons/Lock';
 import FAQIcon from '@material-ui/icons/QuestionAnswer';
 import TermsIcon from '@material-ui/icons/Toc';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Link from '../../lib/Link';
 
 class AboutSelect extends React.Component {
   render() {

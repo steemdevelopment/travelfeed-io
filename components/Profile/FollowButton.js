@@ -1,13 +1,13 @@
 // no ssr since current user is essential to determine follow status
 
 import Button from '@material-ui/core/Button';
-import Link from 'next/link';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { follow, unfollow } from '../../helpers/actions';
 import { GET_IS_FOLLOWED } from '../../helpers/graphql/profile';
+import Link from '../../lib/Link';
 
 class FollowButton extends Component {
   state = {
@@ -114,7 +114,7 @@ class FollowButton extends Component {
               );
             }
             return (
-              <Link href="/join" passHref>
+              <Link color="textPrimary" href="/join" passHref>
                 <Button
                   variant="outlined"
                   size="small"

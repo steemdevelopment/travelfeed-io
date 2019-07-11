@@ -1,13 +1,14 @@
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { imageProxy } from '../../helpers/getImage';
+import Link from '../../lib/Link';
 
 const TeamMember = props => {
   return (
     <div className="text-center">
       <Link
+        color="textPrimary"
         as={`/@${props.username}`}
         href={`/blog?author=${props.username}`}
         passHref

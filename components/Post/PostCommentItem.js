@@ -3,12 +3,12 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
@@ -98,6 +98,7 @@ class PostCommentItem extends Component {
       parent = (
         <div>
           <Link
+            color="textPrimary"
             as={`/@${this.props.post.parent_author}/${this.props.post.parent_permlink}`}
             href={`/post?author=${this.props.post.parent_author}&permlink=${this.props.post.parent_permlink}`}
             passHref
@@ -115,6 +116,7 @@ class PostCommentItem extends Component {
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
           <div>
             <Link
+              color="textPrimary"
               as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
               href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}`}
               passHref
@@ -157,6 +159,7 @@ class PostCommentItem extends Component {
           <CardHeader
             avatar={
               <Link
+                color="textPrimary"
                 as={`/@${this.props.post.author}`}
                 href={`/blog?author=${this.props.post.author}`}
                 passHref
@@ -185,13 +188,17 @@ class PostCommentItem extends Component {
             }
             title={
               <Link
+                color="textPrimary"
                 as={`/@${this.props.post.author}`}
                 href={`/blog?author=${this.props.post.author}`}
                 passHref
               >
-                <a className="text-dark cpointer">
+                <a className="textPrimary cpointer">
                   <strong>{this.props.post.display_name}</strong>
-                  <span className="text-muted"> @{this.props.post.author}</span>
+                  <span className="textSecondary">
+                    {' '}
+                    @{this.props.post.author}
+                  </span>
                 </a>
               </Link>
             }

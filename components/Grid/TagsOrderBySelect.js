@@ -4,9 +4,9 @@ import Tabs from '@material-ui/core/Tabs';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import HotIcon from '@material-ui/icons/FlightTakeoff';
 import FeaturedIcon from '@material-ui/icons/Star';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Link from '../../lib/Link';
 
 class TagsOrderBySelect extends React.Component {
   render() {
@@ -21,6 +21,7 @@ class TagsOrderBySelect extends React.Component {
           centered
         >
           <Link
+            color="textPrimary"
             as={`/hot/${this.props.tags}`}
             href={`/tag?tags=${this.props.tags}&orderby=sc_hot`}
             passHref
@@ -28,6 +29,7 @@ class TagsOrderBySelect extends React.Component {
             <Tab icon={<HotIcon />} label="TAKING OFF" />
           </Link>
           <Link
+            color="textPrimary"
             as={`/featured/${this.props.tags}`}
             href={`/tag?tags=${this.props.tags}&orderby=featured`}
             passHref
@@ -35,6 +37,7 @@ class TagsOrderBySelect extends React.Component {
             <Tab icon={<FeaturedIcon />} label="FEATURED" />
           </Link>
           <Link
+            color="textPrimary"
             as={`/favorites/${this.props.tags}`}
             href={`/tag?tags=${this.props.tags}&orderby=total_votes`}
             passHref

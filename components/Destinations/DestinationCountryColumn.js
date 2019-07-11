@@ -1,9 +1,9 @@
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { nameFromSlug, slugFromCC } from '../../helpers/countryCodes';
+import Link from '../../lib/Link';
 
 class DestinationCountryColumn extends Component {
   render() {
@@ -15,6 +15,7 @@ class DestinationCountryColumn extends Component {
       const name = nameFromSlug(slug);
       return (
         <Link
+          color="textPrimary"
           key={slug}
           href={`/destinations?country=${slug}`}
           as={`/destinations/${slug}`}

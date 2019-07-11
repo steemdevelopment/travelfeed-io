@@ -7,7 +7,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import WalletIcon from '@material-ui/icons/AttachMoney';
@@ -22,11 +21,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ProfileIcon from '@material-ui/icons/Person';
 import RepliesIcon from '@material-ui/icons/Reply';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactPiwik from 'react-piwik';
+import Link from '../../lib/Link';
 import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
@@ -144,8 +144,8 @@ class Dashboard extends Component {
           >
             <MenuIcon />
           </IconButton>
-          <Link href="/" passHref>
-            <a style={{ flexGrow: 1 }} className="text-dark">
+          <Link color="textPrimary" href="/" passHref>
+            <a style={{ flexGrow: 1 }} className="textPrimary">
               <Typography
                 variant="h6"
                 className="font-weight-bold cpointer"
@@ -185,6 +185,7 @@ class Dashboard extends Component {
         <Divider />
         <List>
           <Link
+            color="textPrimary"
             href={`/dashboard?open=${this.state.open}`}
             as="/dashboard"
             passHref
@@ -199,6 +200,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/publish?open=${this.state.open}`}
             as="/dashboard/publish"
             passHref
@@ -213,6 +215,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/drafts?open=${this.state.open}`}
             as="/dashboard/drafts"
             passHref
@@ -227,6 +230,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/posts?open=${this.state.open}`}
             as="/dashboard/posts"
             passHref
@@ -241,6 +245,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/comments?open=${this.state.open}`}
             as="/dashboard/comments"
             passHref
@@ -255,6 +260,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/replies?open=${this.state.open}`}
             as="/dashboard/replies"
             passHref
@@ -269,6 +275,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/notifications?open=${this.state.open}`}
             as="/dashboard/notifications"
             passHref
@@ -286,6 +293,7 @@ class Dashboard extends Component {
         <Divider />
         <List>
           <Link
+            color="textPrimary"
             href={`/dashboard/profile?open=${this.state.open}`}
             as="/dashboard/profile"
             passHref
@@ -300,6 +308,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/wallet?open=${this.state.open}`}
             as="/dashboard/wallet"
             passHref
@@ -314,6 +323,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/settings?open=${this.state.open}`}
             as="/dashboard/settings"
             passHref
@@ -343,7 +353,6 @@ class Dashboard extends Component {
 
 Dashboard.defaultProps = {
   query: undefined,
-  page: undefined,
   open: undefined,
 };
 
@@ -351,7 +360,6 @@ Dashboard.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.objectOf(PropTypes.string),
-  page: PropTypes.string,
   active: PropTypes.string.isRequired,
   content: PropTypes.element.isRequired,
   open: PropTypes.string,

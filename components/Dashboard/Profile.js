@@ -3,11 +3,11 @@ import { indigo } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
-import Link from 'next/link';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { GET_PROFILE } from '../../helpers/graphql/profile';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 
 class Profile extends Component {
@@ -352,6 +352,7 @@ class Profile extends Component {
                         />
                         {updatebtn}
                         <Link
+                          color="textPrimary"
                           as={`/@${getUser()}`}
                           href={`/blog?author=${getUser()}`}
                           passHref

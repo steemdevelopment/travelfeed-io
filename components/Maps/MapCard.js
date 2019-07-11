@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import Link from '../../lib/Link';
 
 export default class MapCard extends PureComponent {
   render() {
@@ -8,6 +8,7 @@ export default class MapCard extends PureComponent {
       <div>
         <div>
           <Link
+            color="textPrimary"
             as={`/@${this.props.info.author}/${this.props.info.permlink}`}
             href={`/post?author=${this.props.info.author}&permlink=${this.props.info.permlink}`}
             passHref
@@ -18,6 +19,7 @@ export default class MapCard extends PureComponent {
           <em>
             by{' '}
             <Link
+              color="textPrimary"
               as={`/@${this.props.info.author}`}
               href={`/blog?author=${this.props.info.author}`}
               passHref

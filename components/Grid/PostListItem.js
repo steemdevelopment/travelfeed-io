@@ -8,11 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Create';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
+import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
 class PostListItem extends Component {
@@ -45,6 +45,7 @@ class PostListItem extends Component {
     }
     let button2 = (
       <Link
+        color="textPrimary"
         as={`/@${this.props.post.author}/${this.props.post.permlink}`}
         href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
         passHref
@@ -95,6 +96,7 @@ class PostListItem extends Component {
                 <div className="col-7">
                   <span className="text-light pl-2">
                     <Link
+                      color="textPrimary"
                       href={`/dashboard/publish?id=${
                         this.props.post.id
                       }&permlink=${encodeURIComponent(

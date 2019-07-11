@@ -4,10 +4,10 @@ import Typography from '@material-ui/core/Typography';
 import AddLocationIcon from '@material-ui/icons/AddLocation';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { hasCookieConsent } from '../../helpers/token';
+import Link from '../../lib/Link';
 import CookiePopup from '../CookieConsent/CookiePopup';
 
 class LocationPicker extends React.Component {
@@ -91,7 +91,7 @@ class LocationPicker extends React.Component {
                   We and our partners use cookies to improve your experience and
                   to analyze how our site is used.
                   <br />
-                  <Link href="/about/cookies" passHref>
+                  <Link color="textPrimary" href="/about/cookies" passHref>
                     <a className="text-light text-decoration-underline">
                       Learn about our Cookie Policy
                     </a>

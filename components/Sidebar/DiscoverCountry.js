@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
 import { teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
-import Link from 'next/link';
+// import Link from '../../lib/Link';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import {
@@ -11,6 +11,7 @@ import {
 } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_POSTS } from '../../helpers/graphql/posts';
+import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 
 const DiscoverCountry = () => {
@@ -44,6 +45,7 @@ const DiscoverCountry = () => {
                       return (
                         <div key={post.author + post.permlink}>
                           <Link
+                            color="textPrimary"
                             as={`/@${post.author}/${post.permlink}`}
                             href={`/post?author=${post.author}&permlink=${post.permlink}`}
                             passHref
@@ -67,19 +69,16 @@ const DiscoverCountry = () => {
                                     }}
                                   />
                                   <div className="col-9 my-auto">
-                                    <span className="text-dark">
-                                      {post.title}
-                                    </span>
+                                    {post.title}
                                     <br />
                                     <em>
                                       <Link
+                                        color="textSecondary"
                                         as={`/@${post.author}`}
                                         href={`/blog?author=${post.author}`}
                                         passHref
                                       >
-                                        <a className="text-dark">
-                                          by @{post.author}
-                                        </a>
+                                        <a>by @{post.author}</a>
                                       </Link>
                                     </em>
                                   </div>
@@ -93,6 +92,7 @@ const DiscoverCountry = () => {
                     })}
                     <div className="text-center pt-4">
                       <Link
+                        color="textPrimary"
                         as={`/destinations/${countryslug}`}
                         href={`/destinations?country=${countryslug}`}
                         passHref

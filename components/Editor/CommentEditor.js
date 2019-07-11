@@ -107,7 +107,7 @@ class CommentEditor extends Component {
           autofocus
           placeholder="Reply"
           onChange={this.handleEditorChange}
-          className="border postcontent pl-2"
+          className="border textPrimary postcontent pl-2"
         />
         <Button
           className="mt-1"

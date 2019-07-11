@@ -14,16 +14,16 @@ import TotalPayoutIcon from '@material-ui/icons/AttachMoney';
 import QualityIcon from '@material-ui/icons/CheckCircle';
 import TotalPostsIcon from '@material-ui/icons/Create';
 import TotalFeaturedIcon from '@material-ui/icons/Star';
-import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
+import calculateQualityScore from '../../helpers/calculateQualityScore';
 import {
   GET_DASHBOARD_POSTS,
   GET_NOTIFICATIONS,
 } from '../../helpers/graphql/posts';
 import { GET_USER_STATS } from '../../helpers/graphql/stats';
-import calculateQualityScore from '../../helpers/calculateQualityScore';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 import CustomSnackbar from './Notifications/CustomSnackbar';
 import PostsTable from './Stats/PostsTable';
@@ -97,12 +97,20 @@ const Stats = () => {
                         </p>
                         <ul>
                           <li>
-                            <Link href="/dashboard/publish" passHref>
+                            <Link
+                              color="textPrimary"
+                              href="/dashboard/publish"
+                              passHref
+                            >
                               <a>Write your next awesome travel post</a>
                             </Link>
                           </li>
                           <li>
-                            <Link href="/dashboard/drafts" passHref>
+                            <Link
+                              color="textPrimary"
+                              href="/dashboard/drafts"
+                              passHref
+                            >
                               <a>
                                 Access your drafts and continue where you left
                                 off
@@ -110,17 +118,29 @@ const Stats = () => {
                             </Link>
                           </li>
                           <li>
-                            <Link href="/dashboard/posts" passHref>
+                            <Link
+                              color="textPrimary"
+                              href="/dashboard/posts"
+                              passHref
+                            >
                               <a>View and edit your published posts</a>
                             </Link>
                           </li>
                           <li>
-                            <Link href="/dashboard/replies" passHref>
+                            <Link
+                              color="textPrimary"
+                              href="/dashboard/replies"
+                              passHref
+                            >
                               <a>View and answer replies from your followers</a>
                             </Link>
                           </li>
                           <li>
-                            <Link href="/dashboard/profile" passHref>
+                            <Link
+                              color="textPrimary"
+                              href="/dashboard/profile"
+                              passHref
+                            >
                               <a>Edit your profile</a>
                             </Link>
                           </li>
@@ -129,7 +149,7 @@ const Stats = () => {
                           To return to TravelFeed and discover other travel
                           blogs, you can always click on your profile icon on
                           the top right and select &quot;TravelFeed&quot; to{' '}
-                          <Link href="/" passHref>
+                          <Link color="textPrimary" href="/" passHref>
                             <a>return to the feed.</a>
                           </Link>
                         </p>

@@ -12,7 +12,6 @@ import FlightIcon from '@material-ui/icons/FlightTakeoff';
 import LinkIcon from '@material-ui/icons/Link';
 import Slider from '@material-ui/lab/Slider';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -20,6 +19,7 @@ import { Query } from 'react-apollo';
 import { vote } from '../../helpers/actions';
 import { GET_VOTE_WEIGHTS } from '../../helpers/graphql/settings';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 
 class VoteSlider extends Component {
   state = {
@@ -129,7 +129,7 @@ class VoteSlider extends Component {
     }
     let cardFooter = <Fragment />;
     let voteButton = (
-      <Link href="/join" passHref>
+      <Link color="textPrimary" href="/join" passHref>
         <Tooltip title="Log in to vote" placement="bottom">
           <IconButton aria-label="Upvote">
             <FlightIcon className="mr" />
@@ -162,7 +162,7 @@ class VoteSlider extends Component {
     let commentButton = <Fragment />;
     if (this.props.mode !== 'gridcard') {
       commentButton = (
-        <Link href="/join" passHref>
+        <Link color="textPrimary" href="/join" passHref>
           <Tooltip title="Login to reply" placement="bottom">
             <IconButton aria-label="Upvote">
               <CommentIcon className="mr" />
@@ -187,6 +187,7 @@ class VoteSlider extends Component {
     if (this.props.mode === 'comment') {
       linkButton = (
         <Link
+          color="textPrimary"
           as={`/@${this.props.author}/${this.props.permlink}`}
           href={`/post?author=${this.props.author}&permlink=${this.props.permlink}`}
           passHref
@@ -223,7 +224,7 @@ class VoteSlider extends Component {
             <div className="row">
               <div className={rowitem1}>
                 {voteButton}
-                <span className="text-muted font-weight-bold">
+                <span className="textSecondary font-weight-bold">
                   {this.state.totalmiles || this.props.total_votes}
                   {commentButton}
                   {editButton}
@@ -234,6 +235,7 @@ class VoteSlider extends Component {
                 {this.props.tags.map(tag => {
                   return (
                     <Link
+                      color="textPrimary"
                       as={`/favorites/${tag}`}
                       href={`/tag?orderby=total_votes&tags=${tag}`}
                       key={tag}
@@ -257,7 +259,9 @@ class VoteSlider extends Component {
       );
     }
     let weightIndicator = (
-      <span className="text-muted font-weight-bold">{this.state.weight}</span>
+      <span className="textSecondary font-weight-bold">
+        {this.state.weight}
+      </span>
     );
     if (this.state.loading !== undefined) {
       weightIndicator = (

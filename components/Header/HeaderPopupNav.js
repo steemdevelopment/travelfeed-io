@@ -7,7 +7,6 @@ import RandomIcon from '@material-ui/icons/Explore';
 import CountryIcon from '@material-ui/icons/Landscape';
 import CityIcon from '@material-ui/icons/LocationCity';
 import MapIcon from '@material-ui/icons/Map';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import {
@@ -20,6 +19,7 @@ import {
   popularCountries,
   slugFromCC,
 } from '../../helpers/countryCodes';
+import Link from '../../lib/Link';
 import DestinationCityColumn from '../Destinations/DestinationCityColumn';
 import DestinationCountryColumn from '../Destinations/DestinationCountryColumn';
 import DestinationMenuItem from '../Destinations/DestinationMenuItem';
@@ -84,7 +84,7 @@ class HeaderPopupNav extends Component {
                           text="Popular Places"
                           active={this.state.selection === 'Popular Places'}
                         />
-                        <Link href="/map" passHref>
+                        <Link color="textPrimary" href="/map" passHref>
                           <a>
                             <DestinationMenuItem
                               onClick={this.props.closeDest}
@@ -94,6 +94,7 @@ class HeaderPopupNav extends Component {
                           </a>
                         </Link>
                         <Link
+                          color="textPrimary"
                           href={`/destinations?country=${this.state.random}`}
                           as={`/destinations/${this.state.random}`}
                           passHref

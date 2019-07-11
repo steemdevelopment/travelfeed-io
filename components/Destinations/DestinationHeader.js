@@ -1,10 +1,10 @@
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
+import Link from '../../lib/Link';
 
 const DestinationHeader = props => {
   const { query, countrySlug, title } = props;
@@ -38,6 +38,7 @@ const DestinationHeader = props => {
                           (query.city && (
                             <span>
                               <Link
+                                color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
                                 passHref
@@ -50,6 +51,7 @@ const DestinationHeader = props => {
                                 {' '}
                                 &raquo;{' '}
                                 <Link
+                                  color="textPrimary"
                                   as={`/destinations/${countrySlug}/${query.subdivision}`}
                                   href={`/destinations?country=${countrySlug}&subdivision=${query.subdivision}`}
                                   passHref
@@ -65,6 +67,7 @@ const DestinationHeader = props => {
                               query.subdivision ||
                               query.city) && (
                               <Link
+                                color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
                                 passHref
@@ -123,6 +126,7 @@ const DestinationHeader = props => {
                                       className="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 text-center"
                                     >
                                       <Link
+                                        color="textPrimary"
                                         href={`/destinations?country=${countrySlug}&subdivision=${
                                           location.subdivision
                                             ? location.subdivision
@@ -156,14 +160,14 @@ const DestinationHeader = props => {
                     </div>
                   </div>
                   <div
-                    className="text-mutedlight text-right pr-1"
+                    className="textSecondarylight text-right pr-1"
                     style={{ fontSize: '0.8rem' }}
                   >
                     {data.locationDetails.url && (
                       <span>
                         Description by{' '}
                         <a
-                          className="text-mutedlight text-decoration-underline"
+                          className="textSecondarylight text-decoration-underline"
                           target="_blank"
                           rel="nofollow noreferrer noopener"
                           href={data.locationDetails.url}
@@ -172,7 +176,7 @@ const DestinationHeader = props => {
                         </a>{' '}
                         under{' '}
                         <a
-                          className="text-mutedlight text-decoration-underline"
+                          className="textSecondarylight text-decoration-underline"
                           target="_blank"
                           rel="nofollow noreferrer noopener"
                           href={data.locationDetails.license}
@@ -187,7 +191,7 @@ const DestinationHeader = props => {
                         Photo:{' '}
                         {(data.locationDetails.unsplashUser && (
                           <a
-                            className="text-mutedlight text-decoration-underline"
+                            className="textSecondarylight text-decoration-underline"
                             target="_blank"
                             rel="nofollow noreferrer noopener"
                             href={`https://unsplash.com/@${data.locationDetails.unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
@@ -196,11 +200,12 @@ const DestinationHeader = props => {
                           </a>
                         )) || (
                           <Link
+                            color="textPrimary"
                             as={`/@${data.locationDetails.attribution}`}
                             href={`/blog?author=${data.locationDetails.attribution}`}
                             passHref
                           >
-                            <a className="text-mutedlight text-decoration-underline">
+                            <a className="textSecondarylight text-decoration-underline">
                               @{data.locationDetails.attribution}
                             </a>
                           </Link>
@@ -212,7 +217,7 @@ const DestinationHeader = props => {
                               target="_blank"
                               rel="nofollow noreferrer noopener"
                               href="https://unsplash.com/?utm_source=TravelFeed&utm_medium=referral"
-                              className="text-mutedlight text-decoration-underline"
+                              className="textSecondarylight text-decoration-underline"
                             >
                               Unsplash
                             </a>

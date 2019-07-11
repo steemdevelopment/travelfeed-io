@@ -9,9 +9,9 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import DraftIcon from '@material-ui/icons/FileCopy';
 import ProfileIcon from '@material-ui/icons/Person';
 import RepliesIcon from '@material-ui/icons/Reply';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Link from '../../lib/Link';
 
 const NavSide = props => {
   const { user } = props;
@@ -20,7 +20,7 @@ const NavSide = props => {
       <div className="col-4" />
       <div className="col-8">
         <MenuList>
-          <Link href="/dashboard" passHref>
+          <Link color="textPrimary" href="/dashboard" passHref>
             <a>
               <MenuItem>
                 <ListItemIcon>
@@ -30,7 +30,7 @@ const NavSide = props => {
               </MenuItem>
             </a>
           </Link>
-          <Link href="/dashboard/publish" passHref>
+          <Link color="textPrimary" href="/dashboard/publish" passHref>
             <a>
               <MenuItem>
                 <ListItemIcon>
@@ -40,7 +40,7 @@ const NavSide = props => {
               </MenuItem>
             </a>
           </Link>
-          <Link href="/dashboard/replies" passHref>
+          <Link color="textPrimary" href="/dashboard/replies" passHref>
             <a>
               <MenuItem>
                 <ListItemIcon>
@@ -50,7 +50,7 @@ const NavSide = props => {
               </MenuItem>
             </a>
           </Link>
-          <Link href="/dashboard/drafts" passHref>
+          <Link color="textPrimary" href="/dashboard/drafts" passHref>
             <a>
               <MenuItem>
                 <ListItemIcon>
@@ -61,7 +61,7 @@ const NavSide = props => {
             </a>
           </Link>
           <Divider />
-          <Link href="/bookmarks" passHref>
+          <Link color="textPrimary" href="/bookmarks" passHref>
             <a>
               <MenuItem>
                 <ListItemIcon>
@@ -71,7 +71,12 @@ const NavSide = props => {
               </MenuItem>
             </a>
           </Link>
-          <Link as={`@${user}`} href={`/blog?author=${user}`} passHref>
+          <Link
+            color="textPrimary"
+            as={`@${user}`}
+            href={`/blog?author=${user}`}
+            passHref
+          >
             <a>
               <MenuItem>
                 <ListItemIcon>

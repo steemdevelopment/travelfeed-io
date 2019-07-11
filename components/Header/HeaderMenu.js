@@ -24,10 +24,10 @@ import ProfileIcon from '@material-ui/icons/Person';
 import SignUpIcon from '@material-ui/icons/PersonAdd';
 import TermsIcon from '@material-ui/icons/Toc';
 import LoginIcon from '@material-ui/icons/VpnKey';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { getLoginURL, getUser, logout } from '../../helpers/token';
+import Link from '../../lib/Link';
 import Logout from '../Login/LogoutButton';
 
 class HeaderMenu extends Component {
@@ -107,7 +107,7 @@ class HeaderMenu extends Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
                       <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link href="/destinations" passHref>
+                        <Link color="textPrimary" href="/destinations" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -117,7 +117,7 @@ class HeaderMenu extends Component {
                             </MenuItem>
                           </a>
                         </Link>
-                        <Link href="/map" passHref>
+                        <Link color="textPrimary" href="/map" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -138,7 +138,7 @@ class HeaderMenu extends Component {
                             </ListItemIcon>
                           </MenuItem>
                         </a>
-                        <Link href="/join" passHref>
+                        <Link color="textPrimary" href="/join" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -150,7 +150,7 @@ class HeaderMenu extends Component {
                         </Link>
                         <Divider />
                       </div>
-                      <Link href="/about/privacy" passHref>
+                      <Link color="textPrimary" href="/about/privacy" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
@@ -160,7 +160,7 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/about/terms" passHref>
+                      <Link color="textPrimary" href="/about/terms" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
@@ -170,7 +170,7 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/about/cookies" passHref>
+                      <Link color="textPrimary" href="/about/cookies" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
@@ -207,7 +207,7 @@ class HeaderMenu extends Component {
             />
             <DownIcon
               className={
-                (this.props.isDashboard && 'text-dark') || 'text-light'
+                (this.props.isDashboard && 'textPrimary') || 'text-light'
               }
             />
           </Button>
@@ -230,7 +230,7 @@ class HeaderMenu extends Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
                       <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link href="/destinations" passHref>
+                        <Link color="textPrimary" href="/destinations" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -240,7 +240,7 @@ class HeaderMenu extends Component {
                             </MenuItem>
                           </a>
                         </Link>
-                        <Link href="/map" passHref>
+                        <Link color="textPrimary" href="/map" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -253,7 +253,7 @@ class HeaderMenu extends Component {
                         <Divider />
                       </div>
                       {(this.props.isDashboard && (
-                        <Link href="/" passHref>
+                        <Link color="textPrimary" href="/" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -264,7 +264,7 @@ class HeaderMenu extends Component {
                           </a>
                         </Link>
                       )) || (
-                        <Link href="/dashboard" passHref>
+                        <Link color="textPrimary" href="/dashboard" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
@@ -275,7 +275,11 @@ class HeaderMenu extends Component {
                           </a>
                         </Link>
                       )}
-                      <Link href="/dashboard/publish" passHref>
+                      <Link
+                        color="textPrimary"
+                        href="/dashboard/publish"
+                        passHref
+                      >
                         <a>
                           <MenuItem>
                             <ListItemIcon>
@@ -285,7 +289,7 @@ class HeaderMenu extends Component {
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/bookmarks" passHref>
+                      <Link color="textPrimary" href="/bookmarks" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
@@ -296,7 +300,7 @@ class HeaderMenu extends Component {
                         </a>
                       </Link>
                       <Divider />
-                      <Link href="/about/privacy" passHref>
+                      <Link color="textPrimary" href="/about/privacy" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>

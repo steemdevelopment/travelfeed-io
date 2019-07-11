@@ -4,9 +4,9 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import Link from '../../lib/Link';
 import Cookies from '../About/Texts/Cookies';
 import Privacy from '../About/Texts/Privacy';
 import Terms from '../About/Texts/Terms';
@@ -46,7 +46,7 @@ class LoginDialog extends Component {
             </Typography>
           </MuiDialogContent>
           <MuiDialogActions>
-            <Link href="/" passHref>
+            <Link color="textPrimary" href="/" passHref>
               <Button color="primary">Decline</Button>
             </Link>
             <Button

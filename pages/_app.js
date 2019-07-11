@@ -1,5 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import * as Sentry from '@sentry/browser';
 import { register, unregister } from 'next-offline/runtime';
 import App, { Container } from 'next/app';
@@ -8,11 +8,10 @@ import { SnackbarProvider } from 'notistack';
 import NProgress from 'nprogress';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import JssProvider from 'react-jss/lib/JssProvider';
 import ReactPiwik from 'react-piwik';
 import CookieConsent from '../components/CookieConsent/CookieConsent';
 import { getUser, hasCookieConsent } from '../helpers/token';
-import getPageContext from '../lib/getPageContext';
+import theme from '../lib/theme';
 import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
@@ -42,11 +41,6 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
-  constructor(props) {
-    super(props);
-    this.pageContext = getPageContext();
-  }
-
   componentDidMount() {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -80,32 +74,19 @@ class MyApp extends App {
     const { Component, pageProps, apollo } = this.props;
     return (
       <Container>
-        {/* Wrap every page in Jss and Theme providers */}
-        <JssProvider
-          registry={this.pageContext.sheetsRegistry}
-          generateClassName={this.pageContext.generateClassName}
-        >
-          {/* MuiThemeProvider makes the theme available down the React
-              tree thanks to React context. */}
-          <MuiThemeProvider
-            theme={this.pageContext.theme}
-            sheetsManager={this.pageContext.sheetsManager}
-          >
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline
-             to build upon. */}
-            <CssBaseline />
-            {/* Pass pageContext to the _document though the renderPage enhancer
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-            {/* <Header /> */}
-            <div style={{ paddingTop: '65px' }} />
-            <SnackbarProvider maxSnack={3}>
-              <ApolloProvider client={apollo}>
-                <CookieConsent />
-                <Component pageContext={this.pageContext} {...pageProps} />
-              </ApolloProvider>
-            </SnackbarProvider>
-          </MuiThemeProvider>
-        </JssProvider>
+          {/* <Header /> */}
+          <div style={{ paddingTop: '65px' }} />
+          <SnackbarProvider maxSnack={3}>
+            <ApolloProvider client={apollo}>
+              <CookieConsent />
+              <Component pageContext={this.pageContext} {...pageProps} />
+            </ApolloProvider>
+          </SnackbarProvider>
+        </ThemeProvider>
       </Container>
     );
   }

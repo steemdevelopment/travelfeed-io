@@ -98,12 +98,8 @@ class PostCommentItem extends Component {
       parent = (
         <div>
           <Link
-            as={`/@${this.props.post.parent_author}/${
-              this.props.post.parent_permlink
-            }`}
-            href={`/post?author=${this.props.post.parent_author}&permlink=${
-              this.props.post.parent_permlink
-            }`}
+            as={`/@${this.props.post.parent_author}/${this.props.post.parent_permlink}`}
+            href={`/post?author=${this.props.post.parent_author}&permlink=${this.props.post.parent_permlink}`}
             passHref
           >
             <a>
@@ -119,12 +115,8 @@ class PostCommentItem extends Component {
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
           <div>
             <Link
-              as={`/@${this.props.post.root_author}/${
-                this.props.post.root_permlink
-              }`}
-              href={`/post?author=${this.props.post.root_author}&permlink=${
-                this.props.post.root_permlink
-              }`}
+              as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
+              href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}`}
               passHref
             >
               <a>
@@ -172,9 +164,7 @@ class PostCommentItem extends Component {
                 <a>
                   <Avatar
                     className="cpointer"
-                    src={`https://steemitimages.com/u/${
-                      this.props.post.author
-                    }/avatar/small`}
+                    src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
                     alt={this.props.post.author}
                   />
                 </a>

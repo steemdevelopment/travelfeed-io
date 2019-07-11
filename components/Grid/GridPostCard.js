@@ -144,9 +144,7 @@ class GridPostCard extends Component {
               <a>
                 <Avatar
                   style={{ cursor: 'pointer' }}
-                  src={`https://steemitimages.com/u/${
-                    this.props.post.author
-                  }/avatar/small`}
+                  src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
                   alt={this.props.post.author}
                 />
               </a>
@@ -174,9 +172,7 @@ class GridPostCard extends Component {
         />
         <Link
           as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-          href={`/post?author=${this.props.post.author}&permlink=${
-            this.props.post.permlink
-          }`}
+          href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
           passHref
         >
           <a>

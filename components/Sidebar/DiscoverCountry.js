@@ -45,9 +45,7 @@ const DiscoverCountry = () => {
                         <div key={post.author + post.permlink}>
                           <Link
                             as={`/@${post.author}/${post.permlink}`}
-                            href={`/post?author=${post.author}&permlink=${
-                              post.permlink
-                            }`}
+                            href={`/post?author=${post.author}&permlink=${post.permlink}`}
                             passHref
                           >
                             <a>

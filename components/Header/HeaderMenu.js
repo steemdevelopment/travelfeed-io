@@ -203,9 +203,7 @@ class HeaderMenu extends Component {
           >
             <Avatar
               className="cpointer"
-              src={`https://steemitimages.com/u/${
-                this.state.user
-              }/avatar/small`}
+              src={`https://steemitimages.com/u/${this.state.user}/avatar/small`}
             />
             <DownIcon
               className={

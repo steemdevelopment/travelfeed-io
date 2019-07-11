@@ -9,9 +9,7 @@ export default class MapCard extends PureComponent {
         <div>
           <Link
             as={`/@${this.props.info.author}/${this.props.info.permlink}`}
-            href={`/post?author=${this.props.info.author}&permlink=${
-              this.props.info.permlink
-            }`}
+            href={`/post?author=${this.props.info.author}&permlink=${this.props.info.permlink}`}
             passHref
           >
             <a>{this.props.info.title}</a>

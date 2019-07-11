@@ -188,9 +188,7 @@ class VoteSlider extends Component {
       linkButton = (
         <Link
           as={`/@${this.props.author}/${this.props.permlink}`}
-          href={`/post?author=${this.props.author}&permlink=${
-            this.props.permlink
-          }`}
+          href={`/post?author=${this.props.author}&permlink=${this.props.permlink}`}
           passHref
         >
           <Tooltip title="Link to comment" placement="bottom">

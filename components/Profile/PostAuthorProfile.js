@@ -27,9 +27,7 @@ const PostAuthorProfile = props => {
                   <a>
                     <img
                       style={{ cursor: 'pointer' }}
-                      src={`https://steemitimages.com/u/${
-                        data.profile.name
-                      }/avatar/medium`}
+                      src={`https://steemitimages.com/u/${data.profile.name}/avatar/medium`}
                       alt={data.profile.name}
                       width="80"
                       height="80"

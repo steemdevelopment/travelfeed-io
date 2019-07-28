@@ -105,7 +105,7 @@ class PostCommentItem extends Component {
             passHref
           >
             <a>
-              <strong>Go to parent comment</strong>
+              <strong className="ablue hoverline">Go to parent comment</strong>
             </a>
           </Link>
         </div>
@@ -123,7 +123,7 @@ class PostCommentItem extends Component {
               passHref
             >
               <a>
-                <strong>Go to original post</strong>
+                <strong className="ablue hoverline">Go to original post</strong>
               </a>
             </Link>
           </div>
@@ -218,6 +218,7 @@ class PostCommentItem extends Component {
             permlink={this.props.post.permlink}
             votes={this.props.post.votes}
             total_votes={this.props.post.total_votes}
+            children={this.props.post.children}
             tags={[]}
             mode="comment"
             handleClick={this.handleClick}

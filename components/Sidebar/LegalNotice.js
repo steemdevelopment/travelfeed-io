@@ -26,7 +26,7 @@ const LegalNotice = () => {
             variant="subtitle"
             display="inline"
           >
-            FAQ{' '}
+            FAQ
           </Typography>
         </a>
       </Link>
@@ -39,7 +39,7 @@ const LegalNotice = () => {
             variant="subtitle"
             display="inline"
           >
-            Support Us{' '}
+            Support Us
           </Typography>
         </a>
       </Link>
@@ -52,7 +52,7 @@ const LegalNotice = () => {
             variant="subtitle"
             display="inline"
           >
-            Terms{' '}
+            Terms
           </Typography>
         </a>
       </Link>
@@ -65,7 +65,7 @@ const LegalNotice = () => {
             variant="subtitle"
             display="inline"
           >
-            Privacy{' '}
+            Privacy
           </Typography>
         </a>
       </Link>
@@ -78,7 +78,7 @@ const LegalNotice = () => {
             variant="subtitle"
             display="inline"
           >
-            Cookies{' '}
+            Cookies
           </Typography>
         </a>
       </Link>

@@ -17,8 +17,8 @@ const NavSide = props => {
   const { user } = props;
   return (
     <div className="row">
-      <div className="col-4" />
-      <div className="col-8">
+      <div className="col-3" />
+      <div className="col-9">
         <MenuList>
           <Link color="textPrimary" href="/dashboard" passHref>
             <a>

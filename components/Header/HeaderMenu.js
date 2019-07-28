@@ -205,11 +205,7 @@ class HeaderMenu extends Component {
               className="cpointer"
               src={`https://steemitimages.com/u/${this.state.user}/avatar/small`}
             />
-            <DownIcon
-              className={
-                (this.props.isDashboard && 'text-dark') || 'text-light'
-              }
-            />
+            <DownIcon className="text-light" />
           </Button>
           <Popper
             open={menuopen}

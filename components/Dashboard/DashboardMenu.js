@@ -1,4 +1,5 @@
 import AppBar from '@material-ui/core/AppBar';
+import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -39,6 +40,7 @@ const styles = theme => ({
     background: maintheme.palette.background.dark,
   },
   appBar: {
+    backgroundColor: indigo[600],
     zIndex: 201,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -133,33 +135,44 @@ class Dashboard extends Component {
           [classes.appBarShift]: this.state.open,
         })}
       >
-        <Toolbar disableGutters={!this.state.open}>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={this.handleDrawerOpen}
-            className={classNames(classes.menuButton, {
-              [classes.hide]: this.state.open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Link color="textPrimary" href="/" passHref>
-            <a style={{ flexGrow: 1 }} className="textPrimary">
-              <Typography
-                variant="h6"
-                className="font-weight-bold cpointer"
-                noWrap
-              >
-                TravelBlog |{' '}
-                {// capitalize
-                this.props.active.charAt(0).toUpperCase() +
-                  this.props.active.slice(1)}
-              </Typography>
-            </a>
-          </Link>
-          <HeaderMenu isDashboard handleLogout={this.handleLogout} />
-        </Toolbar>
+        <div className="container-fluid" style={{ height: '65px' }}>
+          <div className="row h-100">
+            <div className="my-auto col-xl-11 col-lg-11 col-md-10 col-sm-9 col-9">
+              <Toolbar disableGutters={!this.state.open}>
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.handleDrawerOpen}
+                  className={`text-light 
+                    ${classNames(classes.menuButton, {
+                      [classes.hide]: this.state.open,
+                    })}`}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Link color="textPrimary" href="/dashboard" passHref>
+                  <a style={{ flexGrow: 1 }} className="text-light">
+                    <Typography
+                      variant="h6"
+                      className="font-weight-bold cpointer"
+                      noWrap
+                    >
+                      {// capitalize
+                      this.props.active.charAt(0).toUpperCase() +
+                        this.props.active.slice(1)}
+                    </Typography>
+                  </a>
+                </Link>
+              </Toolbar>
+            </div>
+            <div
+              className={`my-auto 
+                    'col-xl-1 col-lg-1 col-md-2'} col-3 text-right`}
+            >
+              <HeaderMenu isDashboard handleLogout={this.handleLogout} />
+            </div>
+          </div>
+        </div>
       </AppBar>
     );
     const drawer = (
@@ -191,7 +204,7 @@ class Dashboard extends Component {
             passHref
           >
             <a>
-              <ListItem selected={this.props.active === 'stats'} button>
+              <ListItem selected={this.props.active === 'dashboard'} button>
                 <ListItemIcon className={classNames(classes.listitem)}>
                   <DashboardIcon />
                 </ListItemIcon>

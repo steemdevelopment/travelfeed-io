@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import { teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 // import Link from '../../lib/Link';
@@ -40,7 +41,7 @@ const DiscoverCountry = () => {
                 titlesize="h5"
                 background={teal[600]}
                 content={
-                  <div className="pt-2">
+                  <div>
                     {data.posts.map(post => {
                       return (
                         <div key={post.author + post.permlink}>
@@ -51,42 +52,44 @@ const DiscoverCountry = () => {
                             passHref
                           >
                             <a>
-                              <div className="container-fluid">
-                                <div className="row h-100 pl-3">
-                                  <div
-                                    className="col-3 my-auto"
-                                    style={{
-                                      backgroundImage: `url(${imageProxy(
-                                        post.img_url,
-                                        100,
-                                        100,
-                                      )})`,
-                                      backgroundRepeat: 'no-repeat',
-                                      backgroundPosition: 'center center',
-                                      backgroundSize: 'cover',
-                                      width: '70px',
-                                      height: '70px',
-                                    }}
-                                  />
-                                  <div className="col-9 my-auto">
-                                    {post.title}
-                                    <br />
-                                    <em>
-                                      <Link
-                                        color="textSecondary"
-                                        as={`/@${post.author}`}
-                                        href={`/blog?author=${post.author}`}
-                                        passHref
-                                      >
-                                        <a>by @{post.author}</a>
-                                      </Link>
-                                    </em>
+                              <CardActionArea className="pt-2 pb-2">
+                                <div className="container-fluid">
+                                  <div className="row h-100 pl-3">
+                                    <div
+                                      className="col-3 my-auto"
+                                      style={{
+                                        backgroundImage: `url(${imageProxy(
+                                          post.img_url,
+                                          100,
+                                          100,
+                                        )})`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center center',
+                                        backgroundSize: 'cover',
+                                        width: '70px',
+                                        height: '70px',
+                                      }}
+                                    />
+                                    <div className="col-9 my-auto">
+                                      {post.title}
+                                      <br />
+                                      <em>
+                                        <Link
+                                          color="textSecondary"
+                                          as={`/@${post.author}`}
+                                          href={`/blog?author=${post.author}`}
+                                          passHref
+                                        >
+                                          <a>by @{post.author}</a>
+                                        </Link>
+                                      </em>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
+                              </CardActionArea>
                             </a>
                           </Link>
-                          <Divider className="mt-2 mb-2 ml-3 mr-3" />
+                          <Divider className="pl-3 pr-3" />
                         </div>
                       );
                     })}

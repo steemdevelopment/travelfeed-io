@@ -167,7 +167,7 @@ class Dashboard extends Component {
             </div>
             <div
               className={`my-auto 
-                    'col-xl-1 col-lg-1 col-md-2'} col-3 text-right`}
+                    'col-xl-1 col-lg-1 col-md-2 col-sm-3'} col-3 text-right`}
             >
               <HeaderMenu isDashboard handleLogout={this.handleLogout} />
             </div>

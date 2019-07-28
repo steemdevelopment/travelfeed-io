@@ -21,7 +21,7 @@ const HeaderCard = props => {
         }
       />
       {props.noborder && props.content}
-      <CardContent>{!props.noborder && props.content}</CardContent>
+      {!props.noborder && <CardContent>{props.content}</CardContent>}
     </Card>
   );
 };

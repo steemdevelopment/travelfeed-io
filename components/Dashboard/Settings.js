@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
+import Cookie from 'js-cookie';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -24,11 +25,16 @@ class Settings extends Component {
     defaultVoteWeight: 0,
     defaultCommentsVoteWeight: 0,
     showNSFW: false,
+    useDarkMode: Cookie.get('use_dark_mode') === 'true',
     useTfBlacklist: true,
   };
 
   handleCheckboxChange = name => event => {
     this.setState({ [name]: event.target.checked });
+    if (name === 'useDarkMode') {
+      if (event.target.checked) Cookie.set('use_dark_mode', true);
+      else Cookie.remove('use_dark_mode');
+    }
   };
 
   handleInputChange = name => event => {
@@ -61,6 +67,7 @@ class Settings extends Component {
       loaded,
       showNSFW,
       useTfBlacklist,
+      useDarkMode,
       saved,
     } = this.state;
     return (
@@ -88,7 +95,12 @@ class Settings extends Component {
                             data.preferences.defaultCommentsVoteWeight,
                           showNSFW: data.preferences.showNSFW,
                           useTfBlacklist: data.preferences.useTfBlacklist,
+                          // useDarkMode: data.preferences.useDarkMode,
                         });
+                        if (data.preferences.useDarkMode)
+                          Cookie.set('use_dark_mode', true);
+                        else if (Cookie.get('use_dark_mode'))
+                          Cookie.remove('use_dark_mode');
                         return <Fragment />;
                       }
                       return (
@@ -99,6 +111,7 @@ class Settings extends Component {
                             defaultCommentsVoteWeight,
                             showNSFW,
                             useTfBlacklist,
+                            useDarkMode,
                           }}
                         >
                           {changeSettings => {
@@ -146,6 +159,22 @@ class Settings extends Component {
                                         />
                                       }
                                       label="Use TravelFeed Blacklist"
+                                    />
+                                    <Divider />
+                                    <FormControlLabel
+                                      labelPlacement="end"
+                                      control={
+                                        <Switch
+                                          checked={useDarkMode}
+                                          onChange={this.handleCheckboxChange(
+                                            'useDarkMode',
+                                          )}
+                                          onInput={changeSettings}
+                                          value="useDarkMode"
+                                          color="primary"
+                                        />
+                                      }
+                                      label="Use dark mode"
                                     />
                                     <Divider />
                                     <TextField

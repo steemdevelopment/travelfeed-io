@@ -7,6 +7,11 @@
 .duDjGM {
   padding-bottom: 14px !important;
 }
+/* Editor textfield overwrites */
+.lafGOK {
+  background: none !important;
+  color: inherit !important;
+}
 
 /* Progress bar */
 #nprogress .bar {

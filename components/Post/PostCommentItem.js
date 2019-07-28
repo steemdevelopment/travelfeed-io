@@ -10,6 +10,7 @@ import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import theme from '../../lib/theme';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
@@ -113,7 +114,10 @@ class PostCommentItem extends Component {
     }
     if (this.props.title === true) {
       title = (
-        <div className="bg-light border p-3 mb-2">
+        <div
+          style={{ background: theme.palette.background.light }}
+          className="border p-3 mb-2"
+        >
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
           <div>
             <Link

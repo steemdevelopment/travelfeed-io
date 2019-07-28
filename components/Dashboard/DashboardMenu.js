@@ -1,5 +1,4 @@
 import AppBar from '@material-ui/core/AppBar';
-import { blueGrey } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,6 +26,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactPiwik from 'react-piwik';
 import Link from '../../lib/Link';
+import maintheme from '../../lib/theme';
 import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
@@ -36,7 +36,7 @@ const styles = theme => ({
     display: 'flex',
   },
   paper: {
-    background: blueGrey[50],
+    background: maintheme.palette.background.dark,
   },
   appBar: {
     zIndex: 201,

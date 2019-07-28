@@ -160,14 +160,14 @@ const DestinationHeader = props => {
                     </div>
                   </div>
                   <div
-                    className="textSecondarylight text-right pr-1"
+                    className="text-mutedlight text-right pr-1"
                     style={{ fontSize: '0.8rem' }}
                   >
                     {data.locationDetails.url && (
                       <span>
                         Description by{' '}
                         <a
-                          className="textSecondarylight text-decoration-underline"
+                          className="text-mutedlight text-decoration-underline"
                           target="_blank"
                           rel="nofollow noreferrer noopener"
                           href={data.locationDetails.url}
@@ -176,7 +176,7 @@ const DestinationHeader = props => {
                         </a>{' '}
                         under{' '}
                         <a
-                          className="textSecondarylight text-decoration-underline"
+                          className="text-mutedlight text-decoration-underline"
                           target="_blank"
                           rel="nofollow noreferrer noopener"
                           href={data.locationDetails.license}
@@ -191,7 +191,7 @@ const DestinationHeader = props => {
                         Photo:{' '}
                         {(data.locationDetails.unsplashUser && (
                           <a
-                            className="textSecondarylight text-decoration-underline"
+                            className="text-mutedlight text-decoration-underline"
                             target="_blank"
                             rel="nofollow noreferrer noopener"
                             href={`https://unsplash.com/@${data.locationDetails.unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
@@ -205,7 +205,7 @@ const DestinationHeader = props => {
                             href={`/blog?author=${data.locationDetails.attribution}`}
                             passHref
                           >
-                            <a className="textSecondarylight text-decoration-underline">
+                            <a className="text-mutedlight text-decoration-underline">
                               @{data.locationDetails.attribution}
                             </a>
                           </Link>
@@ -217,7 +217,7 @@ const DestinationHeader = props => {
                               target="_blank"
                               rel="nofollow noreferrer noopener"
                               href="https://unsplash.com/?utm_source=TravelFeed&utm_medium=referral"
-                              className="textSecondarylight text-decoration-underline"
+                              className="text-mutedlight text-decoration-underline"
                             >
                               Unsplash
                             </a>

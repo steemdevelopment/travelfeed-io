@@ -27,9 +27,20 @@ const Team = () => {
       content: 'Curator',
     },
     {
+      username: 'mrprofessor',
+      photo: 'https://i.imgur.com/cYPGMum.jpg',
+      content: 'Curator',
+    },
+    {
       username: 'smeralda',
       photo:
         'https://cdn.discordapp.com/attachments/509459924216971275/590709431881433098/Smeralda.jpg',
+      content: 'Curator',
+    },
+    {
+      username: 'worldcapture',
+      photo:
+        'https://cdn.steemitimages.com/DQmSm16YZEhpHFsLW8J9RRmAaL4mbW5S2amC1HhGo5xUtwc/Qd-H4Itg_400x400.jpg',
       content: 'Curator',
     },
   ];

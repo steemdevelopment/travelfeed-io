@@ -67,6 +67,7 @@ export const GET_POSTS = gql`
       country_code
       subdivision
       is_blacklisted
+      children
     }
   }
 `;

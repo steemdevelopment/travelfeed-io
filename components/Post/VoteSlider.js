@@ -1,7 +1,9 @@
 // Todo: Tooltip with individual voters over total miles
 
+import Box from '@material-ui/core/Box';
 import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -117,15 +119,16 @@ class VoteSlider extends Component {
   }
 
   render() {
+    const actions = [];
     let sliderstyle = {};
     let rowitem1 = 'col-5 p-0';
-    let rowitem2 = 'col-7 text-right p-0 pt-2';
+    let rowitem2 = 'col-7 text-right p-0 my-auto pr-2';
     if (this.props.mode === 'gridcard') {
       sliderstyle = { fontSize: '0.6rem' };
       rowitem1 = 'col-6 p-0';
-      rowitem2 = 'col-6 pt-2 p-0 text-right';
+      rowitem2 = 'col-6 p-0 text-right my-auto pr-2';
     } else if (this.props.mode === 'comment') {
-      rowitem1 = 'col-12';
+      rowitem1 = 'col-12 p-0';
       rowitem2 = 'd-none';
     }
     let cardFooter = <Fragment />;
@@ -160,33 +163,67 @@ class VoteSlider extends Component {
         </Tooltip>
       );
     }
-    let commentButton = <Fragment />;
-    if (this.props.mode !== 'gridcard') {
-      commentButton = (
-        <Link color="textPrimary" href="/join" passHref>
-          <Tooltip title="Login to reply" placement="bottom">
-            <IconButton aria-label="Upvote">
-              <CommentIcon className="mr" />
-            </IconButton>
-          </Tooltip>
-        </Link>
+    actions.push(
+      <Fragment>
+        {voteButton}
+        <Typography
+          color="textSecondary"
+          component="div"
+          display="inline"
+          className="pr-2"
+        >
+          <Box fontSize={16} fontWeight="fontWeightBold" component="span">
+            {this.state.totalmiles || this.props.total_votes}
+          </Box>
+        </Typography>
+      </Fragment>,
+    );
+    let numberreplies = '';
+    if (this.props.children !== 0)
+      numberreplies = (
+        <Typography
+          color="textSecondary"
+          component="div"
+          display="inline"
+          className="pr-2"
+        >
+          <Box fontSize={16} fontWeight="fontWeightBold" component="span">
+            {this.props.children}
+          </Box>
+        </Typography>
       );
+    if (this.props.mode !== 'gridcard') {
       if (this.state.user != null) {
-        commentButton = (
-          <Tooltip title="Reply" placement="bottom">
-            <IconButton
-              aria-label="Comment"
-              onClick={() => this.expandCommentBar()}
-            >
-              <CommentIcon className="mr" />
-            </IconButton>
-          </Tooltip>
+        actions.push(
+          <Fragment>
+            <Tooltip title="Reply" placement="bottom">
+              <IconButton
+                aria-label="Reply"
+                onClick={() => this.expandCommentBar()}
+              >
+                <CommentIcon className="mr" />
+              </IconButton>
+            </Tooltip>
+            {numberreplies}
+          </Fragment>,
+        );
+      } else {
+        actions.push(
+          <Fragment>
+            <Link color="textPrimary" href="/join" passHref>
+              <Tooltip title="Login to reply" placement="bottom">
+                <IconButton aria-label="Reply">
+                  <CommentIcon className="mr" />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            {numberreplies}
+          </Fragment>,
         );
       }
     }
-    let linkButton = <Fragment />;
     if (this.props.mode === 'comment') {
-      linkButton = (
+      actions.push(
         <Link
           color="textPrimary"
           as={`/@${this.props.author}/${this.props.permlink}`}
@@ -198,13 +235,12 @@ class VoteSlider extends Component {
               <LinkIcon className="mr" />
             </IconButton>
           </Tooltip>
-        </Link>
+        </Link>,
       );
     }
-    let editButton = <Fragment />;
     if (this.props.handleClick !== undefined) {
       if (this.props.isEdit === true) {
-        editButton = (
+        actions.push(
           <Tooltip title="Edit" placement="bottom">
             <IconButton
               aria-label="Edit"
@@ -214,29 +250,33 @@ class VoteSlider extends Component {
             >
               <EditIcon className="mr" />
             </IconButton>
-          </Tooltip>
+          </Tooltip>,
         );
       }
     }
     if (this.state.voteExpanded === false) {
       cardFooter = (
-        <CardActions>
-          <div className="container">
+        <Fragment>
+          <Divider />
+          <div className="container-fluid">
             <div className="row">
               <div className={rowitem1}>
-                {voteButton}
-                <Typography
-                  color="textSecondary"
-                  variant="h6"
-                  component="span"
-                  display="inline"
-                >
-                  {this.state.totalmiles || this.props.total_votes}
-                </Typography>
-                {commentButton}
-                {editButton}
-                {linkButton}
+                <CardActions disableSpacing>
+                  {actions.map(action => {
+                    return <div className="actionli">{action}</div>;
+                  })}
+                </CardActions>
               </div>
+              <style jsx>{`
+                .actionli::after {
+                  content: '\u2022';
+                  color: #ccc;
+                  top: 1px;
+                }
+                .actionli:last-child:after {
+                  content: '';
+                }
+              `}</style>
               <div className={rowitem2}>
                 {this.props.tags.map(tag => {
                   return (
@@ -261,12 +301,19 @@ class VoteSlider extends Component {
               </div>
             </div>
           </div>
-        </CardActions>
+        </Fragment>
       );
     }
     let weightIndicator = (
-      <Typography color="textSecondary" variant="h6" display="inline">
-        {this.state.weight}
+      <Typography
+        color="textSecondary"
+        component="div"
+        display="inline"
+        className="pr-1"
+      >
+        <Box fontSize={16} fontWeight="fontWeightBold" component="span">
+          {this.state.weight}
+        </Box>
       </Typography>
     );
     if (this.state.loading !== undefined) {
@@ -295,32 +342,35 @@ class VoteSlider extends Component {
                 });
             }
             return (
-              <CardActions>
-                <Tooltip title="Upvote now" placement="bottom">
-                  <IconButton
-                    aria-label="Upvote"
-                    onClick={() =>
-                      this.votePost(this.props.author, this.props.permlink)
-                    }
-                    color="primary"
-                  >
-                    <FlightIcon className="mr" />
-                  </IconButton>
-                </Tooltip>
-                <div>{weightIndicator}</div>
-                <Slider
-                  value={this.state.weight}
-                  min={1}
-                  max={10}
-                  step={1}
-                  onChange={this.setWeight}
-                />
-                <Tooltip title="Close" placement="bottom">
-                  <IconButton onClick={() => this.collapseVoteBar()}>
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-              </CardActions>
+              <Fragment>
+                <Divider />
+                <CardActions>
+                  <Tooltip title="Upvote now" placement="bottom">
+                    <IconButton
+                      aria-label="Upvote"
+                      onClick={() =>
+                        this.votePost(this.props.author, this.props.permlink)
+                      }
+                      color="primary"
+                    >
+                      <FlightIcon className="mr" />
+                    </IconButton>
+                  </Tooltip>
+                  <div className="pr-2">{weightIndicator}</div>
+                  <Slider
+                    value={this.state.weight}
+                    min={1}
+                    max={10}
+                    step={1}
+                    onChange={this.setWeight}
+                  />
+                  <Tooltip title="Close" placement="bottom">
+                    <IconButton onClick={() => this.collapseVoteBar()}>
+                      <CloseIcon />
+                    </IconButton>
+                  </Tooltip>
+                </CardActions>
+              </Fragment>
             );
           }}
         </Query>
@@ -331,22 +381,24 @@ class VoteSlider extends Component {
         ssr: false,
       });
       cardFooter = (
-        <CardActions>
-          <div className="w-100">
-            <CommentEditor
-              parent_author={this.props.author}
-              parent_permlink={this.props.permlink}
-              onClose={() => this.collapseCommentBar()}
-              onCommentEdit={this.props.onCommentAdd}
-              // TODO: Collapse comment editor: commentExpand: false
-            />
-          </div>
-          <Tooltip title="Close" placement="bottom">
-            <IconButton onClick={() => this.collapseCommentBar()}>
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-        </CardActions>
+        <Fragment>
+          <Divider />
+          <CardActions>
+            <div className="w-100">
+              <CommentEditor
+                parent_author={this.props.author}
+                parent_permlink={this.props.permlink}
+                onClose={() => this.collapseCommentBar()}
+                onCommentEdit={this.props.onCommentAdd}
+              />
+            </div>
+            <Tooltip title="Close" placement="bottom">
+              <IconButton onClick={() => this.collapseCommentBar()}>
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
+          </CardActions>
+        </Fragment>
       );
     }
     return <Fragment>{cardFooter}</Fragment>;
@@ -357,10 +409,12 @@ VoteSlider.defaultProps = {
   handleClick: undefined,
   isEdit: undefined,
   onCommentAdd: undefined,
+  children: 0,
 };
 
 VoteSlider.propTypes = {
   onCommentAdd: PropTypes.func,
+  children: PropTypes.number,
   author: PropTypes.string.isRequired,
   permlink: PropTypes.string.isRequired,
   votes: PropTypes.string.isRequired,

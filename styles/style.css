@@ -72,6 +72,7 @@ a:hover {
   text-decoration: none !important;
   color: inherit;
 }
+.postcontent a,
 .ablue {
   color: #1e88e5 !important;
 }
@@ -149,6 +150,22 @@ a:hover {
   font-weight: 500;
   line-height: 1.6;
   letter-spacing: 0.0075em;
+}
+.postcontent pre code {
+  white-space: pre-line;
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-left: 3px solid #f36d33;
+  color: #666;
+  font-family: monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  width: 100%;
+  word-spacing: 100%;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
 }
 .postcontent blockquote {
   font-family: medium-content-slab-serif-font, Georgia, Cambria, Times, serif;

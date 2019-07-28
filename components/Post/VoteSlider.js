@@ -4,6 +4,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import CommentIcon from '@material-ui/icons/AddComment';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
@@ -224,12 +225,17 @@ class VoteSlider extends Component {
             <div className="row">
               <div className={rowitem1}>
                 {voteButton}
-                <span className="textSecondary font-weight-bold">
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  component="span"
+                  display="inline"
+                >
                   {this.state.totalmiles || this.props.total_votes}
-                  {commentButton}
-                  {editButton}
-                  {linkButton}
-                </span>
+                </Typography>
+                {commentButton}
+                {editButton}
+                {linkButton}
               </div>
               <div className={rowitem2}>
                 {this.props.tags.map(tag => {
@@ -259,9 +265,9 @@ class VoteSlider extends Component {
       );
     }
     let weightIndicator = (
-      <span className="textSecondary font-weight-bold">
+      <Typography color="textSecondary" variant="h6" display="inline">
         {this.state.weight}
-      </span>
+      </Typography>
     );
     if (this.state.loading !== undefined) {
       weightIndicator = (

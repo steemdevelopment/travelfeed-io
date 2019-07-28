@@ -2,6 +2,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -195,10 +196,14 @@ class PostCommentItem extends Component {
               >
                 <a className="textPrimary cpointer">
                   <strong>{this.props.post.display_name}</strong>
-                  <span className="textSecondary">
+                  <Typography
+                    color="textSecondary"
+                    variant="subtitle"
+                    display="inline"
+                  >
                     {' '}
                     @{this.props.post.author}
-                  </span>
+                  </Typography>
                 </a>
               </Link>
             }

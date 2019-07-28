@@ -49,9 +49,9 @@ const PostAuthorProfile = props => {
                       <Typography variant="h6" className="textPrimary cpointer">
                         {data.profile.display_name}
                       </Typography>
-                      <span className="textSecondary">
+                      <Typography color="textSecondary" variant="subtitle">
                         @{data.profile.name}
-                      </span>
+                      </Typography>
                     </a>
                   </Link>
                   {data.profile.isCurator && (

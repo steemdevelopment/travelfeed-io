@@ -68,7 +68,7 @@ a:hover {
   color: inherit;
 }
 .postcontent a:hover,
-a.hoverline:hover {
+.hoverline:hover {
   text-decoration: underline !important;
   color: #1e88e5;
 }

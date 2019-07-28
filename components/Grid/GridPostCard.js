@@ -162,10 +162,14 @@ class GridPostCard extends Component {
             >
               <a className="textPrimary cpointer">
                 <strong>{this.props.post.display_name}</strong>
-                <span className="textSecondary">
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle"
+                  display="inline"
+                >
                   {' '}
                   @{this.props.post.author}
-                </span>
+                </Typography>
               </a>
             </Link>
           }

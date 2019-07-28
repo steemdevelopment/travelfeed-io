@@ -289,10 +289,14 @@ class SinglePost extends Component {
                           >
                             <a className="textPrimary cpointer">
                               <strong>{data.post.display_name}</strong>
-                              <span className="textSecondary">
+                              <Typography
+                                color="textSecondary"
+                                variant="subtitle"
+                                display="inline"
+                              >
                                 {' '}
                                 @{data.post.author}
-                              </span>
+                              </Typography>
                             </a>
                           </Link>
                         </Fragment>

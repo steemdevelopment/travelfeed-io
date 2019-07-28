@@ -1,3 +1,4 @@
+import CardActionArea from '@material-ui/core/CardActionArea';
 import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -18,31 +19,28 @@ const BlogGridList = () => {
           if (loading || error || data.post === null) {
             return <Fragment />;
           }
+          const posts = [
+            {
+              author: 'travelfeed',
+              permlink: 'introducing-travelfeed-beta',
+              title: 'Introducing TravelFeed Beta',
+            },
+            ...data.posts,
+          ];
           return (
             <Fragment>
               <HeaderCard
+                noborder
                 title="From Our Blog"
                 titlesize="h5"
                 background={indigo[600]}
                 content={
                   <Fragment>
-                    <div key="@travelfeedintroducing-travelfeed-beta">
-                      <Link
-                        color="textPrimary"
-                        as="/@travelfeed/introducing-travelfeed-beta"
-                        href="/post?author=travelfeed&permlink=introducing-travelfeed-beta"
-                        passHref
-                      >
-                        <a>
-                          <ListItemText primary="Introducing TravelFeed Beta" />
-                        </a>
-                      </Link>
-                    </div>
-                    {data.posts.map(post => {
+                    {posts.map(post => {
                       return (
                         <Fragment>
                           <div key={post.author + post.permlink}>
-                            <Divider className="mt-2 mb-2" />
+                            <Divider className="pl-3 pr-3" />
                             <Link
                               color="textPrimary"
                               as={`/@${post.author}/${post.permlink}`}
@@ -50,7 +48,15 @@ const BlogGridList = () => {
                               passHref
                             >
                               <a>
-                                <ListItemText primary={post.title} />
+                                <CardActionArea className="pt-2 pb-2">
+                                  <div className="container-fluid">
+                                    <div className="row h-100">
+                                      <div className="col-12">
+                                        <ListItemText primary={post.title} />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </CardActionArea>
                               </a>
                             </Link>
                           </div>

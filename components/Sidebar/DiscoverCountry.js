@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 // import Link from '../../lib/Link';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -71,7 +72,9 @@ const DiscoverCountry = () => {
                                       }}
                                     />
                                     <div className="col-9 my-auto">
-                                      {post.title}
+                                      <Typography variant="subtitle">
+                                        {post.title}
+                                      </Typography>
                                       <br />
                                       <em>
                                         <Link
@@ -93,7 +96,7 @@ const DiscoverCountry = () => {
                         </div>
                       );
                     })}
-                    <div className="text-center pt-4">
+                    <div className="text-center pt-3 pb-3">
                       <Link
                         color="textPrimary"
                         as={`/destinations/${countryslug}`}

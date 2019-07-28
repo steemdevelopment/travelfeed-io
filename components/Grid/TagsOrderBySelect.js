@@ -4,9 +4,9 @@ import Tabs from '@material-ui/core/Tabs';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import HotIcon from '@material-ui/icons/FlightTakeoff';
 import FeaturedIcon from '@material-ui/icons/Star';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Link from '../../lib/Link';
 
 class TagsOrderBySelect extends React.Component {
   render() {
@@ -16,8 +16,8 @@ class TagsOrderBySelect extends React.Component {
           value={this.props.selection}
           onChange={this.handleChange}
           variant="fullWidth"
-          indicatorColor="secondary"
-          textColor="secondary"
+          indicatorColor="primary"
+          textColor="primary"
           centered
         >
           <Link

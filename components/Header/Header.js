@@ -12,7 +12,8 @@ import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
-import LoginButtons from './LoginButtons';
+import LoginButton from './LoginButton';
+import SignUpButton from './SignUpButton';
 
 const styles = () => ({
   root: {
@@ -116,7 +117,7 @@ class Header extends Component {
                 </div>
                 {!this.state.user && (
                   <div className="my-auto col-xl-2 col-lg-3 d-md-none d-sm-none d-none d-xl-block d-lg-block text-right">
-                    <LoginButtons />
+                    <SignUpButton /> <LoginButton />
                   </div>
                 )}
                 <div

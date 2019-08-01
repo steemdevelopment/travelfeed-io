@@ -35,6 +35,7 @@ export default class RecentEarningsChart extends PureComponent {
     recentPayouts.forEach(d => {
       data.push({ name: months[d.month], earnings: d.earnings });
     });
+    data.reverse();
     return (
       <ResponsiveContainer width="100%" height={250}>
         <BarChart

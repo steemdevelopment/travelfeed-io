@@ -151,11 +151,12 @@ class PostListItem extends Component {
                       <span className="textPrimary pl-2 font-weight-bold">
                         Payout in{' '}
                         {Math.ceil(
-                          Math.abs(
-                            new Date().getTime() -
-                              new Date(this.props.post.created_at).getTime(),
-                          ) /
-                            (1000 * 60 * 60 * 24),
+                          7 -
+                            Math.abs(
+                              new Date().getTime() -
+                                new Date(this.props.post.created_at).getTime(),
+                            ) /
+                              (1000 * 60 * 60 * 24),
                         )}{' '}
                         days
                       </span>

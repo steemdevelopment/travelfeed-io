@@ -49,7 +49,7 @@ class SinglePost extends Component {
   componentDidMount() {
     if (this.myInput.current) {
       const cardWidth =
-        Math.round(this.myInput.current.offsetWidth / 100) * 100;
+        Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
       this.setState({ cardWidth });
     }
     if (!document.lazyLoadInstance) {

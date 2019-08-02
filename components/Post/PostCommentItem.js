@@ -4,6 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
+import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -64,6 +65,8 @@ class PostCommentItem extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     // Prevent SSR
     const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
       ssr: false,
@@ -120,7 +123,10 @@ class PostCommentItem extends Component {
     }
     if (this.props.title === true) {
       title = (
-        <div className="areabg" className="border p-3 mb-2">
+        <div
+          className={`border p-3 mb-2 
+        ${classNames(classes.areabg)}`}
+        >
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
           <div>
             <Link
@@ -267,6 +273,7 @@ PostCommentItem.defaultProps = {
 };
 
 PostCommentItem.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   loadreplies: PropTypes.bool,
   title: PropTypes.bool,

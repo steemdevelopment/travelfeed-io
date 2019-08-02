@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Create';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';
 import { withStyles } from '@material-ui/styles';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
@@ -29,6 +30,8 @@ class PostListItem extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     // Hide if deleted (for drafts)
     if (!this.state.show) {
       return <Fragment />;
@@ -96,7 +99,7 @@ class PostListItem extends Component {
               </Typography>
             </div>
           </CardContent>
-          <CardActions className="areabg">
+          <CardActions className={classNames(classes.areabg)}>
             <div className="container-fluid">
               <div className="row w-100">
                 <div className="col-7 my-auto">
@@ -186,6 +189,7 @@ PostListItem.defaultProps = {
 };
 
 PostListItem.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   isDraftMode: PropTypes.bool,
   id: PropTypes.string.isRequired,

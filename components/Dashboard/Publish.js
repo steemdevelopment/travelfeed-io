@@ -30,7 +30,6 @@ import {
 import { getUser } from '../../helpers/token';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HtmlEditor from '../Editor/HTMLEditor';
-import HtmlEditorPreview from '../Editor/HTMLEditorPreview';
 import LocationPicker from '../Editor/LocationPickerButton';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
@@ -42,7 +41,7 @@ const PostEditor = props => {
   const [tags, setTags] = useState(undefined);
   const [completed, setCompleted] = useState(0);
   const [location, setLocation] = useState(undefined);
-  const [codeEditor, setCodeEditor] = useState(false);
+  const [codeEditor, setCodeEditor] = useState(true);
   const [saved, setSaved] = useState(true);
   const [featuredImage, setFeaturedImage] = useState([]);
   const [user, setUser] = useState(undefined);
@@ -58,7 +57,7 @@ const PostEditor = props => {
         : undefined;
     setTitle(props.edit.title ? props.edit.title : '');
     setContent(props.edit.body ? props.edit.body : '');
-    setCodeEditor(props.edit.body !== undefined);
+    // setCodeEditor(props.edit.body !== undefined);
     setTags(json && json.tags ? json.tags : ['travelfeed']);
     setLocation(json && json.location ? json.location : undefined);
     setFeaturedImage(
@@ -85,6 +84,10 @@ const PostEditor = props => {
 
   const handleEditorChange = value => {
     const text = value();
+    setContent(text);
+  };
+
+  const handleHtmlEditorChange = ({ text }) => {
     setContent(text);
   };
 
@@ -179,7 +182,7 @@ const PostEditor = props => {
       : 'Once published, your post cannot be deleted';
   return (
     <Fragment>
-      <div className="container">
+      <div className="container-fluid p-4">
         <div className="row">
           <div className="col-12 p-1 pt-3">
             <Card>
@@ -236,7 +239,10 @@ const PostEditor = props => {
                       <div>
                         {(codeEditor && mounted && (
                           <Fragment>
-                            <HtmlEditor data={content} onChange={setContent} />
+                            <HtmlEditor
+                              data={content}
+                              onChange={handleHtmlEditorChange}
+                            />
                           </Fragment>
                         )) || (
                           <div>
@@ -265,8 +271,6 @@ const PostEditor = props => {
                             codeEditor={codeEditor}
                           />
                         </div>
-                        <h5 className="pt-2">Preview</h5>
-                        <HtmlEditorPreview preview={content} />
                       </div>
                     );
                   }}

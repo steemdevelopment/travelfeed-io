@@ -23,29 +23,27 @@ const Settings = props => {
 
   const useDarkMode = theme === 'dark';
 
-  const [state, setState] = useState({
-    loaded: false,
-    saved: true,
-    defaultVoteWeight: 0,
-    defaultCommentsVoteWeight: 0,
-    showNSFW: false,
-    useTfBlacklist: true,
-  });
+  const [loaded, setLoaded] = useState(false);
+
+  const [saved, setSaved] = useState(true);
+
+  const [defaultVoteWeight, setDefaultVoteWeight] = useState(0);
+
+  const [defaultCommentsVoteWeight, setDefaultCommentsVoteWeight] = useState(0);
+
+  const [showNSFW, setShowNSFW] = useState(false);
+
+  const [useTfBlacklist, setUseTfBlacklist] = useState(true);
 
   const handleCheckboxChange = name => event => {
-    setState({ [name]: event.target.checked });
     if (name === 'useDarkMode') {
       if (useDarkMode) setLightMode();
       else setDarkMode();
+    } else if (name === 'showNSFW') {
+      setShowNSFW(event.target.checked);
+    } else if (name === 'useTfBlacklist') {
+      setUseTfBlacklist(event.target.checked);
     }
-  };
-
-  const setDefaultCommentsVoteWeight = value => {
-    setState({ defaultCommentsVoteWeight: value });
-  };
-
-  const setDefaultVoteWeight = value => {
-    setState({ defaultVoteWeight: value });
   };
 
   const newNotification = notification => {
@@ -58,15 +56,6 @@ const Settings = props => {
       enqueueSnackbar(notification.message, { variant });
     }
   };
-
-  const {
-    defaultVoteWeight,
-    defaultCommentsVoteWeight,
-    loaded,
-    showNSFW,
-    useTfBlacklist,
-    saved,
-  } = state;
 
   return (
     <Fragment>
@@ -86,14 +75,13 @@ const Settings = props => {
                 {({ data }) => {
                   if (data) {
                     if (loaded === false && data && data.preferences) {
-                      setState({
-                        loaded: true,
-                        defaultVoteWeight: data.preferences.defaultVoteWeight,
-                        defaultCommentsVoteWeight:
-                          data.preferences.defaultCommentsVoteWeight,
-                        showNSFW: data.preferences.showNSFW,
-                        useTfBlacklist: data.preferences.useTfBlacklist,
-                      });
+                      setLoaded(true);
+                      setDefaultVoteWeight(data.preferences.defaultVoteWeight);
+                      setDefaultCommentsVoteWeight(
+                        data.preferences.defaultCommentsVoteWeight,
+                      );
+                      setShowNSFW(data.preferences.showNSFW);
+                      setUseTfBlacklist(data.preferences.useTfBlacklist);
                       return <Fragment />;
                     }
                     return (
@@ -108,14 +96,14 @@ const Settings = props => {
                       >
                         {changeSettings => {
                           if (data.loading && saved) {
-                            setState({ saved: false });
+                            setSaved(false);
                           }
                           if (data.data && !saved) {
                             newNotification({
                               success: data.data.updatePreferences.success,
                               message: data.data.updatePreferences.message,
                             });
-                            setState({ saved: true });
+                            setSaved(true);
                           }
                           return (
                             <Fragment>

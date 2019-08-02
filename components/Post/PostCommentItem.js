@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -10,11 +11,16 @@ import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
-import theme from '../../lib/theme';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
+
+const styles = theme => ({
+  areabg: {
+    background: theme.palette.background.light,
+  },
+});
 
 class PostCommentItem extends Component {
   state = {
@@ -114,10 +120,7 @@ class PostCommentItem extends Component {
     }
     if (this.props.title === true) {
       title = (
-        <div
-          style={{ background: theme.palette.background.light }}
-          className="border p-3 mb-2"
-        >
+        <div className="areabg" className="border p-3 mb-2">
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
           <div>
             <Link
@@ -271,4 +274,4 @@ PostCommentItem.propTypes = {
   orderdir: PropTypes.string,
 };
 
-export default PostCommentItem;
+export default withStyles(styles, { withTheme: true })(PostCommentItem);

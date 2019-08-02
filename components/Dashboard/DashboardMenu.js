@@ -27,7 +27,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactPiwik from 'react-piwik';
 import Link from '../../lib/Link';
-import maintheme from '../../lib/theme';
 import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
@@ -37,7 +36,7 @@ const styles = theme => ({
     display: 'flex',
   },
   paper: {
-    background: maintheme.palette.background.dark,
+    background: theme.palette.background.dark,
   },
   appBar: {
     backgroundColor: indigo[600],

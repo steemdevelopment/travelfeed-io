@@ -8,14 +8,19 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Create';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';
+import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
-import theme from '../../lib/theme';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
+const styles = theme => ({
+  areabg: {
+    background: theme.palette.background.light,
+  },
+});
 class PostListItem extends Component {
   state = { show: true };
 
@@ -91,7 +96,7 @@ class PostListItem extends Component {
               </Typography>
             </div>
           </CardContent>
-          <CardActions style={{ background: theme.palette.background.dark }}>
+          <CardActions className="areabg">
             <div className="container-fluid">
               <div className="row w-100">
                 <div className="col-7 my-auto">
@@ -186,4 +191,4 @@ PostListItem.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-export default PostListItem;
+export default withStyles(styles, { withTheme: true })(PostListItem);

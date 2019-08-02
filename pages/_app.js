@@ -1,6 +1,7 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/styles';
 import * as Sentry from '@sentry/browser';
+import Cookie from 'js-cookie';
 import { register, unregister } from 'next-offline/runtime';
 import App, { Container } from 'next/app';
 import Router from 'next/router';
@@ -10,8 +11,9 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ReactPiwik from 'react-piwik';
 import CookieConsent from '../components/CookieConsent/CookieConsent';
+import UserContext from '../components/General/UserContext';
 import { getUser, hasCookieConsent } from '../helpers/token';
-import theme from '../lib/theme';
+import { getTheme } from '../lib/theme';
 import withApollo from '../lib/withApollo';
 import '../styles/bootstrap.min.css';
 import '../styles/style.css';
@@ -41,7 +43,11 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
+  state = { theme: 'dark' };
+
   componentDidMount() {
+    const theme = Cookie.get('use_dark_mode') !== 'true' ? 'light' : 'dark';
+    this.setState({ theme });
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
@@ -70,23 +76,46 @@ class MyApp extends App {
     super.componentDidCatch(error, errorInfo);
   }
 
+  setDarkMode = () => {
+    Cookie.set('use_dark_mode', true);
+    this.setState({
+      theme: 'dark',
+    });
+  };
+
+  setLightMode = () => {
+    Cookie.remove('use_dark_mode');
+    this.setState({
+      theme: 'light',
+    });
+  };
+
   render() {
     const { Component, pageProps, apollo } = this.props;
+    const theme = getTheme({ paletteType: this.state.theme });
     return (
       <Container>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {/* Pass pageContext to the _document though the renderPage enhancer
+        <UserContext.Provider
+          value={{
+            theme: this.state.theme,
+            setDarkMode: this.setDarkMode,
+            setLightMode: this.setLightMode,
+            // React Hooks: https://reacttricks.com/sharing-global-data-in-next-with-custom-app-and-usecontext-hook/
+          }}
+        >
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-          {/* <Header /> */}
-          <div style={{ paddingTop: '65px' }} />
-          <SnackbarProvider maxSnack={3}>
-            <ApolloProvider client={apollo}>
-              <CookieConsent />
-              <Component pageContext={this.pageContext} {...pageProps} />
-            </ApolloProvider>
-          </SnackbarProvider>
-        </ThemeProvider>
+            <div style={{ paddingTop: '65px' }} />
+            <SnackbarProvider maxSnack={3}>
+              <ApolloProvider client={apollo}>
+                <CookieConsent />
+                <Component pageContext={this.pageContext} {...pageProps} />
+              </ApolloProvider>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </UserContext.Provider>
       </Container>
     );
   }

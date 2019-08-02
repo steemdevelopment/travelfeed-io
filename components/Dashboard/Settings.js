@@ -8,241 +8,229 @@ import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import Cookie from 'js-cookie';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import { CHANGE_SETTINGS, GET_SETTINGS } from '../../helpers/graphql/settings';
 import HeaderCard from '../General/HeaderCard';
+import UserContext from '../General/UserContext';
 
 const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-class Settings extends Component {
-  state = {
+const Settings = props => {
+  const { theme, setDarkMode, setLightMode } = useContext(UserContext);
+
+  const useDarkMode = theme === 'dark';
+
+  const [state, setState] = useState({
     loaded: false,
     saved: true,
     defaultVoteWeight: 0,
     defaultCommentsVoteWeight: 0,
     showNSFW: false,
-    useDarkMode: Cookie.get('use_dark_mode') === 'true',
     useTfBlacklist: true,
-  };
+  });
 
-  handleCheckboxChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+  const handleCheckboxChange = name => event => {
+    setState({ [name]: event.target.checked });
     if (name === 'useDarkMode') {
-      if (event.target.checked) Cookie.set('use_dark_mode', true);
-      else Cookie.remove('use_dark_mode');
+      if (useDarkMode) setLightMode();
+      else setDarkMode();
     }
   };
 
-  handleInputChange = name => event => {
-    this.setState({ [name]: event.target.value });
+  const setDefaultCommentsVoteWeight = value => {
+    setState({ defaultCommentsVoteWeight: value });
   };
 
-  setDefaultCommentsVoteWeight = value => {
-    this.setState({ defaultCommentsVoteWeight: value });
+  const setDefaultVoteWeight = value => {
+    setState({ defaultVoteWeight: value });
   };
 
-  setDefaultVoteWeight = value => {
-    this.setState({ defaultVoteWeight: value });
-  };
-
-  newNotification(notification) {
+  const newNotification = notification => {
     if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
-      const { enqueueSnackbar } = this.props;
+      const { enqueueSnackbar } = props;
       enqueueSnackbar(notification.message, { variant });
     }
-  }
+  };
 
-  render() {
-    const {
-      defaultVoteWeight,
-      defaultCommentsVoteWeight,
-      loaded,
-      showNSFW,
-      useTfBlacklist,
-      useDarkMode,
-      saved,
-    } = this.state;
-    return (
-      <Fragment>
-        <Grid
-          container
-          spacing={0}
-          alignItems="center"
-          justify="center"
-          className="pt-4 pb-4 p-1"
-        >
-          <Grid item lg={7} md={8} sm={11} xs={12}>
-            <HeaderCard
-              title="Settings"
-              background={teal[600]}
-              content={
-                <Query query={GET_SETTINGS}>
-                  {({ data }) => {
-                    if (data) {
-                      if (loaded === false && data && data.preferences) {
-                        this.setState({
-                          loaded: true,
-                          defaultVoteWeight: data.preferences.defaultVoteWeight,
-                          defaultCommentsVoteWeight:
-                            data.preferences.defaultCommentsVoteWeight,
-                          showNSFW: data.preferences.showNSFW,
-                          useTfBlacklist: data.preferences.useTfBlacklist,
-                          // useDarkMode: data.preferences.useDarkMode,
-                        });
-                        if (data.preferences.useDarkMode)
-                          Cookie.set('use_dark_mode', true);
-                        else if (Cookie.get('use_dark_mode'))
-                          Cookie.remove('use_dark_mode');
-                        return <Fragment />;
-                      }
-                      return (
-                        <Mutation
-                          mutation={CHANGE_SETTINGS}
-                          variables={{
-                            defaultVoteWeight,
-                            defaultCommentsVoteWeight,
-                            showNSFW,
-                            useTfBlacklist,
-                            useDarkMode,
-                          }}
-                        >
-                          {changeSettings => {
-                            if (data.loading && saved) {
-                              this.setState({ saved: false });
-                            }
-                            if (data.data && !saved) {
-                              this.newNotification({
-                                success: data.data.updatePreferences.success,
-                                message: data.data.updatePreferences.message,
-                              });
-                              this.setState({ saved: true });
-                            }
-                            return (
-                              <Fragment>
-                                <FormControl fullWidth>
-                                  <FormGroup>
-                                    <FormControlLabel
-                                      labelPlacement="end"
-                                      control={
-                                        <Switch
-                                          checked={showNSFW}
-                                          onChange={this.handleCheckboxChange(
-                                            'showNSFW',
-                                          )}
-                                          onInput={changeSettings}
-                                          value="showNSFW"
-                                          color="primary"
-                                        />
-                                      }
-                                      label="Show NSFW posts"
-                                    />
-                                    <Divider />
-                                    <FormControlLabel
-                                      labelPlacement="end"
-                                      control={
-                                        <Switch
-                                          checked={useTfBlacklist}
-                                          onChange={this.handleCheckboxChange(
-                                            'useTfBlacklist',
-                                          )}
-                                          onInput={changeSettings}
-                                          value="useTfBlacklist"
-                                          color="primary"
-                                        />
-                                      }
-                                      label="Use TravelFeed Blacklist"
-                                    />
-                                    <Divider />
-                                    <FormControlLabel
-                                      labelPlacement="end"
-                                      control={
-                                        <Switch
-                                          checked={useDarkMode}
-                                          onChange={this.handleCheckboxChange(
-                                            'useDarkMode',
-                                          )}
-                                          onInput={changeSettings}
-                                          value="useDarkMode"
-                                          color="primary"
-                                        />
-                                      }
-                                      label="Use dark mode"
-                                    />
-                                    <Divider />
-                                    <TextField
-                                      select
-                                      label="Default miles weight for posts"
-                                      value={defaultVoteWeight}
-                                      onChange={value => {
-                                        this.setDefaultVoteWeight(
-                                          value.target.value,
-                                        );
-                                        changeSettings({
-                                          variables: {
-                                            defaultVoteWeight:
-                                              value.target.value,
-                                          },
-                                        });
-                                      }}
-                                      margin="normal"
-                                    >
-                                      {weights.map(w => (
-                                        <MenuItem key={w} value={w}>
-                                          {w}
-                                        </MenuItem>
-                                      ))}
-                                    </TextField>
-                                    <Divider />
-                                    <TextField
-                                      select
-                                      label="Default miles weight on comments"
-                                      value={defaultCommentsVoteWeight}
-                                      onChange={value => {
-                                        this.setDefaultCommentsVoteWeight(
-                                          value.target.value,
-                                        );
-                                        changeSettings({
-                                          variables: {
-                                            defaultCommentsVoteWeight:
-                                              value.target.value,
-                                          },
-                                        });
-                                      }}
-                                      margin="normal"
-                                    >
-                                      {weights.map(w => (
-                                        <MenuItem key={w} value={w}>
-                                          {w}
-                                        </MenuItem>
-                                      ))}
-                                    </TextField>
-                                  </FormGroup>
-                                </FormControl>
-                              </Fragment>
-                            );
-                          }}
-                        </Mutation>
-                      );
+  const {
+    defaultVoteWeight,
+    defaultCommentsVoteWeight,
+    loaded,
+    showNSFW,
+    useTfBlacklist,
+    saved,
+  } = state;
+
+  return (
+    <Fragment>
+      <Grid
+        container
+        spacing={0}
+        alignItems="center"
+        justify="center"
+        className="pt-4 pb-4 p-1"
+      >
+        <Grid item lg={7} md={8} sm={11} xs={12}>
+          <HeaderCard
+            title="Settings"
+            background={teal[600]}
+            content={
+              <Query query={GET_SETTINGS}>
+                {({ data }) => {
+                  if (data) {
+                    if (loaded === false && data && data.preferences) {
+                      setState({
+                        loaded: true,
+                        defaultVoteWeight: data.preferences.defaultVoteWeight,
+                        defaultCommentsVoteWeight:
+                          data.preferences.defaultCommentsVoteWeight,
+                        showNSFW: data.preferences.showNSFW,
+                        useTfBlacklist: data.preferences.useTfBlacklist,
+                      });
+                      return <Fragment />;
                     }
-                    return <Fragment />;
-                  }}
-                </Query>
-              }
-            />
-          </Grid>
+                    return (
+                      <Mutation
+                        mutation={CHANGE_SETTINGS}
+                        variables={{
+                          defaultVoteWeight,
+                          defaultCommentsVoteWeight,
+                          showNSFW,
+                          useTfBlacklist,
+                        }}
+                      >
+                        {changeSettings => {
+                          if (data.loading && saved) {
+                            setState({ saved: false });
+                          }
+                          if (data.data && !saved) {
+                            newNotification({
+                              success: data.data.updatePreferences.success,
+                              message: data.data.updatePreferences.message,
+                            });
+                            setState({ saved: true });
+                          }
+                          return (
+                            <Fragment>
+                              <FormControl fullWidth>
+                                <FormGroup>
+                                  <FormControlLabel
+                                    labelPlacement="end"
+                                    control={
+                                      <Switch
+                                        checked={showNSFW}
+                                        onChange={handleCheckboxChange(
+                                          'showNSFW',
+                                        )}
+                                        onInput={changeSettings}
+                                        value="showNSFW"
+                                        color="primary"
+                                      />
+                                    }
+                                    label="Show NSFW posts"
+                                  />
+                                  <Divider />
+                                  <FormControlLabel
+                                    labelPlacement="end"
+                                    control={
+                                      <Switch
+                                        checked={useTfBlacklist}
+                                        onChange={handleCheckboxChange(
+                                          'useTfBlacklist',
+                                        )}
+                                        onInput={changeSettings}
+                                        value="useTfBlacklist"
+                                        color="primary"
+                                      />
+                                    }
+                                    label="Use TravelFeed Blacklist"
+                                  />
+                                  <Divider />
+                                  <FormControlLabel
+                                    labelPlacement="end"
+                                    control={
+                                      <Switch
+                                        checked={useDarkMode}
+                                        onChange={handleCheckboxChange(
+                                          'useDarkMode',
+                                        )}
+                                        onInput={changeSettings}
+                                        value="useDarkMode"
+                                        color="primary"
+                                      />
+                                    }
+                                    label="Use dark mode"
+                                  />
+                                  <Divider />
+                                  <TextField
+                                    select
+                                    label="Default miles weight for posts"
+                                    value={defaultVoteWeight}
+                                    onChange={value => {
+                                      setDefaultVoteWeight(value.target.value);
+                                      changeSettings({
+                                        variables: {
+                                          defaultVoteWeight: value.target.value,
+                                        },
+                                      });
+                                    }}
+                                    margin="normal"
+                                  >
+                                    {weights.map(w => (
+                                      <MenuItem key={w} value={w}>
+                                        {w}
+                                      </MenuItem>
+                                    ))}
+                                  </TextField>
+                                  <Divider />
+                                  <TextField
+                                    select
+                                    label="Default miles weight on comments"
+                                    value={defaultCommentsVoteWeight}
+                                    onChange={value => {
+                                      setDefaultCommentsVoteWeight(
+                                        value.target.value,
+                                      );
+                                      changeSettings({
+                                        variables: {
+                                          defaultCommentsVoteWeight:
+                                            value.target.value,
+                                        },
+                                      });
+                                    }}
+                                    margin="normal"
+                                  >
+                                    {weights.map(w => (
+                                      <MenuItem key={w} value={w}>
+                                        {w}
+                                      </MenuItem>
+                                    ))}
+                                  </TextField>
+                                </FormGroup>
+                              </FormControl>
+                            </Fragment>
+                          );
+                        }}
+                      </Mutation>
+                    );
+                  }
+                  return <Fragment />;
+                }}
+              </Query>
+            }
+          />
         </Grid>
-      </Fragment>
-    );
-  }
-}
+      </Grid>
+    </Fragment>
+  );
+};
 
 Settings.propTypes = {
   enqueueSnackbar: PropTypes.func.isRequired,

@@ -167,12 +167,17 @@ class VoteSlider extends Component {
       <Fragment>
         {voteButton}
         <Typography
-          color="textSecondary"
           component="div"
           display="inline"
+          color="inherit"
           className="pr-2"
         >
-          <Box fontSize={16} fontWeight="fontWeightBold" component="span">
+          <Box
+            fontSize={16}
+            color="text.icon"
+            fontWeight="fontWeightBold"
+            component="span"
+          >
             {this.state.totalmiles || this.props.total_votes}
           </Box>
         </Typography>
@@ -181,13 +186,13 @@ class VoteSlider extends Component {
     let numberreplies = '';
     if (this.props.children !== 0)
       numberreplies = (
-        <Typography
-          color="textSecondary"
-          component="div"
-          display="inline"
-          className="pr-2"
-        >
-          <Box fontSize={16} fontWeight="fontWeightBold" component="span">
+        <Typography component="div" display="inline" className="pr-2">
+          <Box
+            fontSize={16}
+            color="text.icon"
+            fontWeight="fontWeightBold"
+            component="span"
+          >
             {this.props.children}
           </Box>
         </Typography>
@@ -305,13 +310,13 @@ class VoteSlider extends Component {
       );
     }
     let weightIndicator = (
-      <Typography
-        color="textSecondary"
-        component="div"
-        display="inline"
-        className="pr-1"
-      >
-        <Box fontSize={16} fontWeight="fontWeightBold" component="span">
+      <Typography component="div" display="inline" className="pr-1">
+        <Box
+          fontSize={16}
+          color="text.icon"
+          fontWeight="fontWeightBold"
+          component="span"
+        >
           {this.state.weight}
         </Box>
       </Typography>

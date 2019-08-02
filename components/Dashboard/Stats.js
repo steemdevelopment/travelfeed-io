@@ -33,7 +33,7 @@ import SmallBox from './Stats/SmallBox';
 const Stats = () => {
   return (
     <Fragment>
-      <Grid container spacing={0} justify="center">
+      <Grid container className="p-1" spacing={0} justify="center">
         <Query query={GET_USER_STATS}>
           {({ data, loading, error }) => {
             if (loading || error || data.userstats === null) {
@@ -86,7 +86,7 @@ const Stats = () => {
                     title={`Welcome, ${getUser()}!`}
                     background={green[600]}
                     content={
-                      <Fragment>
+                      <div className="postcontent">
                         <p>
                           Welcome to &quot;TravelBlog&quot;, your personal
                           TravelFeed Dashboard!
@@ -153,7 +153,7 @@ const Stats = () => {
                             <a>return to the feed.</a>
                           </Link>
                         </p>
-                      </Fragment>
+                      </div>
                     }
                   />
                   <div className="mt-2">
@@ -209,9 +209,9 @@ const Stats = () => {
                     title="Notifications"
                     background={lightGreen[600]}
                     content={
-                      (data.posts &&
-                        data.posts.length === 0 &&
-                        'No notifications.') ||
+                      (data.posts && data.posts.length === 0 && (
+                        <div className="text-center">No notifications.</div>
+                      )) ||
                       data.posts.map(post => {
                         return post.curation_score === 10000 ? (
                           <div

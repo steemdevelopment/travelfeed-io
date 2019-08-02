@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { indigo, teal } from '@material-ui/core/colors';
+import { green, indigo, teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -10,7 +10,7 @@ import RecentEarnings from './Stats/RecentEarningsChart';
 const Wallet = () => {
   return (
     <Fragment>
-      <Grid container spacing={0} justify="center">
+      <Grid container spacing={0} className="p-1 pt-3" justify="center">
         <Query query={GET_USER_STATS}>
           {({ data, loading, error }) => {
             if (loading || error || data.userstats === null) {
@@ -18,35 +18,47 @@ const Wallet = () => {
             }
             return (
               <Fragment>
-                <Grid item className="pt-4 p-1" lg={6} md={6} sm={11} xs={12}>
+                <Grid item className="p-1" lg={6} md={6} sm={11} xs={12}>
                   <HeaderCard
-                    title="Wallet"
-                    background={indigo[600]}
+                    title="Total Earnings"
+                    background={green[600]}
                     content={
                       <Fragment>
                         <p>
-                          You have earned{' '}
+                          You have earned a total of{' '}
                           <strong>${data.userstats.total_payout}</strong> with
                           your TravelBlog so far.
                         </p>
-                        <p>
-                          For now, you need to use steemit wallet to transfer
-                          and power up your earnings.
-                        </p>
-                        <a
-                          href="https://steemitwallet.com/"
-                          target="_blank"
-                          rel="nofollow noreferrer noopener"
-                        >
-                          <Button variant="contained" color="secondary">
-                            Go to steemit wallet
-                          </Button>
-                        </a>
                       </Fragment>
                     }
                   />
+                  <div className="pt-2">
+                    {' '}
+                    <HeaderCard
+                      title="Wallet"
+                      background={indigo[600]}
+                      content={
+                        <Fragment>
+                          <p>
+                            You can use Steemitwallet to transfer and power up
+                            your STEEM. A TravelFeed wallet will be implemented
+                            once we launch our own token.
+                          </p>
+                          <a
+                            href="https://steemitwallet.com/"
+                            target="_blank"
+                            rel="nofollow noreferrer noopener"
+                          >
+                            <Button variant="contained" color="secondary">
+                              Go to steemit wallet
+                            </Button>
+                          </a>
+                        </Fragment>
+                      }
+                    />
+                  </div>
                 </Grid>
-                <Grid item className="pt-4 p-1" lg={6} md={6} sm={11} xs={12}>
+                <Grid item className="p-1" lg={6} md={6} sm={11} xs={12}>
                   <HeaderCard
                     title="Monthly Earnings"
                     background={teal[600]}

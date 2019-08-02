@@ -4,7 +4,7 @@ import Link from '../../lib/Link';
 
 const LegalNotice = () => {
   return (
-    <div className="pt-4 p-2">
+    <div className="p-2 pt-0">
       <Link color="textPrimary" href="/about" passHref>
         <a>
           <Typography

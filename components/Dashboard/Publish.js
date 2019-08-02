@@ -12,7 +12,7 @@ import EditIcon from '@material-ui/icons/Update';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
 import Editor from 'rich-markdown-editor';
@@ -36,140 +36,115 @@ import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
 import PostMap from '../Maps/PostMap';
 
-class PostEditor extends Component {
-  state = {
-    title: '',
-    content: undefined,
-    tags: undefined,
-    completed: 0,
-    location: undefined,
-    codeEditor: false,
-    saved: true,
-    featuredImage: undefined,
-    // codeEditor: true
-  };
+const PostEditor = props => {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState(undefined);
+  const [tags, setTags] = useState(undefined);
+  const [completed, setCompleted] = useState(0);
+  const [location, setLocation] = useState(undefined);
+  const [codeEditor, setCodeEditor] = useState(false);
+  const [saved, setSaved] = useState(true);
+  const [featuredImage, setFeaturedImage] = useState([]);
+  const [user, setUser] = useState(undefined);
+  const [permlink, setPermlink] = useState(undefined);
+  const [id, setId] = useState(undefined);
+  const [mounted, setMounted] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  componentDidMount() {
+  useEffect(() => {
     const json =
-      this.props.edit.json && this.props.edit.json !== 'undefined'
-        ? JSON.parse(this.props.edit.json)
+      props.edit.json && props.edit.json !== 'undefined'
+        ? JSON.parse(props.edit.json)
         : undefined;
-    const title = this.props.edit.title ? this.props.edit.title : '';
-    const content = this.props.edit.body ? this.props.edit.body : '';
-    const codeEditor = this.props.edit.body !== undefined;
-    const tags = json && json.tags ? json.tags : ['travelfeed'];
-    const location = json && json.location ? json.location : undefined;
-    const featuredImage =
-      json && json.featuredImage ? json.featuredImage : undefined;
-    const id = this.props.edit.id
-      ? this.props.edit.id
-      : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
-    this.setState({
-      title,
-      content,
-      tags,
-      location,
-      id,
-      mounted: true,
-      codeEditor,
-      featuredImage,
-    });
+    setTitle(props.edit.title ? props.edit.title : '');
+    setContent(props.edit.body ? props.edit.body : '');
+    setCodeEditor(props.edit.body !== undefined);
+    setTags(json && json.tags ? json.tags : ['travelfeed']);
+    setLocation(json && json.location ? json.location : undefined);
+    setFeaturedImage(
+      json && json.featuredImage ? json.featuredImage : undefined,
+    );
+    setId(
+      props.edit.id
+        ? props.edit.id
+        : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
+    );
+    setMounted(true);
     // Save draft every 20 seconds
-    this.interval = setInterval(() => this.setState({ saved: false }), 20000);
-  }
+    const interval = setInterval(() => setSaved(false), 20000);
 
-  componentWillUnmount() {
-    // Stop saving drafts
-    clearInterval(this.interval);
-  }
+    return () => {
+      // "will unmount": stop saving drafts
+      clearInterval(interval);
+    };
+  }, []);
 
-  handleTagClick = op => {
-    this.setState(op);
+  const handleTagClick = op => {
+    setTags(op);
   };
 
-  handleTitleEditorChange = title => {
-    this.setState({ title: title.target.value });
+  const handleEditorChange = value => {
+    const text = value();
+    setContent(text);
   };
 
-  handleEditorChange = value => {
-    const content = value();
-    this.setState({ content });
+  const handleTitleEditorChange = changedtitle => {
+    setTitle(changedtitle.target.value);
   };
 
-  handleHtmlEditorChange = content => {
-    this.setState({ content });
+  const removeFeaturedImage = () => {
+    setFeaturedImage(undefined);
   };
 
-  onLocationPick = ({ latitude, longitude }) => {
-    this.setState({ location: { latitude, longitude } });
+  const changeEditorMode = () => {
+    setCodeEditor(!codeEditor);
   };
 
-  setFeaturedImage = featuredImage => {
-    this.setState({ featuredImage });
-  };
-
-  removeFeaturedImage = () => {
-    this.setState({ featuredImage: undefined });
-  };
-
-  progress = () => {
-    const { loading } = this.state;
-    if (loading < 100) {
-      this.setState({ loading: loading + 1 });
-    } else {
-      this.setState({ loading: 0 });
+  const newNotification = notification => {
+    if (notification !== undefined) {
+      let variant = 'success';
+      if (notification.success === false) {
+        variant = 'error';
+      }
+      props.enqueueSnackbar(notification.message, { variant });
+      if (notification.success === true) {
+        setSuccess(true);
+      }
     }
   };
 
-  changeEditorMode() {
-    this.setState(prevState => ({
-      codeEditor: !prevState.codeEditor,
-    }));
-  }
-
-  handleTagsEditorChange(tags) {
-    this.setState({ tags: tags.target.value });
-  }
-
-  publishPost() {
+  const publishPost = () => {
     const username = getUser();
     const parentAuthor = '';
     const parentPermlink = 'travelfeed';
-    const { title } = this.state;
-    let permlink = getSlug(title);
-    let body = this.state.content;
-    const { location } = this.state;
-    const featuredImage = this.state.featuredImage
-      ? [this.state.featuredImage]
-      : [];
+    setPermlink(getSlug(title));
+    let body = content;
     const imageList = featuredImage.concat(getImageList(body));
     const linkList = getLinkList(body);
     const mentionList = getMentionList(body);
     const metadata = {};
-    metadata.tags = this.state.tags;
+    metadata.tags = tags;
     metadata.app = APP_VERSION;
     metadata.community = 'travelfeed';
     if (imageList !== null) metadata.image = imageList;
     if (linkList !== null) metadata.links = linkList;
     if (mentionList !== null) metadata.users = mentionList;
-    if (!this.props.edit.editmode === 'true') {
+    if (!props.edit.editmode === 'true') {
       body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
     }
     if (location !== undefined) {
       metadata.coordinates = [location.latitude, location.longitude];
-      if (
-        !this.props.edit.editmode === 'true' ||
-        location !== this.props.edit.location
-      ) {
+      if (!props.edit.editmode === 'true' || location !== props.edit.location) {
         body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
       }
     }
     // Todo: Parse body for images and links and include them
     // in the json_metadata
-    if (this.props.edit.editmode === 'true') {
-      ({ permlink } = this.props.edit);
+    if (props.edit.editmode === 'true') {
+      setPermlink(props.edit);
     }
-    this.setState({ user: username, permlink });
+    setUser(username);
+    setPermlink(permlink);
     // Steemconnect broadcast
     return comment(
       parentAuthor,
@@ -181,263 +156,238 @@ class PostEditor extends Component {
       'post',
     ).then(res => {
       if (res) {
-        this.newNotification(res);
-        this.setState({ loading: undefined });
+        newNotification(res);
       }
     });
-  }
+  };
 
-  newNotification(notification) {
-    if (notification !== undefined) {
-      let variant = 'success';
-      if (notification.success === false) {
-        variant = 'error';
-      }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
-    }
+  const sanitized = content ? sanitize(content, { allowedTags: [] }) : '';
+  let wordCount = '';
+  let readTime = '';
+  const readingtime = content
+    ? readingTime(sanitized)
+    : { words: 0, text: '0 min' };
+  wordCount = readingtime.words;
+  readTime = readingtime.text;
+  if (completed === 100 && success === true) {
+    const url = `${ROOTURL}/@${user}/${permlink}`;
+    Router.push(url);
   }
-
-  render() {
-    const sanitized = this.state.content
-      ? sanitize(this.state.content, { allowedTags: [] })
-      : '';
-    let wordCount = '';
-    let readTime = '';
-    const readingtime = this.state.content
-      ? readingTime(sanitized)
-      : { words: 0, text: '0 min' };
-    wordCount = readingtime.words;
-    readTime = readingtime.text;
-    const { location } = this.state;
-    if (this.state.completed === 100 && this.state.success === true) {
-      this.success();
-      const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
-      Router.push(url);
-    }
-    const publishTooltip =
-      wordCount < 250 || this.state.title === ''
-        ? 'You need to write at least 250 words and set a title before you can publish your post'
-        : 'Once published, your post cannot be deleted';
-    return (
-      <Fragment>
-        <div className="container">
-          <div className="row">
-            <div className="col-12 p-1 pt-3">
-              <Card>
-                <CardContent>
-                  <InputBase
-                    autoFocus
-                    inputProps={{
-                      maxLength: 100,
-                    }}
-                    multiline
-                    className="font-weight-bold inputtitle"
-                    placeholder="Title"
-                    value={this.state.title}
-                    onChange={this.handleTitleEditorChange}
-                    fullWidth
-                  />
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-xl-12 col-md-12 p-1">
-              <Card>
-                <CardContent>
-                  <CardHeader
-                    action={
-                      <Fragment>
-                        <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                          {`${wordCount} words`}
-                        </span>
-                        <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                          {readTime}
-                        </span>
-                      </Fragment>
+  const publishTooltip =
+    wordCount < 250 || title === ''
+      ? 'You need to write at least 250 words and set a title before you can publish your post'
+      : 'Once published, your post cannot be deleted';
+  return (
+    <Fragment>
+      <div className="container">
+        <div className="row">
+          <div className="col-12 p-1 pt-3">
+            <Card>
+              <CardContent>
+                <InputBase
+                  autoFocus
+                  inputProps={{
+                    maxLength: 100,
+                  }}
+                  multiline
+                  className="font-weight-bold inputtitle"
+                  placeholder="Title"
+                  value={title}
+                  onChange={handleTitleEditorChange}
+                  fullWidth
+                />
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-xl-12 col-md-12 p-1">
+            <Card>
+              <CardContent>
+                <CardHeader
+                  action={
+                    <Fragment>
+                      <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
+                        {`${wordCount} words`}
+                      </span>
+                      <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
+                        {readTime}
+                      </span>
+                    </Fragment>
+                  }
+                />
+                <Mutation
+                  mutation={SAVE_DRAFT}
+                  variables={{
+                    id,
+                    title,
+                    body: content,
+                    json: JSON.stringify({
+                      tags,
+                      location,
+                      featuredImage,
+                    }),
+                  }}
+                >
+                  {saveDraft => {
+                    if (!saved) {
+                      if (wordCount > 1) saveDraft();
+                      setSaved(true);
                     }
-                  />
-                  <Mutation
-                    mutation={SAVE_DRAFT}
-                    variables={{
-                      id: this.state.id,
-                      title: this.state.title,
-                      body: this.state.content,
-                      json: JSON.stringify({
-                        tags: this.state.tags,
-                        location: this.state.location,
-                        featuredImage: this.state.featuredImage,
-                      }),
-                    }}
-                  >
-                    {saveDraft => {
-                      if (!this.state.saved) {
-                        if (wordCount > 1) saveDraft();
-                        this.setState({ saved: true });
-                      }
-                      return (
-                        <div>
-                          {(this.state.codeEditor && this.state.mounted && (
-                            <Fragment>
-                              <HtmlEditor
-                                data={this.state.content}
-                                onChange={this.handleHtmlEditorChange}
+                    return (
+                      <div>
+                        {(codeEditor && mounted && (
+                          <Fragment>
+                            <HtmlEditor data={content} onChange={setContent} />
+                          </Fragment>
+                        )) || (
+                          <div>
+                            {mounted && (
+                              <Editor
+                                style={{ minHeight: '300px' }}
+                                className="border postcontent pl-2"
+                                uploadImage={file => {
+                                  return uploadFile(file, getUser()).then(
+                                    res => {
+                                      return res;
+                                    },
+                                  );
+                                }}
+                                placeholder="Start writing your next awesome travel blog!"
+                                onChange={handleEditorChange}
+                                defaultValue={content}
+                                autoFocus
                               />
-                            </Fragment>
-                          )) || (
-                            <div>
-                              {this.state.mounted && (
-                                <Editor
-                                  style={{ minHeight: '300px' }}
-                                  className="border postcontent pl-2"
-                                  uploadImage={file => {
-                                    return uploadFile(file, getUser()).then(
-                                      res => {
-                                        return res;
-                                      },
-                                    );
-                                  }}
-                                  placeholder="Start writing your next awesome travel blog!"
-                                  onChange={this.handleEditorChange}
-                                  defaultValue={this.state.content}
-                                  autoFocus
-                                />
-                              )}
-                            </div>
-                          )}
-                          <div className="text-right">
-                            <SwitchEditorModeButton
-                              switchMode={() => this.changeEditorMode()}
-                              codeEditor={this.state.codeEditor}
-                            />
+                            )}
                           </div>
-                          <h5 className="pt-2">Preview</h5>
-                          <HtmlEditorPreview preview={this.state.content} />
+                        )}
+                        <div className="text-right">
+                          <SwitchEditorModeButton
+                            switchMode={() => changeEditorMode()}
+                            codeEditor={codeEditor}
+                          />
                         </div>
-                      );
-                    }}
-                  </Mutation>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-12">
-              <div className="row">
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                  <Card>
-                    {this.state.featuredImage && (
-                      <CardMedia
-                        className="h-100"
-                        style={{ minHeight: '200px' }}
-                        image={this.state.featuredImage}
+                        <h5 className="pt-2">Preview</h5>
+                        <HtmlEditorPreview preview={content} />
+                      </div>
+                    );
+                  }}
+                </Mutation>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="col-12">
+            <div className="row">
+              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                <Card>
+                  {featuredImage && (
+                    <CardMedia
+                      className="h-100"
+                      style={{ minHeight: '200px' }}
+                      image={featuredImage}
+                    />
+                  )}
+                  <CardContent className="text-center">
+                    <h5>Featured Image</h5>
+                    {(featuredImage && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        component="span"
+                        onClick={removeFeaturedImage}
+                      >
+                        Remove Image <DeleteIcon />
+                      </Button>
+                    )) || (
+                      <FeaturedImageUpload
+                        setFeaturedImage={setFeaturedImage}
                       />
                     )}
-                    <CardContent className="text-center">
-                      <h5>Featured Image</h5>
-                      {(this.state.featuredImage && (
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>
+                    <h5 className="text-center">
+                      Location
+                      {location &&
+                        `: ${location.latitude}, ${location.longitude}`}
+                    </h5>
+                    {location && (
+                      <PostMap
+                        location={{
+                          coordinates: {
+                            lat: location.latitude,
+                            lng: location.longitude,
+                          },
+                        }}
+                      />
+                    )}
+                    <div className="text-center p-1">
+                      <LocationPicker
+                        onPick={setLocation}
+                        isChange={location}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>
+                    <h5 className="text-center">Tags</h5>
+                    {tags && (
+                      <TagPicker
+                        initialValue={tags}
+                        onChange={handleTagClick}
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
+                <Card>
+                  <CardContent>
+                    <h5>Publish</h5>
+                    <Tooltip title={publishTooltip}>
+                      <div>
                         <Button
                           variant="contained"
-                          color="secondary"
-                          component="span"
-                          onClick={this.removeFeaturedImage}
+                          color="primary"
+                          onClick={() => publishPost()}
+                          disabled={wordCount < 250 || title === ''}
                         >
-                          Remove Image <DeleteIcon />
+                          {(props.edit.editmode === 'true' && (
+                            <span>
+                              Update Post <EditIcon />
+                            </span>
+                          )) || (
+                            <span>
+                              Publish Now
+                              <PublishIcon />
+                            </span>
+                          )}
                         </Button>
-                      )) || (
-                        <FeaturedImageUpload
-                          setFeaturedImage={this.setFeaturedImage}
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                  <Card>
-                    <CardContent>
-                      <h5 className="text-center">
-                        Location
-                        {this.state.location &&
-                          `: ${this.state.location.latitude}, ${this.state.location.longitude}`}
-                      </h5>
-                      {location && (
-                        <PostMap
-                          location={{
-                            coordinates: {
-                              lat: this.state.location.latitude,
-                              lng: this.state.location.longitude,
-                            },
-                          }}
-                        />
-                      )}
-                      <div className="text-center p-1">
-                        <LocationPicker
-                          onPick={this.onLocationPick}
-                          isChange={this.state.location}
-                        />
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                  <Card>
-                    <CardContent>
-                      <h5 className="text-center">Tags</h5>
-                      {this.state.tags && (
-                        <TagPicker
-                          initialValue={this.state.tags}
-                          onChange={this.handleTagClick}
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
-                  <Card>
-                    <CardContent>
-                      <h5>Publish</h5>
-                      <Tooltip title={publishTooltip}>
-                        <div>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => this.publishPost()}
-                            disabled={
-                              wordCount < 250 || this.state.title === ''
-                            }
-                          >
-                            {(this.props.edit.editmode === 'true' && (
-                              <span>
-                                Update Post <EditIcon />
-                              </span>
-                            )) || (
-                              <span>
-                                Publish Now
-                                <PublishIcon />
-                              </span>
-                            )}
-                          </Button>
-                        </div>
-                      </Tooltip>
-                      {this.state.completed !== 0 && (
-                        <CircularProgress
-                          variant="determinate"
-                          value={this.state.completed}
-                          className="p-1"
-                          size={35}
-                          thickness={5}
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
-                </div>
+                    </Tooltip>
+                    {completed !== 0 && (
+                      <CircularProgress
+                        variant="determinate"
+                        value={completed}
+                        className="p-1"
+                        size={35}
+                        thickness={5}
+                      />
+                    )}
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
         </div>
-      </Fragment>
-    );
-  }
-}
+      </div>
+    </Fragment>
+  );
+};
 
 PostEditor.defaultProps = {
   edit: {},

@@ -11,7 +11,7 @@ const Posts = () => {
         spacing={0}
         alignItems="center"
         justify="center"
-        className="pt-4 pb-4"
+        className="pt-4 pb-4 p-1"
       >
         <PostGrid
           query={{ author: getUser(), limit: 10 }}

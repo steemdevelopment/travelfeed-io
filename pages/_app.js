@@ -5,6 +5,7 @@ import Cookie from 'js-cookie';
 import { register, unregister } from 'next-offline/runtime';
 import App, { Container } from 'next/app';
 import Router from 'next/router';
+import { parseCookies } from 'nookies';
 import { SnackbarProvider } from 'notistack';
 import NProgress from 'nprogress';
 import React from 'react';
@@ -43,7 +44,17 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 class MyApp extends App {
-  state = { theme: 'dark' };
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {};
+    let cookies = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+      cookies = parseCookies(ctx);
+    }
+
+    return { pageProps, cookies };
+  }
 
   componentDidMount() {
     const theme = Cookie.get('use_dark_mode') !== 'true' ? 'light' : 'dark';
@@ -91,13 +102,17 @@ class MyApp extends App {
   };
 
   render() {
-    const { Component, pageProps, apollo } = this.props;
-    const theme = getTheme({ paletteType: this.state.theme });
+    const { Component, pageProps, apollo, cookies } = this.props;
+    let colorscheme = cookies.use_dark_mode !== 'true' ? 'light' : 'dark';
+    if (this.state && this.state.theme) colorscheme = this.state.theme;
+    const theme = getTheme({
+      paletteType: colorscheme,
+    });
     return (
       <Container>
         <UserContext.Provider
           value={{
-            theme: this.state.theme,
+            theme: colorscheme,
             setDarkMode: this.setDarkMode,
             setLightMode: this.setLightMode,
             // React Hooks: https://reacttricks.com/sharing-global-data-in-next-with-custom-app-and-usecontext-hook/

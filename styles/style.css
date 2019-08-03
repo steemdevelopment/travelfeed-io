@@ -1,3 +1,4 @@
+/* Markdown/html editor */
 .CodeMirror {
   height: 100% !important;
   min-height: 300px;
@@ -5,6 +6,11 @@
 /* Editor inline menu */
 .duDjGM {
   padding-bottom: 14px !important;
+}
+/* Editor textfield overwrites */
+.lafGOK {
+  background: none !important;
+  color: inherit !important;
 }
 
 /* Progress bar */
@@ -43,6 +49,7 @@ figcaption {
 .text-decoration-underline {
   text-decoration: underline;
 }
+
 .text-mutedlight {
   color: #9e9e9e;
 }
@@ -60,15 +67,19 @@ body {
   word-wrap: break-word;
 }
 
-a {
-  color: #1e88e5;
-  text-decoration: none;
-}
+a,
 a:hover {
-  text-decoration: none;
+  text-decoration: none !important;
+  color: inherit;
 }
-.postcontent a:hover {
-  text-decoration: underline;
+.postcontent a,
+.ablue {
+  color: #1e88e5 !important;
+}
+.postcontent a:hover,
+.hoverline:hover {
+  text-decoration: underline !important;
+  color: #1e88e5;
 }
 .postcontent img,
 .fullwidth {
@@ -99,7 +110,6 @@ a:hover {
 }
 
 .postcontent {
-  color: rgba(0, 0, 0, 0.87);
   font-size: 1.2rem;
   font-weight: 400;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -141,6 +151,22 @@ a:hover {
   line-height: 1.6;
   letter-spacing: 0.0075em;
 }
+.postcontent pre code {
+  white-space: pre-line;
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-left: 3px solid #f36d33;
+  color: #666;
+  font-family: monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  width: 100%;
+  word-spacing: 100%;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+}
 .postcontent blockquote {
   font-family: medium-content-slab-serif-font, Georgia, Cambria, Times, serif;
   font-weight: 400;
@@ -179,6 +205,7 @@ a:hover {
 .postcontent tr:nth-child(even) {
   background-color: #f4f4f4;
 }
+
 blockquote > center {
   margin: 0 -50px 0 -50px !important;
 }

@@ -18,8 +18,8 @@ class HomeOrderBySelect extends React.Component {
           value={this.props.selection}
           onChange={this.handleChange}
           variant="fullWidth"
-          indicatorColor="secondary"
-          textColor="secondary"
+          indicatorColor="primary"
+          textColor="primary"
           centered
         >
           <Link as="/created" href="/?orderby=created_at" passHref>

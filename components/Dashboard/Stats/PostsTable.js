@@ -1,13 +1,13 @@
 // https://material-ui.com/demos/tables/#tables
-import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Link from 'next/link';
+import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
+import Link from '../../../lib/Link';
 import PostsTableHead from './PostsTableHead';
 
 function desc(a, b, orderBy) {
@@ -39,7 +39,7 @@ function getSorting(order, orderBy) {
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
   },
   table: {
     minWidth: 200,
@@ -163,10 +163,9 @@ class PostsTable extends React.Component {
                         >
                           <TableCell component="th" scope="row" padding="none">
                             <Link
+                              color="textPrimary"
                               as={`/@${n.author}/${n.permlink}`}
-                              href={`/post?author=${n.author}&permlink=${
-                                n.permlink
-                              }`}
+                              href={`/post?author=${n.author}&permlink=${n.permlink}`}
                               passHref
                             >
                               <a>{n.title}</a>

@@ -24,10 +24,10 @@ import ProfileIcon from '@material-ui/icons/Person';
 import SignUpIcon from '@material-ui/icons/PersonAdd';
 import TermsIcon from '@material-ui/icons/Toc';
 import LoginIcon from '@material-ui/icons/VpnKey';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { getLoginURL, getUser, logout } from '../../helpers/token';
+import Link from '../../lib/Link';
 import Logout from '../Login/LogoutButton';
 
 class HeaderMenu extends Component {
@@ -107,23 +107,23 @@ class HeaderMenu extends Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
                       <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link href="/destinations" passHref>
+                        <Link color="textPrimary" href="/destinations" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <DestinationsIcon />
-                                <ListItemText inset primary="Destinations" />
                               </ListItemIcon>
+                              <ListItemText primary="Destinations" />
                             </MenuItem>
                           </a>
                         </Link>
-                        <Link href="/map" passHref>
+                        <Link color="textPrimary" href="/map" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <MapIcon />
-                                <ListItemText inset primary="Map" />
                               </ListItemIcon>
+                              <ListItemText primary="Map" />
                             </MenuItem>
                           </a>
                         </Link>
@@ -134,49 +134,49 @@ class HeaderMenu extends Component {
                           <MenuItem>
                             <ListItemIcon>
                               <LoginIcon />
-                              <ListItemText inset primary="Login" />
                             </ListItemIcon>
+                            <ListItemText primary="Login" />
                           </MenuItem>
                         </a>
-                        <Link href="/join" passHref>
+                        <Link color="textPrimary" href="/join" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <SignUpIcon />
-                                <ListItemText inset primary="Join Now" />
                               </ListItemIcon>
+                              <ListItemText primary="Join Now" />
                             </MenuItem>
                           </a>
                         </Link>
                         <Divider />
                       </div>
-                      <Link href="/about/privacy" passHref>
+                      <Link color="textPrimary" href="/about/privacy" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <PrivacyIcon />
-                              <ListItemText inset primary="Privacy" />
                             </ListItemIcon>
+                            <ListItemText primary="Privacy" />
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/about/terms" passHref>
+                      <Link color="textPrimary" href="/about/terms" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <TermsIcon />
-                              <ListItemText inset primary="Terms" />
                             </ListItemIcon>
+                            <ListItemText primary="Terms" />
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/about/cookies" passHref>
+                      <Link color="textPrimary" href="/about/cookies" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <CookieIcon />
-                              <ListItemText inset primary="Cookies" />
                             </ListItemIcon>
+                            <ListItemText primary="Cookies" />
                           </MenuItem>
                         </a>
                       </Link>
@@ -203,15 +203,9 @@ class HeaderMenu extends Component {
           >
             <Avatar
               className="cpointer"
-              src={`https://steemitimages.com/u/${
-                this.state.user
-              }/avatar/small`}
+              src={`https://steemitimages.com/u/${this.state.user}/avatar/small`}
             />
-            <DownIcon
-              className={
-                (this.props.isDashboard && 'text-dark') || 'text-light'
-              }
-            />
+            <DownIcon className="text-light" />
           </Button>
           <Popper
             open={menuopen}
@@ -232,79 +226,83 @@ class HeaderMenu extends Component {
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
                       <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link href="/destinations" passHref>
+                        <Link color="textPrimary" href="/destinations" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <DestinationsIcon />
-                                <ListItemText inset primary="Destinations" />
                               </ListItemIcon>
+                              <ListItemText primary="Destinations" />
                             </MenuItem>
                           </a>
                         </Link>
-                        <Link href="/map" passHref>
+                        <Link color="textPrimary" href="/map" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <MapIcon />
-                                <ListItemText inset primary="Map" />
                               </ListItemIcon>
+                              <ListItemText primary="Map" />
                             </MenuItem>
                           </a>
                         </Link>
                         <Divider />
                       </div>
                       {(this.props.isDashboard && (
-                        <Link href="/" passHref>
+                        <Link color="textPrimary" href="/" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <FeedIcon />
-                                <ListItemText inset primary="TravelFeed" />
                               </ListItemIcon>
+                              <ListItemText primary="TravelFeed" />
                             </MenuItem>
                           </a>
                         </Link>
                       )) || (
-                        <Link href="/dashboard" passHref>
+                        <Link color="textPrimary" href="/dashboard" passHref>
                           <a>
                             <MenuItem>
                               <ListItemIcon>
                                 <DashboardIcon />
-                                <ListItemText inset primary="TravelBlog" />
                               </ListItemIcon>
+                              <ListItemText primary="TravelBlog" />
                             </MenuItem>
                           </a>
                         </Link>
                       )}
-                      <Link href="/dashboard/publish" passHref>
+                      <Link
+                        color="textPrimary"
+                        href="/dashboard/publish"
+                        passHref
+                      >
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <PublishIcon />
-                              <ListItemText inset primary="New Post" />
                             </ListItemIcon>
+                            <ListItemText primary="New Post" />
                           </MenuItem>
                         </a>
                       </Link>
-                      <Link href="/bookmarks" passHref>
+                      <Link color="textPrimary" href="/bookmarks" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <ProfileIcon />
-                              <ListItemText inset primary="Bookmarks" />
                             </ListItemIcon>
+                            <ListItemText primary="Bookmarks" />
                           </MenuItem>
                         </a>
                       </Link>
                       <Divider />
-                      <Link href="/about/privacy" passHref>
+                      <Link color="textPrimary" href="/about/privacy" passHref>
                         <a>
                           <MenuItem>
                             <ListItemIcon>
                               <PrivacyIcon />
-                              <ListItemText inset primary="Privacy" />
                             </ListItemIcon>
+                            <ListItemText primary="Privacy" />
                           </MenuItem>
                         </a>
                       </Link>

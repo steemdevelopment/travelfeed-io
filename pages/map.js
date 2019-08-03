@@ -1,5 +1,4 @@
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import CookiePopup from '../components/CookieConsent/CookiePopup';
@@ -8,6 +7,7 @@ import Header from '../components/Header/Header';
 import Map from '../components/Maps/MapCluster';
 import { GET_PLACES } from '../helpers/graphql/places';
 import { hasCookieConsent } from '../helpers/token';
+import Link from '../lib/Link';
 
 class MapPage extends Component {
   state = {
@@ -69,7 +69,7 @@ class MapPage extends Component {
                   We and our partners use cookies to improve your experience and
                   to analyze how our site is used.
                   <br />
-                  <Link href="/about/cookies">
+                  <Link color="textPrimary" href="/about/cookies">
                     <a
                       className="passHref
                   text-light

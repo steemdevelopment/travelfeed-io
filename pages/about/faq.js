@@ -8,7 +8,7 @@ import Head from '../../components/Header/Head';
 import Header from '../../components/Header/Header';
 
 const FaqPage = () => {
-  const title = 'Frequently Asked Questions';
+  const title = 'FAQ';
   return (
     <Fragment>
       <Header subheader={title} />

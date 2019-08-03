@@ -6,12 +6,14 @@ export const CHANGE_SETTINGS = gql`
     $defaultCommentsVoteWeight: Int
     $showNSFW: Boolean
     $useTfBlacklist: Boolean
+    $useDarkMode: Boolean
   ) {
     updatePreferences(
       defaultVoteWeight: $defaultVoteWeight
       defaultCommentsVoteWeight: $defaultCommentsVoteWeight
       showNSFW: $showNSFW
       useTfBlacklist: $useTfBlacklist
+      useDarkMode: $useDarkMode
     ) {
       success
       message
@@ -25,6 +27,7 @@ export const GET_SETTINGS = gql`
       defaultVoteWeight
       defaultCommentsVoteWeight
       showNSFW
+      useDarkMode
       useTfBlacklist
     }
   }

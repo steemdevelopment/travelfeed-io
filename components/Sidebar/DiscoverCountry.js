@@ -1,7 +1,9 @@
 import Button from '@material-ui/core/Button';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import { teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
-import Link from 'next/link';
+import Typography from '@material-ui/core/Typography';
+// import Link from '../../lib/Link';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import {
@@ -11,6 +13,7 @@ import {
 } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import { GET_POSTS } from '../../helpers/graphql/posts';
+import Link from '../../lib/Link';
 import HeaderCard from '../General/HeaderCard';
 
 const DiscoverCountry = () => {
@@ -39,62 +42,63 @@ const DiscoverCountry = () => {
                 titlesize="h5"
                 background={teal[600]}
                 content={
-                  <div className="pt-2">
+                  <div>
                     {data.posts.map(post => {
                       return (
                         <div key={post.author + post.permlink}>
                           <Link
+                            color="textPrimary"
                             as={`/@${post.author}/${post.permlink}`}
-                            href={`/post?author=${post.author}&permlink=${
-                              post.permlink
-                            }`}
+                            href={`/post?author=${post.author}&permlink=${post.permlink}`}
                             passHref
                           >
                             <a>
-                              <div className="container-fluid">
-                                <div className="row h-100 pl-3">
-                                  <div
-                                    className="col-3 my-auto"
-                                    style={{
-                                      backgroundImage: `url(${imageProxy(
-                                        post.img_url,
-                                        100,
-                                        100,
-                                      )})`,
-                                      backgroundRepeat: 'no-repeat',
-                                      backgroundPosition: 'center center',
-                                      backgroundSize: 'cover',
-                                      width: '70px',
-                                      height: '70px',
-                                    }}
-                                  />
-                                  <div className="col-9 my-auto">
-                                    <span className="text-dark">
-                                      {post.title}
-                                    </span>
-                                    <br />
-                                    <em>
-                                      <Link
-                                        as={`/@${post.author}`}
-                                        href={`/blog?author=${post.author}`}
-                                        passHref
-                                      >
-                                        <a className="text-dark">
-                                          by @{post.author}
-                                        </a>
-                                      </Link>
-                                    </em>
+                              <CardActionArea className="pt-2 pb-2">
+                                <div className="container-fluid">
+                                  <div className="row h-100 pl-3">
+                                    <div
+                                      className="col-3 my-auto"
+                                      style={{
+                                        backgroundImage: `url(${imageProxy(
+                                          post.img_url,
+                                          100,
+                                          100,
+                                        )})`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center center',
+                                        backgroundSize: 'cover',
+                                        width: '70px',
+                                        height: '70px',
+                                      }}
+                                    />
+                                    <div className="col-9 my-auto">
+                                      <Typography variant="subtitle">
+                                        {post.title}
+                                      </Typography>
+                                      <br />
+                                      <em>
+                                        <Link
+                                          color="textSecondary"
+                                          as={`/@${post.author}`}
+                                          href={`/blog?author=${post.author}`}
+                                          passHref
+                                        >
+                                          <a>by @{post.author}</a>
+                                        </Link>
+                                      </em>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
+                              </CardActionArea>
                             </a>
                           </Link>
-                          <Divider className="mt-2 mb-2 ml-3 mr-3" />
+                          <Divider className="pl-3 pr-3" />
                         </div>
                       );
                     })}
-                    <div className="text-center pt-4">
+                    <div className="text-center pt-3 pb-3">
                       <Link
+                        color="textPrimary"
                         as={`/destinations/${countryslug}`}
                         href={`/destinations?country=${countryslug}`}
                         passHref

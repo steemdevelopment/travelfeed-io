@@ -1,8 +1,8 @@
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { GET_SHORT_PROFILE } from '../../helpers/graphql/profile';
+import Link from '../../lib/Link';
 import FollowButton from './FollowButton';
 
 const PostAuthorProfile = props => {
@@ -20,6 +20,7 @@ const PostAuthorProfile = props => {
               </Typography>
               <div className="pb-2">
                 <Link
+                  color="textPrimary"
                   as={`/@${data.profile.name}`}
                   href={`/blog?author=${data.profile.name}`}
                   passHref
@@ -27,9 +28,7 @@ const PostAuthorProfile = props => {
                   <a>
                     <img
                       style={{ cursor: 'pointer' }}
-                      src={`https://steemitimages.com/u/${
-                        data.profile.name
-                      }/avatar/medium`}
+                      src={`https://steemitimages.com/u/${data.profile.name}/avatar/medium`}
                       alt={data.profile.name}
                       width="80"
                       height="80"
@@ -41,15 +40,18 @@ const PostAuthorProfile = props => {
               <Fragment>
                 <div>
                   <Link
+                    color="textPrimary"
                     as={`/@${data.profile.name}`}
                     href={`/blog?author=${data.profile.name}`}
                     passHref
                   >
                     <a>
-                      <Typography variant="h6" className="text-dark cpointer">
+                      <Typography variant="h6" className="textPrimary cpointer">
                         {data.profile.display_name}
                       </Typography>
-                      <span className="text-muted">@{data.profile.name}</span>
+                      <Typography color="textSecondary" variant="subtitle">
+                        @{data.profile.name}
+                      </Typography>
                     </a>
                   </Link>
                   {data.profile.isCurator && (

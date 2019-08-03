@@ -46,8 +46,8 @@ class StatsPage extends Component {
     }
     return (
       <Fragment>
-        <Head title="TravelBlog: Stats - TravelFeed: The Travel Community" />
-        <DashboardHeader active="stats" content={<Stats />} open={open} />
+        <Head title="TravelBlog: Dashboard - TravelFeed: The Travel Community" />
+        <DashboardHeader active="dashboard" content={<Stats />} open={open} />
       </Fragment>
     );
   }

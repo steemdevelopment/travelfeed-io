@@ -1,7 +1,7 @@
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import Downshift from 'downshift';
 import deburr from 'lodash.deburr';
@@ -22,12 +22,12 @@ const styles = theme => ({
   paper: {
     position: 'relative',
     zIndex: 1,
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     left: 0,
     right: 0,
   },
   chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
   },
   inputRoot: {
     flexWrap: 'wrap',
@@ -37,7 +37,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   divider: {
-    height: theme.spacing.unit * 2,
+    height: theme.spacing(2),
   },
 });
 

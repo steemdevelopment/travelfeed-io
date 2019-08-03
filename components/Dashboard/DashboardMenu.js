@@ -1,5 +1,5 @@
 import AppBar from '@material-ui/core/AppBar';
-import { blueGrey } from '@material-ui/core/colors';
+import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,7 +7,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import WalletIcon from '@material-ui/icons/AttachMoney';
@@ -22,11 +21,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ProfileIcon from '@material-ui/icons/Person';
 import RepliesIcon from '@material-ui/icons/Reply';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactPiwik from 'react-piwik';
+import Link from '../../lib/Link';
 import HeaderMenu from '../Header/HeaderMenu';
 
 const drawerWidth = 200;
@@ -36,9 +36,10 @@ const styles = theme => ({
     display: 'flex',
   },
   paper: {
-    background: blueGrey[50],
+    background: theme.palette.background.dark,
   },
   appBar: {
+    backgroundColor: indigo[600],
     zIndex: 201,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -79,7 +80,7 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: 'hidden',
-    width: theme.spacing.unit * 7 + 1,
+    width: theme.spacing(7) + 1,
   },
   toolbar: {
     display: 'flex',
@@ -133,33 +134,44 @@ class Dashboard extends Component {
           [classes.appBarShift]: this.state.open,
         })}
       >
-        <Toolbar disableGutters={!this.state.open}>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={this.handleDrawerOpen}
-            className={classNames(classes.menuButton, {
-              [classes.hide]: this.state.open,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Link href="/" passHref>
-            <a style={{ flexGrow: 1 }} className="text-dark">
-              <Typography
-                variant="h6"
-                className="font-weight-bold cpointer"
-                noWrap
-              >
-                TravelBlog |{' '}
-                {// capitalize
-                this.props.active.charAt(0).toUpperCase() +
-                  this.props.active.slice(1)}
-              </Typography>
-            </a>
-          </Link>
-          <HeaderMenu isDashboard handleLogout={this.handleLogout} />
-        </Toolbar>
+        <div className="container-fluid" style={{ height: '65px' }}>
+          <div className="row h-100">
+            <div className="my-auto col-xl-11 col-lg-11 col-md-10 col-sm-9 col-9">
+              <Toolbar disableGutters={!this.state.open}>
+                <IconButton
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={this.handleDrawerOpen}
+                  className={`text-light 
+                    ${classNames(classes.menuButton, {
+                      [classes.hide]: this.state.open,
+                    })}`}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Link color="textPrimary" href="/dashboard" passHref>
+                  <a style={{ flexGrow: 1 }} className="text-light">
+                    <Typography
+                      variant="h6"
+                      className="font-weight-bold cpointer"
+                      noWrap
+                    >
+                      {// capitalize
+                      this.props.active.charAt(0).toUpperCase() +
+                        this.props.active.slice(1)}
+                    </Typography>
+                  </a>
+                </Link>
+              </Toolbar>
+            </div>
+            <div
+              className={`my-auto 
+                    'col-xl-1 col-lg-1 col-md-2 col-sm-3'} col-3 text-right`}
+            >
+              <HeaderMenu isDashboard handleLogout={this.handleLogout} />
+            </div>
+          </div>
+        </div>
       </AppBar>
     );
     const drawer = (
@@ -185,12 +197,13 @@ class Dashboard extends Component {
         <Divider />
         <List>
           <Link
+            color="textPrimary"
             href={`/dashboard?open=${this.state.open}`}
             as="/dashboard"
             passHref
           >
             <a>
-              <ListItem selected={this.props.active === 'stats'} button>
+              <ListItem selected={this.props.active === 'dashboard'} button>
                 <ListItemIcon className={classNames(classes.listitem)}>
                   <DashboardIcon />
                 </ListItemIcon>
@@ -199,6 +212,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/publish?open=${this.state.open}`}
             as="/dashboard/publish"
             passHref
@@ -213,6 +227,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/drafts?open=${this.state.open}`}
             as="/dashboard/drafts"
             passHref
@@ -227,6 +242,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/posts?open=${this.state.open}`}
             as="/dashboard/posts"
             passHref
@@ -241,6 +257,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/comments?open=${this.state.open}`}
             as="/dashboard/comments"
             passHref
@@ -255,6 +272,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/replies?open=${this.state.open}`}
             as="/dashboard/replies"
             passHref
@@ -269,6 +287,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/notifications?open=${this.state.open}`}
             as="/dashboard/notifications"
             passHref
@@ -286,6 +305,7 @@ class Dashboard extends Component {
         <Divider />
         <List>
           <Link
+            color="textPrimary"
             href={`/dashboard/profile?open=${this.state.open}`}
             as="/dashboard/profile"
             passHref
@@ -300,6 +320,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/wallet?open=${this.state.open}`}
             as="/dashboard/wallet"
             passHref
@@ -314,6 +335,7 @@ class Dashboard extends Component {
             </a>
           </Link>
           <Link
+            color="textPrimary"
             href={`/dashboard/settings?open=${this.state.open}`}
             as="/dashboard/settings"
             passHref
@@ -343,7 +365,6 @@ class Dashboard extends Component {
 
 Dashboard.defaultProps = {
   query: undefined,
-  page: undefined,
   open: undefined,
 };
 
@@ -351,7 +372,6 @@ Dashboard.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   query: PropTypes.objectOf(PropTypes.string),
-  page: PropTypes.string,
   active: PropTypes.string.isRequired,
   content: PropTypes.element.isRequired,
   open: PropTypes.string,

@@ -20,8 +20,8 @@ class AboutSelect extends React.Component {
           value={selection}
           onChange={this.handleChange}
           variant="fullWidth"
-          indicatorColor="secondary"
-          textColor="secondary"
+          indicatorColor="primary"
+          textColor="primary"
           centered
         >
           <Link href="/about" passHref>

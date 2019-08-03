@@ -1,9 +1,8 @@
-import { teal } from '@material-ui/core/colors';
+import { ServerStyleSheets } from '@material-ui/styles';
 import * as Sentry from '@sentry/node';
 import Document, { Head, Main, NextScript } from 'next/document';
-import PropTypes from 'prop-types';
 import React from 'react';
-import flush from 'styled-jsx/server';
+import theme from '../lib/theme';
 
 process.on('unhandledRejection', err => {
   Sentry.captureException(err);
@@ -12,8 +11,7 @@ process.on('unhandledRejection', err => {
 process.on('uncaughtException', err => {
   Sentry.captureException(err);
 });
-
-export default class extends Document {
+class MyDocument extends Document {
   render() {
     return (
       <html lang="en">
@@ -39,10 +37,13 @@ export default class extends Document {
           <link
             rel="mask-icon"
             href="/safari-pinned-tab.svg"
-            color={teal[800]}
+            color={theme.palette.primary.dark}
           />
-          <meta name="msapplication-TileColor" content={teal[800]} />
-          <meta name="theme-color" content={teal[800]} />
+          <meta
+            name="msapplication-TileColor"
+            content={theme.palette.primary.dark}
+          />
+          <meta name="theme-color" content={theme.palette.primary.dark} />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://steemitimages.com" />
           <link rel="preconnect" href="https://maps.googleapis.com" />
@@ -63,7 +64,7 @@ export default class extends Document {
   }
 }
 
-Document.getInitialProps = ctx => {
+MyDocument.getInitialProps = async ctx => {
   // Resolution order
   //
   // On the server:
@@ -86,38 +87,27 @@ Document.getInitialProps = ctx => {
   // 3. app.render
   // 4. page.render
 
-  // Render app and page and get the context of the page
-  // with collected side effects.
+  // Render app and page and get the context of the page with collected side effects.
+  const sheets = new ServerStyleSheets();
+  const originalRenderPage = ctx.renderPage;
 
-  let pageContext;
-  const page = ctx.renderPage(Component => {
-    const WrappedComponent = props => {
-      ({ pageContext } = props);
-      return <Component {...props} />;
-    };
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: App => props => sheets.collect(<App {...props} />),
+    });
 
-    WrappedComponent.propTypes = {
-      pageContext: PropTypes.objectOf(PropTypes.any).isRequired,
-    };
-
-    return WrappedComponent;
-  });
+  const initialProps = await Document.getInitialProps(ctx);
 
   return {
-    ...page,
-    pageContext,
+    ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: (
-      <React.Fragment>
-        <style
-          id="jss-server-side"
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: pageContext.sheetsRegistry.toString(),
-          }}
-        />
-        {flush() || null}
-      </React.Fragment>
-    ),
+    styles: [
+      <React.Fragment key="styles">
+        {initialProps.styles}
+        {sheets.getStyleElement()}
+      </React.Fragment>,
+    ],
   };
 };
+
+export default MyDocument;

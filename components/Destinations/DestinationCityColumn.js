@@ -1,8 +1,8 @@
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Link from '../../lib/Link';
 
 class DestinationCityColumn extends Component {
   render() {
@@ -21,6 +21,7 @@ class DestinationCityColumn extends Component {
     return cities.map(c => {
       return (
         <Link
+          color="textPrimary"
           key={c.city}
           href={`/destinations?country=${c.countrySlug}${
             c.nosubdivision ? '' : `&subdivision=${c.subdivision}`

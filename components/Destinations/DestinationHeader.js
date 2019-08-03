@@ -1,10 +1,10 @@
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import { nameFromSlug } from '../../helpers/countryCodes';
 import { GET_LOCATION_DETAILS } from '../../helpers/graphql/locations';
+import Link from '../../lib/Link';
 
 const DestinationHeader = props => {
   const { query, countrySlug, title } = props;
@@ -38,6 +38,7 @@ const DestinationHeader = props => {
                           (query.city && (
                             <span>
                               <Link
+                                color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
                                 passHref
@@ -50,12 +51,9 @@ const DestinationHeader = props => {
                                 {' '}
                                 &raquo;{' '}
                                 <Link
-                                  as={`/destinations/${countrySlug}/${
-                                    query.subdivision
-                                  }`}
-                                  href={`/destinations?country=${countrySlug}&subdivision=${
-                                    query.subdivision
-                                  }`}
+                                  color="textPrimary"
+                                  as={`/destinations/${countrySlug}/${query.subdivision}`}
+                                  href={`/destinations?country=${countrySlug}&subdivision=${query.subdivision}`}
                                   passHref
                                 >
                                   <a className="text-light font-weight-bold">
@@ -69,6 +67,7 @@ const DestinationHeader = props => {
                               query.subdivision ||
                               query.city) && (
                               <Link
+                                color="textPrimary"
                                 as={`/destinations/${countrySlug}/`}
                                 href={`/destinations?country=${countrySlug}`}
                                 passHref
@@ -122,26 +121,21 @@ const DestinationHeader = props => {
                                       key={`${countrySlug}_${
                                         location.subdivision
                                           ? location.subdivision
-                                          : `${query.subdivision}_${
-                                              location.city
-                                            }`
+                                          : `${query.subdivision}_${location.city}`
                                       }`}
                                       className="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 text-center"
                                     >
                                       <Link
+                                        color="textPrimary"
                                         href={`/destinations?country=${countrySlug}&subdivision=${
                                           location.subdivision
                                             ? location.subdivision
-                                            : `${query.subdivision}&city=${
-                                                location.city
-                                              }`
+                                            : `${query.subdivision}&city=${location.city}`
                                         }`}
                                         as={`/destinations/${countrySlug}/${
                                           location.subdivision
                                             ? location.subdivision
-                                            : `${query.subdivision}/${
-                                                location.city
-                                              }`
+                                            : `${query.subdivision}/${location.city}`
                                         }`}
                                         passHref
                                       >
@@ -200,18 +194,15 @@ const DestinationHeader = props => {
                             className="text-mutedlight text-decoration-underline"
                             target="_blank"
                             rel="nofollow noreferrer noopener"
-                            href={`https://unsplash.com/@${
-                              data.locationDetails.unsplashUser
-                            }?utm_source=TravelFeed&utm_medium=referral`}
+                            href={`https://unsplash.com/@${data.locationDetails.unsplashUser}?utm_source=TravelFeed&utm_medium=referral`}
                           >
                             {data.locationDetails.attribution}
                           </a>
                         )) || (
                           <Link
+                            color="textPrimary"
                             as={`/@${data.locationDetails.attribution}`}
-                            href={`/blog?author=${
-                              data.locationDetails.attribution
-                            }`}
+                            href={`/blog?author=${data.locationDetails.attribution}`}
                             passHref
                           >
                             <a className="text-mutedlight text-decoration-underline">

@@ -1,18 +1,19 @@
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import { grey, teal } from '@material-ui/core/colors';
-import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import DownIcon from '@material-ui/icons/ArrowDropDown';
+import { withStyles } from '@material-ui/styles';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import ReactPiwik from 'react-piwik';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import GeoCoder from './Geocoder';
 import HeaderMenu from './HeaderMenu';
-import LoginButtons from './LoginButtons';
+import LoginButton from './LoginButton';
+import SignUpButton from './SignUpButton';
 
 const styles = () => ({
   root: {
@@ -51,7 +52,7 @@ class Header extends Component {
       () => import('../Destinations/DestinationsNav'),
       {
         loading: () => (
-          <Link href="/destinations" passHref>
+          <Link color="textPrimary" href="/destinations" passHref>
             <a>
               <Button color="default" className={classes.whitebutton}>
                 Destinations <DownIcon />
@@ -69,8 +70,8 @@ class Header extends Component {
             <div className="container-fluid" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
                 <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-9">
-                  <Link href="/" passHref>
-                    <a style={{ flexGrow: 1 }} className="text-dark">
+                  <Link color="textPrimary" href="/" passHref>
+                    <a style={{ flexGrow: 1 }} className="textPrimary">
                       <Typography
                         variant="h6"
                         className={classes.heading}
@@ -116,7 +117,7 @@ class Header extends Component {
                 </div>
                 {!this.state.user && (
                   <div className="my-auto col-xl-2 col-lg-3 d-md-none d-sm-none d-none d-xl-block d-lg-block text-right">
-                    <LoginButtons />
+                    <SignUpButton /> <LoginButton />
                   </div>
                 )}
                 <div

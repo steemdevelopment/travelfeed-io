@@ -28,9 +28,7 @@ class Drafts extends Component {
     const user = getUser();
     return (
       <Fragment>
-        <div className="text-center pt-4">
-          <h1>Drafts</h1>
-        </div>
+        <div className="text-center pt-4" />
         <Query query={GET_DRAFTS} variables={{ limit: 10 }}>
           {({ data, loading, error, fetchMore }) => {
             if (loading) {

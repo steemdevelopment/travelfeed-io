@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
 import NextHead from 'next/head';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { Query } from 'react-apollo';
@@ -18,6 +17,7 @@ import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import CuratorMenu from '../CuratorMenu/PostMenu';
 import InvalidPost from '../General/InvalidPost';
 import NotFound from '../General/NotFound';
@@ -49,7 +49,7 @@ class SinglePost extends Component {
   componentDidMount() {
     if (this.myInput.current) {
       const cardWidth =
-        Math.round(this.myInput.current.offsetWidth / 100) * 100;
+        Math.round((this.myInput.current.offsetWidth + 100) / 100) * 100;
       this.setState({ cardWidth });
     }
     if (!document.lazyLoadInstance) {
@@ -136,7 +136,10 @@ class SinglePost extends Component {
             const bodyText = { __html: htmlBody };
             let bodycontent = (
               // eslint-disable-next-line react/no-danger
-              <div className="postcontent" dangerouslySetInnerHTML={bodyText} />
+              <div
+                className="textPrimary postcontent"
+                dangerouslySetInnerHTML={bodyText}
+              />
             );
             const isBacklisted = data.post.is_blacklisted;
             const isNSFW = data.post.is_nsfw;
@@ -160,7 +163,7 @@ class SinglePost extends Component {
                     }
                     return (
                       <div
-                        className="postcontent"
+                        className="textPrimary postcontent"
                         // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={bodyText}
                       />
@@ -249,6 +252,7 @@ class SinglePost extends Component {
                     <CardHeader
                       avatar={
                         <Link
+                          color="textPrimary"
                           as={`/@${data.post.author}`}
                           href={`/blog?author=${data.post.author}`}
                           passHref
@@ -278,16 +282,21 @@ class SinglePost extends Component {
                       title={
                         <Fragment>
                           <Link
+                            color="textPrimary"
                             as={`/@${data.post.author}`}
                             href={`/blog?author=${data.post.author}`}
                             passHref
                           >
-                            <a className="text-dark cpointer">
+                            <a className="textPrimary cpointer">
                               <strong>{data.post.display_name}</strong>
-                              <span className="text-muted">
+                              <Typography
+                                color="textSecondary"
+                                variant="subtitle"
+                                display="inline"
+                              >
                                 {' '}
                                 @{data.post.author}
-                              </span>
+                              </Typography>
                             </a>
                           </Link>
                         </Fragment>

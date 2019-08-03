@@ -1,7 +1,7 @@
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -44,7 +44,7 @@ ExpansionPanelSummary.muiName = 'ExpansionPanelSummary';
 
 const ExpansionPanelDetails = withStyles(theme => ({
   root: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 }))(MuiExpansionPanelDetails);
 

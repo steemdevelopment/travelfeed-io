@@ -11,6 +11,7 @@ import BlogGridList from '../components/Sidebar/BlogGridList';
 import JoinNow from '../components/Sidebar/JoinNow';
 import LegalNotice from '../components/Sidebar/LegalNotice';
 import NavSide from '../components/Sidebar/NavSide';
+import SocialLinks from '../components/Sidebar/SocialLinks';
 import { getUser } from '../helpers/token';
 
 class HomePage extends Component {
@@ -121,7 +122,8 @@ class HomePage extends Component {
                 <BlogGridList />
                 <div className="pt-3" />
                 <DiscoverCountry />
-                <div className="pt-2" />
+                <div className="pt-3" />
+                <SocialLinks />
                 <LegalNotice />
               </StickyBox>
             </div>

@@ -11,7 +11,7 @@ const HtmlEditorPreview = props => {
   return (
     <div>
       <div
-        className="postcontent border mt-2 w-100 h-100 pl-2"
+        className="textPrimary postcontent border mt-2 w-100 h-100 pl-2"
         // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={bodyText}
       />

@@ -8,13 +8,20 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Create';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';
-import Link from 'next/link';
+import { withStyles } from '@material-ui/styles';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
+import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
+const styles = theme => ({
+  areabg: {
+    background: theme.palette.background.light,
+  },
+});
 class PostListItem extends Component {
   state = { show: true };
 
@@ -23,6 +30,8 @@ class PostListItem extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     // Hide if deleted (for drafts)
     if (!this.state.show) {
       return <Fragment />;
@@ -45,11 +54,12 @@ class PostListItem extends Component {
     }
     let button2 = (
       <Link
+        color="textPrimary"
         as={`/@${this.props.post.author}/${this.props.post.permlink}`}
         href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
         passHref
       >
-        <a className="text-light">
+        <a className="textPrimary">
           <Button color="inherit" className="p-0 pr-2 pl-2">
             <span className="pr-1">View</span> <ViewIcon />
           </Button>
@@ -89,12 +99,13 @@ class PostListItem extends Component {
               </Typography>
             </div>
           </CardContent>
-          <CardActions className="bg-dark">
+          <CardActions className={classNames(classes.areabg)}>
             <div className="container-fluid">
               <div className="row w-100">
-                <div className="col-7">
-                  <span className="text-light pl-2">
+                <div className="col-7 my-auto">
+                  <span className="textPrimary pl-2">
                     <Link
+                      className="textPrimary"
                       href={`/dashboard/publish?id=${
                         this.props.post.id
                       }&permlink=${encodeURIComponent(
@@ -111,14 +122,15 @@ class PostListItem extends Component {
                       as="/dashboard/publish"
                       passHref
                     >
-                      <Button color="inherit" className="p-0 pl-2 pr-2">
-                        <span className="pr-1">Edit</span> <EditIcon />
+                      <Button className="p-0 pl-2 pr-2">
+                        <span className="textPrimary pr-1">Edit</span>{' '}
+                        <EditIcon />
                       </Button>
                     </Link>
                   </span>
                   {button2}
                 </div>
-                <div className="col-5 text-right pt-1">
+                <div className="col-5 my-auto text-right pt-1">
                   {country && (
                     <Tooltip
                       title={`${
@@ -128,7 +140,7 @@ class PostListItem extends Component {
                       } ${country}`}
                       placement="bottom"
                     >
-                      <span className="text-light">
+                      <span className="textPrimary pr-1">
                         <LocationIcon />
                       </span>
                     </Tooltip>
@@ -140,18 +152,19 @@ class PostListItem extends Component {
                       new Date(
                         new Date().setDate(new Date().getDate() - 7),
                       ) && (
-                      <span className="text-light pl-2 font-weight-bold">
+                      <span className="textPrimary pl-2 font-weight-bold">
                         ${(this.props.post.payout * 0.75).toFixed(2)}
                       </span>
                     )) || (
-                      <span className="text-light pl-2 font-weight-bold">
+                      <span className="textPrimary pl-2 font-weight-bold">
                         Payout in{' '}
                         {Math.ceil(
-                          Math.abs(
-                            new Date().getTime() -
-                              new Date(this.props.post.created_at).getTime(),
-                          ) /
-                            (1000 * 60 * 60 * 24),
+                          7 -
+                            Math.abs(
+                              new Date().getTime() -
+                                new Date(this.props.post.created_at).getTime(),
+                            ) /
+                              (1000 * 60 * 60 * 24),
                         )}{' '}
                         days
                       </span>
@@ -176,9 +189,10 @@ PostListItem.defaultProps = {
 };
 
 PostListItem.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   isDraftMode: PropTypes.bool,
   id: PropTypes.string.isRequired,
 };
 
-export default PostListItem;
+export default withStyles(styles, { withTheme: true })(PostListItem);

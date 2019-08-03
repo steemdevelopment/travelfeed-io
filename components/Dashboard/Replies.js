@@ -1,4 +1,3 @@
-import Grid from '@material-ui/core/Grid';
 import React, { Fragment } from 'react';
 import { getUser } from '../../helpers/token';
 import PostGrid from '../Grid/PostGrid';
@@ -6,20 +5,7 @@ import PostGrid from '../Grid/PostGrid';
 const Replies = () => {
   return (
     <Fragment>
-      <Grid
-        container
-        spacing={0}
-        alignItems="center"
-        justify="center"
-        className="pt-4 pb-4"
-      >
-        <Grid item lg={8} md={10} sm={11} xs={12}>
-          <div className="text-center">
-            <h1>Replies</h1>
-          </div>
-        </Grid>
-      </Grid>
-      <div className="p-1">
+      <div className="p-2 pt-4">
         <PostGrid
           query={{
             parent_author: getUser(),

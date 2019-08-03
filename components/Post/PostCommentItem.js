@@ -2,17 +2,26 @@ import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/styles';
+import classNames from 'classnames';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
+import Link from '../../lib/Link';
 import CuratorMenu from '../CuratorMenu/CommentMenu';
 import PostComments from './PostComments';
 import SubHeader from './SubHeader';
 import VoteSlider from './VoteSlider';
+
+const styles = theme => ({
+  areabg: {
+    background: theme.palette.background.light,
+  },
+});
 
 class PostCommentItem extends Component {
   state = {
@@ -56,6 +65,8 @@ class PostCommentItem extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     // Prevent SSR
     const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
       ssr: false,
@@ -98,16 +109,13 @@ class PostCommentItem extends Component {
       parent = (
         <div>
           <Link
-            as={`/@${this.props.post.parent_author}/${
-              this.props.post.parent_permlink
-            }`}
-            href={`/post?author=${this.props.post.parent_author}&permlink=${
-              this.props.post.parent_permlink
-            }`}
+            color="textPrimary"
+            as={`/@${this.props.post.parent_author}/${this.props.post.parent_permlink}`}
+            href={`/post?author=${this.props.post.parent_author}&permlink=${this.props.post.parent_permlink}`}
             passHref
           >
             <a>
-              <strong>Go to parent comment</strong>
+              <strong className="ablue hoverline">Go to parent comment</strong>
             </a>
           </Link>
         </div>
@@ -115,20 +123,20 @@ class PostCommentItem extends Component {
     }
     if (this.props.title === true) {
       title = (
-        <div className="bg-light border p-3 mb-2">
+        <div
+          className={`border p-3 mb-2 
+        ${classNames(classes.areabg)}`}
+        >
           <h4>{`Re: ${this.props.post.root_title}`}</h4>
           <div>
             <Link
-              as={`/@${this.props.post.root_author}/${
-                this.props.post.root_permlink
-              }`}
-              href={`/post?author=${this.props.post.root_author}&permlink=${
-                this.props.post.root_permlink
-              }`}
+              color="textPrimary"
+              as={`/@${this.props.post.root_author}/${this.props.post.root_permlink}`}
+              href={`/post?author=${this.props.post.root_author}&permlink=${this.props.post.root_permlink}`}
               passHref
             >
               <a>
-                <strong>Go to original post</strong>
+                <strong className="ablue hoverline">Go to original post</strong>
               </a>
             </Link>
           </div>
@@ -165,6 +173,7 @@ class PostCommentItem extends Component {
           <CardHeader
             avatar={
               <Link
+                color="textPrimary"
                 as={`/@${this.props.post.author}`}
                 href={`/blog?author=${this.props.post.author}`}
                 passHref
@@ -172,9 +181,7 @@ class PostCommentItem extends Component {
                 <a>
                   <Avatar
                     className="cpointer"
-                    src={`https://steemitimages.com/u/${
-                      this.props.post.author
-                    }/avatar/small`}
+                    src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
                     alt={this.props.post.author}
                   />
                 </a>
@@ -195,13 +202,21 @@ class PostCommentItem extends Component {
             }
             title={
               <Link
+                color="textPrimary"
                 as={`/@${this.props.post.author}`}
                 href={`/blog?author=${this.props.post.author}`}
                 passHref
               >
-                <a className="text-dark cpointer">
+                <a className="textPrimary cpointer">
                   <strong>{this.props.post.display_name}</strong>
-                  <span className="text-muted"> @{this.props.post.author}</span>
+                  <Typography
+                    color="textSecondary"
+                    variant="subtitle"
+                    display="inline"
+                  >
+                    {' '}
+                    @{this.props.post.author}
+                  </Typography>
                 </a>
               </Link>
             }
@@ -216,6 +231,7 @@ class PostCommentItem extends Component {
             permlink={this.props.post.permlink}
             votes={this.props.post.votes}
             total_votes={this.props.post.total_votes}
+            children={this.props.post.children}
             tags={[]}
             mode="comment"
             handleClick={this.handleClick}
@@ -257,6 +273,7 @@ PostCommentItem.defaultProps = {
 };
 
 PostCommentItem.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   post: PropTypes.objectOf(PropTypes.any).isRequired,
   loadreplies: PropTypes.bool,
   title: PropTypes.bool,
@@ -264,4 +281,4 @@ PostCommentItem.propTypes = {
   orderdir: PropTypes.string,
 };
 
-export default PostCommentItem;
+export default withStyles(styles, { withTheme: true })(PostCommentItem);

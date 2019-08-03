@@ -29,7 +29,7 @@ class DestinationMenuItem extends Component {
           selected={active}
         >
           <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText inset primary={text} />
+          <ListItemText primary={text} />
         </MenuItem>
       </ClickAwayListener>
     );

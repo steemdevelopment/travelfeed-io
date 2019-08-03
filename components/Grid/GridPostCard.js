@@ -8,12 +8,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
 import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
+import Link from '../../lib/Link';
 import IsCurated from '../Post/IsCurated';
 import SubHeader from '../Post/SubHeader';
 import VoteSlider from '../Post/VoteSlider';
@@ -102,6 +102,7 @@ class GridPostCard extends Component {
           {appIcon}
           {country && (
             <Link
+              color="textPrimary"
               as={`/destinations/${countryslug}/${
                 this.props.post.subdivision !== null
                   ? this.props.post.subdivision
@@ -137,6 +138,7 @@ class GridPostCard extends Component {
         <CardHeader
           avatar={
             <Link
+              color="textPrimary"
               as={`/@${this.props.post.author}`}
               href={`/blog?author=${this.props.post.author}`}
               passHref
@@ -144,9 +146,7 @@ class GridPostCard extends Component {
               <a>
                 <Avatar
                   style={{ cursor: 'pointer' }}
-                  src={`https://steemitimages.com/u/${
-                    this.props.post.author
-                  }/avatar/small`}
+                  src={`https://steemitimages.com/u/${this.props.post.author}/avatar/small`}
                   alt={this.props.post.author}
                 />
               </a>
@@ -155,13 +155,21 @@ class GridPostCard extends Component {
           action={<Fragment>{action}</Fragment>}
           title={
             <Link
+              color="textPrimary"
               as={`/@${this.props.post.author}`}
               href={`/blog?author=${this.props.post.author}`}
               passHref
             >
-              <a className="text-dark cpointer">
+              <a className="textPrimary cpointer">
                 <strong>{this.props.post.display_name}</strong>
-                <span className="text-muted"> @{this.props.post.author}</span>
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle"
+                  display="inline"
+                >
+                  {' '}
+                  @{this.props.post.author}
+                </Typography>
               </a>
             </Link>
           }
@@ -173,10 +181,9 @@ class GridPostCard extends Component {
           }
         />
         <Link
+          color="textPrimary"
           as={`/@${this.props.post.author}/${this.props.post.permlink}`}
-          href={`/post?author=${this.props.post.author}&permlink=${
-            this.props.post.permlink
-          }`}
+          href={`/post?author=${this.props.post.author}&permlink=${this.props.post.permlink}`}
           passHref
         >
           <a>

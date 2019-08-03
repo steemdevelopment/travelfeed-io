@@ -18,9 +18,6 @@ const theme = createMuiTheme({
   palette: {
     primary: red,
   },
-  typography: {
-    useNextVariants: true,
-  },
 });
 
 class DeleteDraftButton extends Component {
@@ -73,10 +70,10 @@ class DeleteDraftButton extends Component {
               <a className="text-light">
                 <Button
                   onClick={this.handleClickOpen}
-                  color="inherit"
                   className="p-0 pr-2 pl-2"
                 >
-                  <span className="pr-1">Delete</span> <DeleteIcon />
+                  <span className="textPrimary pr-1">Delete</span>
+                  <DeleteIcon />
                 </Button>
               </a>
               <Dialog

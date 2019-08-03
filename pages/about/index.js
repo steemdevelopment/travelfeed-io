@@ -26,7 +26,7 @@ const AboutPage = () => {
             title={title}
             background={teal[600]}
             content={
-              <div className="postcontent">
+              <div className="textPrimary postcontent">
                 <p>
                   Welcome to TravelFeed! We are a group of travelers who came
                   together to build the platform that we always wanted to have:

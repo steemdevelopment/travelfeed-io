@@ -141,9 +141,7 @@ function iframe(state, child) {
     links.add(embed.url);
     images.add(`https://img.youtube.com/vi/${embed.id}/0.jpg`);
     if (!resolveIframe)
-      domString = `~~~ embed:${embed.id} ${embed.provider_name} ${
-        embed.url
-      } ~~~`;
+      domString = `~~~ embed:${embed.id} ${embed.provider_name} ${embed.url} ~~~`;
   }
 
   const { mutate, resolveIframe } = state;

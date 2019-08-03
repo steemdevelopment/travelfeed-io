@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import React, { Component, Fragment } from 'react';
 import { hasCookieConsent, setCookieConsent } from '../../helpers/token';
+import Link from '../../lib/Link';
 import CookiePopup from './CookiePopup';
 
 class CookieConsent extends Component {
@@ -40,7 +40,7 @@ class CookieConsent extends Component {
             We use cookies to improve your experience and to analyze how our
             site is used.
             <br />
-            <Link href="/about/cookies" passHref>
+            <Link color="textPrimary" href="/about/cookies" passHref>
               <a className="text-light text-decoration-underline">Learn more</a>
             </Link>
           </Typography>

@@ -19,8 +19,7 @@ const Notifications = () => {
         {({ data, loading, error }) => {
           return (
             <Fragment>
-              <div className="text-center w-100 pt-4">
-                <h1>Notifications</h1>
+              <div className="text-center w-100 pt-3">
                 {loading && (
                   <div className="p-5 text-center">
                     <CircularProgress />

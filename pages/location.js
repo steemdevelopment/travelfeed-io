@@ -29,12 +29,8 @@ class LocationPage extends Component {
     return (
       <Fragment>
         <Head
-          title={`${
-            this.props.formatted_address
-          } - TravelFeed: The Travel Community`}
-          description={`Explore posts about ${
-            this.props.formatted_address
-          } on TravelFeed.`}
+          title={`${this.props.formatted_address} - TravelFeed: The Travel Community`}
+          description={`Explore posts about ${this.props.formatted_address} on TravelFeed.`}
         />
         <Header />
         <DestinationHeader

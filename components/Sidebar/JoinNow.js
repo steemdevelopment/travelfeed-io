@@ -2,8 +2,8 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import Link from 'next/link';
 import React from 'react';
+import Link from '../../lib/Link';
 
 const JoinNow = () => {
   return (
@@ -14,12 +14,12 @@ const JoinNow = () => {
             variant="h6"
             align="center"
             gutterBottom
-            className="p-2 text-dark"
+            className="p-2 textPrimary"
           >
             Never miss another story!
           </Typography>
           <div>
-            <Link href="/join" passHref>
+            <Link color="textPrimary" href="/join" passHref>
               <Button
                 variant="contained"
                 color="primary"

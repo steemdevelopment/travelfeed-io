@@ -3,7 +3,7 @@ import parseBody from './parseBody';
 const md2json = d => {
   const json = { time: 1564842925324, blocks: [], version: '2.15.0' };
   if (!d) return json;
-  const data = `${d}\n\n`;
+  const data = `${d}\n\n`.replace(/\n([a-zA-Z!#])/, '\n\n$1');
   const paragraphs = data.split('\n\n');
   paragraphs.forEach(para => {
     const p = para.replace(/^\n/, '');
@@ -45,7 +45,7 @@ const md2json = d => {
       block = { data: { text }, type: 'quote' };
     }
     // delimiter
-    else if (p.match(/---\n/)) {
+    else if (p.match(/^---/)) {
       block = { data: {}, type: 'delimiter' };
     }
     // embed
@@ -65,12 +65,22 @@ const md2json = d => {
       });
       block = { data: { items, style: 'ordered' }, type: 'list' };
     }
-    // unordered list
+    // unordered list with -
     else if (p.match(/^- /)) {
       const items = [];
       const list = `${p}\n`;
       list.match(/- .*\n/g).forEach(m => {
         const match = m.match(/- (.*)\n/);
+        items.push(match[1]);
+      });
+      block = { data: { items, style: 'unordered' }, type: 'list' };
+    }
+    // unordered list with *
+    else if (p.match(/^\* /)) {
+      const items = [];
+      const list = `${p}\n`;
+      list.match(/\* .*\n/g).forEach(m => {
+        const match = m.match(/\* (.*)\n/);
         items.push(match[1]);
       });
       block = { data: { items, style: 'unordered' }, type: 'list' };

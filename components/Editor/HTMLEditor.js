@@ -22,7 +22,9 @@ const HtmlEditor = props => {
       <MdEditor
         config={{ htmlClass: 'postcontent', synchScroll: true }}
         value={data}
-        renderHTML={text => parseBody(text, { lazy: false })}
+        renderHTML={text =>
+          parseBody(text, { lazy: false, secureLinks: false })
+        }
         onChange={onChange}
         onImageUpload={handleImageUpload}
       />

@@ -20,6 +20,8 @@ import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
 import { comment } from '../../helpers/actions';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
+import json2md from '../../helpers/json2md';
+import md2json from '../../helpers/md2json';
 import {
   getImageList,
   getLinkList,
@@ -37,7 +39,7 @@ import PostMap from '../Maps/PostMap';
 
 const PostEditor = props => {
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState(undefined);
+  const [content, setContent] = useState('');
   const [tags, setTags] = useState(undefined);
   const [completed, setCompleted] = useState(0);
   const [location, setLocation] = useState(undefined);
@@ -83,8 +85,7 @@ const PostEditor = props => {
   };
 
   const handleEditorChange = value => {
-    const text = value();
-    setContent(text);
+    setContent(value);
   };
 
   const handleHtmlEditorChange = ({ text }) => {
@@ -100,6 +101,8 @@ const PostEditor = props => {
   };
 
   const changeEditorMode = () => {
+    if (!codeEditor) setContent(json2md(content));
+    else setContent(md2json(content));
     setCodeEditor(!codeEditor);
   };
 
@@ -247,7 +250,10 @@ const PostEditor = props => {
                         )) || (
                           <div>
                             {mounted && (
-                              <EasyEditor />
+                              <EasyEditor
+                                onChange={handleEditorChange}
+                                data={content}
+                              />
                               // <Editor
                               //   style={{ minHeight: '300px' }}
                               //   className="border postcontent pl-2"
@@ -259,8 +265,8 @@ const PostEditor = props => {
                               //     );
                               //   }}
                               //   placeholder="Start writing your next awesome travel blog!"
-                              //   onChange={handleEditorChange}
-                              //   defaultValue={content}
+                              // onChange={handleEditorChange}
+                              // defaultValue={content}
                               //   autoFocus
                               // />
                             )}

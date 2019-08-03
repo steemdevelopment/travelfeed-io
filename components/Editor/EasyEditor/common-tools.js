@@ -10,6 +10,7 @@ import uploadFile from '../../../helpers/imageUpload';
 import { getUser } from '../../../helpers/token';
 
 // TODO: Write maps embed plugin
+// TODO: Write gallery plugin
 
 export default {
   header: Header,

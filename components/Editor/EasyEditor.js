@@ -7,7 +7,6 @@ const Editor = dynamic(() => import('./EasyEditor/editor.js'), {
 });
 
 // TODO: Convert to markdown (not to HTML as previously!). Reverse conversion from markdown.
-
 const EasyEditor = props => {
   const { data, onChange } = props;
 
@@ -17,23 +16,25 @@ const EasyEditor = props => {
         autofocus
         holderId="editorjs-container"
         // excludeDefaultTools={['header']}
-        onChange={data => console.log(data)}
+        // onChange={data => console.log(data)}
+        onChange={onChange}
         // customTools={{
         //   header: CustomHeader,
         // }}
         onReady={() => console.log('Start!')}
-        data={{
-          time: 1554920381017,
-          blocks: [
-            {
-              type: 'paragraph',
-              data: {
-                text: 'Hello Editor.js',
-              },
-            },
-          ],
-          version: '2.12.4',
-        }}
+        data={data}
+        // data={{
+        //   time: 1554920381017,
+        //   blocks: [
+        //     {
+        //       type: 'paragraph',
+        //       data: {
+        //         text: 'Hello Editor.js',
+        //       },
+        //     },
+        //   ],
+        //   version: '2.12.4',
+        // }}
       />
     </div>
   );

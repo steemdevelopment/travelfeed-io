@@ -180,14 +180,17 @@ class TagPicker extends React.Component {
       });
     }
     if (
-      event.key === ' ' &&
+      (event.key === ' ' || event.key === ',') &&
       inputValue.length &&
       inputValue.length < 20 &&
       inputValue.match(/[a-zA-Z0-9]/) &&
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
       selectedItem.length < 10
     ) {
-      const item = this.state.inputValue.toLowerCase().replace(/\s/g, '');
+      const item = this.state.inputValue
+        .toLowerCase()
+        .replace(/,/g, '')
+        .replace(/\s/g, '');
 
       if (selectedItem.indexOf(item) === -1) {
         selectedItem = [...selectedItem, item];

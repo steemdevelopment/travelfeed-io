@@ -23,11 +23,7 @@ import { comment } from '../../helpers/actions';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
-import {
-  getImageList,
-  getLinkList,
-  getMentionList,
-} from '../../helpers/parsePostContents';
+import { getImageList, getLinkList, getMentionList } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
 import Checks from '../Editor/Checks';
 // import Editor from 'rich-markdown-editor';
@@ -368,7 +364,7 @@ const PostEditor = props => {
                   <CardHeader
                     title="Tags"
                     action={
-                      <HelpTooltip title="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here. Only lowercase letters, numbers and hyphen characters are permitted. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags." />
+                      <HelpTooltip title="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags." />
                     }
                   />
                   <CardContent>

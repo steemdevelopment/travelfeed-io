@@ -1,13 +1,13 @@
 import Delimiter from '@editorjs/delimiter';
-import Embed from '@editorjs/embed';
 import Header from '@editorjs/header';
 import Image from '@editorjs/image';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
-import Quote from '@editorjs/quote';
 import Table from '@editorjs/table';
 import uploadFile from '../../../helpers/imageUpload';
 import { getUser } from '../../../helpers/token';
+import Embed from './tools/embed/index';
+import Quote from './tools/quote/index';
 
 // TODO: Write maps embed plugin
 // TODO: Write gallery plugin

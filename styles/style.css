@@ -174,7 +174,6 @@ a:hover {
   font-size: 1.6rem;
   line-height: 1.48;
   letter-spacing: -0.012em;
-  color: #525252;
   padding: 0 50px 0 50px;
   quotes: '\201C''\201D''\2018''\2019';
 }
@@ -188,7 +187,6 @@ a:hover {
 .postcontent table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 1rem;
   background-color: transparent;
   display: table;
   border: 1px;

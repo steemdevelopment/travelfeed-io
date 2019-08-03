@@ -15,19 +15,19 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
-import Editor from 'rich-markdown-editor';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
 import { comment } from '../../helpers/actions';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
-import uploadFile from '../../helpers/imageUpload';
 import {
   getImageList,
   getLinkList,
   getMentionList,
 } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
+// import Editor from 'rich-markdown-editor';
+import EasyEditor from '../Editor/EasyEditor';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HtmlEditor from '../Editor/HTMLEditor';
 import LocationPicker from '../Editor/LocationPickerButton';
@@ -57,7 +57,7 @@ const PostEditor = props => {
         : undefined;
     setTitle(props.edit.title ? props.edit.title : '');
     setContent(props.edit.body ? props.edit.body : '');
-    // setCodeEditor(props.edit.body !== undefined);
+    setCodeEditor(props.edit.body !== undefined);
     setTags(json && json.tags ? json.tags : ['travelfeed']);
     setLocation(json && json.location ? json.location : undefined);
     setFeaturedImage(
@@ -247,21 +247,22 @@ const PostEditor = props => {
                         )) || (
                           <div>
                             {mounted && (
-                              <Editor
-                                style={{ minHeight: '300px' }}
-                                className="border postcontent pl-2"
-                                uploadImage={file => {
-                                  return uploadFile(file, getUser()).then(
-                                    res => {
-                                      return res;
-                                    },
-                                  );
-                                }}
-                                placeholder="Start writing your next awesome travel blog!"
-                                onChange={handleEditorChange}
-                                defaultValue={content}
-                                autoFocus
-                              />
+                              <EasyEditor />
+                              // <Editor
+                              //   style={{ minHeight: '300px' }}
+                              //   className="border postcontent pl-2"
+                              //   uploadImage={file => {
+                              //     return uploadFile(file, getUser()).then(
+                              //       res => {
+                              //         return res;
+                              //       },
+                              //     );
+                              //   }}
+                              //   placeholder="Start writing your next awesome travel blog!"
+                              //   onChange={handleEditorChange}
+                              //   defaultValue={content}
+                              //   autoFocus
+                              // />
                             )}
                           </div>
                         )}

@@ -183,6 +183,7 @@ class TagPicker extends React.Component {
       event.key === ' ' &&
       inputValue.length &&
       inputValue.length < 20 &&
+      inputValue.match(/[a-zA-Z0-9]/) &&
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
       selectedItem.length < 10
     ) {

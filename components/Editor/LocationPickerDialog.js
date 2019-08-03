@@ -2,9 +2,6 @@ import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import HelpIcon from '@material-ui/icons/Help';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -18,6 +15,7 @@ import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { MAPBOX_TOKEN } from '../../config';
 import { round } from '../../helpers/math';
 import MapMarker from '../Maps/Marker';
+import HelpTooltip from './HelpTooltip';
 
 const navStyle = {
   position: 'absolute',
@@ -123,19 +121,7 @@ class LocationPickerDialog extends Component {
           Pick the location of your post: {this.state.marker.latitude}
           {', '}
           {this.state.marker.longitude}
-          <Tooltip
-            title="Drag the marker, use the search field or click on the GPS icon to pick a location."
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              padding: '10px',
-            }}
-          >
-            <IconButton>
-              <HelpIcon />
-            </IconButton>
-          </Tooltip>
+          <HelpTooltip title="Drag the marker, use the search field or click on the GPS icon to pick a location." />
         </DialogTitle>
         <DialogContent>
           <div id="container" style={{ height: '400px' }}>

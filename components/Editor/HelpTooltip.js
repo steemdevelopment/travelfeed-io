@@ -1,0 +1,26 @@
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import HelpIcon from '@material-ui/icons/Help';
+import React from 'react';
+
+const HelpTooltip = props => {
+  return (
+    <Tooltip
+      disableFocusListener
+      disableTouchListener
+      title={props.title}
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        padding: '10px',
+      }}
+    >
+      <IconButton>
+        <HelpIcon />
+      </IconButton>
+    </Tooltip>
+  );
+};
+
+export default HelpTooltip;

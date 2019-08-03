@@ -1,10 +1,12 @@
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
 import Tooltip from '@material-ui/core/Tooltip';
+import Typography from '@material-ui/core/Typography';
 import PublishIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Update';
@@ -27,9 +29,12 @@ import {
   getMentionList,
 } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
+import Checks from '../Editor/Checks';
 // import Editor from 'rich-markdown-editor';
 import EasyEditor from '../Editor/EasyEditor';
+import EditorPreview from '../Editor/EditorPreview';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
+import HelpTooltip from '../Editor/HelpTooltip';
 import HtmlEditor from '../Editor/HTMLEditor';
 import LocationPicker from '../Editor/LocationPickerButton';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
@@ -274,6 +279,11 @@ const PostEditor = props => {
           </div>
           <div className="col-12">
             <div className="row">
+              <div className="col-12 text-center">
+                <Typography gutterBottom variant="h3">
+                  Options
+                </Typography>
+              </div>
               <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                 <Card>
                   {featuredImage && (
@@ -325,6 +335,7 @@ const PostEditor = props => {
                         onPick={setLocation}
                         isChange={location}
                       />
+                      Country? Region? Sublocation?
                     </div>
                   </CardContent>
                 </Card>
@@ -332,13 +343,96 @@ const PostEditor = props => {
               <div className="col-xl-3 col-md-6 col-sm-12 p-1">
                 <Card>
                   <CardContent>
-                    <h5 className="text-center">Tags</h5>
+                    <h5 className="text-center">Category</h5>
+                    Category picker
+                  </CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                <Card>
+                  <CardContent>
+                    <h5 className="text-center">Language</h5>
+                    Language picker
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12 text-center">
+                <Typography gutterBottom variant="h3">
+                  Advanced Options
+                </Typography>
+              </div>
+              <div className="col-xl-6 col-sm-12 p-1">
+                <Card>
+                  <CardHeader
+                    title="Tags"
+                    action={
+                      <HelpTooltip title="Tags are set automatically based on your language and category selection. If you are not happy with that, you can set up to 10 custom tags here. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags." />
+                    }
+                  />
+                  <CardContent>
                     {tags && (
                       <TagPicker
                         initialValue={tags}
                         onChange={handleTagClick}
                       />
                     )}
+                  </CardContent>{' '}
+                </Card>
+              </div>
+              <div className="col-xl-6 col-sm-12 p-1">
+                <Card>
+                  <CardHeader
+                    title="Payout Options"
+                    action={
+                      <HelpTooltip title="Choose how to receive your reward" />
+                    }
+                  />
+                  <CardContent>Picker</CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-6 col-sm-12 p-1">
+                <Card>
+                  <CardHeader
+                    title="Permlink"
+                    action={
+                      <HelpTooltip title="Don't like the long link? Set a custom link here!" />
+                    }
+                  />
+                  <CardContent>Picker</CardContent>
+                </Card>
+              </div>
+              <div className="col-xl-6 col-sm-12 p-1">
+                <Card>
+                  <CardHeader
+                    title="Beneficiaries"
+                    action={
+                      <HelpTooltip title="If you would like to share your rewards for this post with someone else, you can include their username here." />
+                    }
+                  />
+                  <CardContent>Picker</CardContent>
+                </Card>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12 text-center">
+                <Typography gutterBottom variant="h3">
+                  Review & Publish
+                </Typography>
+              </div>
+              <div className="col-12">
+                Checks
+                <Checks />
+              </div>
+              <div className="col-12">
+                Preview
+                <EditorPreview />
+              </div>
+              <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
+                <Card>
+                  <CardContent>
+                    <h5>Save Draft</h5>
                   </CardContent>
                 </Card>
               </div>

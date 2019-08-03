@@ -200,10 +200,10 @@ a:hover {
   padding: 0.5rem 0.625rem 0.625rem;
 }
 .postcontent tr {
-  background-color: #fcfcfc;
+  background-color: #fcfcfcb9;
 }
 .postcontent tr:nth-child(even) {
-  background-color: #f4f4f4;
+  background-color: #f4f4f494;
 }
 
 blockquote > center {

@@ -368,7 +368,7 @@ const PostEditor = props => {
                   <CardHeader
                     title="Tags"
                     action={
-                      <HelpTooltip title="Tags are set automatically based on your language and category selection. If you are not happy with that, you can set up to 10 custom tags here. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags." />
+                      <HelpTooltip title="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags." />
                     }
                   />
                   <CardContent>

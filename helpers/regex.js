@@ -27,7 +27,7 @@ export const regExcerpt = text => {
 };
 
 // eslint-disable-next-line no-control-regex
-export const allSpecialChars = /(?:[!-/:-@[-`{-~]|[^\x00-\x7F]|\s)/g;
+export const allSpecialChars = /(?:[!/:-@[-`{-~]|[^\x00-\x7F]|\s)/g;
 
 export const permlinkFromTitle = title => {
   return title.replace(nospecialchars, '-').toLowerCase();

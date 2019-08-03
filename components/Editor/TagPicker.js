@@ -1,8 +1,8 @@
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/styles';
 import Downshift from 'downshift';
 import deburr from 'lodash.deburr';
 import PropTypes from 'prop-types';
@@ -70,6 +70,10 @@ const suggestions = [
   { label: 'walkwithme' },
   { label: 'wednesdaywalk' },
   { label: 'marketfriday' },
+  { label: 'palnet' },
+  { label: 'creativecoin' },
+  { label: 'neoxian' },
+  { label: 'sct' },
 ];
 
 const renderInput = inputProps => {
@@ -131,7 +135,7 @@ function getSuggestions(value) {
     ? []
     : suggestions.filter(suggestion => {
         const keep =
-          count < 5 &&
+          count < 10 &&
           suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
         if (keep) {
@@ -180,7 +184,7 @@ class TagPicker extends React.Component {
       inputValue.length &&
       inputValue.length < 20 &&
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
-      selectedItem.length < 5
+      selectedItem.length < 10
     ) {
       const item = this.state.inputValue.toLowerCase().replace(/\s/g, '');
 
@@ -205,7 +209,7 @@ class TagPicker extends React.Component {
   handleChange = item => {
     let { selectedItem } = this.state;
     //  If 5 Tags already, don't autocomplete
-    if (selectedItem.length < 5) {
+    if (selectedItem.length < 10) {
       if (selectedItem.indexOf(item) === -1) {
         selectedItem = [...selectedItem, item];
       }
@@ -258,6 +262,13 @@ class TagPicker extends React.Component {
                 startAdornment: selectedItem.map(item => (
                   <Chip
                     key={item}
+                    color={
+                      ['palnet', 'creativecoin', 'sct', 'neoxian'].indexOf(
+                        item,
+                      ) > -1
+                        ? 'primary'
+                        : 'secondary'
+                    }
                     tabIndex={-1}
                     label={item}
                     className={classes.chip}
@@ -274,7 +285,7 @@ class TagPicker extends React.Component {
                 // },
                 placeholder: 'Add tags',
               }),
-              label: 'Tags',
+              label: '',
             })}
             {isOpen ? (
               <Paper className={classes.paper} square>

@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/styles';
 import Downshift from 'downshift';
 import deburr from 'lodash.deburr';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { allSpecialChars } from '../../helpers/regex';
 
 const styles = theme => ({
@@ -146,38 +146,29 @@ function getSuggestions(value) {
       });
 }
 
-class TagPicker extends React.Component {
-  state = {
-    inputValue: '',
-    selectedItem: ['travelfeed'],
-  };
+const TagPicker = props => {
+  const [inputValue, setInputValue] = useState('');
+  // const [selectedItem, props.onChange]/ = useState([props.defaultTag]);
 
-  componentDidMount() {
-    let tags = ['travelfeed'];
-    if (this.props.initialValue) {
-      tags = this.props.initialValue;
-    }
-    this.setState({
-      selectedItem: tags,
-    });
-  }
+  const selectedItem = props.value;
 
-  handleKeyDown = event => {
+  // useEffect(() => {
+  //   let tags = [props.defaultTag];
+  //   if (props.value) {
+  //     tags = props.value;
+  //   }
+  //   props.onChange(tags);
+  // }, []);
+
+  const handleKeyDown = event => {
     //   Todooooo
-    const { inputValue } = this.state;
-    let { selectedItem } = this.state;
     if (
       selectedItem.length &&
       !inputValue.length &&
       event.key === 'Backspace' &&
-      selectedItem[selectedItem.length - 1] !== 'travelfeed'
+      selectedItem[selectedItem.length - 1] !== props.defaultTag
     ) {
-      this.setState({
-        selectedItem: selectedItem.slice(0, selectedItem.length - 1),
-      });
-      this.props.onChange({
-        tags: selectedItem.slice(0, selectedItem.length - 1),
-      });
+      props.onChange(selectedItem.slice(0, selectedItem.length - 1));
     }
     if (
       (event.key === ' ' || event.key === ',') &&
@@ -187,134 +178,124 @@ class TagPicker extends React.Component {
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
       selectedItem.length < 10
     ) {
-      const item = this.state.inputValue
+      const item = inputValue
         .toLowerCase()
         .replace(/,/g, '')
         .replace(/\s/g, '');
 
-      if (selectedItem.indexOf(item) === -1) {
-        selectedItem = [...selectedItem, item];
+      if (selectedItem.indexOf(item) === -1 && item !== props.defaultTag) {
+        props.onChange([...selectedItem, item]);
+        setInputValue('');
       }
-
-      this.setState({
-        inputValue: '',
-        selectedItem,
-      });
-      this.props.onChange({
-        tags: selectedItem,
-      });
     }
   };
 
-  handleInputChange = event => {
-    this.setState({ inputValue: event.target.value });
+  const handleInputChange = event => {
+    setInputValue(event.target.value);
   };
 
-  handleChange = item => {
-    let { selectedItem } = this.state;
-    //  If 5 Tags already, don't autocomplete
-    if (selectedItem.length < 10) {
+  const handleChange = item => {
+    //  If 10 Tags already, don't autocomplete
+    if (selectedItem.length < 10 && item !== props.defaultTag) {
       if (selectedItem.indexOf(item) === -1) {
-        selectedItem = [...selectedItem, item];
+        props.onChange([...selectedItem, item]);
+        setInputValue('');
       }
-
-      this.setState({
-        inputValue: '',
-        selectedItem,
-      });
-      this.props.onChange({
-        tags: selectedItem,
-      });
     }
   };
 
-  handleDelete = item => () => {
-    if (item !== 'travelfeed') {
-      const { selectedItem } = this.state;
+  const handleDelete = item => () => {
+    if (item !== props.defaultTag) {
       selectedItem.splice(selectedItem.indexOf(item), 1);
-      this.setState({ selectedItem });
-      this.props.onChange({
-        tags: selectedItem,
-      });
+      props.onChange(selectedItem);
     }
   };
 
-  render() {
-    const { classes } = this.props;
-    const { inputValue, selectedItem } = this.state;
+  const { classes } = props;
 
-    return (
-      <Downshift
-        id="downshift-multiple"
-        inputValue={inputValue}
-        onChange={this.handleChange}
-        selectedItem={selectedItem}
-      >
-        {({
-          getInputProps,
-          getItemProps,
-          isOpen,
-          inputValue: inputValue2,
-          selectedItem: selectedItem2,
-          highlightedIndex,
-        }) => (
-          <div className={classes.container}>
-            {renderInput({
-              fullWidth: true,
-              classes,
-              InputProps: getInputProps({
-                startAdornment: selectedItem.map(item => (
-                  <Chip
-                    key={item}
-                    color={
-                      ['palnet', 'creativecoin', 'sct', 'neoxian'].indexOf(
-                        item,
-                      ) > -1
-                        ? 'primary'
-                        : 'secondary'
-                    }
-                    tabIndex={-1}
-                    label={item}
-                    className={classes.chip}
-                    onDelete={this.handleDelete(item)}
-                  />
-                )),
-                onChange: this.handleInputChange,
-                onKeyDown: this.handleKeyDown,
-                // onKeyDown: () => {
-                //   this.handleChange;
-                //   this.props.onChange({
-                //     tags: selectedItem
-                //   });
-                // },
-                placeholder: 'Add tags',
-              }),
-              label: '',
-            })}
-            {isOpen ? (
-              <Paper className={classes.paper} square>
-                {getSuggestions(inputValue2).map((suggestion, index) =>
-                  renderSuggestion({
-                    suggestion,
-                    index,
-                    itemProps: getItemProps({ item: suggestion.label }),
-                    highlightedIndex,
-                    selectedItem: selectedItem2,
-                  }),
-                )}
-              </Paper>
-            ) : null}
-          </div>
-        )}
-      </Downshift>
-    );
-  }
-}
+  return (
+    <Downshift
+      id="downshift-multiple"
+      inputValue={inputValue}
+      onChange={handleChange}
+      selectedItem={selectedItem}
+    >
+      {({
+        getInputProps,
+        getItemProps,
+        isOpen,
+        inputValue: inputValue2,
+        selectedItem: selectedItem2,
+        highlightedIndex,
+      }) => (
+        <div className={classes.container}>
+          {renderInput({
+            fullWidth: true,
+            classes,
+            InputProps: getInputProps({
+              startAdornment: selectedItem.map((item, index) => (
+                <Fragment>
+                  {(index === 0 && (
+                    <Chip
+                      key={props.defaultTag}
+                      tabIndex={-1}
+                      label={props.defaultTag}
+                      className={classes.chip}
+                    />
+                  )) || (
+                    <Chip
+                      key={item}
+                      color={
+                        ['palnet', 'creativecoin', 'sct', 'neoxian'].indexOf(
+                          item,
+                        ) > -1
+                          ? 'primary'
+                          : 'secondary'
+                      }
+                      tabIndex={-1}
+                      label={item}
+                      className={classes.chip}
+                      onDelete={handleDelete(item)}
+                    />
+                  )}
+                </Fragment>
+              )),
+              onChange: handleInputChange,
+              onKeyDown: handleKeyDown,
+              // onKeyDown: () => {
+              //   handleChange;
+              //   props.onChange({
+              //     tags: selectedItem
+              //   });
+              // },
+              placeholder: 'Add tags',
+            }),
+            label: '',
+          })}
+          {isOpen ? (
+            <Paper className={classes.paper} square>
+              {getSuggestions(inputValue2).map((suggestion, index) =>
+                renderSuggestion({
+                  suggestion,
+                  index,
+                  itemProps: getItemProps({ item: suggestion.label }),
+                  highlightedIndex,
+                  selectedItem: selectedItem2,
+                }),
+              )}
+            </Paper>
+          ) : null}
+        </div>
+      )}
+    </Downshift>
+  );
+};
 
 TagPicker.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  initialValue: PropTypes.arrayOf(PropTypes.string).isRequired,
+  value: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func.isRequired,
+  defaultTag: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(TagPicker);

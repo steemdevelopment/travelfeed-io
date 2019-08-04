@@ -22,11 +22,7 @@ import { comment } from '../../helpers/actions';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
-import {
-  getImageList,
-  getLinkList,
-  getMentionList,
-} from '../../helpers/parsePostContents';
+import { getImageList, getLinkList, getMentionList } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
@@ -46,7 +42,7 @@ import TagPicker from '../Editor/TagPicker';
 const PostEditor = props => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [tags, setTags] = useState(undefined);
+  const [tags, setTags] = useState([]);
   const [completed, setCompleted] = useState(0);
   const [location, setLocation] = useState(undefined);
   const [codeEditor, setCodeEditor] = useState(true);
@@ -89,8 +85,8 @@ const PostEditor = props => {
     };
   }, []);
 
-  const handleTagClick = op => {
-    setTags(op);
+  const handleTagClick = taglist => {
+    setTags(taglist);
   };
 
   const handleEditorChange = value => {
@@ -345,18 +341,6 @@ const PostEditor = props => {
               </div>
               <div className="col-12 pt-1">
                 <DetailedExpansionPanel
-                  expanded
-                  title="Tags"
-                  description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
-                  helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
-                  value={tags}
-                  selector={
-                    <TagPicker initialValue={tags} onChange={handleTagClick} />
-                  }
-                />
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
                   expanded={false}
                   title="Language"
                   description="Select the language of your post"
@@ -364,6 +348,28 @@ const PostEditor = props => {
                   value={languages.find(lang => lang.code === language).name}
                   selector={
                     <LanguageSelector onChange={setLanguage} value={language} />
+                  }
+                />
+              </div>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded
+                  title="Tags"
+                  description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
+                  helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
+                  value={
+                    tags && tags.map((t, i) => `${(i > 0 && ', ') || ''}${t}`)
+                  }
+                  selector={
+                    <TagPicker
+                      defaultTag={
+                        language === 'en'
+                          ? 'travelfeed'
+                          : `${language}-travelfeed`
+                      }
+                      value={tags}
+                      onChange={handleTagClick}
+                    />
                   }
                 />
               </div>

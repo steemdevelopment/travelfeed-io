@@ -19,10 +19,16 @@ import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
 import { comment } from '../../helpers/actions';
+import categoryFinder from '../../helpers/categoryFinder';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
-import { getImageList, getLinkList, getMentionList } from '../../helpers/parsePostContents';
+import parseBody from '../../helpers/parseBody';
+import {
+  getImageList,
+  getLinkList,
+  getMentionList,
+} from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
@@ -56,6 +62,7 @@ const PostEditor = props => {
   const [poweredUp, setPoweredUp] = useState(false);
   const [language, setLanguage] = useState('en');
   const [beneficiaries, setBeneficiaries] = useState([]);
+  const [tagRecommendations, setTagRecommendations] = useState([]);
 
   useEffect(() => {
     const json =
@@ -94,7 +101,7 @@ const PostEditor = props => {
   };
 
   const handleHtmlEditorChange = ({ text }) => {
-    setContent(text);
+    if (!saved) setContent(text);
   };
 
   const handleTitleEditorChange = changedtitle => {
@@ -172,14 +179,15 @@ const PostEditor = props => {
     });
   };
 
-  const sanitized = content ? sanitize(content, { allowedTags: [] }) : '';
-  let wordCount = '';
-  let readTime = '';
+  const sanitized = sanitize(
+    parseBody(codeEditor ? content : json2md(content), {}),
+    { allowedTags: [] },
+  );
   const readingtime = content
     ? readingTime(sanitized)
     : { words: 0, text: '0 min' };
-  wordCount = readingtime.words;
-  readTime = readingtime.text;
+  const wordCount = readingtime.words;
+  const readTime = readingtime.text;
   if (completed === 100 && success === true) {
     const url = `${ROOTURL}/@${user}/${permlink}`;
     Router.push(url);
@@ -228,6 +236,7 @@ const PostEditor = props => {
                 >
                   {saveDraft => {
                     if (!saved) {
+                      setTagRecommendations(categoryFinder(content));
                       if (wordCount > 1) saveDraft();
                       setSaved(true);
                     }
@@ -247,34 +256,19 @@ const PostEditor = props => {
                                 onChange={handleEditorChange}
                                 data={content}
                               />
-                              // <Editor
-                              //   style={{ minHeight: '300px' }}
-                              //   className="border postcontent pl-2"
-                              //   uploadImage={file => {
-                              //     return uploadFile(file, getUser()).then(
-                              //       res => {
-                              //         return res;
-                              //       },
-                              //     );
-                              //   }}
-                              //   placeholder="Start writing your next awesome travel blog!"
-                              // onChange={handleEditorChange}
-                              // defaultValue={content}
-                              //   autoFocus
-                              // />
                             )}
                           </div>
                         )}
-                        <div className="text-right">
-                          <SwitchEditorModeButton
-                            switchMode={() => changeEditorMode()}
-                            codeEditor={codeEditor}
-                          />
-                        </div>
                       </div>
                     );
                   }}
                 </Mutation>
+                <div className="text-right">
+                  <SwitchEditorModeButton
+                    switchMode={() => changeEditorMode()}
+                    codeEditor={codeEditor}
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -362,6 +356,8 @@ const PostEditor = props => {
                   }
                   selector={
                     <TagPicker
+                      recommendations={tagRecommendations}
+                      content={sanitized}
                       defaultTag={
                         language === 'en'
                           ? 'travelfeed'
@@ -409,7 +405,7 @@ const PostEditor = props => {
                     getSlug(title)}`}
                   selector={
                     <PermlinkInput
-                      onChange={setPermlink}
+                      onClickOut={setPermlink}
                       value={permlink}
                       placeholder={getSlug(title)}
                     />

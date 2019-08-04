@@ -44,6 +44,14 @@ const BeneficiaryInput = props => {
 
   const handleBeneficiaryAdd = () => {
     const beneficiaries = props.value;
+    // Verify username inputLength
+    if (username.length < 1) {
+      newNotification({
+        message: 'Please enter a username',
+        success: false,
+      });
+      return;
+    }
     //   Verify percentage
     if (percentage > 100 || percentage < 1) {
       newNotification({
@@ -113,10 +121,11 @@ const BeneficiaryInput = props => {
             <TableCell>{b.percentage}%</TableCell>
             <TableCell>
               <MuiThemeProvider theme={theme}>
-                <IconButton color="primary">
-                  <DeleteIcon
-                    onClick={() => handleBeneficiaryRemove(b.username)}
-                  />
+                <IconButton
+                  color="primary"
+                  onClick={() => handleBeneficiaryRemove(b.username)}
+                >
+                  <DeleteIcon />
                 </IconButton>
               </MuiThemeProvider>
             </TableCell>

@@ -7,6 +7,10 @@ const PostTitle = props => {
       <div
         className="row"
         style={{
+          backgroundImage: `url("${props.img_url}")`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: 'cover',
           height: '500px',
         }}
       >

@@ -74,6 +74,7 @@ class LocationPickerDialog extends Component {
       latitude: round(event.lngLat[1], 4),
     });
     this.setState({ address: {} });
+    this.props.setLocationCategory(undefined);
     this.pickDetails();
   };
 
@@ -95,6 +96,7 @@ class LocationPickerDialog extends Component {
         longitude: round(viewport.longitude, 4),
       });
       this.setState({ address: {} });
+      this.props.setLocationCategory(undefined);
       this.pickDetails();
     }
     this.setState(prevState => ({

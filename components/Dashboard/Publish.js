@@ -237,7 +237,7 @@ const PostEditor = props => {
                 >
                   {saveDraft => {
                     if (!saved) {
-                      setTagRecommendations(categoryFinder(content));
+                      setTagRecommendations(categoryFinder(sanitized));
                       if (wordCount > 1) saveDraft();
                       setSaved(true);
                     }
@@ -286,7 +286,7 @@ const PostEditor = props => {
                   title="Featured Image"
                   description="Select the featured image"
                   helper="The featured image will be displayed as the post thumbail as well as as background. We recommend selecting an image that is not in your post."
-                  value={featuredImage}
+                  value={featuredImage ? 'Uploaded' : 'None'}
                   selector={
                     <div>
                       {featuredImage && (
@@ -357,7 +357,9 @@ const PostEditor = props => {
                   title="Tags"
                   description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
                   helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
-                  value={`${language}-travelfeed${tags &&
+                  value={`${
+                    language === 'en' ? 'travelfeed' : `${language}-travelfeed`
+                  }${tags &&
                     tags.map((t, i) => `${(i > 0 && '') || ', '}${t}`)}`}
                   selector={
                     <TagPicker
@@ -426,7 +428,9 @@ const PostEditor = props => {
                   value={
                     beneficiaries.length === 0
                       ? 'None'
-                      : `${beneficiaries.length} Beneficiaries set`
+                      : `${beneficiaries.length} Beneficiar${
+                          beneficiaries.length === 1 ? 'y' : 'ies'
+                        } set`
                   }
                   selector={
                     <BeneficiaryInput
@@ -448,16 +452,25 @@ const PostEditor = props => {
                 <Checks />
               </div>
               <div className="col-12 pt-1">
-                Preview
-                <EditorPreview
-                  img_url={featuredImage}
-                  title={title}
-                  permlink={permlink}
-                  readtime={{ words: 1337, text: '0 min' }}
-                  content={content}
-                  latitude={location ? location.latitude : undefined}
-                  longitude={location ? location.longitude : undefined}
-                  tags={tags}
+                <DetailedExpansionPanel
+                  fullWidth
+                  expanded={false}
+                  title="Preview"
+                  description="If you would like to share your rewards for this post with someone else, you can include their username here."
+                  helper="See a preview of your post"
+                  value="See a preview of your post"
+                  selector={
+                    <EditorPreview
+                      img_url={featuredImage}
+                      title={title}
+                      permlink={permlink}
+                      readtime={readingtime}
+                      content={codeEditor ? content : json2md(content)}
+                      latitude={location ? location.latitude : undefined}
+                      longitude={location ? location.longitude : undefined}
+                      tags={tags}
+                    />
+                  }
                 />
               </div>
               <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">

@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import HelpTooltip from '../Editor/HelpTooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,25 +56,45 @@ const DetailedExpansionPanel = props => {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <div className={classes.column}>
-            <Typography className={classes.heading}>{props.title}</Typography>
+          <div className={`pl-3 ${classes.column}`}>
+            <Typography variant="h6">{props.title}</Typography>
           </div>
           <div className={classes.column}>
             <Typography className={classes.secondaryHeading}>
               {props.value}
             </Typography>
           </div>
+          <div className={`pr-3 d-xl-none d-lg-none ${classes.column}`}>
+            <HelpTooltip title={props.helper} />
+          </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          {props.selector}
-          <div className={clsx(classes.column, classes.helper)}>
-            <Typography variant="caption">
-              {props.description}
-              <br />
-              <Tooltip title={props.helper}>
-                <span>Learn more</span>
-              </Tooltip>
-            </Typography>
+          <div className="container-fluid">
+            <div className="row">
+              <div
+                className={`${
+                  props.fullWidth ? 'col-12' : 'col-xl-8 col-lg-9'
+                }`}
+              >
+                {props.selector}
+              </div>
+              {!props.fullWidth && (
+                <div
+                  className={`col-none col-xl-4 col-lg-3 ${clsx(
+                    classes.column,
+                    classes.helper,
+                  )}`}
+                >
+                  <Typography variant="caption">
+                    {props.description}
+                    <br />
+                    <Tooltip title={props.helper}>
+                      <span>Learn more</span>
+                    </Tooltip>
+                  </Typography>
+                </div>
+              )}
+            </div>
           </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>

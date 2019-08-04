@@ -39,7 +39,7 @@ import EditorPreview from '../Editor/EditorPreview';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HtmlEditor from '../Editor/HTMLEditor';
 import LanguageSelector, { languages } from '../Editor/LanguageSelector';
-import LocationPicker from '../Editor/LocationPickerButton';
+import LocationPicker from '../Editor/LocationPicker';
 import PayoutTypeSelector from '../Editor/PayoutTypeSelector';
 import PermlinkInput from '../Editor/PermlinkInput';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
@@ -51,6 +51,7 @@ const PostEditor = props => {
   const [tags, setTags] = useState([]);
   const [completed, setCompleted] = useState(0);
   const [location, setLocation] = useState(undefined);
+  const [locationCategory, setLocationCategory] = useState(undefined);
   const [codeEditor, setCodeEditor] = useState(true);
   const [saved, setSaved] = useState(true);
   const [featuredImage, setFeaturedImage] = useState([]);
@@ -314,21 +315,26 @@ const PostEditor = props => {
                 />
               </div>
               <div className="col-12 pt-1">
+                {console.log(locationCategory)}
                 <DetailedExpansionPanel
                   expanded
                   title="Location"
                   description="Select the location of your post"
-                  helper="Please select the language of your post here. Only one language can be selected. We encourage you to write separate posts instead of bilingual."
+                  helper="Drag the marker, use the search field or click on the GPS icon to pick a location."
                   value={
-                    location && `: ${location.latitude}, ${location.longitude}`
+                    location &&
+                    `${location.latitude}, ${location.longitude} ${
+                      locationCategory ? `[${locationCategory}]` : ''
+                    }`
                   }
                   selector={
-                    <div>
+                    <div className="w-100">
                       <LocationPicker
-                        onPick={setLocation}
-                        isChange={location}
+                        locationCategory={locationCategory}
+                        setLocationCategory={setLocationCategory}
+                        setLocation={setLocation}
+                        value={location}
                       />
-                      Country? Region? Sublocation?
                     </div>
                   }
                 />
@@ -351,9 +357,8 @@ const PostEditor = props => {
                   title="Tags"
                   description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
                   helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
-                  value={
-                    tags && tags.map((t, i) => `${(i > 0 && ', ') || ''}${t}`)
-                  }
+                  value={`${language}-travelfeed${tags &&
+                    tags.map((t, i) => `${(i > 0 && '') || ', '}${t}`)}`}
                   selector={
                     <TagPicker
                       recommendations={tagRecommendations}
@@ -451,7 +456,7 @@ const PostEditor = props => {
                   readtime={{ words: 1337, text: '0 min' }}
                   content={content}
                   latitude={location ? location.latitude : undefined}
-                  longitude={location ? location.ongitude : undefined}
+                  longitude={location ? location.longitude : undefined}
                   tags={tags}
                 />
               </div>

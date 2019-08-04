@@ -13,7 +13,7 @@ const HelpTooltip = props => {
       style={{
         position: 'absolute',
         top: 0,
-        right: 0,
+        left: 0,
         padding: '10px',
       }}
     >

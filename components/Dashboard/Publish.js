@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
@@ -29,17 +28,20 @@ import {
   getMentionList,
 } from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
+import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
+import DetailedExpansionPanel from '../Editor/DetailedExpansionPanel';
 // import Editor from 'rich-markdown-editor';
 import EasyEditor from '../Editor/EasyEditor';
 import EditorPreview from '../Editor/EditorPreview';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
-import HelpTooltip from '../Editor/HelpTooltip';
 import HtmlEditor from '../Editor/HTMLEditor';
+import LanguageSelector, { languages } from '../Editor/LanguageSelector';
 import LocationPicker from '../Editor/LocationPickerButton';
+import PayoutTypeSelector from '../Editor/PayoutTypeSelector';
+import PermlinkInput from '../Editor/PermlinkInput';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
-import PostMap from '../Maps/PostMap';
 
 const PostEditor = props => {
   const [title, setTitle] = useState('');
@@ -55,6 +57,9 @@ const PostEditor = props => {
   const [id, setId] = useState(undefined);
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [poweredUp, setPoweredUp] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [beneficiaries, setBeneficiaries] = useState([]);
 
   useEffect(() => {
     const json =
@@ -277,84 +282,90 @@ const PostEditor = props => {
               </CardContent>
             </Card>
           </div>
-          <div className="col-12">
+          <div className="col-12 pt-1">
             <div className="row">
               <div className="col-12 text-center">
                 <Typography gutterBottom variant="h3">
                   Options
                 </Typography>
               </div>
-              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                <Card>
-                  {featuredImage && (
-                    <CardMedia
-                      className="h-100"
-                      style={{ minHeight: '200px' }}
-                      image={featuredImage}
-                    />
-                  )}
-                  <CardContent className="text-center">
-                    <h5>Featured Image</h5>
-                    {(featuredImage && (
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        component="span"
-                        onClick={removeFeaturedImage}
-                      >
-                        Remove Image <DeleteIcon />
-                      </Button>
-                    )) || (
-                      <FeaturedImageUpload
-                        setFeaturedImage={setFeaturedImage}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded
+                  title="Featured Image"
+                  description="Select the featured image"
+                  helper="The featured image will be displayed as the post thumbail as well as as background. We recommend selecting an image that is not in your post."
+                  value={featuredImage}
+                  selector={
+                    <div>
+                      {featuredImage && (
+                        <CardMedia
+                          className="h-100"
+                          style={{ minHeight: '200px' }}
+                          image={featuredImage}
+                        />
+                      )}
+                      {(featuredImage && (
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          component="span"
+                          onClick={removeFeaturedImage}
+                        >
+                          Remove Image <DeleteIcon />
+                        </Button>
+                      )) || (
+                        <FeaturedImageUpload
+                          setFeaturedImage={setFeaturedImage}
+                        />
+                      )}
+                    </div>
+                  }
+                />
               </div>
-              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>
-                    <h5 className="text-center">
-                      Location
-                      {location &&
-                        `: ${location.latitude}, ${location.longitude}`}
-                    </h5>
-                    {location && (
-                      <PostMap
-                        location={{
-                          coordinates: {
-                            lat: location.latitude,
-                            lng: location.longitude,
-                          },
-                        }}
-                      />
-                    )}
-                    <div className="text-center p-1">
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded
+                  title="Location"
+                  description="Select the location of your post"
+                  helper="Please select the language of your post here. Only one language can be selected. We encourage you to write separate posts instead of bilingual."
+                  value={
+                    location && `: ${location.latitude}, ${location.longitude}`
+                  }
+                  selector={
+                    <div>
                       <LocationPicker
                         onPick={setLocation}
                         isChange={location}
                       />
                       Country? Region? Sublocation?
                     </div>
-                  </CardContent>
-                </Card>
+                  }
+                />
               </div>
-              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>
-                    <h5 className="text-center">Category</h5>
-                    Category picker
-                  </CardContent>
-                </Card>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded
+                  title="Tags"
+                  description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
+                  helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
+                  value={tags}
+                  selector={
+                    <TagPicker initialValue={tags} onChange={handleTagClick} />
+                  }
+                />
               </div>
-              <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                <Card>
-                  <CardContent>
-                    <h5 className="text-center">Language</h5>
-                    Language picker
-                  </CardContent>
-                </Card>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded={false}
+                  title="Language"
+                  description="Select the language of your post"
+                  helper="Please select the language of your post here. Only one language can be selected. We encourage you to write separate posts instead of bilingual."
+                  value={languages.find(lang => lang.code === language).name}
+                  selector={
+                    <LanguageSelector onChange={setLanguage} value={language} />
+                  }
+                />
               </div>
             </div>
             <div className="row">
@@ -363,56 +374,60 @@ const PostEditor = props => {
                   Advanced Options
                 </Typography>
               </div>
-              <div className="col-xl-6 col-sm-12 p-1">
-                <Card>
-                  <CardHeader
-                    title="Tags"
-                    action={
-                      <HelpTooltip title="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags." />
-                    }
-                  />
-                  <CardContent>
-                    {tags && (
-                      <TagPicker
-                        initialValue={tags}
-                        onChange={handleTagClick}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded={false}
+                  title="Payout Options"
+                  description="Choose how to receive your reward"
+                  helper="..."
+                  value={
+                    poweredUp
+                      ? '100% Steem Power'
+                      : '50% liquid SBD/STEEM and 50% Steem Power'
+                  }
+                  selector={
+                    <PayoutTypeSelector
+                      onChange={setPoweredUp}
+                      value={poweredUp}
+                    />
+                  }
+                />
               </div>
-              <div className="col-xl-6 col-sm-12 p-1">
-                <Card>
-                  <CardHeader
-                    title="Payout Options"
-                    action={
-                      <HelpTooltip title="Choose how to receive your reward" />
-                    }
-                  />
-                  <CardContent>Picker</CardContent>
-                </Card>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded={false}
+                  title="Permlink"
+                  description="Don't like the long link? Set a custom link here!"
+                  helper="..."
+                  value={`https://travelfeed.io/@jpphotography/${permlink ||
+                    getSlug(title)}`}
+                  selector={
+                    <PermlinkInput
+                      onChange={setPermlink}
+                      value={permlink}
+                      placeholder={getSlug(title)}
+                    />
+                  }
+                />
               </div>
-              <div className="col-xl-6 col-sm-12 p-1">
-                <Card>
-                  <CardHeader
-                    title="Permlink"
-                    action={
-                      <HelpTooltip title="Don't like the long link? Set a custom link here!" />
-                    }
-                  />
-                  <CardContent>Picker</CardContent>
-                </Card>
-              </div>
-              <div className="col-xl-6 col-sm-12 p-1">
-                <Card>
-                  <CardHeader
-                    title="Beneficiaries"
-                    action={
-                      <HelpTooltip title="If you would like to share your rewards for this post with someone else, you can include their username here." />
-                    }
-                  />
-                  <CardContent>Picker</CardContent>
-                </Card>
+              <div className="col-12 pt-1">
+                <DetailedExpansionPanel
+                  expanded={false}
+                  title="Beneficiaries"
+                  description="If you would like to share your rewards for this post with someone else, you can include their username here."
+                  helper="..."
+                  value={
+                    beneficiaries.length === 0
+                      ? 'None'
+                      : `${beneficiaries.length} Beneficiaries set`
+                  }
+                  selector={
+                    <BeneficiaryInput
+                      onChange={setBeneficiaries}
+                      value={beneficiaries}
+                    />
+                  }
+                />
               </div>
             </div>
             <div className="row">
@@ -421,11 +436,11 @@ const PostEditor = props => {
                   Review & Publish
                 </Typography>
               </div>
-              <div className="col-12">
+              <div className="col-12 pt-1">
                 Checks (hide these on edit)
                 <Checks />
               </div>
-              <div className="col-12">
+              <div className="col-12 pt-1">
                 Preview
                 <EditorPreview
                   img_url={featuredImage}

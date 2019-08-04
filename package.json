@@ -89,6 +89,7 @@
     "rich-markdown-editor": "^9.6.1",
     "sanitize-html": "^1.19.3",
     "speakingurl": "^14.0.1",
+    "steem": "^0.7.6",
     "steemconnect": "^3.0.3",
     "styled-jsx": "^3.2.1",
     "url-parse": "^1.4.4",

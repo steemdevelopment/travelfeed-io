@@ -2,6 +2,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export const languages = [
@@ -154,6 +155,11 @@ const LanguageSelector = props => {
       </Select>
     </FormControl>
   );
+};
+
+LanguageSelector.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.any).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default LanguageSelector;

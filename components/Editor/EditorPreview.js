@@ -13,7 +13,6 @@ const HtmlEditorPreview = props => {
   if (props.content && props.content.length > 1) {
     htmlBody = { __html: parseBody(props.content, { lazy: false }) };
   }
-  const bodyText = { __html: htmlBody };
   return (
     <div>
       {props.img_url && <PostImageHeader backgroundImage={props.img_url} />}
@@ -33,6 +32,7 @@ const HtmlEditorPreview = props => {
               content={
                 <div
                   className="textPrimary postcontent"
+                  // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={htmlBody}
                 />
               }
@@ -47,11 +47,22 @@ const HtmlEditorPreview = props => {
 };
 
 HtmlEditorPreview.defaultProps = {
-  preview: '',
+  content: '',
+  img_url: '',
+  title: '',
+  permlink: '',
+  latitude: 0,
+  longitude: 0,
 };
 
 HtmlEditorPreview.propTypes = {
-  preview: PropTypes.string,
+  readtime: PropTypes.arrayOf(PropTypes.any).isRequired,
+  content: PropTypes.string,
+  img_url: PropTypes.string,
+  title: PropTypes.string,
+  permlink: PropTypes.string,
+  latitude: PropTypes.number,
+  longitude: PropTypes.number,
 };
 
 export default HtmlEditorPreview;

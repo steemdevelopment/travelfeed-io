@@ -1,8 +1,9 @@
 import TextField from '@material-ui/core/TextField';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const PermlinkInput = props => {
-  const handleChange = name => event => {
+  const handleChange = () => event => {
     props.onChange(event.target.value);
   };
 
@@ -23,6 +24,12 @@ const PermlinkInput = props => {
       margin="normal"
     />
   );
+};
+
+PermlinkInput.propTypes = {
+  placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default PermlinkInput;

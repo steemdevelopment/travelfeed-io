@@ -72,7 +72,7 @@ const PostEditor = props => {
     setTitle(props.edit.title ? props.edit.title : '');
     setContent(props.edit.body ? props.edit.body : '');
     setCodeEditor(props.edit.body !== undefined);
-    setTags(json && json.tags ? json.tags : ['travelfeed']);
+    setTags(json && json.tags ? json.tags : []);
     setLocation(json && json.location ? json.location : undefined);
     setFeaturedImage(
       json && json.featuredImage ? json.featuredImage : undefined,

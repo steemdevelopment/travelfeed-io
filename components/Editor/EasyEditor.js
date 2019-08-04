@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const Editor = dynamic(() => import('./EasyEditor/editor.js'), {
@@ -18,6 +19,11 @@ const EasyEditor = props => {
       />
     </div>
   );
+};
+
+EasyEditor.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.any).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default EasyEditor;

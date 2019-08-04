@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
 import React from 'react';
 import uploadFile from '../../helpers/imageUpload';
 import parseBody from '../../helpers/parseBody';
@@ -30,6 +31,11 @@ const HtmlEditor = props => {
       />
     </div>
   );
+};
+
+HtmlEditor.propTypes = {
+  data: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default HtmlEditor;

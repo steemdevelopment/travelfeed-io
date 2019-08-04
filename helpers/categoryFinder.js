@@ -40,7 +40,6 @@ const categoryFinder = text => {
     });
   });
 
-  console.log(matches);
   return matches;
 };
 

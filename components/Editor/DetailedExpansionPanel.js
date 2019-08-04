@@ -6,6 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -78,6 +79,15 @@ const DetailedExpansionPanel = props => {
       </ExpansionPanel>
     </div>
   );
+};
+
+DetailedExpansionPanel.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.any).isRequired,
+  expanded: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  selector: PropTypes.func.isRequired,
+  helper: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
 };
 
 export default DetailedExpansionPanel;

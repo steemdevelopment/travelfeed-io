@@ -151,20 +151,10 @@ function getSuggestions(value) {
 
 const TagPicker = props => {
   const [inputValue, setInputValue] = useState('');
-  // const [selectedItem, props.onChange]/ = useState([props.defaultTag]);
 
   const selectedItem = props.value;
 
-  // useEffect(() => {
-  //   let tags = [props.defaultTag];
-  //   if (props.value) {
-  //     tags = props.value;
-  //   }
-  //   props.onChange(tags);
-  // }, []);
-
   const handleKeyDown = event => {
-    //   Todooooo
     if (
       selectedItem.length &&
       !inputValue.length &&
@@ -255,16 +245,15 @@ const TagPicker = props => {
                 fullWidth: true,
                 classes,
                 InputProps: getInputProps({
-                  startAdornment: selectedItem.map((item, index) => (
+                  startAdornment: (
                     <Fragment>
-                      {(index === 0 && (
-                        <Chip
-                          key={props.defaultTag}
-                          tabIndex={-1}
-                          label={props.defaultTag}
-                          className={classes.chip}
-                        />
-                      )) || (
+                      <Chip
+                        key={props.defaultTag}
+                        tabIndex={-1}
+                        label={props.defaultTag}
+                        className={classes.chip}
+                      />
+                      {selectedItem.map(item => (
                         <Chip
                           key={item}
                           color={
@@ -282,17 +271,11 @@ const TagPicker = props => {
                           className={classes.chip}
                           onDelete={handleDelete(item)}
                         />
-                      )}
+                      ))}
                     </Fragment>
-                  )),
+                  ),
                   onChange: handleInputChange,
                   onKeyDown: handleKeyDown,
-                  // onKeyDown: () => {
-                  //   handleChange;
-                  //   props.onChange({
-                  //     tags: selectedItem
-                  //   });
-                  // },
                   placeholder: 'Add tags',
                 }),
                 label: '',

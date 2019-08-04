@@ -2,6 +2,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const PayoutTypeSelector = props => {
@@ -20,6 +21,11 @@ const PayoutTypeSelector = props => {
       </Select>
     </FormControl>
   );
+};
+
+PayoutTypeSelector.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.any).isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default PayoutTypeSelector;

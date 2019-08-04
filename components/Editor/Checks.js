@@ -8,6 +8,7 @@ const criteria = [
   { label: 'At least 250 words' },
   { label: 'Proper sourcing if you are using any media that are not your own' },
   { label: 'Only travel-related content' },
+  { label: 'Permlink is unique' },
   { label: 'You have slected at least 1 category' },
   {
     label:

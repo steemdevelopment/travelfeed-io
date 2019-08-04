@@ -23,7 +23,11 @@ import { comment } from '../../helpers/actions';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
-import { getImageList, getLinkList, getMentionList } from '../../helpers/parsePostContents';
+import {
+  getImageList,
+  getLinkList,
+  getMentionList,
+} from '../../helpers/parsePostContents';
 import { getUser } from '../../helpers/token';
 import Checks from '../Editor/Checks';
 // import Editor from 'rich-markdown-editor';
@@ -374,7 +378,7 @@ const PostEditor = props => {
                         onChange={handleTagClick}
                       />
                     )}
-                  </CardContent>{' '}
+                  </CardContent>
                 </Card>
               </div>
               <div className="col-xl-6 col-sm-12 p-1">
@@ -418,12 +422,21 @@ const PostEditor = props => {
                 </Typography>
               </div>
               <div className="col-12">
-                Checks
+                Checks (hide these on edit)
                 <Checks />
               </div>
               <div className="col-12">
                 Preview
-                <EditorPreview />
+                <EditorPreview
+                  img_url={featuredImage}
+                  title={title}
+                  permlink={permlink}
+                  readtime={{ words: 1337, text: '0 min' }}
+                  content={content}
+                  latitude={location ? location.latitude : undefined}
+                  longitude={location ? location.ongitude : undefined}
+                  tags={tags}
+                />
               </div>
               <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
                 <Card>

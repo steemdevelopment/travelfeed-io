@@ -11,10 +11,10 @@ import MapGL, {
   NavigationControl,
 } from 'react-map-gl';
 import Geocoder from 'react-map-gl-geocoder';
-import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { MAPBOX_TOKEN } from '../../config';
 import { round } from '../../helpers/math';
 import MapMarker from '../Maps/Marker';
+import './react-map-gl-geocoder/react-map-gl-geocoder.css';
 
 const navStyle = {
   position: 'absolute',

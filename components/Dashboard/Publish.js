@@ -165,13 +165,13 @@ const PostEditor = props => {
         </span>
       ),
       hide:
-        permlink !== ''
-          ? !permlink.match(invalidPermlink) || permlink.length < 2
-          : !getSlug(title).match(invalidPermlink) || permlink.length < 2,
+        permlink === ''
+          ? getSlug(title).length > 1 && !getSlug(title).match(invalidPermlink)
+          : permlink.length > 1 && !permlink.match(invalidPermlink),
       checked:
-        permlink !== ''
-          ? !permlink.match(invalidPermlink)
-          : !getSlug(title).match(invalidPermlink),
+        permlink === ''
+          ? getSlug(title).length > 1 && !getSlug(title).match(invalidPermlink)
+          : permlink.length > 1 && !permlink.match(invalidPermlink),
     },
     {
       label: (

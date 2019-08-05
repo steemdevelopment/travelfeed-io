@@ -14,9 +14,7 @@ const PayoutTypeSelector = props => {
     <FormControl>
       <InputLabel htmlFor="author-rewards">Author rewards</InputLabel>
       <Select value={props.value} onChange={handleChange}>
-        <MenuItem value={false}>
-          50% liquid SBD/STEEM and 50% Steem Power
-        </MenuItem>
+        <MenuItem value={false}>50% liquid and 50% SP</MenuItem>
         <MenuItem value>100% Steem Power</MenuItem>
       </Select>
     </FormControl>

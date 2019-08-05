@@ -380,7 +380,7 @@ const PostEditor = props => {
           return (
             <div className="container-fluid p-4">
               <div className="row">
-                <div className="col-12 p-1 pt-3">
+                <div className="col-12 p-1">
                   <Card>
                     <CardContent>
                       <InputBase
@@ -561,7 +561,7 @@ const PostEditor = props => {
                               {'  '}Permlink
                             </span>
                           ) : (
-                            <span>Permlink</span>
+                            'Permlink'
                           )
                         }
                         description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"

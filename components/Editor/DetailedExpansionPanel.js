@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
-import HelpTooltip from '../Editor/HelpTooltip';
+import HelpTooltip from './HelpTooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,19 +56,23 @@ const DetailedExpansionPanel = props => {
           aria-controls="panel1c-content"
           id="panel1c-header"
         >
-          <div className={`pl-3 ${classes.column}`}>
-            <Typography variant="h6">{props.title}</Typography>
-          </div>
-          <div className={classes.column}>
-            <Typography className={classes.secondaryHeading}>
-              {props.value}
-            </Typography>
-          </div>
           {(props.description || props.helper) && (
-            <div className={`pr-3 d-xl-none d-lg-none ${classes.column}`}>
+            <div className="d-xl-none d-lg-none">
               <HelpTooltip title={`${props.description}. ${props.helper}`} />
             </div>
           )}
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12">
+                <Typography variant="h6">{props.title}</Typography>
+              </div>
+              <div className="col-xl-9 col-lg-8 col-md-6 col-sm-6 col-12">
+                <Typography className={classes.secondaryHeading}>
+                  {props.value}
+                </Typography>
+              </div>
+            </div>
+          </div>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
           <div className="container-fluid">

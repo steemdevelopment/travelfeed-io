@@ -11,6 +11,7 @@ const PermlinkInput = props => {
   return (
     <TextField
       fullWidth
+      multiline
       error={
         props.value &&
         props.value.length > 2 &&

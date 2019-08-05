@@ -2,6 +2,8 @@ export const imgFullSize = /<img src="([^"]*)"(?:| alt="([^"]*)") \/>/;
 
 export const allLinks = /href="([^"]*)"/;
 
+export const invalidPermlink = /^-|[^a-zA-Z0-9-]/;
+
 // Valid steem usernames
 export const allMentions = /\s@([a-z0-9-]{3,16})/;
 

@@ -4,7 +4,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
-import Tooltip from '@material-ui/core/Tooltip';
 import PublishIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Update';
@@ -29,6 +28,8 @@ import {
   getLinkList,
   getMentionList,
 } from '../../helpers/parsePostContents';
+import postExists from '../../helpers/postExists';
+import { invalidPermlink } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
@@ -56,7 +57,8 @@ const PostEditor = props => {
   const [saved, setSaved] = useState(true);
   const [featuredImage, setFeaturedImage] = useState([]);
   const [user, setUser] = useState(undefined);
-  const [permlink, setPermlink] = useState(undefined);
+  const [permlink, setPermlink] = useState('');
+  const [permlinkValid, setPermlinkValid] = useState(true);
   const [id, setId] = useState(undefined);
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -132,54 +134,6 @@ const PostEditor = props => {
     }
   };
 
-  const publishPost = () => {
-    const username = getUser();
-    const parentAuthor = '';
-    const parentPermlink = 'travelfeed';
-    setPermlink(getSlug(title));
-    let body = content;
-    const imageList = featuredImage.concat(getImageList(body));
-    const linkList = getLinkList(body);
-    const mentionList = getMentionList(body);
-    const metadata = {};
-    metadata.tags = tags;
-    metadata.app = APP_VERSION;
-    metadata.community = 'travelfeed';
-    if (imageList !== null) metadata.image = imageList;
-    if (linkList !== null) metadata.links = linkList;
-    if (mentionList !== null) metadata.users = mentionList;
-    if (!props.edit.editmode === 'true') {
-      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
-    }
-    if (location !== undefined) {
-      metadata.coordinates = [location.latitude, location.longitude];
-      if (!props.edit.editmode === 'true' || location !== props.edit.location) {
-        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
-      }
-    }
-    // Todo: Parse body for images and links and include them
-    // in the json_metadata
-    if (props.edit.editmode === 'true') {
-      setPermlink(props.edit);
-    }
-    setUser(username);
-    setPermlink(permlink);
-    // Steemconnect broadcast
-    return comment(
-      parentAuthor,
-      parentPermlink,
-      permlink,
-      title,
-      body,
-      metadata,
-      'post',
-    ).then(res => {
-      if (res) {
-        newNotification(res);
-      }
-    });
-  };
-
   const sanitized = sanitize(
     parseBody(codeEditor ? content : json2md(content), {
       lazy: false,
@@ -191,27 +145,44 @@ const PostEditor = props => {
     ? readingTime(sanitized)
     : { words: 0, text: '0 min' };
   const wordCount = readingtime.words;
-  if (completed === 100 && success === true) {
-    const url = `${ROOTURL}/@${user}/${permlink}`;
-    Router.push(url);
-  }
-  const publishTooltip =
-    wordCount < 250 || title === ''
-      ? 'You need to write at least 250 words and set a title before you can publish your post'
-      : 'Once published, your post cannot be deleted';
 
   const checklist = [
     {
       label: (
         <span>
           <WarnIcon />
-          {'  '}You need to write at least 250 words
+          {'  '}You need to set a title
+        </span>
+      ),
+      hide: title !== '',
+      checked: title !== '',
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to set a valid permlink
+        </span>
+      ),
+      hide:
+        permlink !== ''
+          ? !permlink.match(invalidPermlink) || permlink.length < 2
+          : !getSlug(title).match(invalidPermlink) || permlink.length < 2,
+      checked:
+        permlink !== ''
+          ? !permlink.match(invalidPermlink)
+          : !getSlug(title).match(invalidPermlink),
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to write more than 250 words
         </span>
       ),
       hide: readingtime.words > 250,
       checked: readingtime.words > 250,
     },
-    // { label: 'Permlink is unique', checked: postExists(getUser(), permlink) },
     {
       label: (
         <span>
@@ -227,12 +198,22 @@ const PostEditor = props => {
         <span>
           <WarnIcon />
           {'  '}You need to set a location. If your post is not about a specific
-          country/region/place (e.g. "What to pack for travelling"), please
-          select "traveladvice" as tag
+          country/region/place (e.g. &quot;What to pack for travelling&quot;),
+          please select &quot;traveladvice&quot; as tag
         </span>
       ),
       hide: location || tags.indexOf('traveladvice') !== -1,
       checked: location || tags.indexOf('traveladvice') !== -1,
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You cannot set an existing permlink
+        </span>
+      ),
+      hide: permlinkValid,
+      checked: permlinkValid,
     },
     {
       label:
@@ -243,10 +224,92 @@ const PostEditor = props => {
         'You must post in the language selected, without the use of translation tools',
     },
     {
-      label:
-        'Your post should not be a repost of your previous TravelFeed posts',
+      label: 'Your post must not be a repost of your previous TravelFeed posts',
     },
   ];
+
+  const publishPost = () => {
+    if (
+      !checklist[0].checked ||
+      !checklist[1].checked ||
+      !checklist[2].checked ||
+      !checklist[3].checked ||
+      !checklist[4].checked
+    ) {
+      newNotification({
+        message:
+          'Your post does not meet the requirements. Please check the checklist.',
+        success: false,
+      });
+      return;
+    }
+    if (permlink === '') setPermlink(getSlug(title));
+    postExists(getUser(), permlink).then(res => {
+      if (res) {
+        setPermlinkValid(false);
+        newNotification({
+          message:
+            'The permlink of your post has been used in a previous post. Please change it.',
+          success: false,
+        });
+      } else {
+        const username = getUser();
+        const parentAuthor = '';
+        const parentPermlink = 'travelfeed';
+        setPermlink(getSlug(title));
+        let body = content;
+        const imageList = featuredImage.concat(getImageList(body));
+        const linkList = getLinkList(body);
+        const mentionList = getMentionList(body);
+        const metadata = {};
+        metadata.tags = tags;
+        metadata.app = APP_VERSION;
+        metadata.community = 'travelfeed';
+        if (imageList !== null) metadata.image = imageList;
+        if (linkList !== null) metadata.links = linkList;
+        if (mentionList !== null) metadata.users = mentionList;
+        if (!props.edit.editmode) {
+          body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
+        }
+        if (location !== undefined) {
+          metadata.coordinates = [location.latitude, location.longitude];
+          if (
+            !props.edit.editmode === 'true' ||
+            location !== props.edit.location
+          ) {
+            body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
+          }
+        }
+        // Todo: Parse body for images and links and include them
+        // in the json_metadata
+        if (props.edit.editmode === 'true') {
+          setPermlink(props.edit);
+        }
+        setUser(username);
+        setPermlink(permlink);
+        // Steemconnect broadcast
+        return comment(
+          parentAuthor,
+          parentPermlink,
+          permlink,
+          title,
+          body,
+          metadata,
+          'post',
+        ).then(res => {
+          if (res) {
+            newNotification(res);
+          }
+        });
+      }
+    });
+  };
+
+  if (completed === 100 && success === true) {
+    const url = `${ROOTURL}/@${user}/${permlink}`;
+    Router.push(url);
+  }
+
   return (
     <Fragment>
       <div className="container-fluid p-4">
@@ -327,8 +390,8 @@ const PostEditor = props => {
             <DetailedExpansionPanel
               expanded
               title="Featured Image"
-              description="Select the featured image"
-              helper="The featured image will be displayed as the post thumbail as well as as background. We recommend selecting an image that is not in your post."
+              description="The featured image will be used as the post thumbail and as background at the top of your post"
+              helper="We recommend selecting an image that is not in your post."
               value={featuredImage ? 'Uploaded' : 'None'}
               selector={
                 <div>
@@ -356,12 +419,11 @@ const PostEditor = props => {
             />
           </div>
           <div className="col-12 p-1">
-            {console.log(locationCategory)}
             <DetailedExpansionPanel
               expanded
               title="Location"
-              description="Select the location of your post"
-              helper="Drag the marker, use the search field or click on the GPS icon to pick a location."
+              description="Drag the marker, use the search field or click on the GPS icon to pick a location"
+              helper="The location you set makes it easier for readers to find your post and gives you a chance for extra rewards."
               value={
                 location &&
                 `${location.latitude}, ${location.longitude} ${
@@ -380,23 +442,25 @@ const PostEditor = props => {
               }
             />
           </div>
-          <div className="col-12 p-1">
-            <DetailedExpansionPanel
-              title="Language"
-              description="Select the language of your post"
-              helper="Please select the language of your post here. Only one language can be selected. We encourage you to write separate posts instead of bilingual."
-              value={languages.find(lang => lang.code === language).name}
-              selector={
-                <LanguageSelector onChange={setLanguage} value={language} />
-              }
-            />
-          </div>
+          {!props.edit.editmode && (
+            <div className="col-12 p-1">
+              <DetailedExpansionPanel
+                title="Language"
+                description="Select the language of your post"
+                helper="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read."
+                value={languages.find(lang => lang.code === language).name}
+                selector={
+                  <LanguageSelector onChange={setLanguage} value={language} />
+                }
+              />
+            </div>
+          )}
           <div className="col-12 p-1">
             <DetailedExpansionPanel
               expanded
               title="Tags"
-              description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
-              helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen charafcters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
+              description="You can set up to 9 custom tags here. Only lowercase letters, numbers and dashes are permitted"
+              helper="The first tag is set automatically based on your language selection. Selected tribe tags are highlighted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags."
               value={`${
                 language === 'en' ? 'travelfeed' : `${language}-travelfeed`
               }${tags && tags.map((t, i) => `${(i > 0 && '') || ', '}${t}`)}`}
@@ -413,64 +477,81 @@ const PostEditor = props => {
               }
             />
           </div>
-          <div className="col-12 p-1">
-            <DetailedExpansionPanel
-              title="Payout Options"
-              description="Choose how to receive your reward"
-              helper="..."
-              value={
-                poweredUp
-                  ? '100% Steem Power'
-                  : '50% liquid SBD/STEEM and 50% Steem Power'
-              }
-              selector={
-                <PayoutTypeSelector onChange={setPoweredUp} value={poweredUp} />
-              }
-            />
-          </div>
-          <div className="col-12 p-1">
-            <DetailedExpansionPanel
-              title="Permlink"
-              description="Don't like the long link? Set a custom link here! Use only lowercase letter, numbers and dash and a maximum of 255 chracters."
-              helper="..."
-              value={`https://travelfeed.io/@jpphotography/${permlink ||
-                getSlug(title)}`}
-              selector={
-                <PermlinkInput
-                  onChange={setPermlink}
-                  value={permlink}
-                  placeholder={getSlug(title)}
+          {!props.edit.editmode && (
+            <Fragment>
+              <div className="col-12 p-1">
+                <DetailedExpansionPanel
+                  title="Payout Options"
+                  description="Choose how to receive your reward"
+                  helper="This is an advanced option for experienced Steem-users."
+                  value={
+                    poweredUp
+                      ? '100% Steem Power'
+                      : '50% liquid SBD/STEEM and 50% Steem Power'
+                  }
+                  selector={
+                    <PayoutTypeSelector
+                      onChange={setPoweredUp}
+                      value={poweredUp}
+                    />
+                  }
                 />
-              }
-            />
-          </div>
-          <div className="col-12 p-1">
-            <DetailedExpansionPanel
-              title="Beneficiaries"
-              description="If you would like to share your rewards for this post with someone else, you can include their username here."
-              helper="..."
-              value={
-                beneficiaries.length === 0
-                  ? 'None'
-                  : `${beneficiaries.length} Beneficiar${
-                      beneficiaries.length === 1 ? 'y' : 'ies'
-                    } set`
-              }
-              selector={
-                <BeneficiaryInput
-                  onChange={setBeneficiaries}
-                  value={beneficiaries}
+              </div>
+              <div className="col-12 p-1">
+                <DetailedExpansionPanel
+                  title={
+                    !permlinkValid ? (
+                      <span>
+                        <WarnIcon />
+                        {'  '}Permlink
+                      </span>
+                    ) : (
+                      <span>Permlink</span>
+                    )
+                  }
+                  description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
+                  helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                  value={`https://travelfeed.io/@${getUser()}/${permlink ||
+                    getSlug(title)}`}
+                  selector={
+                    <PermlinkInput
+                      onChange={pl => {
+                        setPermlink(pl);
+                        setPermlinkValid(true);
+                      }}
+                      value={permlink}
+                      placeholder={getSlug(title)}
+                    />
+                  }
                 />
-              }
-            />
-          </div>
+              </div>
+              <div className="col-12 p-1">
+                <DetailedExpansionPanel
+                  title="Beneficiaries"
+                  description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here."
+                  helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
+                  value={
+                    beneficiaries.length === 0
+                      ? 'None'
+                      : `${beneficiaries.length} Beneficiar${
+                          beneficiaries.length === 1 ? 'y' : 'ies'
+                        } set`
+                  }
+                  selector={
+                    <BeneficiaryInput
+                      onChange={setBeneficiaries}
+                      value={beneficiaries}
+                    />
+                  }
+                />
+              </div>
+            </Fragment>
+          )}
           <div className="col-12 p-1">
             <DetailedExpansionPanel
               fullWidth
               title="Preview"
-              description="If you would like to share your rewards for this post with someone else, you can include their username here."
-              helper="See a preview of your post"
-              value="See a preview of your post"
+              value="See how your post will look on TravelFeed"
               selector={
                 <EditorPreview
                   img_url={featuredImage}
@@ -490,38 +571,29 @@ const PostEditor = props => {
               fullWidth
               expanded
               title="Publish"
-              description="If you would like to share your rewards for this post with someone else, you can include their username here."
-              helper="See a preview of your post"
               value="Publish your post"
               selector={
                 <Fragment>
                   <Checks checklist={checklist} />
                   <h5>Save Draft</h5>
-                  <Tooltip
-                    disableFocusListener
-                    disableTouchListener
-                    title={publishTooltip}
-                  >
-                    <div>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => publishPost()}
-                        disabled={wordCount < 250 || title === ''}
-                      >
-                        {(props.edit.editmode === 'true' && (
-                          <span>
-                            Update Post <EditIcon />
-                          </span>
-                        )) || (
-                          <span>
-                            Publish Now
-                            <PublishIcon />
-                          </span>
-                        )}
-                      </Button>
-                    </div>
-                  </Tooltip>
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => publishPost()}
+                    >
+                      {(props.edit.editmode === 'true' && (
+                        <span>
+                          Update Post <EditIcon />
+                        </span>
+                      )) || (
+                        <span>
+                          Publish Now
+                          <PublishIcon />
+                        </span>
+                      )}
+                    </Button>
+                  </div>
                   {completed !== 0 && (
                     <CircularProgress
                       variant="determinate"

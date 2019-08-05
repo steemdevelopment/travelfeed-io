@@ -64,9 +64,11 @@ const DetailedExpansionPanel = props => {
               {props.value}
             </Typography>
           </div>
-          <div className={`pr-3 d-xl-none d-lg-none ${classes.column}`}>
-            <HelpTooltip title={props.helper} />
-          </div>
+          {(props.description || props.helper) && (
+            <div className={`pr-3 d-xl-none d-lg-none ${classes.column}`}>
+              <HelpTooltip title={`${props.description}. ${props.helper}`} />
+            </div>
+          )}
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
           <div className="container-fluid">
@@ -80,7 +82,7 @@ const DetailedExpansionPanel = props => {
               </div>
               {!props.fullWidth && (
                 <div
-                  className={`col-none col-xl-4 col-lg-3 ${clsx(
+                  className={`d-none d-xl-block d-lg-block col-xl-4 col-lg-3 ${clsx(
                     classes.column,
                     classes.helper,
                   )}`}

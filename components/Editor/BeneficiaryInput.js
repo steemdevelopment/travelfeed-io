@@ -45,6 +45,14 @@ const BeneficiaryInput = props => {
   const handleBeneficiaryAdd = () => {
     const beneficiaries = props.value;
     // Verify username inputLength
+    if (beneficiaries.length > 7) {
+      newNotification({
+        message: 'You cannot enter more than 8 beneficiaries.',
+        success: false,
+      });
+      return;
+    }
+    // Verify username inputLength
     if (username.length < 1) {
       newNotification({
         message: 'Please enter a username',

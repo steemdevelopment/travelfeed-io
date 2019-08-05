@@ -135,7 +135,7 @@ const parseBody = (body, options) => {
               )}"><figcaption>${
               imgMatches[2] === undefined ||
               // ignore alt texts with image name
-              imgMatches[2].match(/(\.gif|\.jpg|\.png)/i) ||
+              imgMatches[2].match(/(DSC_|\.gif|\.jpg|\.png)/i) ||
               options.hideimgcaptions
                 ? ''
                 : imgMatches[2]
@@ -170,7 +170,7 @@ const parseBody = (body, options) => {
          <figcaption>${
            imgMatches[2] === undefined ||
            // ignore alt texts with image name
-           imgMatches[2].match(/(\.gif|\.jpeg|\.jpg|\.png)/i)
+           imgMatches[2].match(/(DSC_|\.gif|\.jpeg|\.jpg|\.png)/i)
              ? ''
              : imgMatches[2]
          }</figcaption></figure>`,

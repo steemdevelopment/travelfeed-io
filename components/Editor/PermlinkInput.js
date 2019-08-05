@@ -1,6 +1,7 @@
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { invalidPermlink } from '../../helpers/regex';
 
 const PermlinkInput = props => {
   const handleChange = () => event => {
@@ -13,7 +14,7 @@ const PermlinkInput = props => {
       error={
         props.value &&
         props.value.length > 2 &&
-        props.value.match(/[^a-zA-Z0-9-]/)
+        props.value.match(invalidPermlink)
       }
       inputProps={{
         maxLength: 255,

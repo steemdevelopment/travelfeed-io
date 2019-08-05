@@ -122,7 +122,11 @@ const parseBody = (body, options) => {
         if (options.lazy === false) {
           parsedBody = parsedBody.replace(
             imgMatches[0],
-            `<figure><img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
+            `<figure><img ${
+              imgMatches[2] && !options.hideimgcaptions
+                ? `alt=${imgMatches[2]}`
+                : ''
+            } 
               src="${imageProxy(
                 imgMatches[1],
                 1800,
@@ -131,7 +135,8 @@ const parseBody = (body, options) => {
               )}"><figcaption>${
               imgMatches[2] === undefined ||
               // ignore alt texts with image name
-              imgMatches[2].match(/(\.gif|\.jpg|\.png)/i)
+              imgMatches[2].match(/(\.gif|\.jpg|\.png)/i) ||
+              options.hideimgcaptions
                 ? ''
                 : imgMatches[2]
             }</figcaption></figure>`,

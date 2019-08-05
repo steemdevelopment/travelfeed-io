@@ -10,7 +10,7 @@ export const languages = [
     code: 'en',
     name: (
       <span>
-        English
+        English{' '}
         <span role="img" aria-label="English flag">
           🇬🇧
         </span>
@@ -21,7 +21,7 @@ export const languages = [
     code: 'pl',
     name: (
       <span>
-        Polish
+        Polish{' '}
         <span role="img" aria-label="Polish flag">
           🇵🇱
         </span>
@@ -32,7 +32,7 @@ export const languages = [
     code: 'kr',
     name: (
       <span>
-        Koren
+        Korean{' '}
         <span role="img" aria-label="Korean flag">
           🇰🇷
         </span>
@@ -43,7 +43,7 @@ export const languages = [
     code: 'cn',
     name: (
       <span>
-        Chinese
+        Chinese{' '}
         <span role="img" aria-label="Chinese flag">
           🇨🇳
         </span>
@@ -54,9 +54,20 @@ export const languages = [
     code: 'es',
     name: (
       <span>
-        Spanish
+        Spanish{' '}
         <span role="img" aria-label="Spanish flag">
           🇪🇸
+        </span>
+      </span>
+    ),
+  },
+  {
+    code: 'ph',
+    name: (
+      <span>
+        Filipino{' '}
+        <span role="img" aria-label="Philippines flag">
+          🇵🇭
         </span>
       </span>
     ),
@@ -65,7 +76,7 @@ export const languages = [
     code: 'de',
     name: (
       <span>
-        German
+        German{' '}
         <span role="img" aria-label="German flag">
           🇩🇪
         </span>
@@ -76,7 +87,7 @@ export const languages = [
     code: 'fr',
     name: (
       <span>
-        French
+        French{' '}
         <span role="img" aria-label="French flag">
           🇫🇷
         </span>
@@ -87,7 +98,7 @@ export const languages = [
     code: 'pt',
     name: (
       <span>
-        Portuguese
+        Portuguese{' '}
         <span role="img" aria-label="Portuguese flag">
           🇵🇹
         </span>
@@ -98,7 +109,7 @@ export const languages = [
     code: 'ru',
     name: (
       <span>
-        Russian
+        Russian{' '}
         <span role="img" aria-label="Russian flag">
           🇷🇺
         </span>
@@ -109,7 +120,7 @@ export const languages = [
     code: 'ar',
     name: (
       <span>
-        Arabic
+        Arabic{' '}
         <span role="img" aria-label="Saudi Arabia flag">
           🇸🇦
         </span>
@@ -120,7 +131,7 @@ export const languages = [
     code: 'it',
     name: (
       <span>
-        Italian
+        Italian{' '}
         <span role="img" aria-label="Italian flag">
           🇮🇹
         </span>
@@ -131,7 +142,7 @@ export const languages = [
     code: 'vn',
     name: (
       <span>
-        Vietnamese
+        Vietnamese{' '}
         <span role="img" aria-label="Vietnamese flag">
           🇻🇳
         </span>

@@ -1,6 +1,28 @@
 import api from './steemConnectAPI';
 import { getScToken, getUser } from './token';
 
+export const broadcast = op => {
+  console.log(op);
+  api.setAccessToken(getScToken());
+  return new Promise(resolve => {
+    api.broadcast(op, (err, res) => {
+      if (err) {
+        resolve({
+          success: false,
+          message: `Could not post${(typeof err === 'string' && `: ${err}`) ||
+            (err.error_description && `: ${err.error_description}`)}`,
+        });
+      }
+      if (res) {
+        resolve({
+          success: true,
+          message: 'Post was published successfully',
+        });
+      }
+    });
+  });
+};
+
 export const vote = async (author, permlink, weight) => {
   api.setAccessToken(getScToken());
   const voter = getUser();

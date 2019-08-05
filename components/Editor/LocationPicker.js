@@ -135,7 +135,7 @@ class LocationPickerDialog extends Component {
         address.state ||
         address.region ||
         address.state_district ||
-        address.country,
+        address.county,
       city: address.city || address.town,
       suburb: address.city_district || address.suburb || address.neighbourhood,
     };

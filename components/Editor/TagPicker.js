@@ -1,8 +1,8 @@
 import Chip from '@material-ui/core/Chip';
+import FormLabel from '@material-ui/core/FormLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DoneIcon from '@material-ui/icons/Done';
 import { withStyles } from '@material-ui/styles';
@@ -138,7 +138,7 @@ function getSuggestions(value) {
     ? []
     : suggestions.filter(suggestion => {
         const keep =
-          count < 10 &&
+          count < 9 &&
           suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
         if (keep) {
@@ -161,6 +161,7 @@ const TagPicker = props => {
       event.key === 'Backspace' &&
       selectedItem[selectedItem.length - 1] !== props.defaultTag
     ) {
+      // TODO: Fix deleting the selected item, not the last
       props.onChange(selectedItem.slice(0, selectedItem.length - 1));
     }
     if (
@@ -169,7 +170,7 @@ const TagPicker = props => {
       inputValue.length < 20 &&
       inputValue.match(/[a-zA-Z0-9]/) &&
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
-      selectedItem.length < 10
+      selectedItem.length < 9
     ) {
       const item = inputValue
         .toLowerCase()
@@ -189,7 +190,7 @@ const TagPicker = props => {
 
   const handleChange = item => {
     //  If 10 Tags already, don't autocomplete
-    if (selectedItem.length < 10 && item !== props.defaultTag) {
+    if (selectedItem.length < 9 && item !== props.defaultTag) {
       if (selectedItem.indexOf(item) === -1) {
         props.onChange([...selectedItem, item]);
         setInputValue('');
@@ -207,95 +208,99 @@ const TagPicker = props => {
 
   return (
     <Fragment>
-      <div>
-        <Typography gutterBottom variant="h5">
-          Recommendations based on your text:
-        </Typography>
-        {props.recommendations.map(r => (
-          <Chip
-            onDelete={() => handleChange(r)}
-            color="primary"
-            deleteIcon={
-              props.value.indexOf(r) === -1 ? <AddIcon /> : <DoneIcon />
-            }
-            key={r}
-            tabIndex={-1}
-            label={r}
-            className={classes.chip}
-          />
-        ))}
-      </div>
-      <div>
-        <Downshift
-          id="downshift-multiple"
-          inputValue={inputValue}
-          onChange={handleChange}
-          selectedItem={selectedItem}
-        >
-          {({
-            getInputProps,
-            getItemProps,
-            isOpen,
-            inputValue: inputValue2,
-            selectedItem: selectedItem2,
-            highlightedIndex,
-          }) => (
-            <div className={classes.container}>
-              {renderInput({
-                fullWidth: true,
-                classes,
-                InputProps: getInputProps({
-                  startAdornment: (
-                    <Fragment>
-                      <Chip
-                        key={props.defaultTag}
-                        tabIndex={-1}
-                        label={props.defaultTag}
-                        className={classes.chip}
-                      />
-                      {selectedItem.map(item => (
+      <div className="row">
+        <div className="col-12">
+          <Downshift
+            id="downshift-multiple"
+            inputValue={inputValue}
+            onChange={handleChange}
+            selectedItem={selectedItem}
+          >
+            {({
+              getInputProps,
+              getItemProps,
+              isOpen,
+              inputValue: inputValue2,
+              selectedItem: selectedItem2,
+              highlightedIndex,
+            }) => (
+              <div className={classes.container}>
+                {renderInput({
+                  fullWidth: true,
+                  classes,
+                  InputProps: getInputProps({
+                    startAdornment: (
+                      <Fragment>
                         <Chip
-                          key={item}
-                          color={
-                            [
-                              'palnet',
-                              'creativecoin',
-                              'sct',
-                              'neoxian',
-                            ].indexOf(item) > -1
-                              ? 'primary'
-                              : 'secondary'
-                          }
+                          key={props.defaultTag}
                           tabIndex={-1}
-                          label={item}
+                          label={props.defaultTag}
                           className={classes.chip}
-                          onDelete={handleDelete(item)}
                         />
-                      ))}
-                    </Fragment>
-                  ),
-                  onChange: handleInputChange,
-                  onKeyDown: handleKeyDown,
-                  placeholder: 'Add tags',
-                }),
-                label: '',
-              })}
-              {isOpen ? (
-                <Paper className={classes.paper} square>
-                  {getSuggestions(inputValue2).map((suggestion, index) =>
-                    renderSuggestion({
-                      suggestion,
-                      index,
-                      itemProps: getItemProps({ item: suggestion.label }),
-                      highlightedIndex,
-                      selectedItem: selectedItem2,
-                    }),
-                  )}
-                </Paper>
-              ) : null}
-            </div>
-          )}
-        </Downshift>
+                        {selectedItem.map(item => (
+                          <Chip
+                            key={item}
+                            color={
+                              [
+                                'palnet',
+                                'creativecoin',
+                                'sct',
+                                'neoxian',
+                              ].indexOf(item) > -1
+                                ? 'primary'
+                                : 'secondary'
+                            }
+                            tabIndex={-1}
+                            label={item}
+                            className={classes.chip}
+                            onDelete={handleDelete(item)}
+                          />
+                        ))}
+                      </Fragment>
+                    ),
+                    onChange: handleInputChange,
+                    onKeyDown: handleKeyDown,
+                    placeholder: 'Add tags',
+                  }),
+                  label: '',
+                })}
+                {isOpen ? (
+                  <Paper className={classes.paper} square>
+                    {getSuggestions(inputValue2).map((suggestion, index) =>
+                      renderSuggestion({
+                        suggestion,
+                        index,
+                        itemProps: getItemProps({ item: suggestion.label }),
+                        highlightedIndex,
+                        selectedItem: selectedItem2,
+                      }),
+                    )}
+                  </Paper>
+                ) : null}
+              </div>
+            )}
+          </Downshift>
+        </div>
+        {props.recommendations.length > 0 && (
+          <div className="col-12 pt-4">
+            <FormLabel component="legend">
+              Tags recommended based on your post:
+            </FormLabel>
+            {props.recommendations.map(r => (
+              <Chip
+                onDelete={() => handleChange(r)}
+                color="secondary"
+                deleteIcon={
+                  props.value.indexOf(r) === -1 ? <AddIcon /> : <DoneIcon />
+                }
+                key={r}
+                tabIndex={-1}
+                label={r}
+                className={classes.chip}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </Fragment>
   );

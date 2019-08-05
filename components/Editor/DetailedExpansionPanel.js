@@ -89,7 +89,13 @@ const DetailedExpansionPanel = props => {
                     {props.description}
                     <br />
                     <Tooltip title={props.helper}>
-                      <span>Learn more</span>
+                      <Typography
+                        color="primary"
+                        className="cpointer"
+                        variant="caption"
+                      >
+                        Learn more
+                      </Typography>
                     </Tooltip>
                   </Typography>
                 </div>

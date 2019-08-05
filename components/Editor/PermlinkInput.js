@@ -9,17 +9,19 @@ const PermlinkInput = props => {
 
   return (
     <TextField
+      fullWidth
       error={
         props.value &&
         props.value.length > 2 &&
         props.value.match(/[^a-zA-Z0-9-]/)
       }
+      inputProps={{
+        maxLength: 255,
+      }}
       id="standard-name"
       value={props.value}
       placeholder={props.placeholder}
-      //   label="Name"
-      //   className={classes.textField}
-      //   value={values.name}
+      label="Custom permlink"
       onChange={handleChange('name')}
       margin="normal"
     />

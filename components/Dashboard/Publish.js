@@ -5,10 +5,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import PublishIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Update';
+import WarnIcon from '@material-ui/icons/Warning';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -181,14 +181,16 @@ const PostEditor = props => {
   };
 
   const sanitized = sanitize(
-    parseBody(codeEditor ? content : json2md(content), {}),
+    parseBody(codeEditor ? content : json2md(content), {
+      lazy: false,
+      hideimgcaptions: true,
+    }),
     { allowedTags: [] },
   );
   const readingtime = content
     ? readingTime(sanitized)
     : { words: 0, text: '0 min' };
   const wordCount = readingtime.words;
-  const readTime = readingtime.text;
   if (completed === 100 && success === true) {
     const url = `${ROOTURL}/@${user}/${permlink}`;
     Router.push(url);
@@ -197,6 +199,54 @@ const PostEditor = props => {
     wordCount < 250 || title === ''
       ? 'You need to write at least 250 words and set a title before you can publish your post'
       : 'Once published, your post cannot be deleted';
+
+  const checklist = [
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to write at least 250 words
+        </span>
+      ),
+      hide: readingtime.words > 250,
+      checked: readingtime.words > 250,
+    },
+    // { label: 'Permlink is unique', checked: postExists(getUser(), permlink) },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to select at least 1 more tag
+        </span>
+      ),
+      hide: tags.length > 0,
+      checked: tags.length > 0,
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to set a location. If your post is not about a specific
+          country/region/place (e.g. "What to pack for travelling"), please
+          select "traveladvice" as tag
+        </span>
+      ),
+      hide: location || tags.indexOf('traveladvice') !== -1,
+      checked: location || tags.indexOf('traveladvice') !== -1,
+    },
+    {
+      label:
+        'If you are using any media or text that are not your own, please make sure to get a permission from the owner and leave the source in the post',
+    },
+    {
+      label:
+        'You must post in the language selected, without the use of translation tools',
+    },
+    {
+      label:
+        'Your post should not be a repost of your previous TravelFeed posts',
+    },
+  ];
   return (
     <Fragment>
       <div className="container-fluid p-4">
@@ -273,251 +323,217 @@ const PostEditor = props => {
               </CardContent>
             </Card>
           </div>
-          <div className="col-12 pt-1">
-            <div className="row">
-              <div className="col-12 text-center">
-                <Typography gutterBottom variant="h3">
-                  Options
-                </Typography>
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  expanded
-                  title="Featured Image"
-                  description="Select the featured image"
-                  helper="The featured image will be displayed as the post thumbail as well as as background. We recommend selecting an image that is not in your post."
-                  value={featuredImage ? 'Uploaded' : 'None'}
-                  selector={
-                    <div>
-                      {featuredImage && (
-                        <CardMedia
-                          className="h-100"
-                          style={{ minHeight: '200px' }}
-                          image={featuredImage}
-                        />
-                      )}
-                      {(featuredImage && (
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          component="span"
-                          onClick={removeFeaturedImage}
-                        >
-                          Remove Image <DeleteIcon />
-                        </Button>
-                      )) || (
-                        <FeaturedImageUpload
-                          setFeaturedImage={setFeaturedImage}
-                        />
-                      )}
-                    </div>
-                  }
-                />
-              </div>
-              <div className="col-12 pt-1">
-                {console.log(locationCategory)}
-                <DetailedExpansionPanel
-                  expanded
-                  title="Location"
-                  description="Select the location of your post"
-                  helper="Drag the marker, use the search field or click on the GPS icon to pick a location."
-                  value={
-                    location &&
-                    `${location.latitude}, ${location.longitude} ${
-                      locationCategory ? `[${locationCategory}]` : ''
-                    }`
-                  }
-                  selector={
-                    <div className="w-100">
-                      <LocationPicker
-                        locationCategory={locationCategory}
-                        setLocationCategory={setLocationCategory}
-                        setLocation={setLocation}
-                        value={location}
-                      />
-                    </div>
-                  }
-                />
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  expanded={false}
-                  title="Language"
-                  description="Select the language of your post"
-                  helper="Please select the language of your post here. Only one language can be selected. We encourage you to write separate posts instead of bilingual."
-                  value={languages.find(lang => lang.code === language).name}
-                  selector={
-                    <LanguageSelector onChange={setLanguage} value={language} />
-                  }
-                />
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  expanded
-                  title="Tags"
-                  description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
-                  helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen characters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
-                  value={`${
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              expanded
+              title="Featured Image"
+              description="Select the featured image"
+              helper="The featured image will be displayed as the post thumbail as well as as background. We recommend selecting an image that is not in your post."
+              value={featuredImage ? 'Uploaded' : 'None'}
+              selector={
+                <div>
+                  {featuredImage && (
+                    <CardMedia
+                      className="h-100"
+                      style={{ minHeight: '200px' }}
+                      image={featuredImage}
+                    />
+                  )}
+                  {(featuredImage && (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      component="span"
+                      onClick={removeFeaturedImage}
+                    >
+                      Remove Image <DeleteIcon />
+                    </Button>
+                  )) || (
+                    <FeaturedImageUpload setFeaturedImage={setFeaturedImage} />
+                  )}
+                </div>
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            {console.log(locationCategory)}
+            <DetailedExpansionPanel
+              expanded
+              title="Location"
+              description="Select the location of your post"
+              helper="Drag the marker, use the search field or click on the GPS icon to pick a location."
+              value={
+                location &&
+                `${location.latitude}, ${location.longitude} ${
+                  locationCategory ? `[${locationCategory}]` : ''
+                }`
+              }
+              selector={
+                <div className="w-100">
+                  <LocationPicker
+                    locationCategory={locationCategory}
+                    setLocationCategory={setLocationCategory}
+                    setLocation={setLocation}
+                    value={location}
+                  />
+                </div>
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              title="Language"
+              description="Select the language of your post"
+              helper="Please select the language of your post here. Only one language can be selected. We encourage you to write separate posts instead of bilingual."
+              value={languages.find(lang => lang.code === language).name}
+              selector={
+                <LanguageSelector onChange={setLanguage} value={language} />
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              expanded
+              title="Tags"
+              description="Tags are set automatically based on your language and category selection. Tribe tags are highlighted. If you are not happy with that, you can set up to 10 custom tags here."
+              helper="Tribe tags are highlighted. Only lowercase letters, numbers and hyphen charafcters are permitted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed by coordinates, not by tags."
+              value={`${
+                language === 'en' ? 'travelfeed' : `${language}-travelfeed`
+              }${tags && tags.map((t, i) => `${(i > 0 && '') || ', '}${t}`)}`}
+              selector={
+                <TagPicker
+                  recommendations={tagRecommendations}
+                  content={sanitized}
+                  defaultTag={
                     language === 'en' ? 'travelfeed' : `${language}-travelfeed`
-                  }${tags &&
-                    tags.map((t, i) => `${(i > 0 && '') || ', '}${t}`)}`}
-                  selector={
-                    <TagPicker
-                      recommendations={tagRecommendations}
-                      content={sanitized}
-                      defaultTag={
-                        language === 'en'
-                          ? 'travelfeed'
-                          : `${language}-travelfeed`
-                      }
-                      value={tags}
-                      onChange={handleTagClick}
-                    />
                   }
+                  value={tags}
+                  onChange={handleTagClick}
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12 text-center">
-                <Typography gutterBottom variant="h3">
-                  Advanced Options
-                </Typography>
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  expanded={false}
-                  title="Payout Options"
-                  description="Choose how to receive your reward"
-                  helper="..."
-                  value={
-                    poweredUp
-                      ? '100% Steem Power'
-                      : '50% liquid SBD/STEEM and 50% Steem Power'
-                  }
-                  selector={
-                    <PayoutTypeSelector
-                      onChange={setPoweredUp}
-                      value={poweredUp}
-                    />
-                  }
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              title="Payout Options"
+              description="Choose how to receive your reward"
+              helper="..."
+              value={
+                poweredUp
+                  ? '100% Steem Power'
+                  : '50% liquid SBD/STEEM and 50% Steem Power'
+              }
+              selector={
+                <PayoutTypeSelector onChange={setPoweredUp} value={poweredUp} />
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              title="Permlink"
+              description="Don't like the long link? Set a custom link here! Use only lowercase letter, numbers and dash and a maximum of 255 chracters."
+              helper="..."
+              value={`https://travelfeed.io/@jpphotography/${permlink ||
+                getSlug(title)}`}
+              selector={
+                <PermlinkInput
+                  onChange={setPermlink}
+                  value={permlink}
+                  placeholder={getSlug(title)}
                 />
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  expanded={false}
-                  title="Permlink"
-                  description="Don't like the long link? Set a custom link here!"
-                  helper="..."
-                  value={`https://travelfeed.io/@jpphotography/${permlink ||
-                    getSlug(title)}`}
-                  selector={
-                    <PermlinkInput
-                      onClickOut={setPermlink}
-                      value={permlink}
-                      placeholder={getSlug(title)}
-                    />
-                  }
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              title="Beneficiaries"
+              description="If you would like to share your rewards for this post with someone else, you can include their username here."
+              helper="..."
+              value={
+                beneficiaries.length === 0
+                  ? 'None'
+                  : `${beneficiaries.length} Beneficiar${
+                      beneficiaries.length === 1 ? 'y' : 'ies'
+                    } set`
+              }
+              selector={
+                <BeneficiaryInput
+                  onChange={setBeneficiaries}
+                  value={beneficiaries}
                 />
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  expanded={false}
-                  title="Beneficiaries"
-                  description="If you would like to share your rewards for this post with someone else, you can include their username here."
-                  helper="..."
-                  value={
-                    beneficiaries.length === 0
-                      ? 'None'
-                      : `${beneficiaries.length} Beneficiar${
-                          beneficiaries.length === 1 ? 'y' : 'ies'
-                        } set`
-                  }
-                  selector={
-                    <BeneficiaryInput
-                      onChange={setBeneficiaries}
-                      value={beneficiaries}
-                    />
-                  }
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              fullWidth
+              title="Preview"
+              description="If you would like to share your rewards for this post with someone else, you can include their username here."
+              helper="See a preview of your post"
+              value="See a preview of your post"
+              selector={
+                <EditorPreview
+                  img_url={featuredImage}
+                  title={title}
+                  permlink={permlink}
+                  readtime={readingtime}
+                  content={codeEditor ? content : json2md(content)}
+                  latitude={location ? location.latitude : undefined}
+                  longitude={location ? location.longitude : undefined}
+                  tags={tags}
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-12 text-center">
-                <Typography gutterBottom variant="h3">
-                  Review & Publish
-                </Typography>
-              </div>
-              <div className="col-12 pt-1">
-                Checks (hide these on edit)
-                <Checks />
-              </div>
-              <div className="col-12 pt-1">
-                <DetailedExpansionPanel
-                  fullWidth
-                  expanded={false}
-                  title="Preview"
-                  description="If you would like to share your rewards for this post with someone else, you can include their username here."
-                  helper="See a preview of your post"
-                  value="See a preview of your post"
-                  selector={
-                    <EditorPreview
-                      img_url={featuredImage}
-                      title={title}
-                      permlink={permlink}
-                      readtime={readingtime}
-                      content={codeEditor ? content : json2md(content)}
-                      latitude={location ? location.latitude : undefined}
-                      longitude={location ? location.longitude : undefined}
-                      tags={tags}
+              }
+            />
+          </div>
+          <div className="col-12 p-1">
+            <DetailedExpansionPanel
+              fullWidth
+              expanded
+              title="Publish"
+              description="If you would like to share your rewards for this post with someone else, you can include their username here."
+              helper="See a preview of your post"
+              value="Publish your post"
+              selector={
+                <Fragment>
+                  <Checks checklist={checklist} />
+                  <h5>Save Draft</h5>
+                  <Tooltip
+                    disableFocusListener
+                    disableTouchListener
+                    title={publishTooltip}
+                  >
+                    <div>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => publishPost()}
+                        disabled={wordCount < 250 || title === ''}
+                      >
+                        {(props.edit.editmode === 'true' && (
+                          <span>
+                            Update Post <EditIcon />
+                          </span>
+                        )) || (
+                          <span>
+                            Publish Now
+                            <PublishIcon />
+                          </span>
+                        )}
+                      </Button>
+                    </div>
+                  </Tooltip>
+                  {completed !== 0 && (
+                    <CircularProgress
+                      variant="determinate"
+                      value={completed}
+                      className="p-1"
+                      size={35}
+                      thickness={5}
                     />
-                  }
-                />
-              </div>
-              <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
-                <Card>
-                  <CardContent>
-                    <h5>Save Draft</h5>
-                  </CardContent>
-                </Card>
-              </div>
-              <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
-                <Card>
-                  <CardContent>
-                    <h5>Publish</h5>
-                    <Tooltip title={publishTooltip}>
-                      <div>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => publishPost()}
-                          disabled={wordCount < 250 || title === ''}
-                        >
-                          {(props.edit.editmode === 'true' && (
-                            <span>
-                              Update Post <EditIcon />
-                            </span>
-                          )) || (
-                            <span>
-                              Publish Now
-                              <PublishIcon />
-                            </span>
-                          )}
-                        </Button>
-                      </div>
-                    </Tooltip>
-                    {completed !== 0 && (
-                      <CircularProgress
-                        variant="determinate"
-                        value={completed}
-                        className="p-1"
-                        size={35}
-                        thickness={5}
-                      />
-                    )}
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+                  )}
+                </Fragment>
+              }
+            />
           </div>
         </div>
       </div>

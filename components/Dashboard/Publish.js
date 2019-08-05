@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
 import PublishIcon from '@material-ui/icons/ChevronRight';
@@ -20,6 +19,7 @@ import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
 import { broadcast } from '../../helpers/actions';
 import categoryFinder from '../../helpers/categoryFinder';
+import { imageProxy } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
@@ -51,15 +51,18 @@ const PostEditor = props => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
+  const [primaryTag, setPrimaryTag] = useState(undefined);
   const [completed, setCompleted] = useState(true);
   const [location, setLocation] = useState(undefined);
   const [locationCategory, setLocationCategory] = useState(undefined);
-  const [codeEditor, setCodeEditor] = useState(true);
+  const [codeEditor, setCodeEditor] = useState(false);
   const [saved, setSaved] = useState(true);
-  const [featuredImage, setFeaturedImage] = useState([]);
+  const [featuredImage, setFeaturedImage] = useState(undefined);
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
-  const [id, setId] = useState(undefined);
+  const [id, setId] = useState(
+    `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
+  );
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
   const [poweredUp, setPoweredUp] = useState(false);
@@ -67,27 +70,48 @@ const PostEditor = props => {
   const [beneficiaries, setBeneficiaries] = useState([]);
   const [tagRecommendations, setTagRecommendations] = useState([]);
 
-  const editMode = props.edit.editmode;
+  const editMode = props.edit.editmode === 'true';
   const user = getUser();
 
+  let defaultTag = primaryTag;
+  if (!primaryTag) {
+    defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
+  }
+
   useEffect(() => {
-    const json =
-      props.edit.json && props.edit.json !== 'undefined'
-        ? JSON.parse(props.edit.json)
-        : undefined;
-    setTitle(props.edit.title ? props.edit.title : '');
-    setContent(props.edit.body ? props.edit.body : '');
-    setCodeEditor(props.edit.body !== undefined);
-    setTags(json && json.tags ? json.tags : []);
-    setLocation(json && json.location ? json.location : undefined);
-    setFeaturedImage(
-      json && json.featuredImage ? json.featuredImage : undefined,
-    );
-    setId(
-      props.edit.id
-        ? props.edit.id
-        : `${user}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
-    );
+    if (
+      !(
+        Object.entries(props.edit).length === 0 &&
+        props.edit.constructor === Object
+      )
+    ) {
+      const json =
+        props.edit.json && props.edit.json !== 'undefined'
+          ? JSON.parse(props.edit.json)
+          : undefined;
+      if (props.edit.title) setTitle(props.edit.title);
+      if (props.edit.body)
+        setContent(
+          props.edit.iscodeeditor === false
+            ? JSON.parse(props.edit.body)
+            : props.edit.body,
+        );
+      if (props.edit.iscodeeditor !== false) setCodeEditor(true);
+      if (json) {
+        if (json.tags) {
+          setPrimaryTag(json.tags.splice(0, 1));
+          setTags(json.tags);
+        }
+        if (json.location && json.location.longitude && json.location.latitude)
+          setLocation(json.location);
+        if (json.locationCategory) setLocationCategory(json.locationCategory);
+        if (json.featuredImage) setFeaturedImage(json.featuredImage);
+        if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
+        if (json.poweredUp) setPoweredUp(json.poweredUp);
+        if (json.language) setLanguage(json.language);
+      }
+      if (props.edit.id) setId(props.edit.id);
+    }
     setMounted(true);
     // Save draft every 20 seconds
     const interval = setInterval(() => setSaved(false), 20000);
@@ -270,10 +294,7 @@ const PostEditor = props => {
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = {};
-        const taglist = [
-          `${language === 'en' ? 'travelfeed' : `${language}-travelfeed`}`,
-          ...tags,
-        ];
+        const taglist = [`${defaultTag}`, ...tags];
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
         metadata.community = 'travelfeed';
@@ -363,12 +384,17 @@ const PostEditor = props => {
         variables={{
           id,
           title,
-          body: content,
+          body: codeEditor ? content : JSON.stringify(content),
           json: JSON.stringify({
             tags,
             location,
+            locationCategory,
             featuredImage,
+            beneficiaries,
+            poweredUp,
+            language,
           }),
+          isCodeEditor: codeEditor,
         }}
       >
         {saveDraft => {
@@ -437,23 +463,25 @@ const PostEditor = props => {
                     helper="We recommend selecting an image that is not in your post."
                     value={featuredImage ? 'Uploaded' : 'None'}
                     selector={
-                      <div>
+                      <div className="text-center">
                         {featuredImage && (
-                          <CardMedia
-                            className="h-100"
-                            style={{ minHeight: '200px' }}
-                            image={featuredImage}
+                          <img
+                            alt="Featured"
+                            className="img-fluid"
+                            src={imageProxy(featuredImage, 500)}
                           />
                         )}
                         {(featuredImage && (
-                          <Button
-                            variant="contained"
-                            color="secondary"
-                            component="span"
-                            onClick={removeFeaturedImage}
-                          >
-                            Remove Image <DeleteIcon />
-                          </Button>
+                          <div className="pt-2">
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              component="span"
+                              onClick={removeFeaturedImage}
+                            >
+                              Remove Image <DeleteIcon />
+                            </Button>
+                          </div>
                         )) || (
                           <FeaturedImageUpload
                             setFeaturedImage={setFeaturedImage}
@@ -511,21 +539,13 @@ const PostEditor = props => {
                     title="Tags"
                     description="You can set up to 9 custom tags here. Only lowercase letters, numbers and dashes are permitted"
                     helper="The first tag is set automatically based on your language selection. Selected tribe tags are highlighted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags."
-                    value={`${
-                      language === 'en'
-                        ? 'travelfeed'
-                        : `${language}-travelfeed`
-                    }${tags &&
-                      tags.map((t, i) => `${(i > 0 && '') || ', '}${t}`)}`}
+                    value={`${defaultTag}${tags &&
+                      tags.map((t, i) => `${i > 0 ? ' ' : ', '}${t}`)}`}
                     selector={
                       <TagPicker
                         recommendations={tagRecommendations}
                         content={sanitized}
-                        defaultTag={
-                          language === 'en'
-                            ? 'travelfeed'
-                            : `${language}-travelfeed`
-                        }
+                        defaultTag={defaultTag}
                         value={tags}
                         onChange={handleTagClick}
                       />

@@ -284,7 +284,7 @@ const TagPicker = props => {
         {props.recommendations.length > 0 && (
           <div className="col-12 pt-4">
             <FormLabel component="legend">
-              Tags recommended based on your post:
+              Tag recommendations based on your post:
             </FormLabel>
             {props.recommendations.map(r => (
               <Chip

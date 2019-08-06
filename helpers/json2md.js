@@ -39,7 +39,6 @@ const json2md = data => {
       // Source is automatically rendered when parsing
       html += `${b.data.source}\n\n`;
     } else if (b.type === 'table') {
-      console.log(b.data);
       // html += '<table>';
       b.data.content.forEach((c, index) => {
         html += '| ';

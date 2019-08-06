@@ -17,7 +17,7 @@ import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
-import { broadcast } from '../../helpers/actions';
+import { post } from '../../helpers/actions';
 import categoryFinder from '../../helpers/categoryFinder';
 import { imageProxy } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
@@ -35,7 +35,6 @@ import { getUser } from '../../helpers/token';
 import BeneficiaryInput from '../Editor/BeneficiaryInput';
 import Checks from '../Editor/Checks';
 import DetailedExpansionPanel from '../Editor/DetailedExpansionPanel';
-// import Editor from 'rich-markdown-editor';
 import EasyEditor from '../Editor/EasyEditor';
 import EditorPreview from '../Editor/EditorPreview';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
@@ -79,7 +78,6 @@ const PostEditor = props => {
     defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
   }
 
-  console.log(props.edit);
   useEffect(() => {
     if (
       !(
@@ -92,6 +90,8 @@ const PostEditor = props => {
           ? JSON.parse(props.edit.json)
           : undefined;
       if (props.edit.title) setTitle(props.edit.title);
+      if (props.edit.permlink && props.edit.permlink !== 'undefined')
+        setPermlink(props.edit.permlink);
       if (props.edit.body)
         setContent(
           props.edit.isCodeEditor === 'false'
@@ -170,7 +170,6 @@ const PostEditor = props => {
   const readingtime = content
     ? readingTime(sanitized)
     : { words: 0, text: '0 min' };
-  const wordCount = readingtime.words;
 
   const checklist = [
     {
@@ -272,11 +271,12 @@ const PostEditor = props => {
       return;
     }
     const username = user;
+    let perm = permlink;
     if (editMode) {
-      setPermlink(props.edit);
+      perm = props.edit.permlink;
     }
-    if (permlink === '') setPermlink(getSlug(title));
-    postExists(username, permlink).then(res => {
+    if (perm === '') perm = getSlug(title);
+    postExists(username, perm).then(res => {
       if (res && !editMode) {
         setPermlinkValid(false);
         newNotification({
@@ -289,10 +289,9 @@ const PostEditor = props => {
         const parentAuthor = '';
         const parentPermlink = 'travelfeed';
         let body = content;
-        if (!setCodeEditor) body = json2md(content);
-        const imageList = featuredImage
-          ? featuredImage.concat(getImageList(body))
-          : getImageList(body);
+        if (!codeEditor) body = json2md(content);
+        const imageList = getImageList(body);
+        if (featuredImage) getImageList(body).push(featuredImage);
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = {};
@@ -300,11 +299,11 @@ const PostEditor = props => {
         metadata.tags = taglist;
         metadata.app = APP_VERSION;
         metadata.community = 'travelfeed';
-        if (imageList) metadata.image = imageList;
-        if (linkList) metadata.links = linkList;
-        if (mentionList) metadata.users = mentionList;
+        if (imageList.length > 0) metadata.image = imageList;
+        if (linkList.length > 0) metadata.links = linkList;
+        if (mentionList.length > 0) metadata.users = mentionList;
         if (!editMode) {
-          body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${permlink}) for the best experience.`;
+          body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
         }
         if (location) {
           metadata.location = {
@@ -318,21 +317,8 @@ const PostEditor = props => {
         if (locationCategory) {
           metadata.location.category = locationCategory;
         }
-        let op;
-        const commentop = [
-          'comment',
-          {
-            parent_author: parentAuthor,
-            parent_permlink: parentPermlink,
-            author: user,
-            permlink,
-            title,
-            body,
-            json_metadata: metadata,
-          },
-        ];
-        if (beneficiaries.length < 1 && !poweredUp) op = commentop;
-        else {
+        let commentOptions = '';
+        if (beneficiaries.length > 1 || poweredUp) {
           let percent_steem_dollars = 50;
           if (poweredUp) percent_steem_dollars = 0;
           const extensions = [];
@@ -343,27 +329,30 @@ const PostEditor = props => {
             });
             extensions.push([0, { beneficiaries: bfs }]);
           }
-          op = [
-            ...commentop,
-            [
-              'comment_options',
-              {
-                author: user,
-                permlink,
-                allow_votes: true,
-                allow_curation_rewards: true,
-                max_accepted_payout: '1000000.000 SBD',
-                percent_steem_dollars,
-                extensions,
-              },
-            ],
-          ];
+          commentOptions = {
+            author: user,
+            permlink: perm,
+            allow_votes: true,
+            allow_curation_rewards: true,
+            max_accepted_payout: '1000000.000 SBD',
+            percent_steem_dollars,
+            extensions,
+          };
         }
-        broadcast(op).then(msg => {
+        post(
+          user,
+          title,
+          body,
+          parentPermlink,
+          parentAuthor,
+          metadata,
+          perm,
+          commentOptions,
+        ).then(msg => {
           setCompleted(true);
           if (msg) {
             newNotification(msg);
-            setSuccess(true);
+            if (msg.success) setSuccess(true);
           } else
             newNotification({
               message: 'Post could not be posted',

@@ -62,7 +62,6 @@ class LocationPickerDialog extends Component {
         })
         .then(data => {
           this.setState({ address: data.address || {} });
-          console.log(this.state.address);
         });
     }
   };

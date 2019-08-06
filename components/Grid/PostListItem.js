@@ -111,6 +111,8 @@ class PostListItem extends Component {
                         this.props.post.title,
                       )}&body=${encodeURIComponent(
                         this.props.post.body,
+                      )}&isCodeEditor=${encodeURIComponent(
+                        this.props.post.isCodeEditor,
                       )}&json=${this.props.post.json ||
                         JSON.stringify({
                           tags: this.props.post.tags,

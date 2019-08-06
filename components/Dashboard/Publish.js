@@ -48,6 +48,8 @@ import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
 
 const PostEditor = props => {
+  const user = getUser();
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
@@ -61,7 +63,7 @@ const PostEditor = props => {
   const [permlink, setPermlink] = useState('');
   const [permlinkValid, setPermlinkValid] = useState(true);
   const [id, setId] = useState(
-    `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
+    `${user}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
   );
   const [mounted, setMounted] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -71,13 +73,13 @@ const PostEditor = props => {
   const [tagRecommendations, setTagRecommendations] = useState([]);
 
   const editMode = props.edit.editmode === 'true';
-  const user = getUser();
 
   let defaultTag = primaryTag;
   if (!primaryTag) {
     defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
   }
 
+  console.log(props.edit);
   useEffect(() => {
     if (
       !(
@@ -92,14 +94,14 @@ const PostEditor = props => {
       if (props.edit.title) setTitle(props.edit.title);
       if (props.edit.body)
         setContent(
-          props.edit.iscodeeditor === false
+          props.edit.isCodeEditor === 'false'
             ? JSON.parse(props.edit.body)
             : props.edit.body,
         );
-      if (props.edit.iscodeeditor !== false) setCodeEditor(true);
+      if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
       if (json) {
-        if (json.tags) {
-          setPrimaryTag(json.tags.splice(0, 1));
+        if (json.tags && json.tags.length > 0) {
+          if (editMode) setPrimaryTag(json.tags.splice(0, 1));
           setTags(json.tags);
         }
         if (json.location && json.location.longitude && json.location.latitude)
@@ -400,7 +402,7 @@ const PostEditor = props => {
         {saveDraft => {
           if (!saved) {
             setTagRecommendations(categoryFinder(sanitized));
-            if (wordCount > 1) saveDraft();
+            saveDraft();
             setSaved(true);
           }
           return (

@@ -38,6 +38,7 @@ export const GET_DRAFTS = gql`
       title
       body
       json
+      isCodeEditor
     }
   }
 `;

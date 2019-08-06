@@ -68,6 +68,8 @@ export const GET_POSTS = gql`
       subdivision
       is_blacklisted
       children
+      latitude
+      longitude
     }
   }
 `;

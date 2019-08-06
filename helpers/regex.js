@@ -2,6 +2,8 @@ export const imgFullSize = /<img src="([^"]*)"(?:| alt="([^"]*)") \/>/;
 
 export const allLinks = /href="([^"]*)"/;
 
+export const invalidPermlink = /^-|[^a-zA-Z0-9-]/;
+
 // Valid steem usernames
 export const allMentions = /\s@([a-z0-9-]{3,16})/;
 
@@ -27,7 +29,7 @@ export const regExcerpt = text => {
 };
 
 // eslint-disable-next-line no-control-regex
-export const allSpecialChars = /(?:[!-/:-@[-`{-~]|[^\x00-\x7F]|\s)/g;
+export const allSpecialChars = /(?:[!/:-@[-`{-~],.|[^\x00-\x7F]|\s)/g;
 
 export const permlinkFromTitle = title => {
   return title.replace(nospecialchars, '-').toLowerCase();

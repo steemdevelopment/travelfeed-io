@@ -90,6 +90,9 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
+    wordWrap: 'break-word',
+    wordBreak: 'break-word',
+    width: `calc(100% - ${drawerWidth}px)`,
     flexGrow: 1,
   },
 });

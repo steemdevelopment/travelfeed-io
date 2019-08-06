@@ -1,443 +1,703 @@
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InputBase from '@material-ui/core/InputBase';
-import Tooltip from '@material-ui/core/Tooltip';
 import PublishIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/SaveAlt';
 import EditIcon from '@material-ui/icons/Update';
+import WarnIcon from '@material-ui/icons/Warning';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Mutation } from 'react-apollo';
 import readingTime from 'reading-time';
-import Editor from 'rich-markdown-editor';
 import sanitize from 'sanitize-html';
 import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
-import { comment } from '../../helpers/actions';
+import { post } from '../../helpers/actions';
+import categoryFinder from '../../helpers/categoryFinder';
+import { imageProxy } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
-import uploadFile from '../../helpers/imageUpload';
+import json2md from '../../helpers/json2md';
+import md2json from '../../helpers/md2json';
+import parseBody from '../../helpers/parseBody';
 import {
   getImageList,
   getLinkList,
   getMentionList,
 } from '../../helpers/parsePostContents';
+import postExists from '../../helpers/postExists';
+import { invalidPermlink } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
+import BeneficiaryInput from '../Editor/BeneficiaryInput';
+import Checks from '../Editor/Checks';
+import DetailedExpansionPanel from '../Editor/DetailedExpansionPanel';
+import EasyEditor from '../Editor/EasyEditor';
+import EditorPreview from '../Editor/EditorPreview';
 import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HtmlEditor from '../Editor/HTMLEditor';
-import HtmlEditorPreview from '../Editor/HTMLEditorPreview';
-import LocationPicker from '../Editor/LocationPickerButton';
+import LanguageSelector, { languages } from '../Editor/LanguageSelector';
+import LocationPicker from '../Editor/LocationPicker';
+import PayoutTypeSelector from '../Editor/PayoutTypeSelector';
+import PermlinkInput from '../Editor/PermlinkInput';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
-import PostMap from '../Maps/PostMap';
 
-class PostEditor extends Component {
-  state = {
-    title: '',
-    content: undefined,
-    tags: undefined,
-    completed: 0,
-    location: undefined,
-    codeEditor: false,
-    saved: true,
-    featuredImage: undefined,
-    // codeEditor: true
-  };
+const PostEditor = props => {
+  const user = getUser();
 
-  componentDidMount() {
-    const json =
-      this.props.edit.json && this.props.edit.json !== 'undefined'
-        ? JSON.parse(this.props.edit.json)
-        : undefined;
-    const title = this.props.edit.title ? this.props.edit.title : '';
-    const content = this.props.edit.body ? this.props.edit.body : '';
-    const codeEditor = this.props.edit.body !== undefined;
-    const tags = json && json.tags ? json.tags : ['travelfeed'];
-    const location = json && json.location ? json.location : undefined;
-    const featuredImage =
-      json && json.featuredImage ? json.featuredImage : undefined;
-    const id = this.props.edit.id
-      ? this.props.edit.id
-      : `${getUser()}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`;
-    this.setState({
-      title,
-      content,
-      tags,
-      location,
-      id,
-      mounted: true,
-      codeEditor,
-      featuredImage,
-    });
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [tags, setTags] = useState([]);
+  const [primaryTag, setPrimaryTag] = useState(undefined);
+  const [completed, setCompleted] = useState(true);
+  const [location, setLocation] = useState(undefined);
+  const [locationCategory, setLocationCategory] = useState(undefined);
+  const [codeEditor, setCodeEditor] = useState(false);
+  const [saved, setSaved] = useState(true);
+  const [featuredImage, setFeaturedImage] = useState(undefined);
+  const [permlink, setPermlink] = useState('');
+  const [permlinkValid, setPermlinkValid] = useState(true);
+  const [id, setId] = useState(
+    `${user}-${getSlug(new Date().toJSON()).replace(/-/g, '')}`,
+  );
+  const [mounted, setMounted] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [poweredUp, setPoweredUp] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [beneficiaries, setBeneficiaries] = useState([]);
+  const [tagRecommendations, setTagRecommendations] = useState([]);
+
+  const editMode = props.edit.editmode === 'true';
+
+  let defaultTag = primaryTag;
+  if (!primaryTag) {
+    defaultTag = language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
+  }
+
+  useEffect(() => {
+    if (
+      !(
+        Object.entries(props.edit).length === 0 &&
+        props.edit.constructor === Object
+      )
+    ) {
+      const json =
+        props.edit.json && props.edit.json !== 'undefined'
+          ? JSON.parse(props.edit.json)
+          : undefined;
+      if (props.edit.title) setTitle(props.edit.title);
+      if (props.edit.permlink && props.edit.permlink !== 'undefined')
+        setPermlink(props.edit.permlink);
+      if (props.edit.body)
+        setContent(
+          props.edit.isCodeEditor === 'false'
+            ? JSON.parse(props.edit.body)
+            : props.edit.body,
+        );
+      if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
+      if (json) {
+        if (json.tags && json.tags.length > 0) {
+          if (editMode) setPrimaryTag(json.tags.splice(0, 1));
+          setTags(json.tags);
+        }
+        if (json.location && json.location.longitude && json.location.latitude)
+          setLocation(json.location);
+        if (json.locationCategory) setLocationCategory(json.locationCategory);
+        if (json.featuredImage) setFeaturedImage(json.featuredImage);
+        if (json.beneficiaries) setBeneficiaries(json.beneficiaries);
+        if (json.poweredUp) setPoweredUp(json.poweredUp);
+        if (json.language) setLanguage(json.language);
+      }
+      if (props.edit.id) setId(props.edit.id);
+    }
+    setMounted(true);
     // Save draft every 20 seconds
-    this.interval = setInterval(() => this.setState({ saved: false }), 20000);
-  }
+    const interval = setInterval(() => setSaved(false), 20000);
 
-  componentWillUnmount() {
-    // Stop saving drafts
-    clearInterval(this.interval);
-  }
+    return () => {
+      // "will unmount": stop saving drafts
+      clearInterval(interval);
+    };
+  }, []);
 
-  handleTagClick = op => {
-    this.setState(op);
+  const handleTagClick = taglist => {
+    setTags(taglist);
   };
 
-  handleTitleEditorChange = title => {
-    this.setState({ title: title.target.value });
+  const handleEditorChange = value => {
+    setContent(value);
   };
 
-  handleEditorChange = value => {
-    const content = value();
-    this.setState({ content });
+  const handleHtmlEditorChange = ({ text }) => {
+    if (!saved) setContent(text);
   };
 
-  handleHtmlEditorChange = content => {
-    this.setState({ content });
+  const handleTitleEditorChange = changedtitle => {
+    setTitle(changedtitle.target.value);
   };
 
-  onLocationPick = ({ latitude, longitude }) => {
-    this.setState({ location: { latitude, longitude } });
+  const removeFeaturedImage = () => {
+    setFeaturedImage(undefined);
   };
 
-  setFeaturedImage = featuredImage => {
-    this.setState({ featuredImage });
+  const changeEditorMode = () => {
+    if (!codeEditor) setContent(json2md(content));
+    else setContent(md2json(content));
+    setCodeEditor(!codeEditor);
   };
 
-  removeFeaturedImage = () => {
-    this.setState({ featuredImage: undefined });
-  };
-
-  progress = () => {
-    const { loading } = this.state;
-    if (loading < 100) {
-      this.setState({ loading: loading + 1 });
-    } else {
-      this.setState({ loading: 0 });
-    }
-  };
-
-  changeEditorMode() {
-    this.setState(prevState => ({
-      codeEditor: !prevState.codeEditor,
-    }));
-  }
-
-  handleTagsEditorChange(tags) {
-    this.setState({ tags: tags.target.value });
-  }
-
-  publishPost() {
-    const username = getUser();
-    const parentAuthor = '';
-    const parentPermlink = 'travelfeed';
-    const { title } = this.state;
-    let permlink = getSlug(title);
-    let body = this.state.content;
-    const { location } = this.state;
-    const featuredImage = this.state.featuredImage
-      ? [this.state.featuredImage]
-      : [];
-    const imageList = featuredImage.concat(getImageList(body));
-    const linkList = getLinkList(body);
-    const mentionList = getMentionList(body);
-    const metadata = {};
-    metadata.tags = this.state.tags;
-    metadata.app = APP_VERSION;
-    metadata.community = 'travelfeed';
-    if (imageList !== null) metadata.image = imageList;
-    if (linkList !== null) metadata.links = linkList;
-    if (mentionList !== null) metadata.users = mentionList;
-    if (!this.props.edit.editmode === 'true') {
-      body += `<hr /><center>View this post <a href="https://travelfeed.io/@${username}/${permlink}">on the TravelFeed dApp</a> for the best experience.</center>`;
-    }
-    if (location !== undefined) {
-      metadata.coordinates = [location.latitude, location.longitude];
-      if (
-        !this.props.edit.editmode === 'true' ||
-        location !== this.props.edit.location
-      ) {
-        body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
-      }
-    }
-    // Todo: Parse body for images and links and include them
-    // in the json_metadata
-    if (this.props.edit.editmode === 'true') {
-      ({ permlink } = this.props.edit);
-    }
-    this.setState({ user: username, permlink });
-    // Steemconnect broadcast
-    return comment(
-      parentAuthor,
-      parentPermlink,
-      permlink,
-      title,
-      body,
-      metadata,
-      'post',
-    ).then(res => {
-      if (res) {
-        this.newNotification(res);
-        this.setState({ loading: undefined });
-      }
-    });
-  }
-
-  newNotification(notification) {
+  const newNotification = notification => {
     if (notification !== undefined) {
       let variant = 'success';
       if (notification.success === false) {
         variant = 'error';
       }
-      this.props.enqueueSnackbar(notification.message, { variant });
-      if (notification.success === true) {
-        this.setState({ success: true });
-      }
+      props.enqueueSnackbar(notification.message, { variant });
     }
+  };
+
+  const sanitized = sanitize(
+    parseBody(codeEditor ? content : json2md(content), {
+      lazy: false,
+      hideimgcaptions: true,
+    }),
+    { allowedTags: [] },
+  );
+  const readingtime = content
+    ? readingTime(sanitized)
+    : { words: 0, text: '0 min' };
+
+  const checklist = [
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to set a title
+        </span>
+      ),
+      hide: title !== '',
+      checked: title !== '',
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to set a valid permlink
+        </span>
+      ),
+      hide:
+        permlink === ''
+          ? getSlug(title).length > 1 && !getSlug(title).match(invalidPermlink)
+          : permlink.length > 1 && !permlink.match(invalidPermlink),
+      checked:
+        permlink === ''
+          ? getSlug(title).length > 1 && !getSlug(title).match(invalidPermlink)
+          : permlink.length > 1 && !permlink.match(invalidPermlink),
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to write more than 250 words
+        </span>
+      ),
+      hide: readingtime.words > 250,
+      checked: readingtime.words > 250,
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to select at least 1 more tag
+        </span>
+      ),
+      hide: tags.length > 0,
+      checked: tags.length > 0,
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You need to set a location. If your post is not about a specific
+          country/region/place (e.g. &quot;What to pack for travelling&quot;),
+          please select &quot;traveladvice&quot; as tag
+        </span>
+      ),
+      hide: location || tags.indexOf('traveladvice') !== -1,
+      checked: location || tags.indexOf('traveladvice') !== -1,
+    },
+    {
+      label: (
+        <span>
+          <WarnIcon />
+          {'  '}You cannot set an existing permlink
+        </span>
+      ),
+      hide: permlinkValid,
+      checked: permlinkValid,
+    },
+    {
+      label:
+        'If you are using any media or text that are not your own, please make sure to get permission from the owner and name the source in the post',
+    },
+    {
+      label:
+        'You must post in the language selected, without the use of translation tools',
+    },
+    {
+      label: 'Your post must not be a repost of your previous TravelFeed posts',
+    },
+  ];
+
+  const publishPost = () => {
+    setCompleted(false);
+    if (
+      !checklist[0].checked ||
+      !checklist[1].checked ||
+      !checklist[2].checked ||
+      !checklist[3].checked ||
+      !checklist[4].checked
+    ) {
+      newNotification({
+        message:
+          'Your post does not meet the requirements. Refer to the checklist for details.',
+        success: false,
+      });
+      setCompleted(true);
+      return;
+    }
+    const username = user;
+    let perm = permlink;
+    if (editMode) {
+      perm = props.edit.permlink;
+    }
+    if (perm === '') perm = getSlug(title);
+    postExists(username, perm).then(res => {
+      if (res && !editMode) {
+        setPermlinkValid(false);
+        newNotification({
+          message:
+            'The permlink of your post has been used in a previous post. Please change it.',
+          success: false,
+        });
+        setCompleted(true);
+      } else {
+        const parentAuthor = '';
+        const parentPermlink = 'travelfeed';
+        let body = content;
+        if (!codeEditor) body = json2md(content);
+        const imageList = getImageList(body);
+        if (featuredImage) getImageList(body).push(featuredImage);
+        const linkList = getLinkList(body);
+        const mentionList = getMentionList(body);
+        const metadata = {};
+        const taglist = [`${defaultTag}`, ...tags];
+        metadata.tags = taglist;
+        metadata.app = APP_VERSION;
+        metadata.community = 'travelfeed';
+        if (imageList.length > 0) metadata.image = imageList;
+        if (linkList.length > 0) metadata.links = linkList;
+        if (mentionList.length > 0) metadata.users = mentionList;
+        if (!editMode) {
+          body += `\n\n---\n\nView this post [on TravelFeed](https://travelfeed.io/@${username}/${perm}) for the best experience.`;
+        }
+        if (location) {
+          metadata.location = {
+            latitude: location.latitude,
+            longitude: location.longitude,
+          };
+          if (location !== props.edit.location) {
+            body += `\n\n[//]:# (!steemitworldmap ${location.latitude} lat ${location.longitude} long  d3scr)`;
+          }
+        }
+        if (locationCategory) {
+          metadata.location.category = locationCategory;
+        }
+        let commentOptions = '';
+        if (beneficiaries.length > 1 || poweredUp) {
+          let percent_steem_dollars = 50;
+          if (poweredUp) percent_steem_dollars = 0;
+          const extensions = [];
+          if (beneficiaries) {
+            const bfs = [];
+            beneficiaries.forEach(b => {
+              bfs.push({ account: b.username, weight: b.percentage * 100 });
+            });
+            extensions.push([0, { beneficiaries: bfs }]);
+          }
+          commentOptions = {
+            author: user,
+            permlink: perm,
+            allow_votes: true,
+            allow_curation_rewards: true,
+            max_accepted_payout: '1000000.000 SBD',
+            percent_steem_dollars,
+            extensions,
+          };
+        }
+        post(
+          user,
+          title,
+          body,
+          parentPermlink,
+          parentAuthor,
+          metadata,
+          perm,
+          commentOptions,
+        ).then(msg => {
+          setCompleted(true);
+          if (msg) {
+            newNotification(msg);
+            if (msg.success) setSuccess(true);
+          } else
+            newNotification({
+              message: 'Post could not be posted',
+              success: false,
+            });
+        });
+      }
+    });
+  };
+
+  if (completed && success) {
+    const url = `${ROOTURL}/@${user}/${permlink}`;
+    Router.push(url);
   }
 
-  render() {
-    const sanitized = this.state.content
-      ? sanitize(this.state.content, { allowedTags: [] })
-      : '';
-    let wordCount = '';
-    let readTime = '';
-    const readingtime = this.state.content
-      ? readingTime(sanitized)
-      : { words: 0, text: '0 min' };
-    wordCount = readingtime.words;
-    readTime = readingtime.text;
-    const { location } = this.state;
-    if (this.state.completed === 100 && this.state.success === true) {
-      this.success();
-      const url = `${ROOTURL}/@${this.state.user}/${this.state.permlink}`;
-      Router.push(url);
-    }
-    const publishTooltip =
-      wordCount < 250 || this.state.title === ''
-        ? 'You need to write at least 250 words and set a title before you can publish your post'
-        : 'Once published, your post cannot be deleted';
-    return (
-      <Fragment>
-        <div className="container">
-          <div className="row">
-            <div className="col-12 p-1 pt-3">
-              <Card>
-                <CardContent>
-                  <InputBase
-                    autoFocus
-                    inputProps={{
-                      maxLength: 100,
-                    }}
-                    multiline
-                    className="font-weight-bold inputtitle"
-                    placeholder="Title"
-                    value={this.state.title}
-                    onChange={this.handleTitleEditorChange}
-                    fullWidth
-                  />
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-xl-12 col-md-12 p-1">
-              <Card>
-                <CardContent>
-                  <CardHeader
-                    action={
-                      <Fragment>
-                        <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                          {`${wordCount} words`}
-                        </span>
-                        <span className="badge badge-secondary m-1 p-1 pl-2 pr-2 rounded">
-                          {readTime}
-                        </span>
-                      </Fragment>
-                    }
-                  />
-                  <Mutation
-                    mutation={SAVE_DRAFT}
-                    variables={{
-                      id: this.state.id,
-                      title: this.state.title,
-                      body: this.state.content,
-                      json: JSON.stringify({
-                        tags: this.state.tags,
-                        location: this.state.location,
-                        featuredImage: this.state.featuredImage,
-                      }),
-                    }}
-                  >
-                    {saveDraft => {
-                      if (!this.state.saved) {
-                        if (wordCount > 1) saveDraft();
-                        this.setState({ saved: true });
-                      }
-                      return (
-                        <div>
-                          {(this.state.codeEditor && this.state.mounted && (
-                            <Fragment>
-                              <HtmlEditor
-                                data={this.state.content}
-                                onChange={this.handleHtmlEditorChange}
-                              />
-                            </Fragment>
-                          )) || (
-                            <div>
-                              {this.state.mounted && (
-                                <Editor
-                                  style={{ minHeight: '300px' }}
-                                  className="border postcontent pl-2"
-                                  uploadImage={file => {
-                                    return uploadFile(file, getUser()).then(
-                                      res => {
-                                        return res;
-                                      },
-                                    );
-                                  }}
-                                  placeholder="Start writing your next awesome travel blog!"
-                                  onChange={this.handleEditorChange}
-                                  defaultValue={this.state.content}
-                                  autoFocus
-                                />
-                              )}
-                            </div>
-                          )}
-                          <div className="text-right">
-                            <SwitchEditorModeButton
-                              switchMode={() => this.changeEditorMode()}
-                              codeEditor={this.state.codeEditor}
-                            />
-                          </div>
-                          <h5 className="pt-2">Preview</h5>
-                          <HtmlEditorPreview preview={this.state.content} />
-                        </div>
-                      );
-                    }}
-                  </Mutation>
-                </CardContent>
-              </Card>
-            </div>
-            <div className="col-12">
+  return (
+    <Fragment>
+      <Mutation
+        mutation={SAVE_DRAFT}
+        variables={{
+          id,
+          title,
+          body: codeEditor ? content : JSON.stringify(content),
+          json: JSON.stringify({
+            tags,
+            location,
+            locationCategory,
+            featuredImage,
+            beneficiaries,
+            poweredUp,
+            language,
+          }),
+          isCodeEditor: codeEditor,
+        }}
+      >
+        {saveDraft => {
+          if (!saved) {
+            setTagRecommendations(categoryFinder(sanitized));
+            saveDraft();
+            setSaved(true);
+          }
+          return (
+            <div className="container-fluid p-4">
               <div className="row">
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                <div className="col-12 p-1">
                   <Card>
-                    {this.state.featuredImage && (
-                      <CardMedia
-                        className="h-100"
-                        style={{ minHeight: '200px' }}
-                        image={this.state.featuredImage}
+                    <CardContent>
+                      <InputBase
+                        autoFocus
+                        inputProps={{
+                          maxLength: 100,
+                        }}
+                        multiline
+                        className="font-weight-bold inputtitle"
+                        placeholder="Title"
+                        value={title}
+                        onChange={handleTitleEditorChange}
+                        fullWidth
                       />
-                    )}
-                    <CardContent className="text-center">
-                      <h5>Featured Image</h5>
-                      {(this.state.featuredImage && (
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          component="span"
-                          onClick={this.removeFeaturedImage}
-                        >
-                          Remove Image <DeleteIcon />
-                        </Button>
-                      )) || (
-                        <FeaturedImageUpload
-                          setFeaturedImage={this.setFeaturedImage}
-                        />
-                      )}
                     </CardContent>
                   </Card>
                 </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
+                <div className="col-xl-12 col-md-12 p-1">
                   <Card>
                     <CardContent>
-                      <h5 className="text-center">
-                        Location
-                        {this.state.location &&
-                          `: ${this.state.location.latitude}, ${this.state.location.longitude}`}
-                      </h5>
-                      {location && (
-                        <PostMap
-                          location={{
-                            coordinates: {
-                              lat: this.state.location.latitude,
-                              lng: this.state.location.longitude,
-                            },
-                          }}
-                        />
-                      )}
-                      <div className="text-center p-1">
-                        <LocationPicker
-                          onPick={this.onLocationPick}
-                          isChange={this.state.location}
+                      <div>
+                        {(codeEditor && mounted && (
+                          <Fragment>
+                            <HtmlEditor
+                              data={content}
+                              onChange={handleHtmlEditorChange}
+                            />
+                          </Fragment>
+                        )) || (
+                          <div>
+                            {mounted && (
+                              <EasyEditor
+                                onChange={handleEditorChange}
+                                data={content}
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      <div className="text-right">
+                        <SwitchEditorModeButton
+                          switchMode={() => changeEditorMode()}
+                          codeEditor={codeEditor}
                         />
                       </div>
                     </CardContent>
                   </Card>
                 </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 p-1">
-                  <Card>
-                    <CardContent>
-                      <h5 className="text-center">Tags</h5>
-                      {this.state.tags && (
-                        <TagPicker
-                          initialValue={this.state.tags}
-                          onChange={this.handleTagClick}
-                        />
-                      )}
-                    </CardContent>
-                  </Card>
+                <div className="col-12 p-1">
+                  <DetailedExpansionPanel
+                    expanded
+                    title="Featured Image"
+                    description="The featured image will be used as the post thumbail and as background at the top of your post"
+                    helper="We recommend selecting an image that is not in your post."
+                    value={featuredImage ? 'Uploaded' : 'None'}
+                    selector={
+                      <div className="text-center">
+                        {featuredImage && (
+                          <img
+                            alt="Featured"
+                            className="img-fluid"
+                            src={imageProxy(featuredImage, 500)}
+                          />
+                        )}
+                        {(featuredImage && (
+                          <div className="pt-2">
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              component="span"
+                              onClick={removeFeaturedImage}
+                            >
+                              Remove Image <DeleteIcon />
+                            </Button>
+                          </div>
+                        )) || (
+                          <FeaturedImageUpload
+                            setFeaturedImage={setFeaturedImage}
+                          />
+                        )}
+                      </div>
+                    }
+                  />
                 </div>
-                <div className="col-xl-3 col-md-6 col-sm-12 text-center p-1">
-                  <Card>
-                    <CardContent>
-                      <h5>Publish</h5>
-                      <Tooltip title={publishTooltip}>
-                        <div>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => this.publishPost()}
-                            disabled={
-                              wordCount < 250 || this.state.title === ''
-                            }
-                          >
-                            {(this.props.edit.editmode === 'true' && (
-                              <span>
-                                Update Post <EditIcon />
-                              </span>
-                            )) || (
-                              <span>
-                                Publish Now
-                                <PublishIcon />
-                              </span>
-                            )}
-                          </Button>
-                        </div>
-                      </Tooltip>
-                      {this.state.completed !== 0 && (
-                        <CircularProgress
-                          variant="determinate"
-                          value={this.state.completed}
-                          className="p-1"
-                          size={35}
-                          thickness={5}
+                <div className="col-12 p-1">
+                  <DetailedExpansionPanel
+                    expanded
+                    title="Location"
+                    description="Drag the marker, use the search field or click on the GPS icon to pick a location"
+                    helper="The location you set makes it easier for readers to find your post and gives you a chance for extra rewards."
+                    value={
+                      location &&
+                      `${location.latitude}, ${location.longitude} ${
+                        locationCategory ? `[${locationCategory}]` : ''
+                      }`
+                    }
+                    selector={
+                      <div className="w-100">
+                        <LocationPicker
+                          locationCategory={locationCategory}
+                          setLocationCategory={setLocationCategory}
+                          setLocation={setLocation}
+                          value={location}
                         />
-                      )}
-                    </CardContent>
-                  </Card>
+                      </div>
+                    }
+                  />
+                </div>
+                {!editMode && (
+                  <div className="col-12 p-1">
+                    <DetailedExpansionPanel
+                      title="Language"
+                      description="Select the language of your post"
+                      helper="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read."
+                      value={
+                        languages.find(lang => lang.code === language).name
+                      }
+                      selector={
+                        <LanguageSelector
+                          onChange={setLanguage}
+                          value={language}
+                        />
+                      }
+                    />
+                  </div>
+                )}
+                <div className="col-12 p-1">
+                  <DetailedExpansionPanel
+                    expanded
+                    title="Tags"
+                    description="You can set up to 9 custom tags here. Only lowercase letters, numbers and dashes are permitted"
+                    helper="The first tag is set automatically based on your language selection. Selected tribe tags are highlighted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags."
+                    value={`${defaultTag}${tags &&
+                      tags.map((t, i) => `${i > 0 ? ' ' : ', '}${t}`)}`}
+                    selector={
+                      <TagPicker
+                        recommendations={tagRecommendations}
+                        content={sanitized}
+                        defaultTag={defaultTag}
+                        value={tags}
+                        onChange={handleTagClick}
+                      />
+                    }
+                  />
+                </div>
+                {!editMode && (
+                  <Fragment>
+                    <div className="col-12 p-1">
+                      <DetailedExpansionPanel
+                        title="Payout Options"
+                        description="Choose how to receive your reward"
+                        helper="This is an advanced option for experienced Steem-users."
+                        value={
+                          poweredUp
+                            ? '100% Steem Power'
+                            : '50% liquid SBD/STEEM and 50% Steem Power'
+                        }
+                        selector={
+                          <PayoutTypeSelector
+                            onChange={setPoweredUp}
+                            value={poweredUp}
+                          />
+                        }
+                      />
+                    </div>
+                    <div className="col-12 p-1">
+                      <DetailedExpansionPanel
+                        title={
+                          !permlinkValid ? (
+                            <span>
+                              <WarnIcon />
+                              {'  '}Permlink
+                            </span>
+                          ) : (
+                            'Permlink'
+                          )
+                        }
+                        description="Only lowercase letter, numbers and dash and a length of 2-255 chracters is permitted"
+                        helper="Set a custom permlink here if you are unhappy with the long default permlink or if your permlink is conflicting with an existing post."
+                        value={`https://travelfeed.io/@${user}/${permlink ||
+                          getSlug(title)}`}
+                        selector={
+                          <PermlinkInput
+                            onChange={pl => {
+                              setPermlink(pl);
+                              setPermlinkValid(true);
+                            }}
+                            value={permlink}
+                            placeholder={getSlug(title)}
+                          />
+                        }
+                      />
+                    </div>
+                    <div className="col-12 p-1">
+                      <DetailedExpansionPanel
+                        title="Beneficiaries"
+                        description="If you would like to share your rewards for this post with someone else, you can include their username and the percentage they will receive from your author rewards here."
+                        helper="This is an advanced option for experienced Steem-users. You will receive less rewards if you set beneficiaries. Only set beneficiaries if you know what you are doing!"
+                        value={
+                          beneficiaries.length === 0
+                            ? 'None'
+                            : `${beneficiaries.length} Beneficiar${
+                                beneficiaries.length === 1 ? 'y' : 'ies'
+                              } set`
+                        }
+                        selector={
+                          <BeneficiaryInput
+                            onChange={setBeneficiaries}
+                            value={beneficiaries}
+                          />
+                        }
+                      />
+                    </div>
+                  </Fragment>
+                )}
+                <div className="col-12 p-1">
+                  <DetailedExpansionPanel
+                    fullWidth
+                    title="Preview"
+                    value="See how your post will look on TravelFeed"
+                    selector={
+                      <EditorPreview
+                        img_url={featuredImage}
+                        title={title}
+                        permlink={permlink}
+                        readtime={readingtime}
+                        content={codeEditor ? content : json2md(content)}
+                        latitude={location ? location.latitude : undefined}
+                        longitude={location ? location.longitude : undefined}
+                        tags={tags}
+                      />
+                    }
+                  />
+                </div>
+                <div className="col-12 p-1">
+                  <DetailedExpansionPanel
+                    fullWidth
+                    expanded
+                    title="Publish"
+                    value="Publish your post"
+                    selector={
+                      <Fragment>
+                        <Checks checklist={checklist} />
+                        <div className="row">
+                          <div className="col-6">
+                            <Button
+                              onClick={() => {
+                                setSaved(false);
+                                newNotification({
+                                  message: 'Draft has been saved',
+                                  success: true,
+                                });
+                              }}
+                              variant="contained"
+                              color="secondary"
+                            >
+                              <span>
+                                Save Draft <SaveIcon />
+                              </span>
+                            </Button>
+                          </div>
+                          <div className="col-6 text-right">
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => publishPost()}
+                              disabled={!completed}
+                            >
+                              {(editMode && (
+                                <span>
+                                  Update Post <EditIcon />
+                                </span>
+                              )) || (
+                                <span>
+                                  Publish Now
+                                  <PublishIcon />
+                                </span>
+                              )}
+                            </Button>
+                            {!completed && (
+                              <CircularProgress
+                                className="p-1"
+                                size={35}
+                                thickness={5}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      </Fragment>
+                    }
+                  />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </Fragment>
-    );
-  }
-}
+          );
+        }}
+      </Mutation>
+    </Fragment>
+  );
+};
 
 PostEditor.defaultProps = {
   edit: {},

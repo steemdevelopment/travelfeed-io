@@ -1,11 +1,6 @@
 /* eslint-disable no-shadow */
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import dynamic from 'next/dynamic';
 import NextHead from 'next/head';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
@@ -17,19 +12,16 @@ import { GET_SETTINGS } from '../../helpers/graphql/settings';
 import { GET_POST } from '../../helpers/graphql/singlePost';
 import parseBody from '../../helpers/parseBody';
 import { getUser } from '../../helpers/token';
-import Link from '../../lib/Link';
-import CuratorMenu from '../CuratorMenu/PostMenu';
 import InvalidPost from '../General/InvalidPost';
 import NotFound from '../General/NotFound';
 import Head from '../Header/Head';
 import Header from '../Header/Header';
-import PostMap from '../Maps/PostMap';
-import PostAuthorProfile from '../Profile/PostAuthorProfile';
 import OrderBySelect from './OrderBySelect';
 import PostCommentItem from './PostCommentItem';
 import PostComments from './PostComments';
+import PostContent from './PostContent';
 import PostImageHeader from './PostImageHeader';
-import SubHeader from './SubHeader';
+import PostTitle from './PostTitle';
 import VoteSlider from './VoteSlider';
 
 class SinglePost extends Component {
@@ -76,10 +68,6 @@ class SinglePost extends Component {
   };
 
   render() {
-    // Prevent SSR
-    const BookmarkIcon = dynamic(() => import('./BookmarkIcon'), {
-      ssr: false,
-    });
     return (
       <Fragment>
         <Query query={GET_POST} variables={this.props.post}>
@@ -249,94 +237,17 @@ class SinglePost extends Component {
               card = (
                 <div ref={this.myInput}>
                   <Card>
-                    <CardHeader
-                      avatar={
-                        <Link
-                          color="textPrimary"
-                          as={`/@${data.post.author}`}
-                          href={`/blog?author=${data.post.author}`}
-                          passHref
-                        >
-                          <a>
-                            <Avatar
-                              className="cpointer"
-                              src={`https://steemitimages.com/u/${data.post.author}/avatar/small`}
-                              alt={data.post.author}
-                            />
-                          </a>
-                        </Link>
-                      }
-                      action={
-                        <Fragment>
-                          <span>{appIcon}</span>
-                          <BookmarkIcon
-                            author={data.post.author}
-                            permlink={data.post.permlink}
-                          />
-                          <CuratorMenu
-                            author={data.post.author}
-                            permlink={data.post.permlink}
-                          />
-                        </Fragment>
-                      }
-                      title={
-                        <Fragment>
-                          <Link
-                            color="textPrimary"
-                            as={`/@${data.post.author}`}
-                            href={`/blog?author=${data.post.author}`}
-                            passHref
-                          >
-                            <a className="textPrimary cpointer">
-                              <strong>{data.post.display_name}</strong>
-                              <Typography
-                                color="textSecondary"
-                                variant="subtitle"
-                                display="inline"
-                              >
-                                {' '}
-                                @{data.post.author}
-                              </Typography>
-                            </a>
-                          </Link>
-                        </Fragment>
-                      }
-                      subheader={
-                        <SubHeader
-                          created_at={data.post.created_at}
-                          readtime={readtime}
-                        />
-                      }
+                    <PostContent
+                      author={data.post.author}
+                      appIcon={appIcon}
+                      permlink={data.post.permlink}
+                      display_name={data.post.display_name}
+                      created_at={data.post.created_at}
+                      readtime={readtime}
+                      content={bodycontent}
+                      latitude={data.post.latitude}
+                      longitude={data.post.longitude}
                     />
-                    <CardContent>
-                      {bodycontent}
-                      <hr />
-                      {data.post.latitude && (
-                        <div className="fullwidth">
-                          <div className="text-center">
-                            <Typography variant="h5" className="p-2">
-                              Post Location:
-                            </Typography>
-                          </div>
-                          <PostMap
-                            location={{
-                              coordinates: {
-                                lat: data.post.latitude,
-                                lng: data.post.longitude,
-                              },
-                            }}
-                          />
-                          <hr />
-                        </div>
-                      )}
-                      <div className="container">
-                        <div className="row justify-content-center">
-                          <div className="col-lg-6 col-md-9 col-sm12">
-                            <PostAuthorProfile author={data.post.author} />
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
                     <VoteSlider
                       author={data.post.author}
                       permlink={data.post.permlink}
@@ -391,26 +302,7 @@ class SinglePost extends Component {
                     >
                       <Grid item lg={7} md={8} sm={11} xs={12} className="pb-4">
                         {data.post.depth === 0 && (
-                          <div className="container">
-                            <div
-                              className="row"
-                              style={{
-                                height: '500px',
-                              }}
-                            >
-                              <div className="text-center col my-auto">
-                                <Typography
-                                  variant="h3"
-                                  className="text-light font-weight-bold"
-                                  style={{
-                                    textShadow: '1px 1px 20px #343A40',
-                                  }}
-                                >
-                                  {data.post.title}
-                                </Typography>
-                              </div>
-                            </div>
-                          </div>
+                          <PostTitle title={data.post.title} />
                         )}
                         {data.post.depth !== 0 && (
                           <div className="container">

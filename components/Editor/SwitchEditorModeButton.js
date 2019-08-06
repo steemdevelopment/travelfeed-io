@@ -51,13 +51,14 @@ class SwitchEditorModeButton extends Component {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            Switch to Easy Editor?
+            Switch to EasyEditor?
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
-              The Easy Editor does not support custom HTML, but only markdown.
-              If you are using HTML, switching to the Easy Editor is not
-              recommended.
+              We recommend using the EasyEditor for new posts and markdown
+              posts. If you are using custom HTML instead of markdown, switching
+              to the EasyEditor can break your post. Are you sure that you want
+              to switch?
             </DialogContentText>
           </DialogContent>
           <DialogActions>

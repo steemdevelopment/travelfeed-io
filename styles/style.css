@@ -174,7 +174,6 @@ a:hover {
   font-size: 1.6rem;
   line-height: 1.48;
   letter-spacing: -0.012em;
-  color: #525252;
   padding: 0 50px 0 50px;
   quotes: '\201C''\201D''\2018''\2019';
 }
@@ -188,7 +187,6 @@ a:hover {
 .postcontent table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 1rem;
   background-color: transparent;
   display: table;
   border: 1px;
@@ -200,10 +198,10 @@ a:hover {
   padding: 0.5rem 0.625rem 0.625rem;
 }
 .postcontent tr {
-  background-color: #fcfcfc;
+  background-color: #fcfcfcb9;
 }
 .postcontent tr:nth-child(even) {
-  background-color: #f4f4f4;
+  background-color: #f4f4f494;
 }
 
 blockquote > center {

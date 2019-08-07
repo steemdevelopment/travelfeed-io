@@ -1,5 +1,11 @@
-export const GMAPS_API_KEY = process.env.NEXT_PUBLIC_GMAPS_API_KEY;
-export const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+// The API keys in this file are used client-side and restricted to
+// travelfeed.io, so don't bother trying to steal them ;)
+
+// Prduction settings. TODO: Add next.js equivalent of dotenv for localhost keys
+//  (local development)
+export const GMAPS_API_KEY = 'AIzaSyCPxDdLuLnseopR4g3ClB2PvsZyiMBjS7c';
+export const MAPBOX_TOKEN =
+  'pk.eyJ1IjoidGlvdGRldiIsImEiOiJjanZ2NjVzdjQxZ3Q2M3ptczN5NTIwY3k4In0.ZIhYhbkfSAfbX11XDwI57w';
 
 export const DEFAULT_IMAGE = '';
 export const APP_VERSION = 'travelfeed/1.1.0';
@@ -10,11 +16,6 @@ let rooturl = 'http://localhost:3000';
 if (process.env.NODE_ENV === 'production') {
   url = 'https://travelfeed.io/login';
   rooturl = 'https://travelfeed.io';
-}
-
-if (process.env.NEXT_PUBLIC_ENV === 'staging') {
-  url = 'https://staging.travelfeed.io/login';
-  rooturl = 'https://staging.travelfeed.io';
 }
 
 export const GRAPHQL_URL =
@@ -31,4 +32,4 @@ export const DEFAULT_META_DESCRIPTION =
   'Find inspiration for your travels on TravelFeed. Join the TravelFeed community, write your own travel blog and start earning!';
 
 // Cloudinary
-export const { CLOUDINARY_CLOUD_NAME } = process.env;
+export const CLOUDINARY_CLOUD_NAME = 'dmuksl47x';

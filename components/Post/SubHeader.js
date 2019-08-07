@@ -12,7 +12,15 @@ const SubHeader = props => {
   const createdAt = dayjs(created_at);
   const time = (
     <Tooltip title={createdAt.format('MMMM DD YYYY H:mm')} placement="bottom">
-      <span>{createdAt.fromNow()}</span>
+      <span>
+        {createdAt.isBefore(
+          dayjs()
+            .startOf('month')
+            .add(-1, 'month'),
+        )
+          ? createdAt.format('MMMM YYYY')
+          : createdAt.fromNow()}
+      </span>
     </Tooltip>
   );
   let readingTime = <Fragment />;

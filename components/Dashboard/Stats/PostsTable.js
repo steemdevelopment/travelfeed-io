@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/styles';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import Link from '../../../lib/Link';
@@ -169,7 +170,9 @@ class PostsTable extends React.Component {
                               <a>{n.title}</a>
                             </Link>
                           </TableCell>
-                          <TableCell align="right">{n.created_at}</TableCell>
+                          <TableCell align="right">
+                            {dayjs(n.created_at).format('MMMM DD YYYY')}
+                          </TableCell>
                           <TableCell align="right">{n.total_votes}</TableCell>
                           <TableCell align="right">
                             {(n.is_paidout && `$${n.payout.toFixed(2)}`) ||

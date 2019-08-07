@@ -22,7 +22,7 @@ const EasyEditor = props => {
 };
 
 EasyEditor.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.any).isRequired,
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

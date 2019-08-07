@@ -92,13 +92,14 @@ const PostEditor = props => {
       if (props.edit.title) setTitle(props.edit.title);
       if (props.edit.permlink && props.edit.permlink !== 'undefined')
         setPermlink(props.edit.permlink);
-      if (props.edit.body)
+      if (props.edit.body) {
         setContent(
           props.edit.isCodeEditor === 'false'
             ? JSON.parse(props.edit.body)
             : props.edit.body,
         );
-      if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
+        if (props.edit.isCodeEditor !== 'false') setCodeEditor(true);
+      }
       if (json) {
         if (json.tags && json.tags.length > 0) {
           if (editMode) setPrimaryTag(json.tags.splice(0, 1));

@@ -66,7 +66,10 @@ const PostContent = props => {
           </Fragment>
         }
         subheader={
-          <SubHeader created_at={props.created_at} readtime={props.readtime} />
+          <SubHeader
+            created_at={String(props.created_at)}
+            readtime={props.readtime}
+          />
         }
       />
       <CardContent>

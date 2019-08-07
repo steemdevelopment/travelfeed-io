@@ -16,6 +16,7 @@ const Checks = props => {
           if (!c.hide) {
             return (
               <FormControlLabel
+                key={c.label}
                 control={<Checkbox />}
                 label={c.label}
                 checked={c.checked}

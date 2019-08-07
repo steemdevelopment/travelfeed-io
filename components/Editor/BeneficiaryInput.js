@@ -114,56 +114,59 @@ const BeneficiaryInput = props => {
   };
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Username</TableCell>
-          <TableCell>Reward</TableCell>
-          <TableCell />
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {props.value.map(b => (
-          <TableRow key={b.username}>
-            <TableCell>{b.username}</TableCell>
-            <TableCell>{b.percentage}%</TableCell>
+    <div style={{ overflowX: 'auto', wordWrap: 'normal', wordBreak: 'normal' }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Username</TableCell>
+            <TableCell>Reward</TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.value.map(b => (
+            <TableRow key={b.username}>
+              <TableCell>{b.username}</TableCell>
+              <TableCell>{b.percentage}%</TableCell>
+              <TableCell>
+                <MuiThemeProvider theme={theme}>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleBeneficiaryRemove(b.username)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </MuiThemeProvider>
+              </TableCell>
+            </TableRow>
+          ))}
+          <TableRow key="input">
             <TableCell>
-              <MuiThemeProvider theme={theme}>
-                <IconButton
-                  color="primary"
-                  onClick={() => handleBeneficiaryRemove(b.username)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </MuiThemeProvider>
+              <TextField
+                value={username}
+                placeholder="username"
+                onChange={handleUsernameChange('name')}
+              />
+            </TableCell>
+            <TableCell>
+              <TextField
+                type="number"
+                value={percentage}
+                onChange={handlePercentageChange('name')}
+              />
+            </TableCell>
+            <TableCell>
+              <IconButton
+                color="primary"
+                onClick={() => handleBeneficiaryAdd()}
+              >
+                <AddIcon />
+              </IconButton>
             </TableCell>
           </TableRow>
-        ))}
-        <TableRow key="input">
-          <TableCell>
-            @
-            <TextField
-              value={username}
-              placeholder="username"
-              onChange={handleUsernameChange('name')}
-            />
-          </TableCell>
-          <TableCell>
-            <TextField
-              type="number"
-              value={percentage}
-              onChange={handlePercentageChange('name')}
-            />
-            %
-          </TableCell>
-          <TableCell>
-            <IconButton color="primary" onClick={() => handleBeneficiaryAdd()}>
-              <AddIcon />
-            </IconButton>
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

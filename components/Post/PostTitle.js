@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const PostTitle = props => {
@@ -28,6 +29,11 @@ const PostTitle = props => {
       </div>
     </div>
   );
+};
+
+PostTitle.propTypes = {
+  img_url: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default PostTitle;

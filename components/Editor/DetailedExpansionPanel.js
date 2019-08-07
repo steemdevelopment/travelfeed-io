@@ -114,6 +114,10 @@ const DetailedExpansionPanel = props => {
   );
 };
 
+DetailedExpansionPanel.defaultProps = {
+  fullWidth: false,
+};
+
 DetailedExpansionPanel.propTypes = {
   value: PropTypes.arrayOf(PropTypes.any).isRequired,
   expanded: PropTypes.bool.isRequired,
@@ -121,6 +125,7 @@ DetailedExpansionPanel.propTypes = {
   selector: PropTypes.func.isRequired,
   helper: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  fullWidth: PropTypes.bool,
 };
 
 export default DetailedExpansionPanel;

@@ -1,9 +1,9 @@
-/* eslint-disable no-shadow */
 import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import Link from '../../lib/Link';
 import CuratorMenu from '../CuratorMenu/PostMenu';
@@ -100,6 +100,18 @@ const PostContent = props => {
       </CardContent>
     </Fragment>
   );
+};
+
+PostContent.propTypes = {
+  author: PropTypes.string.isRequired,
+  permlink: PropTypes.string.isRequired,
+  display_name: PropTypes.string.isRequired,
+  created_at: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  latitude: PropTypes.number.isRequired,
+  longitude: PropTypes.number.isRequired,
+  readtime: PropTypes.objectOf(PropTypes.any).isRequired,
+  appIcon: PropTypes.func.isRequired,
 };
 
 export default PostContent;

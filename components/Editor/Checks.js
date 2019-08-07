@@ -2,9 +2,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
-const checks = props => {
+const Checks = props => {
   return (
     <Fragment>
       <FormLabel component="legend">
@@ -28,4 +29,8 @@ const checks = props => {
   );
 };
 
-export default checks;
+Checks.propTypes = {
+  checklist: PropTypes.arrayOf(PropTypes.any).isRequired,
+};
+
+export default Checks;

@@ -222,9 +222,17 @@ class LocationPickerDialog extends Component {
   }
 }
 
+LocationPickerDialog.defaultProps = {
+  locationCategory: undefined,
+};
+
 LocationPickerDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   onPick: PropTypes.func.isRequired,
+  value: PropTypes.arrayOf(PropTypes.any).isRequired,
+  setLocation: PropTypes.func.isRequired,
+  setLocationCategory: PropTypes.func.isRequired,
+  locationCategory: PropTypes.string,
 };
 
 export default LocationPickerDialog;

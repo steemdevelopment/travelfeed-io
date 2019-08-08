@@ -34,7 +34,6 @@ const HtmlEditor = props => {
             md: true,
             html: showHtml,
           },
-          htmlClass: 'postcontent',
           synchScroll: true,
         }}
         value={data}

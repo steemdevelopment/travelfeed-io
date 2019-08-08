@@ -5,7 +5,7 @@ import { invalidPermlink } from '../../helpers/regex';
 
 const PermlinkInput = props => {
   const handleChange = () => event => {
-    props.onChange(event.target.value);
+    props.onChange(event.target.value.toLowerCase());
   };
 
   return (

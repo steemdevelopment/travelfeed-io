@@ -184,7 +184,7 @@ const TagPicker = props => {
   };
 
   const handleInputChange = event => {
-    setInputValue(event.target.value);
+    setInputValue(event.target.value.toLowerCase());
   };
 
   const handleChange = item => {

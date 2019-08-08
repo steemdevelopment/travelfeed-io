@@ -35,7 +35,7 @@ const BeneficiaryInput = props => {
   };
 
   const handleUsernameChange = () => event => {
-    setUsername(event.target.value);
+    setUsername(event.target.value.toLowerCase());
   };
 
   const handlePercentageChange = () => event => {

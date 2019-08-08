@@ -55,7 +55,7 @@ class LocationPickerDialog extends Component {
   pickDetails = () => {
     if (this.props.value) {
       fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.props.value.latitude}&lon=${this.props.value.longitude}`,
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${this.props.value.latitude}&lon=${this.props.value.longitude}&accept-language=en`,
       )
         .then(response => {
           return response.json();

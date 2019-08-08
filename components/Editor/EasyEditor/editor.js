@@ -1,10 +1,12 @@
 /* eslint-disable */
 import EditorJS from '@editorjs/editorjs';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import commonTools from './common-tools';
 
 class Editor extends Component {
+  state = { mounted: false };
+
   static defaultProps = {
     holderId: 'editorjs-holder',
     customTools: {},
@@ -45,6 +47,8 @@ class Editor extends Component {
   }
 
   _initEditor = () => {
+    this.setState({ mounted: true });
+
     const { holderId, autofocus, data } = this.props;
 
     this.editor = new EditorJS({
@@ -61,8 +65,15 @@ class Editor extends Component {
   _destroyEditor = () => {
     if (!this.editor) return;
 
-    this.editor.destroy();
-    this.editor = null;
+    try {
+      this.editor.destroy();
+    } catch {
+      console.warn('Could not unmount editor');
+    }
+
+    this.setState({ mounted: false });
+
+    this.editor = undefined;
   };
 
   _initTools = () => {
@@ -88,11 +99,15 @@ class Editor extends Component {
   };
 
   render() {
-    const { holderId } = this.props;
-    return React.createElement('div', {
-      id: holderId,
-      ref: this._el,
-    });
+    if (this.state.mounted) {
+      const { holderId } = this.props;
+      return React.createElement('div', {
+        id: holderId,
+        ref: this._el,
+      });
+    } else {
+      return <Fragment />;
+    }
   }
 }
 

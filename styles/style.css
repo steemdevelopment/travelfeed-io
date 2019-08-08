@@ -111,6 +111,11 @@ a:hover {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
+.image-tool__caption {
+  text-align: center;
+  display: inline-block;
+}
+
 .postcontent {
   font-size: 1.2rem !important;
   font-weight: 400;

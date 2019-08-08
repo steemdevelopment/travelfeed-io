@@ -12,7 +12,7 @@ const EasyEditor = props => {
   return (
     <div className="postcontent">
       <Editor
-        autofocus
+        autofocus={false}
         holderId="editorjs-container"
         onChange={onChange}
         data={data}

@@ -1,4 +1,5 @@
 import red from '@material-ui/core/colors/red';
+import FormLabel from '@material-ui/core/FormLabel';
 import IconButton from '@material-ui/core/IconButton';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -7,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withSnackbar } from 'notistack';
@@ -118,17 +120,17 @@ const BeneficiaryInput = props => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Username</TableCell>
-            <TableCell>Reward</TableCell>
-            <TableCell />
+            <TableCell padding="checkbox">Username</TableCell>
+            <TableCell padding="checkbox">Reward</TableCell>
+            <TableCell padding="checkbox" />
           </TableRow>
         </TableHead>
         <TableBody>
           {props.value.map(b => (
-            <TableRow key={b.username}>
-              <TableCell>{b.username}</TableCell>
-              <TableCell>{b.percentage}%</TableCell>
-              <TableCell>
+            <TableRow hover key={b.username}>
+              <TableCell padding="checkbox">{b.username}</TableCell>
+              <TableCell padding="checkbox">{b.percentage}%</TableCell>
+              <TableCell padding="checkbox">
                 <MuiThemeProvider theme={theme}>
                   <IconButton
                     color="primary"
@@ -141,21 +143,22 @@ const BeneficiaryInput = props => {
             </TableRow>
           ))}
           <TableRow key="input">
-            <TableCell>
+            <TableCell padding="checkbox">
               <TextField
                 value={username}
                 placeholder="username"
                 onChange={handleUsernameChange('name')}
               />
             </TableCell>
-            <TableCell>
+            <TableCell padding="checkbox">
               <TextField
+                inputProps={{ min: '1', max: '100', step: '1' }}
                 type="number"
                 value={percentage}
                 onChange={handlePercentageChange('name')}
               />
             </TableCell>
-            <TableCell>
+            <TableCell padding="checkbox">
               <IconButton
                 color="primary"
                 onClick={() => handleBeneficiaryAdd()}
@@ -166,6 +169,29 @@ const BeneficiaryInput = props => {
           </TableRow>
         </TableBody>
       </Table>
+      <FormLabel component="legend" className="pt-4">
+        Unlike other platforms, we do not automatically set beneficiaries and do
+        not take anything from your rewards without asking you, but if you would
+        like to support us, you can{' '}
+        <Typography
+          color="primary"
+          className="cpointer"
+          role="button"
+          display="inline"
+          onClick={() => {
+            setUsername('travelfeed');
+            setPercentage(5);
+          }}
+          onKeyPress={() => {
+            setUsername('travelfeed');
+            setPercentage(5);
+          }}
+          tabIndex={0}
+        >
+          set travelfeed as beneficiary
+        </Typography>{' '}
+        of your post and donate a part of your rewards.
+      </FormLabel>
     </div>
   );
 };

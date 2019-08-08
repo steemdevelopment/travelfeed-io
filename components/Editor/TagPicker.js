@@ -161,8 +161,7 @@ const TagPicker = props => {
       event.key === 'Backspace' &&
       selectedItem[selectedItem.length - 1] !== props.defaultTag
     ) {
-      // TODO: Fix deleting the selected item, not the last
-      props.onChange(selectedItem.slice(0, selectedItem.length - 1));
+      props.onTagChange(selectedItem.slice(0, selectedItem.length - 1));
     }
     if (
       (event.key === ' ' || event.key === ',') &&
@@ -178,7 +177,7 @@ const TagPicker = props => {
         .replace(/\s/g, '');
 
       if (selectedItem.indexOf(item) === -1 && item !== props.defaultTag) {
-        props.onChange([...selectedItem, item]);
+        props.onTagChange([...selectedItem, item]);
         setInputValue('');
       }
     }
@@ -192,16 +191,16 @@ const TagPicker = props => {
     //  If 10 Tags already, don't autocomplete
     if (selectedItem.length < 9 && item !== props.defaultTag) {
       if (selectedItem.indexOf(item) === -1) {
-        props.onChange([...selectedItem, item]);
+        props.onTagChange([...selectedItem, item]);
         setInputValue('');
       }
     }
   };
 
   const handleDelete = item => () => {
-    if (item !== props.defaultTag) {
-      props.onChange(selectedItem.slice(0, selectedItem.length - 1));
-    }
+    const selit = selectedItem;
+    selit.splice(selit.indexOf(item), 1);
+    props.onTagChange(selit);
   };
 
   const { classes } = props;
@@ -310,7 +309,7 @@ TagPicker.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   value: PropTypes.arrayOf(PropTypes.string).isRequired,
   recommendations: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onChange: PropTypes.func.isRequired,
+  onTagChange: PropTypes.func.isRequired,
   defaultTag: PropTypes.string.isRequired,
 };
 

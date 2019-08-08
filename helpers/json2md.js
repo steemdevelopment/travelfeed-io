@@ -1,4 +1,5 @@
 import html2markdown from 'html2markdown';
+import sanitize from 'sanitize-html';
 
 const json2md = data => {
   let html = '';
@@ -26,7 +27,7 @@ const json2md = data => {
       html += '\n\n';
     } else if (b.type === 'image') {
       if (b.data.caption) {
-        html += `![${b.data.caption}]`;
+        html += `![${sanitize(b.data.caption, { allowedTags: [] })}]`;
       } else html += '![]';
       html += `(${b.data.file.url})\n\n`;
     } else if (b.type === 'quote') {

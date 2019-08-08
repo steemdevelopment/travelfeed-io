@@ -12,6 +12,8 @@ export const post = (
   commentOptions,
 ) => {
   if (window && window.steem_keychain) {
+    const comment_options =
+      commentOptions === '' ? '' : JSON.stringify(commentOptions);
     return new Promise(resolve => {
       window.steem_keychain.requestPost(
         author,
@@ -21,7 +23,7 @@ export const post = (
         parentAuthor,
         JSON.stringify(jsonMetadata),
         permlink,
-        JSON.stringify(commentOptions),
+        comment_options,
         res => {
           if (res.success) {
             resolve({

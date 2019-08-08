@@ -288,7 +288,13 @@ const PostEditor = props => {
         setCompleted(true);
       } else {
         const parentAuthor = '';
-        const parentPermlink = 'travelfeed';
+        let parentPermlink;
+        if (defaultTag) {
+          parentPermlink = defaultTag;
+        } else {
+          parentPermlink =
+            language === 'en' ? 'travelfeed' : `${language}-travelfeed`;
+        }
         let body = content;
         if (!codeEditor) body = json2md(content);
         const imageList = getImageList(body);
@@ -536,10 +542,9 @@ const PostEditor = props => {
                     selector={
                       <TagPicker
                         recommendations={tagRecommendations}
-                        content={sanitized}
                         defaultTag={defaultTag}
                         value={tags}
-                        onChange={handleTagClick}
+                        onTagChange={handleTagClick}
                       />
                     }
                   />

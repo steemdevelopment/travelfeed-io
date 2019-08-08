@@ -225,29 +225,6 @@ class HeaderMenu extends Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
-                      <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link color="textPrimary" href="/destinations" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <DestinationsIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Destinations" />
-                            </MenuItem>
-                          </a>
-                        </Link>
-                        <Link color="textPrimary" href="/map" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <MapIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Map" />
-                            </MenuItem>
-                          </a>
-                        </Link>
-                        <Divider />
-                      </div>
                       {(this.props.isDashboard && (
                         <Link color="textPrimary" href="/" passHref>
                           <a>
@@ -296,6 +273,29 @@ class HeaderMenu extends Component {
                         </a>
                       </Link>
                       <Divider />
+                      <div className="d-xl-none d-lg-none d-md-none d-block">
+                        <Link color="textPrimary" href="/destinations" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <DestinationsIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Destinations" />
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Link color="textPrimary" href="/map" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <MapIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Map" />
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Divider />
+                      </div>
                       <Link color="textPrimary" href="/about/privacy" passHref>
                         <a>
                           <MenuItem>

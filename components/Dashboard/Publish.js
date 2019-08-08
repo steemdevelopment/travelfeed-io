@@ -517,8 +517,8 @@ const PostEditor = props => {
                   <div className="col-12 p-1">
                     <DetailedExpansionPanel
                       title="Language"
-                      description="Select the language of your post"
-                      helper="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read."
+                      description="Only one language can be selected. We encourage you to write separate posts for each language instead of bilingual posts since bilingual posts are often hard to read"
+                      helper="The use of automated translation tools is not allowed. Currently, only English posts are displayed on TravelFeed, but we are working on introducing new languages soon. Currently, only English and Polish posts are curated - if you would like to run a curation team for your language, please contact us."
                       value={
                         languages.find(lang => lang.code === language).name
                       }

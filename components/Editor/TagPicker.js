@@ -151,6 +151,7 @@ function getSuggestions(value) {
 
 const TagPicker = props => {
   const [inputValue, setInputValue] = useState('');
+  const [stateUpdate, setStateUpdate] = useState(true);
 
   const selectedItem = props.value;
 
@@ -163,8 +164,13 @@ const TagPicker = props => {
     ) {
       props.onTagChange(selectedItem.slice(0, selectedItem.length - 1));
     }
+  };
+
+  const handleInputChange = event => {
+    setInputValue(event.target.value.toLowerCase());
+    const lastKey = event.target.value[event.target.value.length - 1];
     if (
-      (event.key === ' ' || event.key === ',') &&
+      (lastKey === ' ' || lastKey === ',') &&
       inputValue.length &&
       inputValue.length < 20 &&
       inputValue.match(/[a-zA-Z0-9]/) &&
@@ -183,10 +189,6 @@ const TagPicker = props => {
     }
   };
 
-  const handleInputChange = event => {
-    setInputValue(event.target.value.toLowerCase());
-  };
-
   const handleChange = item => {
     //  If 10 Tags already, don't autocomplete
     if (selectedItem.length < 9 && item !== props.defaultTag) {
@@ -201,6 +203,8 @@ const TagPicker = props => {
     const selit = selectedItem;
     selit.splice(selit.indexOf(item), 1);
     props.onTagChange(selit);
+    // hack to make component update
+    setStateUpdate(!stateUpdate);
   };
 
   const { classes } = props;

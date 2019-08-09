@@ -6,6 +6,10 @@ const withBundleAnalyzer = require('@zeit/next-bundle-analyzer');
 module.exports = withOffline(
   withCSS(
     withBundleAnalyzer({
+      webpack(config) {
+        config.node = { fs: 'empty' };
+        return config;
+      },
       analyzeServer: ['server', 'both'].includes(process.env.BUNDLE_ANALYZE),
       analyzeBrowser: ['browser', 'both'].includes(process.env.BUNDLE_ANALYZE),
       bundleAnalyzerConfig: {

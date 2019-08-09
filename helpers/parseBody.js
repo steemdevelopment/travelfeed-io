@@ -7,11 +7,10 @@ future problems:
  */
 //
 
-import Remarkable from 'remarkable';
 import sanitizeHtml from 'sanitize-html';
+import { DefaultRenderer } from 'steem-content-renderer';
 import { ROOTURL } from '../config';
 import { imageProxy } from './getImage';
-import htmlReady from './PostParser/HtmlReady';
 import sanitizeConfig from './PostParser/SanitizeConfig';
 import {
   dtubeImageRegex,
@@ -22,13 +21,19 @@ import {
   swmregex,
 } from './regex';
 
-// Initialise Markdown parser
-const remarkable = new Remarkable({
-  html: true, // Remarkable renders first then sanitize runs...
+const renderer = new DefaultRenderer({
+  baseUrl: 'https://travelfeed.io/',
   breaks: true,
-  linkify: false, // linkify is done locally
-  typographer: false, // https://github.com/jonschlinkert/remarkable/issues/142#issuecomment-221546793
-  quotes: '“”‘’',
+  skipSanitization: true, // performed by sanitize
+  addNofollowToLinks: false, // performed by sanitize
+  doNotShowImages: false,
+  ipfsPrefix: '',
+  assetsWidth: 1, // performed by sanitize
+  assetsHeight: 1, // performed by sanitize
+  imageProxyFn: url => url,
+  usertagUrlFn: account => `/@${account}`,
+  hashtagUrlFn: hashtag => `/trending/${hashtag}`,
+  isLinkSafeFn: () => true,
 });
 
 const parseBody = (body, options) => {
@@ -102,9 +107,7 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
   // Render markdown to HTML
-  parsedBody = remarkable.render(parsedBody);
-  const htmlReadyOptions = { mutate: true, resolveIframe: true };
-  parsedBody = htmlReady(parsedBody, htmlReadyOptions).html;
+  parsedBody = renderer.render(parsedBody);
   // Sanitize
   parsedBody = sanitizeHtml(
     parsedBody,

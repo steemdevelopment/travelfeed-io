@@ -32,7 +32,7 @@ const renderer = new DefaultRenderer({
   assetsHeight: 1, // performed by sanitize
   imageProxyFn: url => url,
   usertagUrlFn: account => `/@${account}`,
-  hashtagUrlFn: hashtag => `/trending/${hashtag}`,
+  hashtagUrlFn: hashtag => `/favorites/${hashtag}`,
   isLinkSafeFn: () => true,
 });
 
@@ -107,7 +107,12 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
   // Render markdown to HTML
-  parsedBody = renderer.render(parsedBody);
+  try {
+    parsedBody = parsedBody.length > 0 ? renderer.render(parsedBody) : '';
+  } catch {
+    // TODO: Content renderer needs an update to not throw an exception when script tags are used
+    console.warn('Script tag caused content renderer problem');
+  }
   // Sanitize
   parsedBody = sanitizeHtml(
     parsedBody,

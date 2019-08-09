@@ -107,7 +107,7 @@ const parseBody = (body, options) => {
   parsedBody = parsedBody.replace(/https:\/\/busy\.org/g, ROOTURL);
   parsedBody = parsedBody.replace(/https:\/\/steempeak\.com/g, ROOTURL);
   // Render markdown to HTML
-  parsedBody = renderer.render(parsedBody);
+  parsedBody = parsedBody.length > 0 ? renderer.render(parsedBody) : '';
   // Sanitize
   parsedBody = sanitizeHtml(
     parsedBody,

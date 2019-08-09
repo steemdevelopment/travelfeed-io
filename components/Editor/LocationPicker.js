@@ -69,8 +69,8 @@ class LocationPickerDialog extends Component {
   onMarkerDragEnd = event => {
     this.logDragEvent('onDragEnd', event);
     this.props.setLocation({
-      longitude: round(event.lngLat[0], 4),
-      latitude: round(event.lngLat[1], 4),
+      longitude: round(event.lngLat[0], 6),
+      latitude: round(event.lngLat[1], 6),
     });
     this.setState({ address: {} });
     this.props.setLocationCategory(undefined);
@@ -91,8 +91,8 @@ class LocationPickerDialog extends Component {
   handleViewportChange = viewport => {
     if (viewport.longitude && viewport.longitude) {
       this.props.setLocation({
-        latitude: round(viewport.latitude, 4),
-        longitude: round(viewport.longitude, 4),
+        latitude: round(viewport.latitude, 6),
+        longitude: round(viewport.longitude, 6),
       });
       this.setState({ address: {} });
       this.props.setLocationCategory(undefined);

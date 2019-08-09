@@ -104,6 +104,7 @@ a:hover {
 } */
 
 #editorjs-container,
+.custom-html-style,
 .custom-html-style p,
 .rc-md-editor .editor-container .sec-md .input {
   font-size: 1.2rem !important;
@@ -111,8 +112,12 @@ a:hover {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
+/* Editor js */
+
 #editorjs-container img,
-#editorjs-container iframe {
+#editorjs-container iframe,
+.html-wrap iframe, /* Markdown editor */
+.editorjs-container img {
   /* overwrite .postcontent styles */
   width: 100% !important;
   padding: 0 !important;
@@ -123,6 +128,11 @@ a:hover {
 .image-tool__caption {
   text-align: center;
   display: inline-block;
+}
+
+/* Markdown editor */
+.custom-html-style .videoWrapper iframe {
+  height: 250px !important;
 }
 
 .postcontent {

@@ -408,7 +408,6 @@ const PostEditor = props => {
                   <Card>
                     <CardContent>
                       <InputBase
-                        autoFocus
                         inputProps={{
                           maxLength: 100,
                         }}

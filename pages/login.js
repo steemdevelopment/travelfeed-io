@@ -14,11 +14,13 @@ class LoginPage extends Component {
     loaded: false,
   };
 
-  static async getInitialProps({ req }) {
+  static async getInitialProps(props) {
+    const sc_token = props.query.access_token;
+    const { expires_in } = props.query;
     return {
       sc: {
-        sc_token: req.query.access_token,
-        expires_in: req.query.expires_in,
+        sc_token,
+        expires_in,
       },
     };
   }

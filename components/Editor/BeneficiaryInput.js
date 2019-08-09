@@ -109,6 +109,10 @@ const BeneficiaryInput = props => {
     });
   };
 
+  const handleKeyPress = event => {
+    if (event.key === 'Enter') handleBeneficiaryAdd();
+  };
+
   const handleBeneficiaryRemove = uname => {
     let beneficiaries = props.value;
     beneficiaries = beneficiaries.filter(item => item.username !== uname);
@@ -147,11 +151,13 @@ const BeneficiaryInput = props => {
               <TextField
                 value={username}
                 placeholder="username"
+                onKeyPress={handleKeyPress}
                 onChange={handleUsernameChange('name')}
               />
             </TableCell>
             <TableCell padding="checkbox">
               <TextField
+                onKeyPress={handleKeyPress}
                 inputProps={{ min: '1', max: '100', step: '1' }}
                 type="number"
                 value={percentage}

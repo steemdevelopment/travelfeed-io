@@ -8,8 +8,8 @@ const TitleEditor = props => {
   const [value, setValue] = useState(data);
   const [timer, setTimer] = useState(undefined);
 
-  const triggerChange = () => {
-    onChange(value);
+  const triggerChange = newval => () => {
+    onChange(newval);
   };
 
   const handleTitleEditorChange = changedtitle => {
@@ -17,7 +17,7 @@ const TitleEditor = props => {
 
     setValue(changedtitle.target.value);
 
-    setTimer(setTimeout(triggerChange, 1000));
+    setTimer(setTimeout(triggerChange(changedtitle.target.value), 1000));
   };
 
   return (

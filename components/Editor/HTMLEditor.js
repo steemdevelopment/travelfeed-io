@@ -27,8 +27,8 @@ const HtmlEditor = props => {
     });
   };
 
-  const triggerChange = () => {
-    onChange(value);
+  const triggerChange = newval => () => {
+    onChange(newval);
   };
 
   const handleHtmlEditorChange = ({ text }) => {
@@ -38,7 +38,7 @@ const HtmlEditor = props => {
 
     setValue(text);
 
-    setTimer(setTimeout(triggerChange, 1000));
+    setTimer(setTimeout(triggerChange(text), 1000));
   };
 
   return (

@@ -9,8 +9,8 @@ const PermlinkInput = props => {
   const [value, setValue] = useState(data);
   const [timer, setTimer] = useState(undefined);
 
-  const triggerChange = () => {
-    onChange(value);
+  const triggerChange = newval => () => {
+    onChange(newval);
   };
 
   const handleChange = () => event => {
@@ -18,7 +18,7 @@ const PermlinkInput = props => {
 
     setValue(event.target.value.toLowerCase());
 
-    setTimer(setTimeout(triggerChange, 1000));
+    setTimer(setTimeout(triggerChange(event.target.value.toLowerCase()), 1000));
   };
 
   return (

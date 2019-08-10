@@ -27,6 +27,7 @@ const renderer = new DefaultRenderer({
   skipSanitization: true, // performed by sanitize
   addNofollowToLinks: false, // performed by sanitize
   doNotShowImages: false,
+  allowInsecureScriptTags: true,
   ipfsPrefix: '',
   assetsWidth: 1, // performed by sanitize
   assetsHeight: 1, // performed by sanitize
@@ -111,7 +112,7 @@ const parseBody = (body, options) => {
     parsedBody = parsedBody.length > 0 ? renderer.render(parsedBody) : '';
   } catch {
     // TODO: Content renderer needs an update to not throw an exception when script tags are used
-    console.warn('Script tag caused content renderer problem');
+    console.warn('Could not render post content');
   }
   // Sanitize
   parsedBody = sanitizeHtml(

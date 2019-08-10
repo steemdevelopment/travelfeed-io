@@ -30,7 +30,11 @@ class Drafts extends Component {
     return (
       <Fragment>
         <div className="text-center pt-4" />
-        <Query query={GET_DRAFTS} variables={{ limit: 10 }}>
+        <Query
+          fetchPolicy="network-only"
+          query={GET_DRAFTS}
+          variables={{ limit: 10 }}
+        >
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (

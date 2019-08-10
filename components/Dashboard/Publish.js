@@ -390,8 +390,10 @@ const PostEditor = props => {
         {saveDraft => {
           if (!saved) {
             setTagRecommendations(categoryFinder(sanitized));
-            saveDraft();
-            setSaved(true);
+            if (readingtime.words > 0 || title !== '') {
+              saveDraft();
+              setSaved(true);
+            }
           }
           return (
             <div className="container-fluid p-4">
@@ -629,11 +631,19 @@ const PostEditor = props => {
                           <div className="col-6">
                             <Button
                               onClick={() => {
-                                setSaved(false);
-                                newNotification({
-                                  message: 'Draft has been saved',
-                                  success: true,
-                                });
+                                if (readingtime.words > 0 || title !== '') {
+                                  setSaved(false);
+                                  newNotification({
+                                    message: 'Draft has been saved',
+                                    success: true,
+                                  });
+                                } else {
+                                  newNotification({
+                                    message:
+                                      'There is nothing to save. Enter a title or start writing!',
+                                    success: false,
+                                  });
+                                }
                               }}
                               variant="contained"
                               color="secondary"

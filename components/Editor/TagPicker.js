@@ -138,7 +138,7 @@ function getSuggestions(value) {
     ? []
     : suggestions.filter(suggestion => {
         const keep =
-          count < 9 &&
+          count < 10 &&
           suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
         if (keep) {
@@ -175,7 +175,7 @@ const TagPicker = props => {
       inputValue.length < 20 &&
       inputValue.match(/[a-zA-Z0-9]/) &&
       inputValue.replace(/\s/g, '').match(allSpecialChars) === null &&
-      selectedItem.length < 9
+      selectedItem.length < 10
     ) {
       const item = inputValue
         .toLowerCase()
@@ -191,7 +191,7 @@ const TagPicker = props => {
 
   const handleChange = item => {
     //  If 10 Tags already, don't autocomplete
-    if (selectedItem.length < 9 && item !== props.defaultTag) {
+    if (selectedItem.length < 10 && item !== props.defaultTag) {
       if (selectedItem.indexOf(item) === -1) {
         props.onTagChange([...selectedItem, item]);
         setInputValue('');

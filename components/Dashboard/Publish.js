@@ -515,7 +515,7 @@ const PostEditor = props => {
                   <DetailedExpansionPanel
                     expanded
                     title="Tags"
-                    description="You can set up to 9 custom tags here. Only lowercase letters, numbers and dashes are permitted"
+                    description="You can set up to 10 custom tags here. Only lowercase letters, numbers and dashes are permitted"
                     helper="The first tag is set automatically based on your language selection. Selected tribe tags are highlighted. Use the space key to separeate tags. We do not recommend setting location-based tags since locations are indexed based on your location setting, not by tags."
                     value={`${defaultTag}${tags &&
                       tags.map((t, i) => `${i > 0 ? ' ' : ', '}${t}`)}`}

@@ -1,27 +1,36 @@
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { invalidPermlink } from '../../helpers/regex';
 
 const PermlinkInput = props => {
+  const { data, onChange } = props;
+
+  const [value, setValue] = useState(data);
+  const [timer, setTimer] = useState(undefined);
+
+  const triggerChange = () => {
+    onChange(value);
+  };
+
   const handleChange = () => event => {
-    props.onChange(event.target.value.toLowerCase());
+    setTimer(clearTimeout(timer));
+
+    setValue(event.target.value.toLowerCase());
+
+    setTimer(setTimeout(triggerChange, 1000));
   };
 
   return (
     <TextField
       fullWidth
       multiline
-      error={
-        props.value &&
-        props.value.length > 2 &&
-        props.value.match(invalidPermlink)
-      }
+      error={value && value.length > 2 && value.match(invalidPermlink)}
       inputProps={{
         maxLength: 255,
       }}
       id="standard-name"
-      value={props.value}
+      value={value}
       placeholder={props.placeholder}
       label="Custom permlink"
       onChange={handleChange('name')}
@@ -32,7 +41,7 @@ const PermlinkInput = props => {
 
 PermlinkInput.propTypes = {
   placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  data: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

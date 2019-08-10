@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 const TitleEditor = props => {
   const { data, onChange } = props;
 
-  const [value, setValue] = useState(props.data);
+  const [value, setValue] = useState(data);
   const [timer, setTimer] = useState(undefined);
 
   const triggerChange = () => {

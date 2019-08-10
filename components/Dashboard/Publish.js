@@ -569,7 +569,7 @@ const PostEditor = props => {
                               setPermlink(pl);
                               setPermlinkValid(true);
                             }}
-                            value={permlink}
+                            data={permlink}
                             placeholder={getSlug(title)}
                           />
                         }

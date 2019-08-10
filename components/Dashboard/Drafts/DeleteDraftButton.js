@@ -57,10 +57,12 @@ class DeleteDraftButton extends Component {
         {(deleteDraft, data) => {
           if (data.data && data.data.deleteDraft && open) {
             this.handleClose();
-            this.newNotification({
-              success: data.data.deleteDraft.success,
-              message: data.data.deleteDraft.message,
-            });
+            if (!data.data.deleteDraft.success) {
+              this.newNotification({
+                success: data.data.deleteDraft.success,
+                message: data.data.deleteDraft.message,
+              });
+            }
             if (data.data.deleteDraft.success) {
               onDelete();
             }

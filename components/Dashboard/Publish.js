@@ -390,7 +390,7 @@ const PostEditor = props => {
         {saveDraft => {
           if (!saved) {
             setTagRecommendations(categoryFinder(sanitized));
-            if (readingtime.words > 0 || title !== '') {
+            if ((readingtime.words > 0 || title !== '') && !editMode) {
               saveDraft();
             }
             setSaved(true);
@@ -493,7 +493,7 @@ const PostEditor = props => {
                     }
                   />
                 </div>
-                {!editMode && (
+                {editMode === false && (
                   <div className="col-12 p-1">
                     <DetailedExpansionPanel
                       title="Language"
@@ -631,29 +631,31 @@ const PostEditor = props => {
                         <Checks checklist={checklist} />
                         <div className="row">
                           <div className="col-6">
-                            <Button
-                              onClick={() => {
-                                if (readingtime.words > 0 || title !== '') {
-                                  setSaved(false);
-                                  newNotification({
-                                    message: 'Draft has been saved',
-                                    success: true,
-                                  });
-                                } else {
-                                  newNotification({
-                                    message:
-                                      'There is nothing to save. Enter a title or start writing!',
-                                    success: false,
-                                  });
-                                }
-                              }}
-                              variant="contained"
-                              color="secondary"
-                            >
-                              <span>
-                                Save Draft <SaveIcon />
-                              </span>
-                            </Button>
+                            {!editMode && (
+                              <Button
+                                onClick={() => {
+                                  if (readingtime.words > 0 || title !== '') {
+                                    setSaved(false);
+                                    newNotification({
+                                      message: 'Draft has been saved',
+                                      success: true,
+                                    });
+                                  } else {
+                                    newNotification({
+                                      message:
+                                        'There is nothing to save. Enter a title or start writing!',
+                                      success: false,
+                                    });
+                                  }
+                                }}
+                                variant="contained"
+                                color="secondary"
+                              >
+                                <span>
+                                  Save Draft <SaveIcon />
+                                </span>
+                              </Button>
+                            )}
                           </div>
                           <div className="col-6 text-right">
                             <Button

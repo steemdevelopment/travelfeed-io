@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import InputBase from '@material-ui/core/InputBase';
 import PublishIcon from '@material-ui/icons/ChevronRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/SaveAlt';
@@ -45,6 +44,7 @@ import PayoutTypeSelector from '../Editor/PayoutTypeSelector';
 import PermlinkInput from '../Editor/PermlinkInput';
 import SwitchEditorModeButton from '../Editor/SwitchEditorModeButton';
 import TagPicker from '../Editor/TagPicker';
+import TitleEditor from '../Editor/TitleEditor';
 
 const PostEditor = props => {
   const user = getUser();
@@ -131,10 +131,6 @@ const PostEditor = props => {
 
   const handleEditorChange = value => {
     setContent(value);
-  };
-
-  const handleTitleEditorChange = changedtitle => {
-    setTitle(changedtitle.target.value);
   };
 
   const removeFeaturedImage = () => {
@@ -403,17 +399,7 @@ const PostEditor = props => {
                 <div className="col-12 p-1">
                   <Card>
                     <CardContent>
-                      <InputBase
-                        inputProps={{
-                          maxLength: 100,
-                        }}
-                        multiline
-                        className="font-weight-bold inputtitle"
-                        placeholder="Title"
-                        value={title}
-                        onChange={handleTitleEditorChange}
-                        fullWidth
-                      />
+                      <TitleEditor data={title} onChange={setTitle} />
                     </CardContent>
                   </Card>
                 </div>

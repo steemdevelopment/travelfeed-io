@@ -133,10 +133,6 @@ const PostEditor = props => {
     setContent(value);
   };
 
-  const handleHtmlEditorChange = ({ text }) => {
-    if (!saved) setContent(text);
-  };
-
   const handleTitleEditorChange = changedtitle => {
     setTitle(changedtitle.target.value);
   };
@@ -427,10 +423,7 @@ const PostEditor = props => {
                       <div>
                         {(codeEditor && mounted && (
                           <Fragment>
-                            <HtmlEditor
-                              data={content}
-                              onChange={handleHtmlEditorChange}
-                            />
+                            <HtmlEditor data={content} onChange={setContent} />
                           </Fragment>
                         )) || (
                           <div>

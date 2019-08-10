@@ -12,6 +12,8 @@ const MdEditor = dynamic(() => import('react-markdown-editor-lite'), {
 const HtmlEditor = props => {
   const { data, onChange } = props;
   const [showHtml, setShowHtml] = useState(true);
+  const [value, setValue] = useState(props.data);
+  const [timer, setTimer] = useState(undefined);
 
   useEffect(() => {
     if (window.innerWidth < 576) {
@@ -23,6 +25,20 @@ const HtmlEditor = props => {
     return uploadFile(file, getUser()).then(res => {
       return callback(res);
     });
+  };
+
+  const triggerChange = () => {
+    onChange(value);
+  };
+
+  const handleHtmlEditorChange = ({ text }) => {
+    // Fire change when user stops typing:
+    // https://gist.github.com/krambertech/76afec49d7508e89e028fce14894724c
+    setTimer(clearTimeout(timer));
+
+    setValue(text);
+
+    setTimer(setTimeout(triggerChange, 1000));
   };
 
   return (
@@ -40,7 +56,7 @@ const HtmlEditor = props => {
         renderHTML={text =>
           parseBody(text, { lazy: false, secureLinks: false })
         }
-        onChange={onChange}
+        onChange={handleHtmlEditorChange}
         onImageUpload={handleImageUpload}
       />
     </div>

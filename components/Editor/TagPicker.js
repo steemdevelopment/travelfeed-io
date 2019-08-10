@@ -73,6 +73,8 @@ const suggestions = [
   { label: 'walkwithme' },
   { label: 'wednesdaywalk' },
   { label: 'marketfriday' },
+  { label: 'sports' },
+  { label: 'transportation' },
   { label: 'palnet' },
   { label: 'creativecoin' },
   { label: 'neoxian' },

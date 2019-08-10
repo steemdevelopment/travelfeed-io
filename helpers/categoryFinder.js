@@ -2,22 +2,76 @@ import extractKeywords from 'keyword-extractor';
 
 const categories = [
   { category: 'cyclefeed', keywords: ['cycling', 'cycle', 'bicyle', 'biking'] },
-  { category: 'backpacking', keywords: ['backpacker', 'backpack'] },
+  {
+    category: 'backpacking',
+    keywords: ['backpacker', 'backpack'],
+  },
   { category: 'hitchhiking', keywords: ['hitch', 'hitchhike'] },
   {
     category: 'traveladvice',
-    keywords: ['packing', 'recommendation', 'guide'],
+    keywords: [
+      'packing',
+      'recommendation',
+      'guide',
+      'insurance',
+      'credit',
+      'review',
+    ],
   },
-  { category: 'foodoftheworld', keywords: ['food', 'restaurant', 'eat'] },
+  {
+    category: 'foodoftheworld',
+    keywords: ['food', 'restaurant', 'eat', 'streetfood'],
+  },
   { category: 'budgettravel', keywords: ['budget', 'money', 'spending'] },
-  { category: 'digitalnomdads', keywords: ['nomad', 'work', 'income'] },
+  {
+    category: 'digitalnomdads',
+    keywords: ['nomad', 'work', 'income', 'freelancer'],
+  },
   {
     category: 'photofeed',
     keywords: ['photography', 'camera', 'photographer'],
   },
-  { category: 'family', keywords: ['kids', 'children', 'family-friendly'] },
-  { category: 'hiking', keywords: ['mountains', 'hike', 'boots'] },
-  { category: 'wildlife', keywords: ['animal', 'bear', 'birds'] },
+  { category: 'family', keywords: ['kids', 'children'] },
+  {
+    category: 'outdoor',
+    keywords: [
+      'mountains',
+      'hike',
+      'boots',
+      'hiking',
+      'camping',
+      'tent',
+      'survival',
+    ],
+  },
+  { category: 'wildlife', keywords: ['animal', 'bear', 'birds', 'safari'] },
+  {
+    category: 'sports',
+    keywords: [
+      'diving',
+      'surfing',
+      'kayaking',
+      'snorkeling',
+      'paragliding',
+      'racing',
+      'basejumping',
+      'windsurfing',
+    ],
+  },
+  {
+    category: 'transportation',
+    keywords: [
+      'train',
+      'eurorail',
+      'railway',
+      'bus',
+      'flight',
+      'plane',
+      'rental',
+      'rideshare',
+      'tours',
+    ],
+  },
 ];
 
 const categoryFinder = text => {

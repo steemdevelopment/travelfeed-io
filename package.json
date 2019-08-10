@@ -70,7 +70,7 @@
     "next": "^9.0.0",
     "next-images": "^1.1.2",
     "next-offline": "^4.0.2",
-    "next-with-apollo": "^3.4.0",
+    "next-with-apollo": "^4.2.0",
     "nookies": "^2.0.8",
     "notistack": "^0.8.0",
     "nprogress": "^0.2.0",

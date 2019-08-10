@@ -392,8 +392,8 @@ const PostEditor = props => {
             setTagRecommendations(categoryFinder(sanitized));
             if (readingtime.words > 0 || title !== '') {
               saveDraft();
-              setSaved(true);
             }
+            setSaved(true);
           }
           return (
             <div className="container-fluid p-4">

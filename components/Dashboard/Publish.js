@@ -601,6 +601,8 @@ const PostEditor = props => {
                 )}
                 <div className="col-12 p-1">
                   <DetailedExpansionPanel
+                    withBg
+                    noPadding
                     fullWidth
                     title="Preview"
                     value="See how your post will look on TravelFeed"

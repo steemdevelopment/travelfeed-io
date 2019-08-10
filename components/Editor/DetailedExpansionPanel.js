@@ -14,6 +14,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
+  withbg: {
+    background: theme.palette.background.default,
+  },
   heading: {
     fontSize: theme.typography.pxToRem(15),
   },
@@ -74,8 +77,12 @@ const DetailedExpansionPanel = props => {
             </div>
           </div>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={classes.details}>
-          <div className="container-fluid">
+        <ExpansionPanelDetails
+          className={`${props.noPadding ? 'p-0  ' : ''}${
+            props.withBg ? classes.withbg : ''
+          } ${classes.details}`}
+        >
+          <div className="container-fluid p-0">
             <div className="row">
               <div
                 className={`${
@@ -116,11 +123,15 @@ const DetailedExpansionPanel = props => {
 
 DetailedExpansionPanel.defaultProps = {
   fullWidth: false,
+  noPadding: false,
+  withBg: false,
 };
 
 DetailedExpansionPanel.propTypes = {
   value: PropTypes.arrayOf(PropTypes.any).isRequired,
   expanded: PropTypes.bool.isRequired,
+  noPadding: PropTypes.bool,
+  withBg: PropTypes.bool,
   title: PropTypes.string.isRequired,
   selector: PropTypes.func.isRequired,
   helper: PropTypes.string.isRequired,

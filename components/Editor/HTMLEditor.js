@@ -45,6 +45,7 @@ const HtmlEditor = props => {
     <div style={{ height: '600px', fontFamily: 'Roboto' }}>
       <MdEditor
         config={{
+          imageAccept: 'image/*',
           view: {
             menu: true,
             md: true,

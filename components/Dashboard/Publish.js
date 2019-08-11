@@ -289,8 +289,8 @@ const PostEditor = props => {
         }
         let body = content;
         if (!codeEditor) body = json2md(content);
-        const imageList = getImageList(body);
-        if (featuredImage) getImageList(body).push(featuredImage);
+        let imageList = getImageList(body);
+        if (featuredImage) imageList = [featuredImage].concat(imageList);
         const linkList = getLinkList(body);
         const mentionList = getMentionList(body);
         const metadata = {};

@@ -317,7 +317,7 @@ const PostEditor = props => {
           metadata.location.category = locationCategory;
         }
         let commentOptions = '';
-        if (beneficiaries.length > 1 || poweredUp) {
+        if (beneficiaries.length > 0 || poweredUp) {
           let percent_steem_dollars = 50;
           if (poweredUp) percent_steem_dollars = 0;
           const extensions = [];

@@ -71,7 +71,7 @@ const Settings = props => {
             title="Settings"
             background={teal[600]}
             content={
-              <Query query={GET_SETTINGS}>
+              <Query fetchPolicy="network-only" query={GET_SETTINGS}>
                 {({ data }) => {
                   if (data) {
                     if (loaded === false && data && data.preferences) {

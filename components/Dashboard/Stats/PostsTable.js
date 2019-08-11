@@ -5,6 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import { withStyles } from '@material-ui/styles';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 import Link from '../../../lib/Link';
@@ -36,16 +37,14 @@ function getSorting(order, orderBy) {
     : (a, b) => -desc(a, b, orderBy);
 }
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing(3),
-  },
+const styles = () => ({
   table: {
     minWidth: 200,
   },
   tableWrapper: {
     overflowX: 'auto',
+    wordWrap: 'normal',
+    wordBreak: 'normal',
   },
 });
 
@@ -134,7 +133,7 @@ class PostsTable extends React.Component {
         <div ref={this.fullWidth} className="w-100">
           {this.state.cardWidth && (
             <div
-              className={classes.tableWrapper}
+              className={`p-2 ${classes.tableWrapper}`}
               style={{ width: this.state.cardWidth }}
             >
               <Table className={classes.table} aria-labelledby="tableTitle">
@@ -171,7 +170,9 @@ class PostsTable extends React.Component {
                               <a>{n.title}</a>
                             </Link>
                           </TableCell>
-                          <TableCell align="right">{n.created_at}</TableCell>
+                          <TableCell align="right">
+                            {dayjs(n.created_at).format('MMMM DD YYYY')}
+                          </TableCell>
                           <TableCell align="right">{n.total_votes}</TableCell>
                           <TableCell align="right">
                             {(n.is_paidout && `$${n.payout.toFixed(2)}`) ||

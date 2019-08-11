@@ -18,6 +18,7 @@ class PublishPage extends Component {
       json,
       open,
       editmode,
+      isCodeEditor,
     } = props.query;
     return {
       edit: {
@@ -28,6 +29,7 @@ class PublishPage extends Component {
         body,
         json,
         editmode,
+        isCodeEditor,
       },
       open,
     };

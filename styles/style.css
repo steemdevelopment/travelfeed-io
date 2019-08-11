@@ -103,18 +103,45 @@ a:hover {
   border: 0;
 } */
 
-#editorjs-container {
-  font-size: 1.2rem;
+#editorjs-container,
+.custom-html-style,
+.custom-html-style p,
+.rc-md-editor .editor-container .sec-md .input {
+  font-size: 1.2rem !important;
   font-weight: 400;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
 }
 
+/* Editor js */
+
+#editorjs-container img,
+#editorjs-container iframe,
+.html-wrap iframe, /* Markdown editor */
+.editorjs-container img {
+  /* overwrite .postcontent styles */
+  width: 100% !important;
+  padding: 0 !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.image-tool__caption {
+  text-align: center;
+  display: inline-block;
+}
+
+/* Markdown editor */
+.custom-html-style .videoWrapper iframe {
+  height: 250px !important;
+}
+
 .postcontent {
-  font-size: 1.2rem;
+  font-size: 1.2rem !important;
   font-weight: 400;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1.46429em;
 }
+
 .postcontent h1 {
   font-size: 2rem;
   font-weight: 400;
@@ -174,7 +201,6 @@ a:hover {
   font-size: 1.6rem;
   line-height: 1.48;
   letter-spacing: -0.012em;
-  color: #525252;
   padding: 0 50px 0 50px;
   quotes: '\201C''\201D''\2018''\2019';
 }
@@ -188,7 +214,6 @@ a:hover {
 .postcontent table {
   width: 100%;
   max-width: 100%;
-  margin-bottom: 1rem;
   background-color: transparent;
   display: table;
   border: 1px;
@@ -200,10 +225,10 @@ a:hover {
   padding: 0.5rem 0.625rem 0.625rem;
 }
 .postcontent tr {
-  background-color: #fcfcfc;
+  background-color: #fcfcfcb9;
 }
 .postcontent tr:nth-child(even) {
-  background-color: #f4f4f4;
+  background-color: #f4f4f494;
 }
 
 blockquote > center {

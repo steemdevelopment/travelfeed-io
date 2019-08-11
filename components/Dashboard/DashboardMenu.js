@@ -1,12 +1,12 @@
 import AppBar from '@material-ui/core/AppBar';
 import { indigo } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Drawer from '@material-ui/core/SwipeableDrawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import WalletIcon from '@material-ui/icons/AttachMoney';
@@ -90,11 +90,14 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   content: {
+    wordWrap: 'break-word',
+    wordBreak: 'break-word',
+    width: `calc(100% - ${drawerWidth}px)`,
     flexGrow: 1,
   },
 });
 class Dashboard extends Component {
-  state = { open: this.props.open === 'true' };
+  state = { open: this.props.open === 'true', variant: 'permanent' };
 
   static async getInitialProps(props) {
     const { page } = props.query;
@@ -102,13 +105,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    if (this.props.open === undefined) {
-      // 961 = bootstrap lg
-      if (window.innerWidth < 992) {
-        this.setState({ open: false });
-      } else {
-        this.setState({ open: true });
-      }
+    if (window.innerWidth < 576) {
+      this.setState({ open: false, variant: undefined });
+    } else if (window.innerWidth < 992) {
+      this.setState({ open: false, variant: 'permanent' });
+    } else {
+      this.setState({ open: true, variant: 'permanent' });
     }
   }
 
@@ -176,7 +178,7 @@ class Dashboard extends Component {
     );
     const drawer = (
       <Drawer
-        variant="permanent"
+        variant={this.state.variant}
         className={classNames(classes.drawer, {
           [classes.drawerOpen]: this.state.open,
           [classes.drawerClose]: !this.state.open,
@@ -184,9 +186,11 @@ class Dashboard extends Component {
         classes={{
           paper: classNames(classes.paper, {
             [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open,
+            [classes.drawerClose]: !this.state.open && this.state.variant,
           }),
         }}
+        onOpen={this.handleDrawerOpen}
+        onClose={this.handleDrawerClose}
         open={this.state.open}
       >
         <div className={classes.toolbar}>

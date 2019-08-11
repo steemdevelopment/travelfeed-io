@@ -8,6 +8,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import readingTime from 'reading-time';
 import sanitize from 'sanitize-html';
 import { GET_DRAFTS } from '../../helpers/graphql/drafts';
+import json2md from '../../helpers/json2md';
 import parseBody from '../../helpers/parseBody';
 import { regExcerpt } from '../../helpers/regex';
 import { getUser } from '../../helpers/token';
@@ -29,7 +30,11 @@ class Drafts extends Component {
     return (
       <Fragment>
         <div className="text-center pt-4" />
-        <Query query={GET_DRAFTS} variables={{ limit: 10 }}>
+        <Query
+          fetchPolicy="network-only"
+          query={GET_DRAFTS}
+          variables={{ limit: 10 }}
+        >
           {({ data, loading, error, fetchMore }) => {
             if (loading) {
               return (
@@ -80,7 +85,12 @@ class Drafts extends Component {
                 >
                   {data.drafts.length > 0 &&
                     data.drafts.map(draft => {
-                      const htmlBody = parseBody(draft.body, {});
+                      const htmlBody = parseBody(
+                        draft.isCodeEditor === false
+                          ? json2md(JSON.parse(draft.body))
+                          : draft.body,
+                        {},
+                      );
                       const sanitized = sanitize(htmlBody, {
                         allowedTags: [],
                       });
@@ -101,6 +111,7 @@ class Drafts extends Component {
                               body: draft.body,
                               display_name: user,
                               title: draft.title,
+                              isCodeEditor: draft.isCodeEditor,
                               json: draft.json,
                               created_at: draft.savedate,
                               readtime,

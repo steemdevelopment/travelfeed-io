@@ -1,6 +1,81 @@
 import api from './steemConnectAPI';
 import { getScToken, getUser } from './token';
 
+export const post = (
+  author,
+  title,
+  body,
+  parentPermlink,
+  parentAuthor,
+  jsonMetadata,
+  permlink,
+  commentOptions,
+) => {
+  if (window && window.steem_keychain) {
+    const comment_options =
+      commentOptions === '' ? '' : JSON.stringify(commentOptions);
+    return new Promise(resolve => {
+      window.steem_keychain.requestPost(
+        author,
+        title,
+        body,
+        parentPermlink,
+        parentAuthor,
+        JSON.stringify(jsonMetadata),
+        permlink,
+        comment_options,
+        res => {
+          if (res.success) {
+            resolve({
+              success: true,
+              message: 'Post was published successfully',
+            });
+          } else {
+            resolve({
+              success: false,
+              message: `Post could not be published: ${res.message}`,
+            });
+          }
+        },
+      );
+    });
+  }
+  api.setAccessToken(getScToken());
+  return new Promise(resolve => {
+    const commentop = [
+      'comment',
+      {
+        parent_author: parentAuthor,
+        parent_permlink: parentPermlink,
+        author,
+        permlink,
+        title,
+        body,
+        json_metadata: JSON.stringify(jsonMetadata),
+      },
+    ];
+    let ops;
+    if (commentOptions !== '') {
+      ops = [commentop, ['comment_options', commentOptions]];
+    } else ops = [commentop];
+    api.broadcast(ops, (err, res) => {
+      if (err) {
+        resolve({
+          success: false,
+          message: `Could not post${(typeof err === 'string' && `: ${err}`) ||
+            (err.error_description && `: ${err.error_description}`)}`,
+        });
+      }
+      if (res) {
+        resolve({
+          success: true,
+          message: 'Post was published successfully',
+        });
+      }
+    });
+  });
+};
+
 export const vote = async (author, permlink, weight) => {
   api.setAccessToken(getScToken());
   const voter = getUser();
@@ -42,11 +117,6 @@ export const comment = async (
       jsonMetadata,
       (err, res) => {
         if (err) {
-          console.log(err);
-          if (err === 'incomplete') {
-            err =
-              'Steem Keychain is causing this problem. Please uninstall/deactivate Steem Keychain or publish from a browser without Steem Keychain installed.';
-          }
           resolve({
             success: false,
             message: `${(type === 'comment' && 'Comment') ||

@@ -6,8 +6,15 @@ export const SAVE_DRAFT = gql`
     $title: String
     $body: String
     $json: String
+    $isCodeEditor: Boolean
   ) {
-    addDraft(id: $id, title: $title, body: $body, json: $json) {
+    addDraft(
+      id: $id
+      title: $title
+      body: $body
+      json: $json
+      isCodeEditor: $isCodeEditor
+    ) {
       success
       message
     }
@@ -31,6 +38,7 @@ export const GET_DRAFTS = gql`
       title
       body
       json
+      isCodeEditor
     }
   }
 `;

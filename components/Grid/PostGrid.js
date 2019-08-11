@@ -137,6 +137,8 @@ class PostGrid extends Component {
                               permlink: post.permlink,
                               title: post.title,
                               img_url: post.img_url,
+                              latitude: post.latitude,
+                              longitude: post.longitude,
                               created_at: post.created_at,
                               readtime: post.readtime,
                               excerpt,

@@ -27,6 +27,7 @@ const renderer = new DefaultRenderer({
   skipSanitization: true, // performed by sanitize
   addNofollowToLinks: false, // performed by sanitize
   doNotShowImages: false,
+  allowInsecureScriptTags: true,
   ipfsPrefix: '',
   assetsWidth: 1, // performed by sanitize
   assetsHeight: 1, // performed by sanitize
@@ -111,7 +112,7 @@ const parseBody = (body, options) => {
     parsedBody = parsedBody.length > 0 ? renderer.render(parsedBody) : '';
   } catch {
     // TODO: Content renderer needs an update to not throw an exception when script tags are used
-    console.warn('Script tag caused content renderer problem');
+    console.warn('Could not render post content');
   }
   // Sanitize
   parsedBody = sanitizeHtml(
@@ -130,7 +131,11 @@ const parseBody = (body, options) => {
         if (options.lazy === false) {
           parsedBody = parsedBody.replace(
             imgMatches[0],
-            `<figure><img ${imgMatches[2] ? `alt=${imgMatches[2]}` : ''} 
+            `<figure><img ${
+              imgMatches[2] && !options.hideimgcaptions
+                ? `alt=${imgMatches[2]}`
+                : ''
+            } 
               src="${imageProxy(
                 imgMatches[1],
                 1800,
@@ -139,7 +144,8 @@ const parseBody = (body, options) => {
               )}"><figcaption>${
               imgMatches[2] === undefined ||
               // ignore alt texts with image name
-              imgMatches[2].match(/(\.gif|\.jpg|\.png)/i)
+              imgMatches[2].match(/(DSC_|\.gif|\.jpg|\.png)/i) ||
+              options.hideimgcaptions
                 ? ''
                 : imgMatches[2]
             }</figcaption></figure>`,
@@ -173,7 +179,7 @@ const parseBody = (body, options) => {
          <figcaption>${
            imgMatches[2] === undefined ||
            // ignore alt texts with image name
-           imgMatches[2].match(/(\.gif|\.jpeg|\.jpg|\.png)/i)
+           imgMatches[2].match(/(DSC_|\.gif|\.jpeg|\.jpg|\.png)/i)
              ? ''
              : imgMatches[2]
          }</figcaption></figure>`,

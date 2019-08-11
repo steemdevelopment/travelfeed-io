@@ -158,13 +158,16 @@ const Stats = () => {
                   />
                   <div className="mt-2">
                     <HeaderCard
+                      noborder
                       title="Monthly Earnings"
                       background={teal[600]}
                       content={
-                        <RecentEarnings
-                          color={teal[400]}
-                          recentPayouts={data.userstats.recent_payouts}
-                        />
+                        <div className="pt-3">
+                          <RecentEarnings
+                            color={teal[400]}
+                            recentPayouts={data.userstats.recent_payouts}
+                          />
+                        </div>
                       }
                     />
                   </div>
@@ -184,6 +187,7 @@ const Stats = () => {
               }
               return (
                 <HeaderCard
+                  noborder
                   title="Recent Posts"
                   background={indigo[600]}
                   content={<PostsTable data={data.posts} />}

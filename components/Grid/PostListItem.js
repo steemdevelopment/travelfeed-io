@@ -114,9 +114,16 @@ class PostListItem extends Component {
                         this.props.post.title,
                       )}&body=${encodeURIComponent(
                         this.props.post.body,
+                      )}&isCodeEditor=${encodeURIComponent(
+                        this.props.post.isCodeEditor,
                       )}&json=${this.props.post.json ||
                         JSON.stringify({
                           tags: this.props.post.tags,
+                          location: {
+                            latitude: this.props.post.latitude,
+                            longitude: this.props.post.longitude,
+                          },
+                          featuredImage: this.props.post.img_url,
                         })}&editmode=${(this.props.isDraftMode && 'false') ||
                         'true'}`}
                       as="/dashboard/publish"

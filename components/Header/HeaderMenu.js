@@ -23,12 +23,12 @@ import MoreVert from '@material-ui/icons/MoreVert';
 import ProfileIcon from '@material-ui/icons/Person';
 import SignUpIcon from '@material-ui/icons/PersonAdd';
 import TermsIcon from '@material-ui/icons/Toc';
-import LoginIcon from '@material-ui/icons/VpnKey';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { getLoginURL, getUser, logout } from '../../helpers/token';
+import { getUser, logout } from '../../helpers/token';
 import Link from '../../lib/Link';
 import Logout from '../Login/LogoutButton';
+import LoginButton from './LoginButton';
 
 class HeaderMenu extends Component {
   state = {
@@ -130,14 +130,7 @@ class HeaderMenu extends Component {
                         <Divider />
                       </div>
                       <div className="d-block d-xl-none d-lg-none">
-                        <a href={getLoginURL}>
-                          <MenuItem>
-                            <ListItemIcon>
-                              <LoginIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="Login" />
-                          </MenuItem>
-                        </a>
+                        <LoginButton isMenu />
                         <Link color="textPrimary" href="/join" passHref>
                           <a>
                             <MenuItem>
@@ -225,29 +218,6 @@ class HeaderMenu extends Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList>
-                      <div className="d-xl-none d-lg-none d-md-none d-block">
-                        <Link color="textPrimary" href="/destinations" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <DestinationsIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Destinations" />
-                            </MenuItem>
-                          </a>
-                        </Link>
-                        <Link color="textPrimary" href="/map" passHref>
-                          <a>
-                            <MenuItem>
-                              <ListItemIcon>
-                                <MapIcon />
-                              </ListItemIcon>
-                              <ListItemText primary="Map" />
-                            </MenuItem>
-                          </a>
-                        </Link>
-                        <Divider />
-                      </div>
                       {(this.props.isDashboard && (
                         <Link color="textPrimary" href="/" passHref>
                           <a>
@@ -296,6 +266,29 @@ class HeaderMenu extends Component {
                         </a>
                       </Link>
                       <Divider />
+                      <div className="d-xl-none d-lg-none d-md-none d-block">
+                        <Link color="textPrimary" href="/destinations" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <DestinationsIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Destinations" />
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Link color="textPrimary" href="/map" passHref>
+                          <a>
+                            <MenuItem>
+                              <ListItemIcon>
+                                <MapIcon />
+                              </ListItemIcon>
+                              <ListItemText primary="Map" />
+                            </MenuItem>
+                          </a>
+                        </Link>
+                        <Divider />
+                      </div>
                       <Link color="textPrimary" href="/about/privacy" passHref>
                         <a>
                           <MenuItem>

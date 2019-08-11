@@ -1,13 +1,17 @@
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { invalidPermlink } from '../../helpers/regex';
 
 const PermlinkInput = props => {
   const { data, onChange } = props;
 
-  const [value, setValue] = useState(data);
+  const [value, setValue] = useState(props.data);
   const [timer, setTimer] = useState(undefined);
+
+  useEffect(() => {
+    setValue(data);
+  }, [props]);
 
   const triggerChange = newval => () => {
     onChange(newval);

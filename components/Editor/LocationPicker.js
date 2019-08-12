@@ -146,6 +146,7 @@ class LocationPickerDialog extends Component {
       <Fragment>
         <div id="container" style={{ height: '350px' }}>
           <MapGL
+            scrollZoom={false}
             ref={this.mapRef}
             {...viewport}
             onViewportChange={this.updateViewport}

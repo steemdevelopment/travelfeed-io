@@ -8,6 +8,7 @@ import { Query } from 'react-apollo';
 import { GET_PROFILE } from '../../helpers/graphql/profile';
 import { getUser } from '../../helpers/token';
 import Link from '../../lib/Link';
+import FeaturedImageUpload from '../Editor/FeaturedImageUpload';
 import HeaderCard from '../General/HeaderCard';
 
 class Profile extends Component {
@@ -33,8 +34,10 @@ class Profile extends Component {
     if (changed.indexOf('profile_image') > -1 === false) {
       changed = this.state.changed.concat('profile_image');
     }
+    let img = '';
+    if (profile_image) img = profile_image;
     this.setState({
-      profile_image: profile_image.target.value,
+      profile_image: img,
       changed,
     });
   };
@@ -44,8 +47,10 @@ class Profile extends Component {
     if (changed.indexOf('cover_image') > -1 === false) {
       changed = this.state.changed.concat('cover_image');
     }
+    let img = '';
+    if (cover_image) img = cover_image;
     this.setState({
-      cover_image: cover_image.target.value,
+      cover_image: img,
       changed,
     });
   };
@@ -205,14 +210,8 @@ class Profile extends Component {
               });
             }
             return (
-              <Grid
-                container
-                spacing={0}
-                alignItems="center"
-                justify="center"
-                className="pt-4 pb-4 p-2"
-              >
-                <Grid item lg={7} md={8} sm={11} xs={12}>
+              <Grid container spacing={0} justify="center" className="pt-3 p-1">
+                <Grid item lg={7} md={8} sm={11} xs={12} className="p-1">
                   <HeaderCard
                     title="Edit Your Profile"
                     background={indigo[600]}
@@ -225,7 +224,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 20,
                           }}
-                          multiline
                           placeholder="Your display name"
                           margin="normal"
                           value={this.state.name}
@@ -237,7 +235,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 160,
                           }}
-                          multiline
                           placeholder="Profile description"
                           margin="normal"
                           value={this.state.about}
@@ -245,33 +242,10 @@ class Profile extends Component {
                           fullWidth
                         />
                         <TextField
-                          label="Profile image"
-                          inputProps={{
-                            maxLength: 1000,
-                          }}
-                          placeholder="Profile image"
-                          margin="normal"
-                          value={this.state.profile_image}
-                          onChange={this.handleEditorChange_profile_image}
-                          fullWidth
-                        />
-                        <TextField
-                          label="Cover image"
-                          inputProps={{
-                            maxLength: 1000,
-                          }}
-                          placeholder="Cover image for your blog"
-                          margin="normal"
-                          value={this.state.cover_image}
-                          onChange={this.handleEditorChange_cover_image}
-                          fullWidth
-                        />
-                        <TextField
                           label="Location"
                           inputProps={{
                             maxLength: 30,
                           }}
-                          multiline
                           placeholder="Your location"
                           margin="normal"
                           value={this.state.location}
@@ -283,7 +257,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 100,
                           }}
-                          multiline
                           placeholder="Your website"
                           margin="normal"
                           value={this.state.website}
@@ -295,7 +268,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 50,
                           }}
-                          multiline
                           placeholder="Your Facebook username or fanpage"
                           margin="normal"
                           value={this.state.facebook}
@@ -307,7 +279,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 50,
                           }}
-                          multiline
                           placeholder="Your Twitter username"
                           margin="normal"
                           value={this.state.twitter}
@@ -319,7 +290,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 30,
                           }}
-                          multiline
                           placeholder="Your Instagram username"
                           margin="normal"
                           value={this.state.instagram}
@@ -331,7 +301,6 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 20,
                           }}
-                          multiline
                           placeholder="Your Youtube username"
                           margin="normal"
                           value={this.state.youtube}
@@ -343,33 +312,74 @@ class Profile extends Component {
                           inputProps={{
                             maxLength: 50,
                           }}
-                          multiline
-                          placeholder="Your Couchsurfing username or fanpage"
+                          placeholder="Your Couchsurfing username"
                           margin="normal"
                           value={this.state.couchsurfing}
                           onChange={this.handleEditorChange_couchsurfing}
                           fullWidth
                         />
-                        {updatebtn}
-                        <Link
-                          color="textPrimary"
-                          as={`/@${getUser()}`}
-                          href={`/blog?author=${getUser()}`}
-                          passHref
-                        >
-                          <a>
-                            <Button
-                              color="primary"
-                              variant="outlined"
-                              className="ml-2"
-                            >
-                              View your public profile
-                            </Button>
-                          </a>
-                        </Link>
                       </Fragment>
                     }
                   />
+                </Grid>
+                <Grid item lg={5} md={8} sm={11} xs={12} className="p-1">
+                  <HeaderCard
+                    title="Profile Image"
+                    background={indigo[600]}
+                    content={
+                      <FeaturedImageUpload
+                        rounded
+                        featuredImage={this.state.profile_image}
+                        setFeaturedImage={this.handleEditorChange_profile_image}
+                        placeholder="To upload your profile image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 400x400"
+                      />
+                    }
+                  />
+                  <div className="pt-2">
+                    <HeaderCard
+                      title="Cover Image"
+                      background={indigo[600]}
+                      content={
+                        <FeaturedImageUpload
+                          featuredImage={this.state.cover_image}
+                          setFeaturedImage={this.handleEditorChange_cover_image}
+                          placeholder="To upload your cover image, drag 'n' drop an image here, or click to select one. Recommended dimensions: 1920x400"
+                        />
+                      }
+                    />
+                  </div>
+                  <div className="pt-2">
+                    <HeaderCard
+                      title="Save changes"
+                      background={indigo[600]}
+                      content={
+                        <Fragment>
+                          <p>
+                            After you update your profile, it can take several
+                            minutes for your changes to be visible on your
+                            profile page.
+                          </p>
+                          {updatebtn}
+                          <Link
+                            color="textPrimary"
+                            as={`/@${getUser()}`}
+                            href={`/blog?author=${getUser()}`}
+                            passHref
+                          >
+                            <a>
+                              <Button
+                                color="primary"
+                                variant="outlined"
+                                className="ml-2"
+                              >
+                                View your public profile
+                              </Button>
+                            </a>
+                          </Link>
+                        </Fragment>
+                      }
+                    />
+                  </div>
                 </Grid>
               </Grid>
             );

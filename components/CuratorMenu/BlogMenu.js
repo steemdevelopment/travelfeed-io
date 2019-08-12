@@ -38,7 +38,7 @@ class BlogMenu extends Component {
       return (
         <Fragment>
           <IconButton onClick={this.handleToggle}>
-            <CuratorIcon className="text-light" />
+            <CuratorIcon className="textPrimary" />
           </IconButton>
           <Popper
             open={menuopen}

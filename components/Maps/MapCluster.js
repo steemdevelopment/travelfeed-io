@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import ReactMapGL, { Marker } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
 import { MAPBOX_TOKEN } from '../../config';
 import Cluster from './Cluster';
+import MapCard from './MapCard';
 import MarkerSmall from './MarkerSmall';
 import PinGroup from './PinGroup';
 
@@ -16,6 +17,29 @@ class MapCluster extends Component {
     },
     map: undefined,
   };
+
+  setPopupList(popupInfo) {
+    this.setState({ popupInfo });
+    // this.renderPopup();
+  }
+
+  renderPopup() {
+    const { popupInfo } = this.state;
+    return (
+      popupInfo && (
+        <Popup
+          captureScroll
+          anchor="top"
+          longitude={popupInfo.longitude}
+          latitude={popupInfo.latitude}
+          closeOnClick
+          onClose={() => this.setState({ popupInfo: undefined })}
+        >
+          <MapCard info={popupInfo} />
+        </Popup>
+      )
+    );
+  }
 
   render() {
     const { map } = this.state;
@@ -32,13 +56,14 @@ class MapCluster extends Component {
           {map && (
             <Cluster
               map={map}
-              radius={20}
-              extent={512}
-              nodeSize={40}
+              // radius={20}
+              // extent={512}
+              // nodeSize={40}
               element={clusterProps => (
                 <PinGroup
                   // onViewportChange={onViewportChange}
                   {...clusterProps}
+                  setPopupList={this.setPopupList.bind(this)}
                 />
               )}
             >
@@ -47,6 +72,9 @@ class MapCluster extends Component {
                   key={i}
                   longitude={point.longitude}
                   latitude={point.latitude}
+                  author={point.author}
+                  permlink={point.permlink}
+                  title={point.title}
                 >
                   <MarkerSmall
                     size={20}
@@ -56,6 +84,7 @@ class MapCluster extends Component {
               ))}
             </Cluster>
           )}
+          {this.renderPopup()}
         </ReactMapGL>
       </div>
     );

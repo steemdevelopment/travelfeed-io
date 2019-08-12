@@ -1,33 +1,29 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import Link from '../../lib/Link';
+import PostPreview from './PostPreview';
 
 export default class MapCard extends PureComponent {
   render() {
+    console.log(this.props.info.posts);
     return (
       <div>
-        <div>
-          <Link
-            color="textPrimary"
-            as={`/@${this.props.info.author}/${this.props.info.permlink}`}
-            href={`/post?author=${this.props.info.author}&permlink=${this.props.info.permlink}`}
-            passHref
-          >
-            <a>{this.props.info.title}</a>
-          </Link>
-          <br />
-          <em>
-            by{' '}
-            <Link
-              color="textPrimary"
-              as={`/@${this.props.info.author}`}
-              href={`/blog?author=${this.props.info.author}`}
-              passHref
-            >
-              <a>@{this.props.info.author}</a>
-            </Link>
-          </em>
-        </div>
+        {(this.props.info.posts && (
+          <div style={{ width: '250px', height: '200px', overflow: 'scroll' }}>
+            {this.props.info.posts.map(post => (
+              <PostPreview
+                author={post.properties.props.author}
+                permlink={post.properties.props.permlink}
+                title={post.properties.props.title}
+              />
+            ))}
+          </div>
+        )) || (
+          <PostPreview
+            author={this.props.info.author}
+            permlink={this.props.info.permlink}
+            title={this.props.info.title}
+          />
+        )}
       </div>
     );
   }

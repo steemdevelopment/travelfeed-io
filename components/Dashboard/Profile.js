@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { indigo } from '@material-ui/core/colors';
+import { green, indigo, purple, teal } from '@material-ui/core/colors';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import SaveIcon from '@material-ui/icons/Save';
@@ -213,7 +213,7 @@ class Profile extends Component {
               <Grid container spacing={0} justify="center" className="pt-3 p-1">
                 <Grid item lg={7} md={8} sm={11} xs={12} className="p-1">
                   <HeaderCard
-                    title="Edit Your Profile"
+                    title="Edit your Profile"
                     background={indigo[600]}
                     content={
                       <Fragment>
@@ -325,7 +325,7 @@ class Profile extends Component {
                 <Grid item lg={5} md={8} sm={11} xs={12} className="p-1">
                   <HeaderCard
                     title="Profile Image"
-                    background={indigo[600]}
+                    background={purple[600]}
                     content={
                       <FeaturedImageUpload
                         rounded
@@ -338,7 +338,7 @@ class Profile extends Component {
                   <div className="pt-2">
                     <HeaderCard
                       title="Cover Image"
-                      background={indigo[600]}
+                      background={teal[600]}
                       content={
                         <FeaturedImageUpload
                           featuredImage={this.state.cover_image}
@@ -350,8 +350,8 @@ class Profile extends Component {
                   </div>
                   <div className="pt-2">
                     <HeaderCard
-                      title="Save changes"
-                      background={indigo[600]}
+                      title="Save Changes"
+                      background={green[600]}
                       content={
                         <Fragment>
                           <p>

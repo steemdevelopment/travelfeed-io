@@ -92,7 +92,7 @@ const DiscoverCountry = () => {
                               </CardActionArea>
                             </a>
                           </Link>
-                          <Divider className="pl-3 pr-3" />
+                          <Divider variant="middle" className="pl-3 pr-3" />
                         </div>
                       );
                     })}

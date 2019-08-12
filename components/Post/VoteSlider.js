@@ -262,7 +262,7 @@ class VoteSlider extends Component {
     if (this.state.voteExpanded === false) {
       cardFooter = (
         <Fragment>
-          <Divider />
+          <Divider variant="middle" />
           <div className="container-fluid">
             <div className="row">
               <div className={rowitem1}>
@@ -348,7 +348,7 @@ class VoteSlider extends Component {
             }
             return (
               <Fragment>
-                <Divider />
+                <Divider variant="middle" />
                 <CardActions>
                   <Tooltip title="Upvote now" placement="bottom">
                     <IconButton
@@ -387,7 +387,7 @@ class VoteSlider extends Component {
       });
       cardFooter = (
         <Fragment>
-          <Divider />
+          <Divider variant="middle" />
           <CardActions>
             <div className="w-100">
               <CommentEditor

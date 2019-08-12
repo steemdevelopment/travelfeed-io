@@ -28,6 +28,8 @@ class MapCluster extends Component {
     return (
       popupInfo && (
         <Popup
+          offsetLeft={popupInfo.posts === undefined ? 0 : -8}
+          offsetTop={popupInfo.posts === undefined ? 0 : -8}
           captureScroll
           anchor="top"
           longitude={popupInfo.longitude}
@@ -75,6 +77,7 @@ class MapCluster extends Component {
                   author={point.author}
                   permlink={point.permlink}
                   title={point.title}
+                  img_url={point.img_url}
                 >
                   <MarkerSmall
                     size={20}

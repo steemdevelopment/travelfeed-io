@@ -10,6 +10,7 @@ class PinGroups extends Component {
     return (
       <div
         style={{ background: '#f28a25' }}
+        className="cpointer"
         onClick={() =>
           this.props.setPopupList({
             longitude: this.props.cluster.geometry.coordinates[0],

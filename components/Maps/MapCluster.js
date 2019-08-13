@@ -1,5 +1,6 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactMapGL, {
   GeolocateControl,
@@ -109,7 +110,9 @@ class MapCluster extends Component {
         }}
       >
         <ReactMapGL
-          mapStyle="mapbox://styles/mapbox/dark-v9"
+          mapStyle={
+            this.props.dark ? 'mapbox://styles/mapbox/dark-v9' : undefined
+          }
           onViewportChange={viewport => this.setState({ viewport })}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           ref={this.mapRef}
@@ -177,5 +180,13 @@ class MapCluster extends Component {
     );
   }
 }
+
+MapCluster.defaultProps = {
+  dark: false,
+};
+
+MapCluster.propTypes = {
+  dark: PropTypes.bool,
+};
 
 export default MapCluster;

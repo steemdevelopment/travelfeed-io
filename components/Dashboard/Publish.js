@@ -6,6 +6,7 @@ import PublishIcon from '@material-ui/icons/ChevronRight';
 import SaveIcon from '@material-ui/icons/SaveAlt';
 import EditIcon from '@material-ui/icons/Update';
 import WarnIcon from '@material-ui/icons/Warning';
+import { useTheme } from '@material-ui/styles';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -47,6 +48,7 @@ import TitleEditor from '../Editor/TitleEditor';
 const PostEditor = props => {
   const user = getUser();
 
+  const theme = useTheme();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
@@ -458,6 +460,7 @@ const PostEditor = props => {
                     selector={
                       <div className="w-100">
                         <LocationPicker
+                          dark={theme.palette.type === 'dark'}
                           locationCategory={locationCategory}
                           setLocationCategory={setLocationCategory}
                           setLocation={setLocation}

@@ -146,6 +146,9 @@ class LocationPickerDialog extends Component {
       <Fragment>
         <div id="container" style={{ height: '350px' }}>
           <MapGL
+            mapStyle={
+              this.props.dark ? 'mapbox://styles/mapbox/dark-v9' : undefined
+            }
             scrollZoom={false}
             ref={this.mapRef}
             {...viewport}
@@ -225,6 +228,7 @@ class LocationPickerDialog extends Component {
 
 LocationPickerDialog.defaultProps = {
   locationCategory: undefined,
+  dark: false,
 };
 
 LocationPickerDialog.propTypes = {
@@ -234,6 +238,7 @@ LocationPickerDialog.propTypes = {
   setLocation: PropTypes.func.isRequired,
   setLocationCategory: PropTypes.func.isRequired,
   locationCategory: PropTypes.string,
+  dark: PropTypes.bool,
 };
 
 export default LocationPickerDialog;

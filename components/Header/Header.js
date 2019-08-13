@@ -67,7 +67,7 @@ class Header extends Component {
       <Fragment>
         <div style={{ flexGrow: 1 }}>
           <AppBar position="fixed" color="secondary" className={classes.root}>
-            <div className="container-fluid" style={{ height: '65px' }}>
+            <div className="container" style={{ height: '65px' }}>
               <div className="row h-100 p-2">
                 <div className="my-auto col-xl-4 col-lg-3 col-md-4 col-sm-3 col-9">
                   <Link color="textPrimary" href="/" passHref>

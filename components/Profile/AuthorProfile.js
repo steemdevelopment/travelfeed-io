@@ -41,7 +41,7 @@ const AuthorProfile = props => {
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
             backgroundSize: 'cover',
-            height: '350px',
+            height: '300px',
           };
           return (
             <Fragment>

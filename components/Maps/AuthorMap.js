@@ -3,6 +3,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { GET_GEOJSON } from '../../helpers/graphql/geojson';
 import { GET_AUTHOR_POST_LOCATIONS } from '../../helpers/graphql/posts';
+import Badges from '../Profile/Badges';
 import MapCluster from './MapCluster';
 
 const AuthorMap = props => {
@@ -38,21 +39,28 @@ const AuthorMap = props => {
                         type: 'FeatureCollection',
                         features,
                       };
+                      return (
+                        <>
+                          <div style={{ height: '450px' }} className="w-100">
+                            <MapCluster
+                              scrollZoom={false}
+                              dataLayer={dataLayer}
+                              showControls={false}
+                              position="relative"
+                              height="450px"
+                              className="w-100 h-100"
+                              data={data.posts}
+                              dark={theme.palette.type === 'dark'}
+                            />
+                          </div>
+                          <Badges
+                            countryCodes={country_codes}
+                            regions={res.data.geojson.regions}
+                            budget={res.data.geojson.budget}
+                          />
+                        </>
+                      );
                     }
-                    return (
-                      <div style={{ height: '450px' }} className="w-100">
-                        <MapCluster
-                          scrollZoom={false}
-                          dataLayer={dataLayer}
-                          showControls={false}
-                          position="relative"
-                          height="450px"
-                          className="w-100 h-100"
-                          data={data.posts}
-                          dark={theme.palette.type === 'dark'}
-                        />
-                      </div>
-                    );
                   }}
                 </Query>
               );

@@ -1,3 +1,4 @@
+import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
 import React, { Component } from 'react';
 import ReactMapGL, {
@@ -7,6 +8,7 @@ import ReactMapGL, {
   Popup,
 } from 'react-map-gl';
 import { MAPBOX_TOKEN } from '../../config';
+import '../Editor/react-map-gl-geocoder/react-map-gl-geocoder.css';
 import Cluster from './Cluster';
 import MapCard from './MapCard';
 import MarkerSmall from './MarkerSmall';
@@ -37,6 +39,20 @@ class MapCluster extends Component {
 
   mapRef = React.createRef();
 
+  componentDidMount() {
+    const width = document.getElementById('container').clientWidth;
+    const height = document.getElementById('container').clientHeight - 30;
+    this.setState({
+      viewport: {
+        width,
+        height,
+        latitude: 0,
+        longitude: 0,
+        zoom: 1,
+      },
+    });
+  }
+
   setPopupList(popupInfo) {
     this.setState({ popupInfo });
     // this.renderPopup();
@@ -62,18 +78,20 @@ class MapCluster extends Component {
     const { popupInfo } = this.state;
     return (
       popupInfo && (
-        <Popup
-          offsetLeft={popupInfo.posts === undefined ? 0 : -8}
-          offsetTop={popupInfo.posts === undefined ? 0 : -8}
-          captureScroll
-          anchor="top"
-          longitude={popupInfo.longitude}
-          latitude={popupInfo.latitude}
-          closeOnClick
-          onClose={() => this.setState({ popupInfo: undefined })}
-        >
-          <MapCard info={popupInfo} />
-        </Popup>
+        <>
+          <Popup
+            offsetLeft={popupInfo.posts === undefined ? 0 : 3}
+            offsetTop={popupInfo.posts === undefined ? 0 : 8}
+            captureScroll
+            anchor="top"
+            longitude={popupInfo.longitude}
+            latitude={popupInfo.latitude}
+            closeOnClick
+            onClose={() => this.setState({ popupInfo: undefined })}
+          >
+            <MapCard info={popupInfo} />
+          </Popup>
+        </>
       )
     );
   }
@@ -81,18 +99,17 @@ class MapCluster extends Component {
   render() {
     const { map, viewport } = this.state;
     return (
-      <div id="container" style={{ height: '350px' }}>
-        {
-          <Geocoder
-            mapRef={this.mapRef}
-            onViewportChange={this.handleGeocoderViewportChange}
-            mapboxApiAccessToken={MAPBOX_TOKEN}
-          />
-        }
+      <div
+        id="container"
+        style={{
+          height: '100%',
+          width: '100%',
+          position: 'fixed',
+          background: '#343332',
+        }}
+      >
         <ReactMapGL
-          className="h-100 w-100"
-          style={{ width: '100%' }}
-          {...this.state.viewport}
+          mapStyle="mapbox://styles/mapbox/dark-v9"
           onViewportChange={viewport => this.setState({ viewport })}
           mapboxApiAccessToken={MAPBOX_TOKEN}
           ref={this.mapRef}
@@ -101,6 +118,11 @@ class MapCluster extends Component {
         >
           {map && (
             <>
+              <Geocoder
+                mapRef={this.mapRef}
+                onViewportChange={this.handleGeocoderViewportChange}
+                mapboxApiAccessToken={MAPBOX_TOKEN}
+              />
               <Cluster
                 map={map}
                 // radius={20}
@@ -146,6 +168,11 @@ class MapCluster extends Component {
             />
           </div>
         </ReactMapGL>
+        <style jsx>{`
+          .mapboxgl-popup-content {
+            background: black !important;
+          }
+        `}</style>
       </div>
     );
   }

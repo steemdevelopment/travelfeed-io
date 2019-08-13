@@ -1,4 +1,5 @@
 /* eslint-disable  */
+import { indigo } from '@material-ui/core/colors';
 import React, { Component } from 'react';
 
 class PinGroups extends Component {
@@ -9,8 +10,15 @@ class PinGroups extends Component {
     const { cluster } = this.props;
     return (
       <div
-        style={{ background: '#f28a25' }}
-        className="cpointer"
+        style={{
+          background: indigo[600],
+          width: '35px',
+          height: '35px',
+          border: `3px solid ${indigo[300]}`,
+          wordWrap: 'normal',
+          wordBreak: 'normal',
+        }}
+        className="cpointer rounded-circle p-1 text-center text-light font-weight-bold"
         onClick={() =>
           this.props.setPopupList({
             longitude: this.props.cluster.geometry.coordinates[0],

@@ -7,7 +7,9 @@ export default class MapCard extends PureComponent {
     return (
       <div>
         {(this.props.info.posts && (
-          <div style={{ width: '300px', height: '250px', overflow: 'scroll' }}>
+          <div
+            style={{ width: '300px', maxHeight: '350px', overflow: 'scroll' }}
+          >
             {this.props.info.posts.map((post, i) => (
               <PostPreview
                 author={post.properties.props.author}

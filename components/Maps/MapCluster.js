@@ -47,10 +47,9 @@ class MapCluster extends Component {
     });
   }
 
-  setPopupList(popupInfo) {
+  setPopupList = popupInfo => {
     this.setState({ popupInfo });
-    // this.renderPopup();
-  }
+  };
 
   handleViewportChange = viewport => {
     this.setState(prevState => ({
@@ -121,14 +120,10 @@ class MapCluster extends Component {
               />
               <Cluster
                 map={map}
-                // radius={20}
-                // extent={512}
-                // nodeSize={40}
                 element={clusterProps => (
                   <PinGroup
-                    // onViewportChange={onViewportChange}
                     {...clusterProps}
-                    setPopupList={this.setPopupList.bind(this)}
+                    setPopupList={this.setPopupList}
                   />
                 )}
               >
@@ -183,6 +178,7 @@ MapCluster.defaultProps = {
 
 MapCluster.propTypes = {
   dark: PropTypes.bool,
+  data: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default MapCluster;

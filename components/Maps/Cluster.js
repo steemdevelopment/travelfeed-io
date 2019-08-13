@@ -1,3 +1,4 @@
+/* eslint-disable */
 //  https://github.com/uber/react-map-gl/issues/507
 
 import { point } from '@turf/helpers';

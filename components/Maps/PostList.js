@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import PostPreview from '../Post/PostPreview';
@@ -59,6 +60,10 @@ const PostList = props => {
         ))}
     </InfiniteScroll>
   );
+};
+
+PostList.propTypes = {
+  info: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default PostList;

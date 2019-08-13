@@ -23,8 +23,8 @@ const MarkerSmall = props => {
   useEffect(() => {
     // Create our stylesheet
     const style = document.createElement('style');
-    style.innerHTML = `.mapboxgl-popup-content { background: ${theme.palette.background.light} !important; }
-
+    style.innerHTML = `
+    .mapboxgl-popup-content { background: ${theme.palette.background.light} !important; }
 
     .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
       border-bottom-color: ${theme.palette.background.light} !important;

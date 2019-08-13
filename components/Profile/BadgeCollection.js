@@ -1,5 +1,6 @@
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const BadgeCollection = props => {
@@ -8,7 +9,7 @@ const BadgeCollection = props => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 text-center">
-            <Typography gutterBottom variant="h5" className="pt-4">
+            <Typography gutterBottom variant="h4" className="pt-4">
               {props.title}
             </Typography>{' '}
           </div>
@@ -42,6 +43,11 @@ const BadgeCollection = props => {
       `}</style>
     </>
   );
+};
+
+BadgeCollection.propTypes = {
+  badges: PropTypes.arrayOf(PropTypes.any).isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default BadgeCollection;

@@ -1,4 +1,5 @@
 import { useTheme } from '@material-ui/styles';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { Query } from 'react-apollo';
 import { GET_GEOJSON } from '../../helpers/graphql/geojson';
@@ -53,14 +54,18 @@ const AuthorMap = props => {
                               dark={theme.palette.type === 'dark'}
                             />
                           </div>
-                          <Badges
-                            countryCodes={country_codes}
-                            regions={res.data.geojson.regions}
-                            budget={res.data.geojson.budget}
-                          />
+                          <div className="pb-4">
+                            <Badges
+                              countryCodes={country_codes}
+                              regions={res.data.geojson.regions}
+                              budget={res.data.geojson.budget}
+                              totalPosts={data.posts.length}
+                            />
+                          </div>
                         </>
                       );
                     }
+                    return <></>;
                   }}
                 </Query>
               );
@@ -71,6 +76,10 @@ const AuthorMap = props => {
       </Query>
     </>
   );
+};
+
+AuthorMap.propTypes = {
+  author: PropTypes.string.isRequired,
 };
 
 export default AuthorMap;

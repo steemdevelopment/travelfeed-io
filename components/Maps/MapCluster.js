@@ -40,8 +40,8 @@ class MapCluster extends Component {
       viewport: {
         width,
         height,
-        latitude: 0,
-        longitude: 0,
+        latitude: 25,
+        longitude: 10,
         zoom: 1,
       },
     });
@@ -95,13 +95,13 @@ class MapCluster extends Component {
       <div
         id="container"
         style={{
-          height: '100%',
+          height: this.props.height,
           width: '100%',
-          position: 'fixed',
-          background: '#343332',
+          position: this.props.position,
         }}
       >
         <ReactMapGL
+          scrollZoom={this.props.scrollZoom}
           mapStyle={
             this.props.dark ? 'mapbox://styles/mapbox/dark-v9' : undefined
           }
@@ -113,11 +113,13 @@ class MapCluster extends Component {
         >
           {map && (
             <>
-              <Geocoder
-                mapRef={this.mapRef}
-                onViewportChange={this.handleGeocoderViewportChange}
-                mapboxApiAccessToken={MAPBOX_TOKEN}
-              />
+              {this.props.showControls && (
+                <Geocoder
+                  mapRef={this.mapRef}
+                  onViewportChange={this.handleGeocoderViewportChange}
+                  mapboxApiAccessToken={MAPBOX_TOKEN}
+                />
+              )}
               <Cluster
                 map={map}
                 element={clusterProps => (
@@ -127,22 +129,26 @@ class MapCluster extends Component {
                   />
                 )}
               >
-                {this.props.data.map((point, i) => (
-                  <Marker
-                    key={i}
-                    longitude={point.longitude}
-                    latitude={point.latitude}
-                    author={point.author}
-                    permlink={point.permlink}
-                    title={point.title}
-                    img_url={point.img_url}
-                  >
-                    <MarkerSmall
-                      size={20}
-                      onClick={() => this.setState({ popupInfo: point })}
-                    />{' '}
-                  </Marker>
-                ))}
+                {this.props.data.map((point, i) => {
+                  if (point.longitude) {
+                    return (
+                      <Marker
+                        key={i}
+                        longitude={point.longitude}
+                        latitude={point.latitude}
+                        author={point.author}
+                        permlink={point.permlink}
+                        title={point.title}
+                        img_url={point.img_url}
+                      >
+                        <MarkerSmall
+                          size={20}
+                          onClick={() => this.setState({ popupInfo: point })}
+                        />{' '}
+                      </Marker>
+                    );
+                  }
+                })}
               </Cluster>
             </>
           )}
@@ -152,11 +158,13 @@ class MapCluster extends Component {
               onViewportChange={this.updateViewport}
               showCompass={false}
             />
-            <GeolocateControl
-              onViewportChange={this.handleViewportChange}
-              positionOptions={{ enableHighAccuracy: true }}
-              trackUserLocation
-            />
+            {this.props.showControls && (
+              <GeolocateControl
+                onViewportChange={this.handleViewportChange}
+                positionOptions={{ enableHighAccuracy: true }}
+                trackUserLocation
+              />
+            )}
           </div>
           <style jsx>{`
             .nav {
@@ -174,10 +182,18 @@ class MapCluster extends Component {
 
 MapCluster.defaultProps = {
   dark: false,
+  position: 'fixed',
+  height: '100%',
+  scrollZoom: true,
+  showControls: true,
 };
 
 MapCluster.propTypes = {
   dark: PropTypes.bool,
+  scrollZoom: PropTypes.bool,
+  showControls: PropTypes.bool,
+  position: PropTypes.string,
+  height: PropTypes.string,
   data: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 

@@ -30,7 +30,7 @@ class Cluster extends PureComponent {
   static defaultProps = {
     minZoom: 0,
     maxZoom: 16,
-    radius: 40,
+    radius: 35,
     extent: 512,
     nodeSize: 64,
   };

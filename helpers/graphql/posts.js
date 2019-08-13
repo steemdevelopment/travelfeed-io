@@ -116,3 +116,17 @@ export const GET_DASHBOARD_POSTS = gql`
     }
   }
 `;
+
+export const GET_AUTHOR_POST_LOCATIONS = gql`
+  query posts($author: String, $limit: Int) {
+    posts(author: $author, limit: $limit) {
+      author
+      permlink
+      title
+      img_url
+      latitude
+      longitude
+      country_code
+    }
+  }
+`;

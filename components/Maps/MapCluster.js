@@ -1,3 +1,4 @@
+import { teal } from '@material-ui/core/colors';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
@@ -67,6 +68,22 @@ class MapCluster extends Component {
     });
   };
 
+  addDataLayer = (map, data) => {
+    map.addLayer({
+      id: 'route',
+      type: 'fill',
+      source: {
+        type: 'geojson',
+        data,
+      },
+      layout: {},
+      paint: {
+        'fill-color': teal[600],
+        'fill-opacity': 0.4,
+      },
+    });
+  };
+
   renderPopup() {
     const { popupInfo } = this.state;
     return (
@@ -113,6 +130,8 @@ class MapCluster extends Component {
         >
           {map && (
             <>
+              {this.props.dataLayer &&
+                this.addDataLayer(map, this.props.dataLayer)}
               {this.props.showControls && (
                 <Geocoder
                   mapRef={this.mapRef}
@@ -186,10 +205,12 @@ MapCluster.defaultProps = {
   height: '100%',
   scrollZoom: true,
   showControls: true,
+  dataLayer: undefined,
 };
 
 MapCluster.propTypes = {
   dark: PropTypes.bool,
+  dataLayer: PropTypes.objectOf(PropTypes.any),
   scrollZoom: PropTypes.bool,
   showControls: PropTypes.bool,
   position: PropTypes.string,

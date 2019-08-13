@@ -24,37 +24,39 @@ const AuthorMap = props => {
               )
                 country_codes.push(d.country_code);
             });
-            return (
-              <Query
-                query={GET_GEOJSON}
-                variables={{ countryList: country_codes }}
-              >
-                {res => {
-                  let dataLayer;
-                  if (res.data && res.data.geojson) {
-                    const features = JSON.parse(res.data.geojson.features);
-                    dataLayer = {
-                      type: 'FeatureCollection',
-                      features,
-                    };
-                  }
-                  return (
-                    <div style={{ height: '450px' }} className="w-100">
-                      <MapCluster
-                        scrollZoom={false}
-                        dataLayer={dataLayer}
-                        showControls={false}
-                        position="relative"
-                        height="450px"
-                        className="w-100 h-100"
-                        data={data.posts}
-                        dark={theme.palette.type === 'dark'}
-                      />
-                    </div>
-                  );
-                }}
-              </Query>
-            );
+            if (country_codes.length > 0) {
+              return (
+                <Query
+                  query={GET_GEOJSON}
+                  variables={{ countryList: country_codes }}
+                >
+                  {res => {
+                    let dataLayer;
+                    if (res.data && res.data.geojson) {
+                      const features = JSON.parse(res.data.geojson.features);
+                      dataLayer = {
+                        type: 'FeatureCollection',
+                        features,
+                      };
+                    }
+                    return (
+                      <div style={{ height: '450px' }} className="w-100">
+                        <MapCluster
+                          scrollZoom={false}
+                          dataLayer={dataLayer}
+                          showControls={false}
+                          position="relative"
+                          height="450px"
+                          className="w-100 h-100"
+                          data={data.posts}
+                          dark={theme.palette.type === 'dark'}
+                        />
+                      </div>
+                    );
+                  }}
+                </Query>
+              );
+            }
           }
           return <></>;
         }}

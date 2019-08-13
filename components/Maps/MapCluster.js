@@ -149,7 +149,7 @@ class MapCluster extends Component {
                 )}
               >
                 {this.props.data.map((point, i) => {
-                  if (point.longitude) {
+                  if (point.longitude !== null) {
                     return (
                       <Marker
                         key={i}

@@ -18,7 +18,7 @@ class BlogPage extends Component {
         <AuthorMap author={author} />
         <PostGrid
           query={{ author, limit: 12 }}
-          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
+          grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
           cardHeight={140}
         />
       </Fragment>

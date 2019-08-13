@@ -45,7 +45,7 @@ const PostList = props => {
       }}
       hasMore={hasMore}
       threshold={100}
-      loader={<div>Loading...</div>}
+      loader={<PostPreview />}
     >
       {posts.length > 0 &&
         posts.map((post, i) => (

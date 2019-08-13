@@ -16,13 +16,6 @@ import { round } from '../../helpers/math';
 import MapMarker from '../Maps/Marker';
 import './react-map-gl-geocoder/react-map-gl-geocoder.css';
 
-const navStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  padding: '10px',
-};
-
 class LocationPickerDialog extends Component {
   state = {
     width: 200,
@@ -170,7 +163,7 @@ class LocationPickerDialog extends Component {
             >
               <MapMarker />
             </Marker>
-            <div className="nav" style={navStyle}>
+            <div className="nav">
               <NavigationControl
                 onViewportChange={this.updateViewport}
                 showCompass={false}
@@ -181,6 +174,24 @@ class LocationPickerDialog extends Component {
                 trackUserLocation
               />
             </div>
+            <style jsx>{`
+              @media (min-width: 577px) {
+                .nav {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  padding: 10px;
+                }
+              }
+              @media (max-width: 576px) {
+                .nav {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  padding: 70px 0 0 10px;
+                }
+              }
+            `}</style>
           </MapGL>
         </div>
         {categories.subdivision && (

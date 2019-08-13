@@ -24,7 +24,39 @@ const MarkerSmall = props => {
     // Create our stylesheet
     const style = document.createElement('style');
     style.innerHTML = `.mapboxgl-popup-content { background: ${theme.palette.background.light} !important; }
-  .mapboxgl-popup-tip {border-bottom-color: ${theme.palette.background.light} !important;}`;
+
+
+    .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+      border-bottom-color: ${theme.palette.background.light} !important;
+  }
+  
+  .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+      border-bottom-color: ${theme.palette.background.light} !important;
+  }
+  
+  .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+      border-bottom-color: ${theme.palette.background.light} !important;;
+  }
+  
+  .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+      border-top-color: ${theme.palette.background.light} !important;;
+  }
+  
+  .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
+      border-top-color: ${theme.palette.background.light} !important;;
+  }
+  
+  .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+      border-top-color: ${theme.palette.background.light} !important;;
+  }
+  
+  .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+      border-right-color: ${theme.palette.background.light} !important;
+  }
+  
+  .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+      border-left-color: ${theme.palette.background.light} !important;;
+  }`;
 
     // Get the first script tag
     const ref = document.querySelector('script');

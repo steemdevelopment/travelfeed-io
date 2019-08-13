@@ -19,13 +19,6 @@ const Geocoder = dynamic(() => import('react-map-gl-geocoder'), {
   ssr: false,
 });
 
-const navStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  padding: '10px',
-};
-
 class MapCluster extends Component {
   state = {
     viewport: {
@@ -159,7 +152,7 @@ class MapCluster extends Component {
             </>
           )}
           {this.renderPopup()}
-          <div className="nav" style={navStyle}>
+          <div className="nav">
             <NavigationControl
               onViewportChange={this.updateViewport}
               showCompass={false}
@@ -170,12 +163,15 @@ class MapCluster extends Component {
               trackUserLocation
             />
           </div>
+          <style jsx>{`
+            .nav {
+              position: absolute;
+              top: 0;
+              left: 0;
+              padding: 10px;
+            }
+          `}</style>
         </ReactMapGL>
-        <style jsx>{`
-          .mapboxgl-popup-content {
-            background: black !important;
-          }
-        `}</style>
       </div>
     );
   }

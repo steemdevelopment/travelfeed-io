@@ -14,6 +14,7 @@ module.exports = {
     camelcase: [0, { ignoreDestructuring: true }],
     'react/destructuring-assignment': [0, 'always'],
     'react/jsx-fragments': ['off'],
+    'prefer-object-spread': ['off'],
     // Next js needs empty <a> inside Link
     'jsx-a11y/anchor-is-valid': ['off'],
     'jsx-a11y/href-no-hash': ['off'],

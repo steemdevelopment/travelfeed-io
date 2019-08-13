@@ -27,6 +27,9 @@ class PinGroups extends Component {
               this.props.cluster.id,
               Infinity,
             ),
+            clusterId: this.props.cluster.id,
+            superCluster: this.props.superCluster,
+            pointCount: this.props.cluster.properties.point_count,
           })
         }
       >

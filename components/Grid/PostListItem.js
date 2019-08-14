@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import { nameFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
+import { markdownComment, swmregex } from '../../helpers/regex';
 import Link from '../../lib/Link';
 import DeleteDraftButton from '../Dashboard/Drafts/DeleteDraftButton';
 
@@ -31,6 +32,10 @@ class PostListItem extends Component {
 
   render() {
     const { classes } = this.props;
+
+    const cleanBody = this.props.post.body
+      .replace(markdownComment, '')
+      .replace(swmregex, '');
 
     // Hide if deleted (for drafts)
     if (!this.state.show) {
@@ -113,7 +118,7 @@ class PostListItem extends Component {
                       )}&title=${encodeURIComponent(
                         this.props.post.title,
                       )}&body=${encodeURIComponent(
-                        this.props.post.body,
+                        cleanBody,
                       )}&isCodeEditor=${encodeURIComponent(
                         this.props.post.isCodeEditor,
                       )}&json=${this.props.post.json ||

@@ -65,7 +65,7 @@ class DestinationsPage extends Component {
         <div className="container">
             <PostGrid
               query={{
-                limit: 8,
+                limit: 9,
                 orderby: 'curation_score DESC, total_votes DESC',
                 country_code,
                 subdivision,

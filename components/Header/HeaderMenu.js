@@ -34,6 +34,7 @@ class HeaderMenu extends Component {
   state = {
     user: '',
     menuopen: false,
+    clickAwayListener: true,
   };
 
   componentDidMount() {
@@ -104,7 +105,13 @@ class HeaderMenu extends Component {
                 }}
               >
                 <Paper>
-                  <ClickAwayListener onClickAway={this.handleClose}>
+                  <ClickAwayListener
+                    onClickAway={
+                      this.state.clickAwayListener
+                        ? this.handleClose
+                        : undefined
+                    }
+                  >
                     <MenuList>
                       <div className="d-xl-none d-lg-none d-md-none d-block">
                         <Link color="textPrimary" href="/destinations" passHref>
@@ -130,7 +137,15 @@ class HeaderMenu extends Component {
                         <Divider />
                       </div>
                       <div className="d-block d-xl-none d-lg-none">
-                        <LoginButton isMenu />
+                        <LoginButton
+                          isMenu
+                          onClickOpen={() =>
+                            this.setState({ clickAwayListener: false })
+                          }
+                          onClickClose={() =>
+                            this.setState({ clickAwayListener: true })
+                          }
+                        />
                         <Link color="textPrimary" href="/join" passHref>
                           <a>
                             <MenuItem>

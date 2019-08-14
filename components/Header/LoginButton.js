@@ -8,7 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
+import { useTheme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CloseIcon from '@material-ui/icons/Close';
 import LoginIcon from '@material-ui/icons/VpnKey';
 import { withStyles } from '@material-ui/styles';
@@ -79,7 +81,13 @@ const LoginButton = props => {
     else handleLogin();
   };
 
+  const handleMenuClickOpen = () => {
+    props.onClickOpen();
+    handleClickOpen();
+  };
+
   const handleClose = () => {
+    if (props.onClickClose) props.onClickClose();
     setOpen(false);
   };
 
@@ -92,11 +100,14 @@ const LoginButton = props => {
       });
   };
 
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { classes } = props;
   return (
     <Fragment>
       {(props.isMenu && (
-        <MenuItem onClick={handleClickOpen}>
+        <MenuItem onClick={handleMenuClickOpen}>
           <ListItemIcon>
             <LoginIcon />
           </ListItemIcon>
@@ -112,6 +123,7 @@ const LoginButton = props => {
         </Button>
       )}
       <Dialog
+        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
@@ -182,12 +194,16 @@ const LoginButton = props => {
 
 LoginButton.defaultProps = {
   isMenu: false,
+  onClickOpen: undefined,
+  onClickClose: undefined,
 };
 
 LoginButton.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   isMenu: PropTypes.bool,
   enqueueSnackbar: PropTypes.func.isRequired,
+  onClickOpen: PropTypes.func,
+  onClickClose: PropTypes.func,
 };
 
 export default withSnackbar(withStyles(styles)(LoginButton));

@@ -41,17 +41,19 @@ class LocationPage extends Component {
           title={this.props.formatted_address}
           countrySlug={slugFromCC(this.props.country_code)}
         />
-        <PostGrid
-          query={{
-            location_box: this.props.location_box,
-            country_code: this.props.country_code,
-            orderby: 'curation_score DESC, total_votes DESC',
-            limit: 8,
-          }}
-          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
-          cardHeight={170}
-          poststyle="grid"
-        />
+        <div className="container">
+            <PostGrid
+              query={{
+                location_box: this.props.location_box,
+                country_code: this.props.country_code,
+                orderby: 'curation_score DESC, total_votes DESC',
+                limit: 8,
+              }}
+              grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
+              cardHeight={170} 
+              poststyle="grid"
+            />
+        </div>
       </Fragment>
     );
   }

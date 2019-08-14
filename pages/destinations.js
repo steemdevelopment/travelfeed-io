@@ -62,19 +62,21 @@ class DestinationsPage extends Component {
             (subdivision && `${subdivision}`) ||
             countryName}`}
         />
-        <PostGrid
-          query={{
-            limit: 8,
-            orderby: 'curation_score DESC, total_votes DESC',
-            country_code,
-            subdivision,
-            city,
-            suburb,
-          }}
-          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
-          cardHeight={170}
-          poststyle="grid"
-        />
+        <div className="container">
+            <PostGrid
+              query={{
+                limit: 8,
+                orderby: 'curation_score DESC, total_votes DESC',
+                country_code,
+                subdivision,
+                city,
+                suburb,
+              }}
+              grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
+              cardHeight={170}
+              poststyle="grid"
+            />
+        </div>
       </Fragment>
     );
   }

@@ -61,7 +61,7 @@ class TagPage extends Component {
                 tags: this.props.tags,
                 orderby: this.props.orderby,
                 min_curation_score: this.props.min_curation_score,
-                limit: 8,
+                limit: 9,
               }}
               grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
               cardHeight={200}

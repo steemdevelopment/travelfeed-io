@@ -47,10 +47,10 @@ class LocationPage extends Component {
                 location_box: this.props.location_box,
                 country_code: this.props.country_code,
                 orderby: 'curation_score DESC, total_votes DESC',
-                limit: 8,
+                limit: 9,
               }}
               grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
-              cardHeight={170} 
+              cardHeight={170}
               poststyle="grid"
             />
         </div>

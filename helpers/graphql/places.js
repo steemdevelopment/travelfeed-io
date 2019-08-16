@@ -7,6 +7,7 @@ export const GET_PLACES = gql`
       author
       permlink
       title
+      img_url
       latitude
       longitude
     }

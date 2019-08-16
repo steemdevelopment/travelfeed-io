@@ -65,6 +65,9 @@ class FollowButton extends Component {
     if (this.props.btnstyle === 'whiteborder') {
       btnclass = 'm-1 border-light';
     }
+    const variant = this.props.btnstyle === 'solid' ? 'contained' : 'outlined';
+    const color = this.props.btnstyle === 'solid' ? 'primary' : 'inherit';
+
     return (
       <Fragment>
         <Query
@@ -86,9 +89,9 @@ class FollowButton extends Component {
                 <Fragment>
                   <Button
                     style={(this.state.changing && { opacity: 0.2 }) || {}}
-                    variant="outlined"
+                    variant={variant}
                     size="small"
-                    color="inherit"
+                    color={color}
                     onClick={() => this.unfollowAuthor(this.props.author)}
                     className={btnclass}
                   >
@@ -102,9 +105,9 @@ class FollowButton extends Component {
                 <Fragment>
                   <Button
                     style={(this.state.changing && { opacity: 0.2 }) || {}}
-                    variant="outlined"
+                    variant={variant}
                     size="small"
-                    color="inherit"
+                    color={color}
                     onClick={() => this.followAuthor(this.props.author)}
                     className={btnclass}
                   >
@@ -116,9 +119,9 @@ class FollowButton extends Component {
             return (
               <Link color="textPrimary" href="/join" passHref>
                 <Button
-                  variant="outlined"
+                  variant={variant}
                   size="small"
-                  color="inherit"
+                  color={color}
                   className={btnclass}
                 >
                   Log in to follow

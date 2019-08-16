@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import PostGrid from '../components/Grid/PostGrid';
 import AuthorProfile from '../components/Profile/AuthorProfile';
+import ProfileTabs from '../components/Profile/ProfileTabs';
 
 class BlogPage extends Component {
   static async getInitialProps(props) {
@@ -14,11 +14,7 @@ class BlogPage extends Component {
     return (
       <Fragment>
         <AuthorProfile author={author} />
-        <PostGrid
-          query={{ author, limit: 12 }}
-          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
-          cardHeight={140}
-        />
+        <ProfileTabs author={author} />
       </Fragment>
     );
   }

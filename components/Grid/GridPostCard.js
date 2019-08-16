@@ -3,15 +3,11 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import LocationIcon from '@material-ui/icons/LocationOn';
 import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import LazyLoad from 'vanilla-lazyload';
-import { nameFromCC, slugFromCC } from '../../helpers/countryCodes';
 import { imageProxy } from '../../helpers/getImage';
 import Link from '../../lib/Link';
 import IsCurated from '../Post/IsCurated';
@@ -89,46 +85,9 @@ class GridPostCard extends Component {
           />
         );
       }
-      const country =
-        this.props.post.country_code !== null
-          ? nameFromCC(this.props.post.country_code)
-          : undefined;
-      const countryslug =
-        this.props.post.country_code !== null
-          ? slugFromCC(this.props.post.country_code)
-          : undefined;
       action = (
         <Fragment>
           {appIcon}
-          {country && (
-            <Link
-              color="textPrimary"
-              as={`/destinations/${countryslug}/${
-                this.props.post.subdivision !== null
-                  ? this.props.post.subdivision
-                  : ''
-              }/`}
-              href={`/destinations?country=${countryslug}${
-                this.props.post.subdivision !== null
-                  ? `&subdivision=${this.props.post.subdivision}`
-                  : ''
-              }`}
-              passHref
-            >
-              <Tooltip
-                title={`${
-                  this.props.post.subdivision !== null
-                    ? `${this.props.post.subdivision}, `
-                    : ''
-                } ${country}`}
-                placement="bottom"
-              >
-                <IconButton>
-                  <LocationIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-          )}
           <IsCurated curation_score={this.props.post.curation_score} />
         </Fragment>
       );
@@ -177,6 +136,10 @@ class GridPostCard extends Component {
             <SubHeader
               created_at={this.props.post.created_at}
               readtime={this.props.post.readtime}
+              location={{
+                country_code: this.props.post.country_code,
+                subdivision: this.props.post.subdivision,
+              }}
             />
           }
         />

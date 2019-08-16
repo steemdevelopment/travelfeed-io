@@ -1,3 +1,24 @@
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1240px;
+  }
+}
+@media (max-width: 992px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
+.mapboxgl-popup-content {
+  padding: 0 !important;
+}
+.mapboxgl-popup-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9999;
+}
+
 /* Markdown/html editor */
 .CodeMirror {
   height: 100% !important;

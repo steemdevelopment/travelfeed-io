@@ -61,6 +61,7 @@ export const GET_POSTS = gql`
       parent_author
       parent_permlink
       root_title
+      root_author
       root_permlink
       depth
       payout
@@ -112,6 +113,20 @@ export const GET_DASHBOARD_POSTS = gql`
       total_votes
       is_paidout
       payout
+    }
+  }
+`;
+
+export const GET_AUTHOR_POST_LOCATIONS = gql`
+  query posts($author: String, $limit: Int) {
+    posts(author: $author, limit: $limit) {
+      author
+      permlink
+      title
+      img_url
+      latitude
+      longitude
+      country_code
     }
   }
 `;

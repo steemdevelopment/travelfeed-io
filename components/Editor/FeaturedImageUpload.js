@@ -1,6 +1,9 @@
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { imageProxy } from '../../helpers/getImage';
 import uploadFile from '../../helpers/imageUpload';
 import { getUser } from '../../helpers/token';
 
@@ -33,6 +36,8 @@ const rejectStyle = {
 };
 
 const FeaturedImageUpload = props => {
+  const { featuredImage, setFeaturedImage, rounded } = props;
+
   const {
     getRootProps,
     getInputProps,
@@ -46,7 +51,7 @@ const FeaturedImageUpload = props => {
     onDropAccepted: files => {
       files.map(file => {
         return uploadFile(file, getUser()).then(res => {
-          props.setFeaturedImage(res);
+          setFeaturedImage(res);
         });
       });
     },
@@ -55,7 +60,7 @@ const FeaturedImageUpload = props => {
   const text =
     acceptedFiles && acceptedFiles.length > 0
       ? acceptedFiles.map(file => `Uploading ${file.path}...`)
-      : "By default, the first image in your post is used. To choose a custom featured image, drag 'n' drop an image here, or click to select one!";
+      : props.placeholder;
 
   const style = useMemo(
     () => ({
@@ -68,18 +73,49 @@ const FeaturedImageUpload = props => {
   );
 
   return (
-    <div className="container">
-      <div {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        <p>{text}</p>
-      </div>
+    <div className="text-center">
+      {(featuredImage && (
+        <Fragment>
+          <img
+            alt="Featured"
+            className={`img-fluid${rounded && ' rounded-circle'}`}
+            src={imageProxy(featuredImage, 500)}
+            style={(rounded && { height: '200px', width: '200px' }) || {}}
+          />
+          <div className="pt-2">
+            <Button
+              variant="contained"
+              color="secondary"
+              component="span"
+              onClick={() => setFeaturedImage(undefined)}
+            >
+              Remove Image <DeleteIcon />
+            </Button>
+          </div>
+        </Fragment>
+      )) || (
+        <div className="container">
+          <div {...getRootProps({ style })}>
+            <input {...getInputProps()} />
+            <p>{text}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
+FeaturedImageUpload.defaultProps = {
+  featuredImage: undefined,
+  rounded: false,
+};
+
 FeaturedImageUpload.propTypes = {
   setFeaturedImage: PropTypes.func.isRequired,
+  featuredImage: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
+  rounded: PropTypes.bool,
 };
 
 export default FeaturedImageUpload;

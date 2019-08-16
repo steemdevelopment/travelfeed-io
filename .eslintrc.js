@@ -13,6 +13,10 @@ module.exports = {
     // camel case because of Hivemind table names
     camelcase: [0, { ignoreDestructuring: true }],
     'react/destructuring-assignment': [0, 'always'],
+    'react/jsx-fragments': ['off'],
+    'prefer-object-spread': ['off'],
+    'react/jsx-props-no-spreading': ['off'],
+    'react/forbid-prop-types': ['off'],
     // Next js needs empty <a> inside Link
     'jsx-a11y/anchor-is-valid': ['off'],
     'jsx-a11y/href-no-hash': ['off'],

@@ -40,7 +40,7 @@ const BlogGridList = () => {
                       return (
                         <Fragment>
                           <div key={post.author + post.permlink}>
-                            <Divider className="pl-3 pr-3" />
+                            <Divider variant="middle" className="pl-3 pr-3" />
                             <Link
                               color="textPrimary"
                               as={`/@${post.author}/${post.permlink}`}

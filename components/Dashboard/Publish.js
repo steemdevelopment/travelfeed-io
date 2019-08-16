@@ -3,10 +3,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PublishIcon from '@material-ui/icons/ChevronRight';
-import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/SaveAlt';
 import EditIcon from '@material-ui/icons/Update';
 import WarnIcon from '@material-ui/icons/Warning';
+import { useTheme } from '@material-ui/styles';
 import Router from 'next/router';
 import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
@@ -18,7 +18,6 @@ import getSlug from 'speakingurl';
 import { APP_VERSION, ROOTURL } from '../../config';
 import { post } from '../../helpers/actions';
 import categoryFinder from '../../helpers/categoryFinder';
-import { imageProxy } from '../../helpers/getImage';
 import { SAVE_DRAFT } from '../../helpers/graphql/drafts';
 import json2md from '../../helpers/json2md';
 import md2json from '../../helpers/md2json';
@@ -49,6 +48,7 @@ import TitleEditor from '../Editor/TitleEditor';
 const PostEditor = props => {
   const user = getUser();
 
+  const theme = useTheme();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tags, setTags] = useState([]);
@@ -131,10 +131,6 @@ const PostEditor = props => {
 
   const handleEditorChange = value => {
     setContent(value);
-  };
-
-  const removeFeaturedImage = () => {
-    setFeaturedImage(undefined);
   };
 
   const changeEditorMode = () => {
@@ -441,31 +437,11 @@ const PostEditor = props => {
                     helper="We recommend selecting an image that is not in your post."
                     value={featuredImage ? 'Uploaded' : 'None'}
                     selector={
-                      <div className="text-center">
-                        {featuredImage && (
-                          <img
-                            alt="Featured"
-                            className="img-fluid"
-                            src={imageProxy(featuredImage, 500)}
-                          />
-                        )}
-                        {(featuredImage && (
-                          <div className="pt-2">
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              component="span"
-                              onClick={removeFeaturedImage}
-                            >
-                              Remove Image <DeleteIcon />
-                            </Button>
-                          </div>
-                        )) || (
-                          <FeaturedImageUpload
-                            setFeaturedImage={setFeaturedImage}
-                          />
-                        )}
-                      </div>
+                      <FeaturedImageUpload
+                        featuredImage={featuredImage}
+                        setFeaturedImage={setFeaturedImage}
+                        placeholder="By default, the first image in your post is used. To choose a custom featured image, drag 'n' drop an image here, or click to select one!"
+                      />
                     }
                   />
                 </div>
@@ -484,6 +460,7 @@ const PostEditor = props => {
                     selector={
                       <div className="w-100">
                         <LocationPicker
+                          dark={theme.palette.type === 'dark'}
                           locationCategory={locationCategory}
                           setLocationCategory={setLocationCategory}
                           setLocation={setLocation}

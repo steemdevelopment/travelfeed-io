@@ -102,9 +102,7 @@ const SupportUsPage = () => {
                   </a>
                 </div>
                 <Divider />
-                <h4 className="pt-4">
-                  Follow the TravelFeed Curation Trail
-                </h4>
+                <h4 className="pt-4">Follow the TravelFeed Curation Trail</h4>
                 <p>
                   By following our curation trail, you automatically upvote all
                   posts that we curate and help to reward quality content
@@ -120,9 +118,7 @@ const SupportUsPage = () => {
                   explaining how to follow our curation trail.
                 </p>
                 <Divider />
-                <h4 className="pt-4">
-                  Upvote our Daily Curation Posts
-                </h4>
+                <h4 className="pt-4">Upvote our Daily Curation Posts</h4>
                 <p>
                   Upvoting our curation posts helps us to give higher rewards to
                   the featured bloggers, who receive a share of the post

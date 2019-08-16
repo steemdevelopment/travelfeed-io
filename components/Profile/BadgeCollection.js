@@ -15,7 +15,7 @@ const BadgeCollection = props => {
           </div>
           {props.badges.map(b => {
             return (
-              <div className="col-1">
+              <div className="col-3 col-xl-1 col-lg-1 col-md-2 col-sm-2 text-center">
                 <Tooltip
                   disableFocusListener
                   disableTouchListener

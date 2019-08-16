@@ -30,7 +30,7 @@ const SupportUsPage = () => {
             background={indigo[600]}
             content={
               <div className="textPrimary postcontent">
-                <h4 className="text-center pt-2">Delegate to @travelfeed</h4>
+                <h4 className="pt-2">Delegate to @travelfeed</h4>
                 <p>
                   Delegations help us give higher rewards to content creators.
                   Currently, there are no rewards for delegators, but once our
@@ -102,9 +102,7 @@ const SupportUsPage = () => {
                   </a>
                 </div>
                 <Divider />
-                <h4 className="text-center pt-4">
-                  Follow the TravelFeed Curation Trail
-                </h4>
+                <h4 className="pt-4">Follow the TravelFeed Curation Trail</h4>
                 <p>
                   By following our curation trail, you automatically upvote all
                   posts that we curate and help to reward quality content
@@ -120,9 +118,7 @@ const SupportUsPage = () => {
                   explaining how to follow our curation trail.
                 </p>
                 <Divider />
-                <h4 className="text-center pt-4">
-                  Upvote our Daily Curation Posts
-                </h4>
+                <h4 className="pt-4">Upvote our Daily Curation Posts</h4>
                 <p>
                   Upvoting our curation posts helps us to give higher rewards to
                   the featured bloggers, who receive a share of the post
@@ -131,7 +127,7 @@ const SupportUsPage = () => {
                   in the tutorial above and add travelfeed to your "fanbase".
                 </p>
                 <Divider />
-                <h4 className="text-center pt-4">Join the Team!</h4>
+                <h4 className="pt-4">Join the Team!</h4>
                 <p>
                   We are still looking for more curators to join our curation
                   team! There is no direct financial reward and your TravelFeed
@@ -162,14 +158,14 @@ const SupportUsPage = () => {
                   .
                 </p>
                 <Divider />
-                <h4 className="text-center pt-4">Donate</h4>
+                <h4 className="pt-4">Donate</h4>
                 <p>
                   We currently pay all server costs out of our own pockets.
                   Donations to the Steem account @travelfeed, whether in Steem,
                   SBD, Steem-Engine tokens or SBI shares, help us a lot.
                 </p>
                 <Divider />
-                <h4 className="text-center pt-4">Report Bugs</h4>
+                <h4 className="pt-4">Report Bugs</h4>
                 <p>
                   TravelFeed is still in Beta. If you encounter any bugs, please
                   report them{' '}

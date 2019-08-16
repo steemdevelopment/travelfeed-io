@@ -7,6 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Create';
 import LocationIcon from '@material-ui/icons/LocationOn';
+import NoLocationIcon from '@material-ui/icons/NotListedLocation';
 import ViewIcon from '@material-ui/icons/OpenInBrowser';
 import { withStyles } from '@material-ui/styles';
 import classNames from 'classnames';
@@ -85,11 +86,11 @@ class PostListItem extends Component {
     const content = (
       <div className="row">
         {this.props.post.img_url !== undefined && (
-          <div className="col-md-4 p-0">
+          <div className="col-lg-4 p-0">
             <CardMedia
               className="h-100"
               style={{ minHeight: '150px' }}
-              image={imageProxy(this.props.post.img_url, undefined, 300)}
+              image={imageProxy(this.props.post.img_url, undefined, 400, 'fit')}
             />
           </div>
         )}
@@ -143,7 +144,7 @@ class PostListItem extends Component {
                   {button2}
                 </div>
                 <div className="col-5 my-auto text-right pt-1">
-                  {country && (
+                  {(country && (
                     <Tooltip
                       title={`${
                         this.props.post.subdivision !== null
@@ -155,6 +156,13 @@ class PostListItem extends Component {
                       <span className="textPrimary pr-1">
                         <LocationIcon />
                       </span>
+                    </Tooltip>
+                  )) || (
+                    <Tooltip
+                      title="Edit the post to add a location"
+                      placement="bottom"
+                    >
+                      <NoLocationIcon />
                     </Tooltip>
                   )}
                   {appIcon}

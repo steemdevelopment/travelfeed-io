@@ -55,17 +55,19 @@ class TagPage extends Component {
           tags={this.props.tags}
           selection={this.props.selection}
         />
-        <PostGrid
-          query={{
-            tags: this.props.tags,
-            orderby: this.props.orderby,
-            min_curation_score: this.props.min_curation_score,
-            limit: 8,
-          }}
-          grid={{ lg: 3, md: 4, sm: 6, xs: 12 }}
-          cardHeight={200}
-          poststyle="grid"
-        />
+        <div className="container">
+          <PostGrid
+            query={{
+              tags: this.props.tags,
+              orderby: this.props.orderby,
+              min_curation_score: this.props.min_curation_score,
+              limit: 9,
+            }}
+            grid={{ lg: 4, md: 4, sm: 6, xs: 12 }}
+            cardHeight={200}
+            poststyle="grid"
+          />
+        </div>
       </Fragment>
     );
   }

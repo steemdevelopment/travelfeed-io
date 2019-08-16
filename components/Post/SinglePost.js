@@ -212,7 +212,7 @@ class SinglePost extends Component {
                     votes: data.post.votes,
                     parent_author: data.post.parent_author,
                     parent_permlink: data.post.parent_permlink,
-                    root_author: data.post.parent_author,
+                    root_author: data.post.root_author,
                     root_permlink: data.post.root_permlink,
                     root_title: data.post.root_title,
                   }}

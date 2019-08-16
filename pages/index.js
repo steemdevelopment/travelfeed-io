@@ -92,9 +92,9 @@ class HomePage extends Component {
         />
         <Header />
         <HomeOrderBySelect selection={selection} showFeed={user} />
-        <div className="container-fluid">
+        <div className="container">
           <div className="row">
-            <div className="col-xl-3 col-lg-1 d-xl-block d-lg-block d-none">
+            <div className="col-xl-3 d-xl-block d-none">
               <StickyBox offsetTop={65} offsetBottom={10}>
                 <div className="d-none d-xl-block">
                   {user && <NavSide user={user} />}
@@ -102,7 +102,7 @@ class HomePage extends Component {
                 </div>
               </StickyBox>
             </div>
-            <div className="col-xl-6 col-lg-7 col-md-8 col-sm-12 p-0">
+            <div className="col-xl-6 col-lg-8 col-md-8 col-sm-12 p-0">
               <PostGrid
                 query={{
                   orderby,

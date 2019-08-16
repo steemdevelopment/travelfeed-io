@@ -17,7 +17,6 @@ const NavSide = props => {
   const { user } = props;
   return (
     <div className="row">
-      <div className="col-3" />
       <div className="col-9">
         <MenuList>
           <Link color="textPrimary" href="/dashboard" passHref>
@@ -88,6 +87,7 @@ const NavSide = props => {
           </Link>
         </MenuList>
       </div>
+      <div className="col-3" />
     </div>
   );
 };

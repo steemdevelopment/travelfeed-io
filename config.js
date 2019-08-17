@@ -8,7 +8,7 @@ export const MAPBOX_TOKEN =
   'pk.eyJ1IjoidGlvdGRldiIsImEiOiJjanZ2NjVzdjQxZ3Q2M3ptczN5NTIwY3k4In0.ZIhYhbkfSAfbX11XDwI57w';
 
 export const DEFAULT_IMAGE = '';
-export const APP_VERSION = 'travelfeed/1.2.0';
+export const APP_VERSION = 'travelfeed/1.3.0';
 
 let url = 'http://localhost:3000/login';
 let rooturl = 'http://localhost:3000';

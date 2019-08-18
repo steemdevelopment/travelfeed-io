@@ -1,5 +1,5 @@
 import AppBar from '@material-ui/core/AppBar';
-import { indigo } from '@material-ui/core/colors';
+import { teal } from '@material-ui/core/colors';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -39,7 +39,7 @@ const styles = theme => ({
     background: theme.palette.background.dark,
   },
   appBar: {
-    backgroundColor: indigo[600],
+    backgroundColor: teal[800],
     zIndex: 201,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,

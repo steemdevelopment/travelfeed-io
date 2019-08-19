@@ -217,7 +217,7 @@ class Profile extends Component {
                     background={indigo[600]}
                     content={
                       <Fragment>
-                        {/* Todo: Find out what the blockchain imposed 
+                        {/* Todo: Find out what the blockchain imposed
                         length limits are for each field */}
                         <TextField
                           label="Name"
@@ -338,7 +338,7 @@ class Profile extends Component {
                   <div className="pt-2">
                     <HeaderCard
                       title="Cover Image"
-                      background={teal[600]}
+                      background={indigo[600]}
                       content={
                         <FeaturedImageUpload
                           featuredImage={this.state.cover_image}

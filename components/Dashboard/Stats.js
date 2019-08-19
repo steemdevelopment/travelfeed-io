@@ -84,7 +84,7 @@ const Stats = () => {
                 <Grid item className="p-1" lg={6} md={6} sm={12} xs={12}>
                   <HeaderCard
                     title={`Welcome, ${getUser()}!`}
-                    background={green[600]}
+                    background={teal[600]}
                     content={
                       <div className="postcontent">
                         <p>
@@ -160,11 +160,11 @@ const Stats = () => {
                     <HeaderCard
                       noborder
                       title="Monthly Earnings"
-                      background={teal[600]}
+                      background={green[600]}
                       content={
                         <div className="pt-3">
                           <RecentEarnings
-                            color={teal[400]}
+                            color={green[400]}
                             recentPayouts={data.userstats.recent_payouts}
                           />
                         </div>

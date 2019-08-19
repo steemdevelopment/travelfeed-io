@@ -1,12 +1,14 @@
-import html2markdown from 'html2markdown';
+import TurndownService from 'turndown';
 import sanitize from 'sanitize-html';
+
+const turndownService = new TurndownService({ emDelimiter: '*' });
 
 const json2md = data => {
   let html = '';
   if (!data) return '';
   data.blocks.forEach(b => {
     if (b.type === 'paragraph') {
-      html += `${html2markdown(b.data.text)}\n\n`;
+      html += `${turndownService.turndown(b.data.text)}\n\n`;
     } else if (b.type === 'header') {
       Array(b.data.level)
         .fill()

@@ -133,12 +133,6 @@ const PostEditor = props => {
     setContent(value);
   };
 
-  const changeEditorMode = () => {
-    if (!codeEditor) setContent(json2md(content));
-    else setContent(md2json(content));
-    setCodeEditor(!codeEditor);
-  };
-
   const newNotification = notification => {
     if (notification !== undefined) {
       let variant = 'success';
@@ -147,6 +141,22 @@ const PostEditor = props => {
       }
       props.enqueueSnackbar(notification.message, { variant });
     }
+  };
+
+  const changeEditorMode = () => {
+    if (!codeEditor) setContent(json2md(content));
+    else {
+      const md = md2json(content);
+      if (!md.success) {
+        newNotification({
+          success: false,
+          message: 'Editor mode could not be changed',
+        });
+        return;
+      }
+      setContent(md.json);
+    }
+    setCodeEditor(!codeEditor);
   };
 
   const sanitized = sanitize(

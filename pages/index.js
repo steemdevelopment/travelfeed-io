@@ -37,7 +37,7 @@ class HomePage extends Component {
       isFeed = false;
     } else if (orderby === 'random') {
       selection = 2;
-      min_curation_score = 10000;
+      min_curation_score = 9000;
       title = 'Discover';
       isFeed = false;
     } else if (orderby === 'feed') {
@@ -50,7 +50,7 @@ class HomePage extends Component {
       // featured
       orderby = 'created_at';
       selection = 3;
-      min_curation_score = 10000;
+      min_curation_score = 9000;
       title = 'Featured';
       isFeed = false;
     }

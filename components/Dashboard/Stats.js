@@ -217,7 +217,7 @@ const Stats = () => {
                         <div className="text-center">No notifications.</div>
                       )) ||
                       data.posts.map(post => {
-                        return post.curation_score === 10000 ? (
+                        return post.curation_score >= 9000 ? (
                           <div
                             key={post.title}
                             className="d-flex justify-content-center p-2"

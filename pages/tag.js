@@ -20,7 +20,7 @@ class TagPage extends Component {
       title = 'Featured';
     } else if (orderby === 'total_votes') {
       selection = 2;
-      min_curation_score = 10000;
+      min_curation_score = 9000;
       title = 'Favorites';
     }
     return {

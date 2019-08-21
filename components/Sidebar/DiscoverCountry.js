@@ -24,7 +24,7 @@ const DiscoverCountry = () => {
         variables={{
           country_code,
           limit: 5,
-          min_curation_score: 10000,
+          min_curation_score: 9000,
         }}
       >
         {({ data, loading, error }) => {

@@ -90,8 +90,12 @@ class Editor extends Component {
   };
 
   _handleChange = async () => {
-    const data = await this.editor.save();
-    this._onChange(data);
+    try {
+      const data = await this.editor.save();
+      this._onChange(data);
+    } catch {
+      console.warn('Could not save editor');
+    }
   };
 
   _handleReady = () => {
